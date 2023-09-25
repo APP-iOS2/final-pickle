@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5782AC1459C00AFE225 /* PickleApp.swift */; };
 		2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D57A2AC1459C00AFE225 /* ContentView.swift */; };
-		2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /* Assets.xcassets */; };
+		2137D57D2AC1459D00AFE225 /*  .xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /*  .xcassets */; };
 		2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */; };
 		2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2137D5872AC1460F00AFE225 /* .swiftlint.yml */; };
 		2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5892AC1473C00AFE225 /* HomeView.swift */; };
@@ -31,7 +31,7 @@
 		2137D5752AC1459C00AFE225 /* Pickle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2137D5782AC1459C00AFE225 /* PickleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleApp.swift; sourceTree = "<group>"; };
 		2137D57A2AC1459C00AFE225 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		2137D57C2AC1459D00AFE225 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2137D57C2AC1459D00AFE225 /*  .xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = " .xcassets"; sourceTree = "<group>"; };
 		2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2137D5872AC1460F00AFE225 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		2137D5892AC1473C00AFE225 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 				2137D59D2AC149A200AFE225 /* Service */,
 				2137D5962AC1485900AFE225 /* ViewModel */,
 				2137D58B2AC1474500AFE225 /* Screen */,
-				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
+				2137D57C2AC1459D00AFE225 /*  .xcassets */,
 				2137D57E2AC1459D00AFE225 /* Preview Content */,
 			);
 			path = Pickle;
@@ -242,7 +242,7 @@
 			files = (
 				2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */,
 				2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */,
-				2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */,
+				2137D57D2AC1459D00AFE225 /*  .xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +426,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,6 +456,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

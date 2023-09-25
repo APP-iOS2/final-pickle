@@ -25,6 +25,8 @@
 		2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A72AC14C7A00AFE225 /* Font.swift */; };
 		2137D5AA2AC14EA500AFE225 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A92AC14EA500AFE225 /* View.swift */; };
 		2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
+		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
+		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,8 @@
 		2137D5A72AC14C7A00AFE225 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2137D5A92AC14EA500AFE225 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
+		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				2137D5922AC1478C00AFE225 /* CalendarView.swift */,
+				B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */,
+				B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -210,7 +216,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					2137D5742AC1459C00AFE225 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -276,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
+				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				2137D59F2AC149F500AFE225 /* ServiceTest.swift in Sources */,
@@ -283,6 +290,7 @@
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
 				2137D5A62AC14C7500AFE225 /* Color.swift in Sources */,
 				2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */,
+				B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */,
 				2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
 				2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */,
@@ -346,7 +354,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -400,7 +408,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -426,6 +434,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,6 +464,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -25,6 +25,7 @@
 		2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A72AC14C7A00AFE225 /* Font.swift */; };
 		2137D5AA2AC14EA500AFE225 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A92AC14EA500AFE225 /* View.swift */; };
 		2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
+		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		2137D5A72AC14C7A00AFE225 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2137D5A92AC14EA500AFE225 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
 				2137D58E2AC1476000AFE225 /* TimerView.swift */,
 				2137D5902AC1476700AFE225 /* MissionView.swift */,
+				B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,

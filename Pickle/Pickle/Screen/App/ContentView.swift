@@ -11,7 +11,8 @@ struct ContentView: View {
     var body: some View {
         TabView {
             NavigationStack {
-                HomeView()
+//                HomeView()
+                MissionView()
             }
             .tabItem {
                 Label("홈", systemImage: "house")

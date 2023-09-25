@@ -18,7 +18,7 @@ struct CustomButton: View {
     @State var buttonTextColor: Color
     @State var buttonColor: Color
     
-    var action: () -> Void
+    let action: () -> Void
     
     var body: some View {
         VStack {
@@ -39,9 +39,11 @@ struct CustomButton: View {
 
 struct MissionStyleView: View {
     var twoButton: Bool = false
-    var title: String
+    @State var title: String
     var settingValue: String
     var time: Int
+    
+    @State var isSettingModalPresented = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -69,7 +71,12 @@ struct MissionStyleView: View {
                     
                     if twoButton {
                         CustomButton(buttonText: "설정", buttonTextColor: .white, buttonColor: .black, action: {
+                            isSettingModalPresented.toggle()
                         })
+                        .sheet(isPresented: $isSettingModalPresented) {
+                                MissionSettingView(title: $title, isSettingModalPresented: $isSettingModalPresented)
+                                    .presentationDetents([.fraction(0.3)])
+                        }
                     }
                 }
             }

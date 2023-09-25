@@ -9,12 +9,21 @@ import SwiftUI
 
 struct MissionView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            MissionStyleView(twoButton: true, title: "기상 미션", settingValue: "오전 7시", time: 0)
+            MissionStyleView(twoButton: true, title: "걷기 미션", settingValue: "5000보", time: 7)
+            MissionStyleView(twoButton: false, title: "오늘의 할일 모두 완료", settingValue: "", time: 7)
+            Spacer()
+        }
+        .navigationTitle("미션")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 struct MissionView_Previews: PreviewProvider {
     static var previews: some View {
-        MissionView()
+        NavigationStack {
+            MissionView()
+        }
     }
 }

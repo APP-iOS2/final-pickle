@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5782AC1459C00AFE225 /* PickleApp.swift */; };
 		2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D57A2AC1459C00AFE225 /* ContentView.swift */; };
-		2137D57D2AC1459D00AFE225 /*  .xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /*  .xcassets */; };
+		2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /* Assets.xcassets */; };
 		2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */; };
 		2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2137D5872AC1460F00AFE225 /* .swiftlint.yml */; };
 		2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5892AC1473C00AFE225 /* HomeView.swift */; };
@@ -25,18 +25,19 @@
 		2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A72AC14C7A00AFE225 /* Font.swift */; };
 		2137D5AA2AC14EA500AFE225 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A92AC14EA500AFE225 /* View.swift */; };
 		2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
-
-		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
-		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
+		2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */; };
+		2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5B12AC1E54100AFE225 /* CircleView.swift */; };
 		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
+		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
+		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2137D5752AC1459C00AFE225 /* Pickle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2137D5782AC1459C00AFE225 /* PickleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleApp.swift; sourceTree = "<group>"; };
 		2137D57A2AC1459C00AFE225 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		2137D57C2AC1459D00AFE225 /*  .xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = " .xcassets"; sourceTree = "<group>"; };
+		2137D57C2AC1459D00AFE225 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2137D5872AC1460F00AFE225 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		2137D5892AC1473C00AFE225 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -52,11 +53,12 @@
 		2137D5A72AC14C7A00AFE225 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		2137D5A92AC14EA500AFE225 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
-
-		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
-		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCellView.swift; sourceTree = "<group>"; };
+		2137D5B12AC1E54100AFE225 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
+		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
+		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +97,7 @@
 				2137D59D2AC149A200AFE225 /* Service */,
 				2137D5962AC1485900AFE225 /* ViewModel */,
 				2137D58B2AC1474500AFE225 /* Screen */,
-				2137D57C2AC1459D00AFE225 /*  .xcassets */,
+				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
 				2137D57E2AC1459D00AFE225 /* Preview Content */,
 			);
 			path = Pickle;
@@ -135,6 +137,8 @@
 				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
 				2137D58E2AC1476000AFE225 /* TimerView.swift */,
 				2137D5902AC1476700AFE225 /* MissionView.swift */,
+				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
+				2137D5B12AC1E54100AFE225 /* CircleView.swift */,
 				B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */,
 				B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */,
 			);
@@ -256,7 +260,7 @@
 			files = (
 				2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */,
 				2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */,
-				2137D57D2AC1459D00AFE225 /*  .xcassets in Resources */,
+				2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,9 +308,11 @@
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */,
+				2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */,
 				2137D5952AC1479700AFE225 /* SettingView.swift in Sources */,
 				2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */,
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
+				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,
 				2137D5912AC1476700AFE225 /* MissionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

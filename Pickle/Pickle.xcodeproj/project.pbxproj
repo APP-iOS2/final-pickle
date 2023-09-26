@@ -18,7 +18,6 @@
 		2137D5912AC1476700AFE225 /* MissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5902AC1476700AFE225 /* MissionView.swift */; };
 		2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5922AC1478C00AFE225 /* CalendarView.swift */; };
 		2137D5952AC1479700AFE225 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5942AC1479700AFE225 /* SettingView.swift */; };
-		2137D59F2AC149F500AFE225 /* ServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D59E2AC149F500AFE225 /* ServiceTest.swift */; };
 		2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A02AC14A0400AFE225 /* ViewModelTest.swift */; };
 		2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A32AC14C6A00AFE225 /* CGFloat.swift */; };
 		2137D5A62AC14C7500AFE225 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A52AC14C7500AFE225 /* Color.swift */; };
@@ -27,6 +26,11 @@
 		2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
 		2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */; };
 		2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5B12AC1E54100AFE225 /* CircleView.swift */; };
+		21FA26772AC2A10800877122 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA26762AC2A10800877122 /* Todo.swift */; };
+		21FA26792AC2A16900877122 /* ServiceEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA26782AC2A16900877122 /* ServiceEmpty.swift */; };
+		21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267A2AC2ADFB00877122 /* Mission.swift */; };
+		21FA267D2AC2B50D00877122 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267C2AC2B50D00877122 /* User.swift */; };
+		21FA267F2AC2BB3800877122 /* Pizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267E2AC2BB3800877122 /* Pizza.swift */; };
 		961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296952AC16FBE009A9815 /* BackColorModifier.swift */; };
 		961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296972AC17120009A9815 /* TextFieldModifier.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
@@ -51,7 +55,6 @@
 		2137D5902AC1476700AFE225 /* MissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionView.swift; sourceTree = "<group>"; };
 		2137D5922AC1478C00AFE225 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		2137D5942AC1479700AFE225 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
-		2137D59E2AC149F500AFE225 /* ServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTest.swift; sourceTree = "<group>"; };
 		2137D5A02AC14A0400AFE225 /* ViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTest.swift; sourceTree = "<group>"; };
 		2137D5A32AC14C6A00AFE225 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
 		2137D5A52AC14C7500AFE225 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -60,6 +63,11 @@
 		2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCellView.swift; sourceTree = "<group>"; };
 		2137D5B12AC1E54100AFE225 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		21FA26762AC2A10800877122 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		21FA26782AC2A16900877122 /* ServiceEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceEmpty.swift; sourceTree = "<group>"; };
+		21FA267A2AC2ADFB00877122 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
+		21FA267C2AC2B50D00877122 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		21FA267E2AC2BB3800877122 /* Pizza.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pizza.swift; sourceTree = "<group>"; };
 		961296952AC16FBE009A9815 /* BackColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackColorModifier.swift; sourceTree = "<group>"; };
 		961296972AC17120009A9815 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
@@ -102,9 +110,8 @@
 		2137D5772AC1459C00AFE225 /* Pickle */ = {
 			isa = PBXGroup;
 			children = (
-				2137D5AB2AC14EE800AFE225 /* Common */,
-				2137D5A22AC14C1800AFE225 /* Extension */,
-				2137D59D2AC149A200AFE225 /* Service */,
+				21FA26752AC2A05E00877122 /* Global */,
+				2137D59D2AC149A200AFE225 /* Data */,
 				2137D5962AC1485900AFE225 /* ViewModel */,
 				2137D58B2AC1474500AFE225 /* Screen */,
 				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
@@ -173,12 +180,13 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
-		2137D59D2AC149A200AFE225 /* Service */ = {
+		2137D59D2AC149A200AFE225 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				2137D59E2AC149F500AFE225 /* ServiceTest.swift */,
+				21FA26732AC29F7D00877122 /* Service */,
+				21FA26742AC29F9F00877122 /* Model */,
 			);
-			path = Service;
+			path = Data;
 			sourceTree = "<group>";
 		};
 		2137D5A22AC14C1800AFE225 /* Extension */ = {
@@ -210,6 +218,34 @@
 				2137D57A2AC1459C00AFE225 /* ContentView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		21FA26732AC29F7D00877122 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				21FA26782AC2A16900877122 /* ServiceEmpty.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		21FA26742AC29F9F00877122 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				21FA26762AC2A10800877122 /* Todo.swift */,
+				21FA267A2AC2ADFB00877122 /* Mission.swift */,
+				21FA267C2AC2B50D00877122 /* User.swift */,
+				21FA267E2AC2BB3800877122 /* Pizza.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		21FA26752AC2A05E00877122 /* Global */ = {
+			isa = PBXGroup;
+			children = (
+				2137D5AB2AC14EE800AFE225 /* Common */,
+				2137D5A22AC14C1800AFE225 /* Extension */,
+			);
+			path = Global;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,26 +349,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21FA267F2AC2BB3800877122 /* Pizza.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
-				2137D59F2AC149F500AFE225 /* ServiceTest.swift in Sources */,
+				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
 				961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */,
+				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
 				2137D5A62AC14C7500AFE225 /* Color.swift in Sources */,
 				2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */,
 				B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */,
 				2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
+				21FA26792AC2A16900877122 /* ServiceEmpty.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */,
 				2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */,
 				2137D5952AC1479700AFE225 /* SettingView.swift in Sources */,
 				2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */,
 				961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */,
+				21FA26772AC2A10800877122 /* Todo.swift in Sources */,
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
 				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,

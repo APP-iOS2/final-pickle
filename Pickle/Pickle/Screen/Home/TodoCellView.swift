@@ -28,7 +28,7 @@ struct TodoCellView: View {
                 Spacer()
                 
                 NavigationLink {
-                    // TODO: TimerView로 이동
+                    TimerView()
                 } label: {
                     Image(systemName: "play.fill")
                         .foregroundColor(.black)

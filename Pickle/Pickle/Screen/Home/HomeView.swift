@@ -61,7 +61,7 @@ struct HomeView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
-                    // TODO: MissionView 연결
+                    MissionView()
                 } label: {
                     Image(systemName: "sun.max.fill")
                         .foregroundColor(.black)

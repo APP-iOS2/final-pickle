@@ -11,7 +11,7 @@ import SwiftUI
 struct PickleApp: App {
     var body: some Scene {
         WindowGroup {
-            RegisterView()
+            ContentView()
         }
     }
 }

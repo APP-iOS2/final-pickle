@@ -31,6 +31,8 @@
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
 		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
 		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
+		B7C341B12AC27B1300744EB7 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B02AC27B1300744EB7 /* Date+Extensions.swift */; };
+		B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B22AC29CB900744EB7 /* OffsetKey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +61,8 @@
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
 		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
 		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		B7C341B02AC27B1300744EB7 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		B7C341B22AC29CB900744EB7 /* OffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				2137D5922AC1478C00AFE225 /* CalendarView.swift */,
+				B7C341B22AC29CB900744EB7 /* OffsetKey.swift */,
 				B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */,
 				B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */,
 			);
@@ -178,6 +183,7 @@
 				2137D5A52AC14C7500AFE225 /* Color.swift */,
 				2137D5A72AC14C7A00AFE225 /* Font.swift */,
 				2137D5A92AC14EA500AFE225 /* View.swift */,
+				B7C341B02AC27B1300744EB7 /* Date+Extensions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -294,7 +300,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
+				B7C341B12AC27B1300744EB7 /* Date+Extensions.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
+				B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */,
 				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,

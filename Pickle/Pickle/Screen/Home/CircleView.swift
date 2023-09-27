@@ -14,6 +14,10 @@ struct CircleView: View {
 
     var body: some View {
         ZStack {
+            Image("potatoPizza")
+                .resizable()
+                .frame(width: 200, height: 200)
+            
             ForEach(0..<slices, id: \.self) { sliceIndex in
                 let startAngle = Angle(degrees: Double(sliceIndex) * 45)
                 let endAngle = Angle(degrees: Double(sliceIndex + 1) * 45)
@@ -22,7 +26,7 @@ struct CircleView: View {
                     path.addArc(center: CGPoint(x: 100, y: 100), radius: 100, startAngle: startAngle, endAngle: endAngle, clockwise: false)
                     path.closeSubpath()
                 }
-                .fill(Color.blue)
+                .fill(Color.white)
             }
         }
         .rotationEffect(.degrees(-90))

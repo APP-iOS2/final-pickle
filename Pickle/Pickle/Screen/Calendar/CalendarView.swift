@@ -181,6 +181,7 @@ struct CalendarView: View {
                 // MARK: - inserting new week at 0th index and removing last arry item
                 weekSlider.insert(firstDate.creatPreviousWeek(), at: 0 )
                 weekSlider.removeLast()
+                currentWeekIndex = 1
                 
             }
             
@@ -190,6 +191,7 @@ struct CalendarView: View {
                 weekSlider.append(lastDate.creatNextWeek())
                 weekSlider.removeFirst()
                 
+                currentWeekIndex = weekSlider.count - 2
             }
                 
         }

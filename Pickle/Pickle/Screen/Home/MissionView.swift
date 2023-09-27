@@ -10,9 +10,9 @@ import SwiftUI
 struct MissionView: View {
     var body: some View {
         VStack {
-            MissionStyleView(twoButton: true, title: "기상 미션", settingValue: "오전 7시", time: 0)
-            MissionStyleView(twoButton: true, title: "걷기 미션", settingValue: "5000보", time: 7)
-            MissionStyleView(twoButton: false, title: "오늘의 할일 모두 완료", settingValue: "", time: 7)
+            TimeMissionStyleView(twoButton: true, title: "기상 미션", status: "완료", date: "9/27", wakeupTime: Date(), currentTime: Date())
+            BehaviorMissionStyleView(twoButton: true, title: "걷기 미션", status: "완료", date: "9/27", myStep: 1000.0, missionStep: 5000.0)
+            MissionStyleView(title: "오늘의 할일 모두 완료", status: "완료", date: "9/27")
             Spacer()
         }
         .navigationTitle("미션")

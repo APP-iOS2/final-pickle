@@ -9,11 +9,12 @@ import SwiftUI
 
 extension Date {
     
+    static let formatter = DateFormatter()
+    
     // MARK: - Custom Date Format
     func format(_ format: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = format
-        return formatter.string(from: self)
+        Date.formatter.dateFormat = format
+        return Date.formatter.string(from: self)
     }
     
     struct WeekDay: Identifiable {

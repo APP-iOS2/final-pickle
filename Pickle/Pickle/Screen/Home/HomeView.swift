@@ -17,12 +17,14 @@ import SwiftUI
 struct HomeView: View {
     @State private var goalProgress: Double = 0.0
     @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요
+    @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
     let goalTotal: Double = 8
         
     var body: some View {
         ScrollView {
             CircleView(slices: Int(goalProgress))
                 .frame(width: 200, height: 200)
+                .padding()
             
             // MARK: 테스트용, 추후 삭제
             Button("할일 완료") {
@@ -40,7 +42,7 @@ struct HomeView: View {
                 Text("\(Int(goalProgress)) / \(Int(goalTotal))")
                     .font(.pizzaTitleBold)
                 
-                Text("첫 피자를 만들어볼까요?")
+                Text(pizzaText)
                     .font(.pizzaHeadline)
                 
                 ProgressView(value: goalProgress, total: goalTotal)

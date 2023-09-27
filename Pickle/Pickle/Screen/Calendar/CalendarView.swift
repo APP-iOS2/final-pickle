@@ -8,105 +8,122 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @State private var currentDate: Date = .init()
     @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
-    @State private var currentDate: Date = .init()
+    @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
+    }
     @Namespace private var animation
     
     var body: some View {
         
-        ScrollView(.vertical) {
-//            LazyVStack(spacing: 15, pinnedViews: [.sectionHeaders]) {
-//                Section {
-//                    
-//                    ScrollView(.horizontal, showsIndicators: false) {
-//                        
-//                        HStack(spacing: 10) {
-//                            ForEach(calendarModel.currentWeek, id: \.self) { day in
-//                                
-//                                VStack(spacing: 10) {
-//                                    Text(calendarModel.extractDate(date: day, format: "dd"))
-//                                        .fontWeight(.semibold)
-//                                    Text(calendarModel.extractDate(date: day, format: "EEE"))
-//                                        .fontWeight(.semibold)
-//                                    Circle()
-//                                        .fill(.white)
-//                                        .frame(width: 8, height: 8)
-//                                        .opacity(calendarModel.isToday(date: day) ? 1 : 0)
-//                                }
-//                                .foregroundStyle(calendarModel.isToday(date: day) ? .primary : .tertiary)
-//                                .foregroundColor(calendarModel.isToday(date: day) ? .white : .black)
-//                                .frame(width: 45, height: 90)
-//                                .background(
-//                                    
-//                                    ZStack {
-//                                        
-//                                        if calendarModel.isToday(date: day) {
-//                                            
-//                                            Capsule()
-//                                                .fill(.black)
-//                                                .matchedGeometryEffect(id: "CURRENTDAY", in: animation)
-//                                        }
-//                                    }
-//                                )
-//                                .contentShape(Capsule())
-//                                .onTapGesture {
-//                                    withAnimation {
-//                                        calendarModel.currentDay = day
-//                                    }
-//                                }
-//                                
-//                            }
-//                        }
-//                        .padding(.horizontal)
-//                    }
-//                    TasksView()
-//                    
-//                } header: {
-//                    HeaderView()
-//                        
-//                }
-//                
-//            }
+        VStack(alignment: .leading) {
+            HeaderView()
             
-            TabView(selection: $currentWeekIndex) {
-                ForEach(weekSlider.indices, id: \.self) { index in
-                    let week = weekSlider[index]
-                    WeekView(week)
-                        .padding(.horizontal, 15)
-                        .tag(index)
+            ScrollView(.vertical) {
+                VStack {
+                    TaskView()
+                    
                 }
+                .hSpacing(.center)
+                .vSpacing(.center)
             }
-//            .padding(.horizontal, -15)
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .frame(height: 100)
-
-//            VStack {
-//                Text("여기 아래로 내일 미션 현황 넣기")
-//            }
+            .scrollIndicators(.hidden)
         }
-        .onAppear(perform: {
-            if weekSlider.isEmpty {
+        .vSpacing(.top)
+        .onAppear {
+            if weekSlider.isEmpty{
                 let currentWeek = Date().fetchWeek()
                 
                 if let firstDate = currentWeek.first?.date {
                     
-                    weekSlider.append(firstDate.creatPreviousWeek())
-                    
+                    weekSlider.append(firstDate.createPreviousWeek())
                 }
                 weekSlider.append(currentWeek)
                 
                 if let lastDate = currentWeek.last?.date {
-                    weekSlider.append(lastDate.creatNextWeek())
+                    weekSlider.append(lastDate.createNextWeek())
+                    
                 }
             }
-        })
-       // .ignoresSafeArea(.container, edges: .top)
+        }
         
     }
 
+    func paginationWeek() {
+        
+        // MARK: - safe check
+        if weekSlider.indices.contains(currentWeekIndex) {
+            if let firstDate =  weekSlider[currentWeekIndex].first?.date, currentWeekIndex == 0 {
+                
+                // MARK: - inserting new week at 0th index and removing last arry item
+                weekSlider.insert(firstDate.createPreviousWeek(), at: 0 )
+                weekSlider.removeLast()
+                currentWeekIndex = 1
+                
+            }
+            
+            if let lastDate = weekSlider[currentWeekIndex].last?.date, currentWeekIndex == (weekSlider.count - 1) {
+                
+                // MARK: - Appending new week at last index and removing first arry item
+                weekSlider.append(lastDate.createNextWeek())
+                weekSlider.removeFirst()
+                
+                currentWeekIndex = weekSlider.count - 2
+            }
+                
+        }
+        
+    }
+
+    // MARK: - Header 뷰
+    @ViewBuilder
+    func HeaderView() -> some View {
+        HStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(currentDate.formatted(date: .abbreviated, time: .omitted))
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.gray)
+                
+                if currentDate.isToday {
+                    Text("Today")
+                        .font(.largeTitle)
+                        .bold()
+                } else {
+                    Text(currentDate.format("EE"))
+                        .font(.largeTitle)
+                        .bold()
+                }
+                
+                TabView(selection: $currentWeekIndex) {
+                    ForEach(weekSlider.indices, id: \.self) { index in
+                        let week = weekSlider[index]
+                        WeekView(week)
+                            .tag(index)
+                    }
+                    
+                }
+                .padding(.horizontal, -10)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 100)
+            }
+            .hLeading()
+        }
+        .padding()
+        .hSpacing(.leading)
+        .background(Color.white)
+        .onChange(of: currentWeekIndex) { newValue in
+            
+            // MARK: - Creating when it reaches first/last page
+            if newValue == 0 || newValue == (weekSlider.count - 1) {
+                createWeek = true
+            }
+        }
+    }
+    
     // MARK: - Week View
     @ViewBuilder
     func WeekView(_ week: [Date.WeekDay]) -> some View {
@@ -135,9 +152,15 @@ struct CalendarView: View {
                                 Circle()
                                     .fill(Color.blue)
                                     .frame(width: 5, height: 5)
-                                    .offset(y: 30)
+                                    .vSpacing(.bottom)
+                                    .offset(y: -66)
                             }
-                        
+                            Circle()
+                                .fill(Color.red)
+                                .frame(width: 5, height: 5)
+                                .vSpacing(.bottom)
+                                .offset(y: 12)
+                            
                         }
                         .background(.white.shadow(.drop(radius: 1)), in: .circle)
                 }
@@ -173,127 +196,24 @@ struct CalendarView: View {
         
     }
     
-    func paginationWeek() {
-        if weekSlider.indices.contains(currentWeekIndex) {
-            if let firstDate =  weekSlider[currentWeekIndex].first?.date, currentWeekIndex == 0 {
-                
-                
-                // MARK: - inserting new week at 0th index and removing last arry item
-                weekSlider.insert(firstDate.creatPreviousWeek(), at: 0 )
-                weekSlider.removeLast()
-                currentWeekIndex = 1
-                
-            }
-            
-            if let lastDate = weekSlider[currentWeekIndex].first?.date, currentWeekIndex == (weekSlider.count - 1){
-                
-                // MARK: - Appending new week at last index and removing first arry item
-                weekSlider.append(lastDate.creatNextWeek())
-                weekSlider.removeFirst()
-                
-                currentWeekIndex = weekSlider.count - 2
-            }
-                
-        }
-        
-    }
-    
-    
-    // MARK: - 캘린더 뷰
-    func TasksView() -> some View {
-        LazyVStack(spacing: 18) {
-            if let tasks = calendarModel.filteredTasks {
-                
-                if tasks.isEmpty {
-                    Text("No tasks found!")
-                        .font(.system(size: 16))
-                        .fontWeight(.light)
-                        .offset(y: 100)
-                } else {
-                    ForEach(tasks) { task in
-                        TaskCardView(task: task)
-                        
-                    }
-                }
-            } else {
-                ProgressView()
-                    .offset(y: 100)
-            }
-            
-        }
-        .padding()
-        .padding(.top)
-        .onChange(of: calendarModel.currentDay) { newValue in
-            calendarModel.filterTodayTasks()
-        }
-    }
-    
-    // MARK: - task card View
-    func TaskCardView(task: CalendarSampleTask) -> some View {
-        HStack(alignment: .top, spacing: 30) {
-            VStack(spacing: 10) {
-                Circle()
-                    .fill(calendarModel.isCurrentHour(date: task.calendarDate) ? .black : .white)
-                    .frame(width: 15, height: 15)
-                    .background(
-                        
-                        Circle()
-                            .stroke(.black, lineWidth: 1)
-                            .padding(-3)
-                        
-                    )
-                    .scaleEffect(!calendarModel.isCurrentHour(date: task.calendarDate) ? 0.8 : 1)
-                Rectangle()
-                    .fill(.black)
-                    .frame(width: 3)
-            }
-            VStack {
-             
-                    HStack(alignment: .top, spacing: 10) {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(task.calendarTitle)
-                                .font(.title2.bold())
-                            Text(task.calendarDescription)
+    // MARK: - TaskView
+    func TaskView() -> some View {
+        VStack(alignment: .leading, spacing: 35) {
+            ForEach($tasks) { $task in
+                TaskRowView(task: $task)
+                    .background(alignment: .leading) {
+                        if tasks.last?.id != task.id {
+                            Rectangle()
+                                .frame(width: 1)
+                                .offset(x: 8)
+                                .padding(.bottom, -35)
                         }
-                        .hLeading()
-                        
-                        Text(task.calendarDate.formatted(date: .omitted, time: .shortened))
                     }
+                
             }
-            .foregroundColor(calendarModel.isCurrentHour(date: task.calendarDate) ? .white :  .black)
-            .padding(calendarModel.isCurrentHour(date: task.calendarDate) ? 15 : 0)
-            .padding(.bottom, calendarModel.isCurrentHour(date: task.calendarDate) ? 0 : 10)
-            .hLeading()
-            .background(
-                Color.black
-                    .cornerRadius(25)
-                    .opacity(calendarModel.isCurrentHour(date: task.calendarDate) ? 1 : 0)
-            )
         }
-        .hLeading()
+        .padding([.vertical, .leading], 15)
         
-    }
-    
-    // MARK: - Header 뷰
-    func HeaderView() -> some View {
-        HStack(spacing: 10) {
-            VStack(alignment: .leading, spacing: 10) {
-                Text(Date().formatted(date: .abbreviated, time: .omitted))
-                Text("Today")
-                    .font(.largeTitle)
-                    .bold()
-            }
-            .hLeading()
-        }
-        .onChange(of: currentWeekIndex) { newValue in
-            if newValue == 0 || newValue == (weekSlider.count - 1) {
-                createWeek = true
-            }
-        }
-
-        .padding()
-        .padding(.top, getSafeArea().top)
-        .background(Color.white)
     }
 }
 
@@ -325,14 +245,16 @@ extension View {
         return Calendar.current.isDate(date1, inSameDayAs: date2)
     }
     
+
+    
     // MARK: - Safe Area
-    func getSafeArea() -> UIEdgeInsets {
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return .zero
-        }
-        guard let safeArea = screen.windows.first?.safeAreaInsets else {
-            return .zero
-        }
-        return safeArea
-    }
+//    func getSafeArea() -> UIEdgeInsets {
+//        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+//            return .zero
+//        }
+//        guard let safeArea = screen.windows.first?.safeAreaInsets else {
+//            return .zero
+//        }
+//        return safeArea
+//    }
 }

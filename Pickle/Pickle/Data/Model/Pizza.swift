@@ -11,4 +11,5 @@ struct Pizza {
     let id: String
     let name: String
     let imageURL: String
+    var createdAt: Date  // 피자 생성 날짜,시간
 }

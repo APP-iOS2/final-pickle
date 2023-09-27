@@ -12,6 +12,7 @@ struct User {
     var nickName: String
     var currentPizzaCount: Int
     var currentPizzaSlice: Int
+    var createdAt: Date  // 유저 계정 생성 날짜,시간
 }
 
 /*

@@ -12,5 +12,6 @@ struct CalendarSampleTask: Identifiable {
     var id = UUID().uuidString
     var calendarTitle: String
     var calendarDescription: String
-    var calendarDate: Date
+    var creationDate: Date
+    var isCompleted: Bool = false
 }

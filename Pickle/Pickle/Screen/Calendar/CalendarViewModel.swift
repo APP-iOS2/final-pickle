@@ -11,9 +11,11 @@ class CalendarViewModel: ObservableObject {
     
     @Published var storedTasks: [CalendarSampleTask] = [
     
-        CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", calendarDate: Date()),
-        CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", calendarDate: Date(timeIntervalSinceNow: 1000)),
-        CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", calendarDate: Date(timeIntervalSinceNow: 3000))
+        CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
+        CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
+        CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
+        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -3000)),
+
         
     ]
     
@@ -49,10 +51,10 @@ class CalendarViewModel: ObservableObject {
         DispatchQueue.global(qos: .userInteractive).async {
             let calendar  = Calendar.current
             let filtered = self.storedTasks.filter {
-                return calendar.isDate($0.calendarDate, inSameDayAs: self.currentDay)
+                return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
             }
                 .sorted { task1, task2 in
-                    task1.calendarDate < task2.calendarDate
+                    task1.creationDate < task2.creationDate
                 }
                     
             DispatchQueue.main.async {
@@ -83,4 +85,6 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
+    
+    
 }

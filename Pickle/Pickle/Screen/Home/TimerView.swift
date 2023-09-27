@@ -10,10 +10,15 @@ import SwiftUI
 struct TimerView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @State var timer: String = "30:00"
-    @State var isShowGiveupAlert: Bool = false
     var toDo: String = "타이머뷰 완성하기...."
-    var startTime: String = "오후 5:00"
+    let currnetTime = Date()
+    let startTime = Date()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
+    @State var settingTime: Int = 0
+    @State var timeRemaining: Int = 0
+    @State var timeExtra: Int = 0
+    @State var isShowGiveupAlert: Bool = false
     
     var body: some View {
         VStack {
@@ -29,7 +34,7 @@ struct TimerView: View {
                     .frame(width: CGFloat.screenWidth * 0.75)
                     .overlay(Circle().stroke(Color.defaultGray, lineWidth: 20))
                 Circle()
-                    .trim(from: 0, to: 0.25)
+                    .trim(from: 0, to: progress())
                     .stroke(Color.black, style: StrokeStyle(lineWidth: 19, lineCap: .round))
                     .frame(width: CGFloat.screenWidth * 0.75)
                     .rotationEffect(.degrees(-90))
@@ -38,12 +43,21 @@ struct TimerView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: CGFloat.screenWidth * 0.5)
-                    Text(timer)
+                    
+                    // 남은시간 줄어드는 타이머
+                    Text(convertSecondsToTime(timeInSecond: timeRemaining))
                         .font(Font.pizzaTitleBold)
+                        .onReceive(timer) { _ in
+                            timeRemaining -= 1
+                        }
+                        
                 }
             }
+            .onAppear {
+                    calcRemain()
+            }
             
-            // TODO: 완료 버튼~~~~~ 크게~~~~
+            // TODO: 완료 버튼 크게 넓이 맞추기(비율)
             Button(action: {
                 // 완료
             }, label: {
@@ -84,7 +98,7 @@ struct TimerView: View {
                     Text(toDo)
                         .font(Font.pizzaHeadline)
                         .padding(.bottom)
-                    Text(startTime)
+                    Text("오후 5:00")
                         .font(Font.pizzaFootnote)
                 }
                 Spacer()
@@ -115,6 +129,49 @@ struct TimerView: View {
                 dismiss()
             }, secondaryButton: .cancel(Text("취소")))
         }
+    }
+    // TODO: 한시간 안넘어가면 분, 초 만 보여주기
+    // 초 -> HH:MM:SS로 보여주기
+    func convertSecondsToTime(timeInSecond: Int) -> String {
+        let hours = timeInSecond / 3600 // 시
+        let minutes = (timeInSecond - hours*3600) / 60 // 분
+        let seconds = timeInSecond % 60 // 초
+        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        
+//        if timeInSecond >= 3600 {
+//            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+//        } else {
+//            return String(format: "%02i:%02i", minutes, seconds)
+//        }
+    }
+    
+    // 남은 시간 계산하기
+    func calcRemain() {
+        let calendar = Calendar.current
+        // TODO: 이거 대신 그냥 tagetTime으로 변경
+        let targetTime : Date = calendar.date(byAdding: .second, value: 3700, to: startTime, wrappingComponents: false) ?? Date()
+        let remainSeconds = Int(targetTime.timeIntervalSince(startTime))
+        self.settingTime = remainSeconds
+        self.timeRemaining = remainSeconds
+    }
+    // 추가 시간 계산하기
+    func calcExtra() {
+        let calendar = Calendar.current
+        // TODO: 이거 대신 그냥 tagetTime으로 변경
+        let targetTime : Date = calendar.date(byAdding: .second, value: 3800, to: startTime, wrappingComponents: false) ?? Date()
+        let remainSeconds = Int(currnetTime.timeIntervalSince(targetTime))
+        self.settingTime = 3600 // 원을 한시간으로 잡기?
+        self.timeExtra = remainSeconds
+    }
+    // 총 걸린 시간 계산하기
+    func calcTotal() -> String {
+        let spendTime = Date()
+        let totalTime = Int(currnetTime.timeIntervalSince(spendTime))
+        return self.convertSecondsToTime(timeInSecond: totalTime)
+    }
+    
+    func progress() -> CGFloat {
+        return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
     }
 }
 

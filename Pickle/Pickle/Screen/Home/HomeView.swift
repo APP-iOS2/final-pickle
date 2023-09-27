@@ -49,8 +49,8 @@ struct HomeView: View {
             }
             .padding(.horizontal)
             
-            ForEach(0..<5) { _ in
-                TodoCellView()
+            ForEach(sampleTodoList) { todo in
+                TodoCellView(content: todo.content)
                     .onTapGesture {
                         // TODO: 할일 추가 Sheet로 올릴지?
                     }
@@ -59,6 +59,15 @@ struct HomeView: View {
         .navigationTitle("9월 25일 월요일")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                NavigationLink {
+                    RegisterView()
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .foregroundColor(.black)
+                }
+            }
+            
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
                     MissionView()

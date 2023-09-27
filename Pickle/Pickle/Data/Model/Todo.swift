@@ -16,6 +16,7 @@ struct Todo: Identifiable {
     var status: Status
 }
 
+typealias TodoStatus = Status
 enum Status: String {
     // 진행전 진행중 완료 포기
     case ready

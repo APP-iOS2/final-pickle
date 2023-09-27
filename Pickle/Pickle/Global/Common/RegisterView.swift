@@ -6,18 +6,40 @@
 //
 
 import SwiftUI
+import RealmSwift
+
+// 등록에서 시작시간, target 시간 설정하기
+// 시작시간에서 시작후 target 시간과 맞게 끝나면
+// spendtime = target시간 동일
+// target 넘어서 까지 하면
+// spendtime > target
+
+enum Const: CaseIterable {
+    static let ALL: [[String]] = [WELCOME1, WELCOME2, WELCOME3, WELCOME4, WELCOME5]
+    static let WELCOME1 = "오늘은 무슨일을 하실 생각 이세여?".map { String($0) }
+    static let WELCOME2 = "피자가 드시고 싶으시다구요?".map { String($0) }
+    static let WELCOME3 = "피자가 먹고 싶어요.........".map { String($0) }
+    static let WELCOME4 = "저는 아무것도 모른답니당ㅎㅎ".map { String($0) }
+    static let WELCOME5 = "ㅋ......ㅋ.....".map { String($0) }
+}
 
 struct RegisterView: View {
     
+    @Environment(\.realm) var realm: Realm
+    
     @State private var text: String = ""
-    @State private var showingAlarmSelectSheet: Bool = false
-    @State private var showingDateSelectSheet: Bool = false
-    @State private var wakeUp = Date()
+    @State private var showingStartTimeSheet: Bool = false
+    @State private var showingTargetTimeSheet: Bool = false
+    @State private var showingWeekSheet: Bool = false
     
-    @State private var seletedTimes: Date = Date()
+    @State private var startTimes = Date()
+    @State private var targetTimes = Date()
+    
     @State private var seletedAlarm: String = "시간 선택"
-    private let alarmCount: [String] = ["한번", "두번", "3번"]
+    @State private var placeHolderText: String = ""
     
+    private let alarmCount: [String] = ["한번", "두번", "3번"]
+
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
@@ -25,13 +47,49 @@ struct RegisterView: View {
                     todoTitleInputField
                         .padding(.top, 40)
                     repeatDay
-                    timeConstraint
+                    
+                    timeConstraintPickButton("시작시간",
+                                             binding: $startTimes,
+                                             show: $showingStartTimeSheet)
+                    
+                    timeConstraintPickButton("목표시간",
+                                             binding: $targetTimes,
+                                             show: $showingTargetTimeSheet)
                     alarmSelector
                     Spacer()
-                    comfirmButton
+                    confirmActionButton {
+                        let todo = TodoObject.todo
+                        try! realm.write {
+                            realm.add(todo)
+                        }
+                    }
                 }
                 .frame(minHeight: geometry.size.height)
             }.frame(width: geometry.size.width)
+        }
+        .refreshable {
+            updateTextField(Const.ALL.randomElement()!)
+        }
+        .onAppear {
+            updateTextField(Const.ALL.randomElement()!)
+        }
+    }
+    
+    @State private var tasks: Task<Void, Error>? {
+        willSet {
+            self.placeHolderText = ""
+            self.tasks?.cancel()
+        }
+    }
+    
+    private func updateTextField(_ strings: [String]) {
+        tasks = Task {
+            var result: String = ""
+            for i in 0...strings.count - 1 {
+                result += strings[i]
+                try await Task.sleep(nanoseconds: UInt64(0.05 * Double(NSEC_PER_SEC)))
+                self.placeHolderText = result
+            }
         }
     }
     
@@ -42,7 +100,7 @@ struct RegisterView: View {
                 .font(Font.pizzaTitle2)
                 .bold()
             
-            TextField("안녕하신가", text: $text)
+            TextField("\(placeHolderText)", text: $text)
                 .padding(.horizontal, 16)
                 .makeTextField {
                     print("\(text)")
@@ -50,7 +108,7 @@ struct RegisterView: View {
                 .padding()
         }
     }
-        
+    
     @ViewBuilder
     private var repeatDay: some View {
         HStack {
@@ -62,7 +120,7 @@ struct RegisterView: View {
             
             Spacer()
             Button {
-                showingAlarmSelectSheet.toggle()
+                showingWeekSheet.toggle()
             } label: {
                 Text("주말")
                     .padding(.vertical, 16)
@@ -71,33 +129,34 @@ struct RegisterView: View {
             }
         }
         .asRoundBackground()
-        .sheet(isPresented: $showingAlarmSelectSheet) {
+        .sheet(isPresented: $showingWeekSheet) {
             alarmPickerView
         }
     }
     
-    @ViewBuilder
-    private var timeConstraint: some View {
+    private func timeConstraintPickButton(_ label: String,
+                                          binding: Binding<Date>,
+                                          show: Binding<Bool>) -> some View {
         HStack {
-            Text("시작조건")
+            Text("\(label)")
                 .font(Font.pizzaBody)
                 .bold()
                 .padding(.vertical, 16)
                 .padding(.leading, 16)
             Spacer()
             Button {
-                showingDateSelectSheet.toggle()
+                show.wrappedValue.toggle()
             } label: {
-                Text("시간 선택")
+                Text("\(binding.wrappedValue.format("HH:mm"))")
                     .padding(.vertical, 16)
                     .padding(.trailing, 16)
                     .tint(Color.textGray)
             }
         }
         .asRoundBackground()
-        .sheet(isPresented: $showingDateSelectSheet) {
+        .sheet(isPresented: show) {
             VStack {
-                dataPickerView
+                datePickerGenerator(binding: binding, show: show)
             }
         }
     }
@@ -112,7 +171,7 @@ struct RegisterView: View {
                 .padding(.leading, 16)
             Spacer()
             Button {
-                showingAlarmSelectSheet.toggle()
+                showingWeekSheet.toggle()
             } label: {
                 Text("\(seletedAlarm)")
                     .padding(.vertical, 16)
@@ -121,15 +180,14 @@ struct RegisterView: View {
             }
         }
         .asRoundBackground()
-        .sheet(isPresented: $showingAlarmSelectSheet) {
+        .sheet(isPresented: $showingWeekSheet) {
             alarmPickerView
         }
     }
     
-    @ViewBuilder
-    private var comfirmButton: some View {
+    private func confirmActionButton(_ action: @escaping () -> Void) -> some View {
         Button {
-            
+            action()
         } label: {
             Text("확인")
                 .padding()
@@ -143,20 +201,22 @@ struct RegisterView: View {
         }
     }
     
-    @ViewBuilder
-    private var dataPickerView: some View {
+    private func datePickerGenerator(binding: Binding<Date>, show: Binding<Bool>) -> some View {
         VStack {
-            DatePicker("시간 선택", selection: $wakeUp,
+            DatePicker("시간 선택", selection: binding,
                        displayedComponents: .hourAndMinute)
             .datePickerStyle(WheelDatePickerStyle())
+            .presentationDetents([.fraction(0.4)])
             .labelsHidden()
-            .presentationDetents([.fraction(0.3)])
+            
+            Spacer()
             
             Button {
-                showingDateSelectSheet.toggle()
+                show.wrappedValue.toggle()
             } label: {
                 Text("확인")
             }
+            .padding(.vertical, 10)
         }
     }
     
@@ -172,7 +232,7 @@ struct RegisterView: View {
             .presentationDetents([.fraction(0.3)])
             
             Button {
-                showingAlarmSelectSheet.toggle()
+                showingWeekSheet.toggle()
             } label: {
                 Text("확인")
             }
@@ -181,8 +241,6 @@ struct RegisterView: View {
     
 }
 
-struct RegisterView_Previews: PreviewProvider {
-    static var previews: some View {
-        RegisterView()
-    }
+#Preview {
+    RegisterView()
 }

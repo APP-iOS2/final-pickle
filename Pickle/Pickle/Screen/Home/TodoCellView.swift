@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TodoCellView: View {
+    var content: String
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
@@ -18,7 +20,7 @@ struct TodoCellView: View {
             
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("할일 이름")
+                    Text(content)
                         .font(.pizzaBody)
                     
                     Text("오후 5:00")
@@ -41,6 +43,6 @@ struct TodoCellView: View {
 
 struct TodoCellView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoCellView()
+        TodoCellView(content: "할일")
     }
 }

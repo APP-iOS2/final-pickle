@@ -14,7 +14,7 @@ class CalendarViewModel: ObservableObject {
         CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
         CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
-        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -3000)),
+        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
 
         
     ]
@@ -72,6 +72,7 @@ class CalendarViewModel: ObservableObject {
         
         return formatter.string(from: date)
     }
+    
     // MARK: - checking if current date is today or not
     func isToday(date: Date) -> Bool {
         let calendar = Calendar.current

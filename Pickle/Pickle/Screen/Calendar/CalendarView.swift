@@ -15,6 +15,7 @@ struct CalendarView: View {
     @State private var createWeek: Bool = false
     @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
     }
+    
     @Namespace private var animation
     
     var body: some View {
@@ -34,7 +35,8 @@ struct CalendarView: View {
         }
         .vSpacing(.top)
         .onAppear {
-            if weekSlider.isEmpty{
+            
+            if weekSlider.isEmpty {
                 let currentWeek = Date().fetchWeek()
                 
                 if let firstDate = currentWeek.first?.date {
@@ -89,11 +91,11 @@ struct CalendarView: View {
                     .foregroundStyle(.gray)
                 
                 if currentDate.isToday {
-                    Text("Today")
+                    Text("오늘")
                         .font(.largeTitle)
                         .bold()
                 } else {
-                    Text(currentDate.format("EE"))
+                    Text(currentDate.format("EEEE"))
                         .font(.largeTitle)
                         .bold()
                 }
@@ -145,7 +147,7 @@ struct CalendarView: View {
                             if isSameDate(day.date, date2: currentDate) {
                                 Circle()
                                     .fill(Color.orange)
-                                    .matchedGeometryEffect(id: "TABINDICATOR", in: animation)
+          
                             }
                             // MARK: - Indicator to show, which one is Today
                             if day.date.isToday {
@@ -197,6 +199,7 @@ struct CalendarView: View {
     }
     
     // MARK: - TaskView
+    @ViewBuilder
     func TaskView() -> some View {
         VStack(alignment: .leading, spacing: 35) {
             ForEach($tasks) { $task in

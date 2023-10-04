@@ -9,8 +9,8 @@ import SwiftUI
 
 extension View {
     /// MainView들을 제외한 View 에서 사용가능한 공통 네비게이션 바 수정자
-    func infanNavigationBar(title: String) -> some View {
-        modifier(NavigationBar(title: title,visible: true))
+    func pizzaNavigationBar(title: String) -> some View {
+        modifier(NavigationBar(title: title, visible: true))
     }
     
     func hSpacing(_ alignment: Alignment) -> some View {
@@ -42,4 +42,5 @@ extension View {
     func makeTextField(_ completion: @escaping () -> Void) -> some View {
         modifier(TextFieldModifier(completion: completion))
     }
+
 }

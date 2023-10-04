@@ -8,13 +8,38 @@
 import SwiftUI
 
 struct AddTodoView: View {
+    @Binding var isShowingEditTodo: Bool
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            VStack {
+                Text("할일 편집")
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        isShowingEditTodo = false
+                    } label: {
+                        Text("닫기")
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        isShowingEditTodo = false
+                    } label: {
+                        Text("수정")
+                    }
+                }
+            }
+        }
     }
 }
 
 struct AddTodoView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTodoView()
+        NavigationStack {
+            AddTodoView(isShowingEditTodo: .constant(true))
+        }
     }
 }

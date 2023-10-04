@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TodoCellView: View {
     var content: String
+    var startTime: Date
     
     var body: some View {
         ZStack {
@@ -23,7 +24,7 @@ struct TodoCellView: View {
                     Text(content)
                         .font(.pizzaBody)
                     
-                    Text("오후 5:00")
+                    Text("시작 \(startTime.format("HH:mm"))")
                         .font(.pizzaFootnote)
                 }
                 
@@ -32,8 +33,14 @@ struct TodoCellView: View {
                 NavigationLink {
                     TimerView()
                 } label: {
-                    Image(systemName: "play.fill")
-                        .foregroundColor(.black)
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.clear)
+                        
+                        Image(systemName: "play.fill")
+                            .foregroundColor(.black)
+                    }
                 }
             }
             .padding(.horizontal, 40)
@@ -43,6 +50,6 @@ struct TodoCellView: View {
 
 struct TodoCellView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoCellView(content: "할일")
+        TodoCellView(content: "할일", startTime: Date())
     }
 }

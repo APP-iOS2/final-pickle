@@ -5,24 +5,16 @@
 //  Created by 최소정 on 2023/09/25.
 //
 
-// TODO: 오늘 날짜 타이틀에 반영
-// TODO: 아무것도 없을 때 어떻게 보여줄지
-// TODO: 피자에 할일 진행도 반영
-// TODO: 프로그래스바 문구 정리
-// TODO: 할일 목록
-// TODO: 할일 추가 버튼
-
 import SwiftUI
 
 struct HomeView: View {
     @State private var goalProgress: Double = 0.0
     @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요
     @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
-    
     @State private var tabBarVisibility: Visibility = .visible
-    
+    @State private var isShowingEditTodo: Bool = false
     let goalTotal: Double = 8
-        
+    
     var body: some View {
         ScrollView {
             CircleView(slices: Int(goalProgress))
@@ -40,6 +32,7 @@ struct HomeView: View {
                     goalProgress = 0
                 }
             }
+            .foregroundStyle(.gray)
             
             VStack(spacing: 8) {
                 Text("\(Int(goalProgress)) / \(Int(goalTotal))")
@@ -54,40 +47,46 @@ struct HomeView: View {
             }
             .padding(.horizontal)
             
+            // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 댐
             ForEach(sampleTodoList) { todo in
-                TodoCellView(content: todo.content)
+                TodoCellView(content: todo.content, startTime: todo.startTime)
                     .onTapGesture {
-                        // TODO: 할일 추가 Sheet로 올릴지?
+                        isShowingEditTodo = true
                     }
             }
         }
-        .navigationTitle("9월 25일 월요일")
+        .navigationTitle(Date().format("MM월 dd일 EEEE"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarBuillder
         }
         .toolbar(tabBarVisibility, for: .tabBar)
+        .fullScreenCover(isPresented: $isShowingEditTodo) {
+            AddTodoView(isShowingEditTodo: $isShowingEditTodo)
+        }
     }
     
     @ToolbarContentBuilder
     var toolbarBuillder: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink {
                 RegisterView()
                     .backKeyModifier(visible: false)
             } label: {
-                Image(systemName: "plus.circle.fill")
+                Image(systemName: "plus.circle")
                     .foregroundColor(.black)
             }
         }
         
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .navigationBarLeading) {
             NavigationLink {
                 MissionView()
                     .backKeyModifier(visible: false)
             } label: {
-                Image(systemName: "sun.max.fill")
-                    .foregroundColor(.black)
+                Image("mission")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24)
             }
         }
     }

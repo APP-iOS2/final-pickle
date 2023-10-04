@@ -15,10 +15,13 @@ struct TimerView: View {
     let startTime = Date()
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @State var settingTime: Int = 0
-    @State var timeRemaining: Int = 0
-    @State var timeExtra: Int = 0
+    @State var targetTime: Int = 1 // 목표소요시간
+    @State var timeRemaining: Int = 0 // 남은 시간
+    @State var spendTime: Int = 0 // 실제 소요시간
+    @State var timeExtra: Int = 0 // 추가소요시간
+    @State var settingTime: Int = 0 // 원형 타이머 설정용 시간
     @State var isShowGiveupAlert: Bool = false
+    @State var isDecresing: Bool = true
     
     var body: some View {
         VStack {
@@ -44,39 +47,51 @@ struct TimerView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: CGFloat.screenWidth * 0.5)
                     
-                    // 남은시간 줄어드는 타이머
-                    Text(convertSecondsToTime(timeInSecond: timeRemaining))
-                        .font(Font.pizzaTitleBold)
+                    if isDecresing {
+                        // 남은시간 줄어드는 타이머
+                        Text(convertSecondsToTime(timeInSecond: timeRemaining))
+                            .font(Font.pizzaTitleBold)
+                            .onReceive(timer) { _ in
+                                timeRemaining -= 1
+                                if timeRemaining == 0 {
+                                    turnMode()
+                                }
+                            }
+                    } else {
+                        // 추가시간 늘어나는 타이머
+                        Text("+ \(convertSecondsToTime(timeInSecond: timeExtra))")
+                            .font(Font.pizzaTitleBold)
+                            .onReceive(timer) { _ in
+                                timeExtra += 1
+                                if timeExtra % 60 == 0 {
+                                    turnMode()
+                                }
+                            }
+                    }
+                    
+                    // 실제 소요시간 타이머
+                    Text(convertSecondsToTime(timeInSecond: spendTime))
+                        .foregroundColor(Color.textGray)
                         .onReceive(timer) { _ in
-                            timeRemaining -= 1
+                            spendTime += 1
                         }
                         
                 }
             }
             .onAppear {
-                    calcRemain()
+                calcRemain()
             }
-            
-            // TODO: 완료 버튼 크게 넓이 맞추기(비율)
-            Button(action: {
-                // 완료
-            }, label: {
-                Text("완료")
-            })
-            .buttonStyle(.borderedProminent)
-            .tint(Color.black)
-            .padding(.top)
-            
-            // 일시정지, 포기
+                        
+            // 완료, 포기 버튼
             HStack {
+                // TODO: 완료 버튼 크게 넓이 맞추기
                 Button(action: {
-                    // 일시정지
+                    // 완료
                 }, label: {
-                    HStack {
-                        Image(systemName: "pause.fill")
-                        Text("일시 정지")
-                    }
+                    Image(systemName: "checkmark.seal")
+                    Text("완료")
                 })
+
                 Button(action: {
                     // 포기 alert띄우기
                     isShowGiveupAlert = true
@@ -90,7 +105,7 @@ struct TimerView: View {
             }
             .buttonStyle(.bordered)
             .tint(Color.black)
-            .padding(.top, 5)
+            .padding(.top, 10)
             
             // 지금 하는 일
             HStack {
@@ -136,42 +151,32 @@ struct TimerView: View {
         let hours = timeInSecond / 3600 // 시
         let minutes = (timeInSecond - hours*3600) / 60 // 분
         let seconds = timeInSecond % 60 // 초
-        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
         
-//        if timeInSecond >= 3600 {
-//            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
-//        } else {
-//            return String(format: "%02i:%02i", minutes, seconds)
-//        }
+        if timeInSecond >= 3600 {
+            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        } else {
+            return String(format: "%02i:%02i", minutes, seconds)
+        }
     }
     
+    // TODO: data 구조보고 변수명 바꿔주기
     // 남은 시간 계산하기
     func calcRemain() {
-        let calendar = Calendar.current
-        // TODO: 이거 대신 그냥 tagetTime으로 변경
-        let targetTime : Date = calendar.date(byAdding: .second, value: 3700, to: startTime, wrappingComponents: false) ?? Date()
-        let remainSeconds = Int(targetTime.timeIntervalSince(startTime))
-        self.settingTime = remainSeconds
-        self.timeRemaining = remainSeconds
+        self.settingTime = targetTime * 60
+        self.timeRemaining = settingTime
     }
-    // 추가 시간 계산하기
-    func calcExtra() {
-        let calendar = Calendar.current
-        // TODO: 이거 대신 그냥 tagetTime으로 변경
-        let targetTime : Date = calendar.date(byAdding: .second, value: 3800, to: startTime, wrappingComponents: false) ?? Date()
-        let remainSeconds = Int(currnetTime.timeIntervalSince(targetTime))
-        self.settingTime = 3600 // 원을 한시간으로 잡기?
-        self.timeExtra = remainSeconds
-    }
-    // 총 걸린 시간 계산하기
-    func calcTotal() -> String {
-        let spendTime = Date()
-        let totalTime = Int(currnetTime.timeIntervalSince(spendTime))
-        return self.convertSecondsToTime(timeInSecond: totalTime)
+
+    func turnMode() {
+        self.isDecresing = false
+        self.settingTime = 600
     }
     
     func progress() -> CGFloat {
-        return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
+        if isDecresing {
+            return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
+        } else {
+            return (CGFloat(timeExtra % 60) / CGFloat(settingTime))
+        }
     }
 }
 

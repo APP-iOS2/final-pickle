@@ -33,8 +33,14 @@ struct TodoCellView: View {
                 NavigationLink {
                     TimerView()
                 } label: {
-                    Image(systemName: "play.fill")
-                        .foregroundColor(.black)
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.clear)
+                        
+                        Image(systemName: "play.fill")
+                            .foregroundColor(.black)
+                    }
                 }
             }
             .padding(.horizontal, 40)

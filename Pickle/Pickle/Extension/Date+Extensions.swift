@@ -14,6 +14,8 @@ extension Date {
     // MARK: - Custom Date Format
     func format(_ format: String) -> String {
         Date.formatter.dateFormat = format
+        Date.formatter.locale = Locale(identifier: "ko_kr")
+        Date.formatter.timeZone = TimeZone(abbreviation: "KST")
         return Date.formatter.string(from: self)
     }
     
@@ -58,7 +60,7 @@ extension Date {
         guard let startOfWeek = weekForDate?.start else {
             return []
         }
-    
+        
         // MARK: - iterating to get the Full Week
         (0..<7).forEach { index in
             if let weekDay = calendar.date(byAdding: .day, value: index, to: startOfWeek) {
@@ -82,7 +84,7 @@ extension Date {
         return fetchWeek(nextDate)
         
     }
-
+    
     // MARK: - Creating Previous Week, based on the First Current Week's Date
     func createPreviousWeek() -> [WeekDay] {
         
@@ -92,7 +94,7 @@ extension Date {
         guard let previousDate = calendar.date(byAdding: .day, value: -1, to: startOfFirstDate) else {
             return []
         }
-    
+        
         return fetchWeek(previousDate)
         
     }

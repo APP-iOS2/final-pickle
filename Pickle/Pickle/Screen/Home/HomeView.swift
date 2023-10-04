@@ -55,13 +55,13 @@ struct HomeView: View {
             .padding(.horizontal)
             
             ForEach(sampleTodoList) { todo in
-                TodoCellView(content: todo.content)
+                TodoCellView(content: todo.content, startTime: todo.startTime)
                     .onTapGesture {
                         // TODO: 할일 추가 Sheet로 올릴지?
                     }
             }
         }
-        .navigationTitle("9월 25일 월요일")
+        .navigationTitle("10월 04일 수요일")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             toolbarBuillder

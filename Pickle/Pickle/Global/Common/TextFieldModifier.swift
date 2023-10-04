@@ -32,9 +32,3 @@ struct TextFieldModifier: ViewModifier {
             }
     }
 }
-
-extension View {
-    func makeTextField(_ completion: @escaping () -> Void) -> some View {
-        modifier(TextFieldModifier(completion: completion))
-    }
-}

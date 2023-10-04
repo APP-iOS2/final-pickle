@@ -11,7 +11,7 @@ struct MissionView: View {
     var body: some View {
         VStack {
             TimeMissionStyleView(twoButton: true, title: "기상 미션", status: "완료", date: "9/27", wakeupTime: Date(), currentTime: Date())
-            BehaviorMissionStyleView(twoButton: true, title: "걷기 미션", status: "완료", date: "9/27", myStep: 1000.0, missionStep: 5000.0)
+            BehaviorMissionStyleView(twoButton: true, title: "걷기 미션", status: "완료", date: "9/27", myStep: 1000.0, missionStep: 5000.0, changedMissionStep: 0.0)
             MissionStyleView(title: "오늘의 할일 모두 완료", status: "완료", date: "9/27")
             Spacer()
         }

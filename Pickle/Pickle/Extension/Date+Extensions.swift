@@ -35,9 +35,18 @@ extension Date {
         return Calendar.current.compare(self, to: .init(), toGranularity: .hour) == .orderedAscending
     }
     
-
-
-    
+    /// '분' 더하는 메소드
+    /// - Parameter minutes: 분
+    /// - Returns: 더해진 날짜
+    func adding(minutes: Int) -> Date {
+        let date = Calendar.current.date(byAdding: .minute, value: minutes, to: self)!
+        let formatter = Date.formatter
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.timeZone = NSTimeZone(name: "ko_KR") as? TimeZone
+        let str = formatter.string(from: date)
+        return formatter.date(from: str)!
+    }
     
     // MARK: - Fetching Week Based on given Date
     func fetchWeek(_ date: Date = .init()) -> [WeekDay] {

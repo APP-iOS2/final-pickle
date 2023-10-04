@@ -18,6 +18,9 @@ struct HomeView: View {
     @State private var goalProgress: Double = 0.0
     @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요
     @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
+    
+    @State private var tabBarVisibility: Visibility = .visible
+    
     let goalTotal: Double = 8
         
     var body: some View {
@@ -61,22 +64,30 @@ struct HomeView: View {
         .navigationTitle("9월 25일 월요일")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                NavigationLink {
-                    RegisterView()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.black)
-                }
+            toolbarBuillder
+        }
+        .toolbar(tabBarVisibility, for: .tabBar)
+    }
+    
+    @ToolbarContentBuilder
+    var toolbarBuillder: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            NavigationLink {
+                RegisterView()
+                    .backKeyModifier(visible: false)
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .foregroundColor(.black)
             }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    MissionView()
-                } label: {
-                    Image(systemName: "sun.max.fill")
-                        .foregroundColor(.black)
-                }
+        }
+        
+        ToolbarItem(placement: .navigationBarTrailing) {
+            NavigationLink {
+                MissionView()
+                    .backKeyModifier(visible: false)
+            } label: {
+                Image(systemName: "sun.max.fill")
+                    .foregroundColor(.black)
             }
         }
     }

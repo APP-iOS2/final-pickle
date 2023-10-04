@@ -15,11 +15,34 @@ class TodoObject: Object, Identifiable {
     @Persisted var startTime: Date
     @Persisted var targetTime: Date
     @Persisted var spendTime: Date
-    @Persisted var status: String
+    @Persisted var status: TodoStatusPersisted
+    
+    
+    convenience init(content: String,
+                     startTime: Date,
+                     targetTime: Date,
+                     spendTime: Date,
+                     status: TodoStatusPersisted) {
+        self.init()
+        self.id = id
+        self.content = content
+        self.startTime = startTime
+        self.targetTime = targetTime
+        self.spendTime = spendTime
+        self.status = status
+    }
     
     class override func primaryKey() -> String? {
         "id"
     }
+}
+
+
+enum TodoStatusPersisted: String, PersistableEnum {
+    case ready
+    case ongoing
+    case done
+    case giveUp
 }
 
 extension TodoObject {

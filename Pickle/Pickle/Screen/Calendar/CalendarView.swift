@@ -24,7 +24,12 @@ struct CalendarView: View {
             
             ScrollView(.vertical) {
                 VStack {
+<<<<<<< HEAD
                     TaskView()
+=======
+                    taskView()
+                    
+>>>>>>> a797767 (fix: 함수 네이밍 lowercase)
                 }
             }
             .scrollIndicators(.hidden)
@@ -197,8 +202,7 @@ struct CalendarView: View {
     }
     
     // MARK: - TaskView
-    @ViewBuilder
-    func TaskView() -> some View {
+    func taskView() -> some View {
         VStack(alignment: .leading, spacing: 35) {
             
             if let tasks = calendarModel.filteredTasks {

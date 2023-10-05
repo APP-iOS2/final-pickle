@@ -107,7 +107,7 @@ struct RegisterView: View {
                             let todo = Todo(id: UUID().uuidString,
                                             content: content,
                                             startTime: startTimes.adding(minutes: 0),
-                                            targetTime: resultTime,
+                                            targetTime: 100,
                                             spendTime: startTimes.adding(minutes: 0),
                                             status: .ready)
                             

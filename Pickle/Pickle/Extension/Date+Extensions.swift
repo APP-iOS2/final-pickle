@@ -9,12 +9,16 @@ import SwiftUI
 
 extension Date {
     
+    static let formatter = DateFormatter()
+    
     // MARK: - Custom Date Format
     func format(_ format: String) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = format
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter.string(from: self)
+
+        Date.formatter.dateFormat = format
+        Date.formatter.locale = Locale(identifier: "ko_kr")
+        Date.formatter.timeZone = TimeZone(abbreviation: "KST")
+        return Date.formatter.string(from: self)
+
     }
     
     struct WeekDay: Identifiable {
@@ -35,9 +39,18 @@ extension Date {
         return Calendar.current.compare(self, to: .init(), toGranularity: .hour) == .orderedAscending
     }
     
-
-
-    
+    /// '분' 더하는 메소드
+    /// - Parameter minutes: 분
+    /// - Returns: 더해진 날짜
+    func adding(minutes: Int) -> Date {
+        let date = Calendar.current.date(byAdding: .minute, value: minutes, to: self)!
+        let formatter = Date.formatter
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.timeZone = NSTimeZone(name: "ko_KR") as? TimeZone
+        let str = formatter.string(from: date)
+        return formatter.date(from: str)!
+    }
     
     // MARK: - Fetching Week Based on given Date
     func fetchWeek(_ date: Date = .init()) -> [WeekDay] {
@@ -49,7 +62,7 @@ extension Date {
         guard let startOfWeek = weekForDate?.start else {
             return []
         }
-    
+        
         // MARK: - iterating to get the Full Week
         (0..<7).forEach { index in
             if let weekDay = calendar.date(byAdding: .day, value: index, to: startOfWeek) {
@@ -73,7 +86,7 @@ extension Date {
         return fetchWeek(nextDate)
         
     }
-
+    
     // MARK: - Creating Previous Week, based on the First Current Week's Date
     func createPreviousWeek() -> [WeekDay] {
         
@@ -83,7 +96,7 @@ extension Date {
         guard let previousDate = calendar.date(byAdding: .day, value: -1, to: startOfFirstDate) else {
             return []
         }
-    
+        
         return fetchWeek(previousDate)
         
     }

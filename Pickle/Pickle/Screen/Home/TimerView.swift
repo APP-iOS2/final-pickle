@@ -10,23 +10,34 @@ import SwiftUI
 struct TimerView: View {
     @Environment(\.dismiss) private var dismiss
     
-    var toDo: String = "타이머뷰 완성하기...."
-    let currnetTime = Date()
-    let startTime = Date()
+    var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @State var settingTime: Int = 0
-    @State var timeRemaining: Int = 0
-    @State var timeExtra: Int = 0
+    @State var targetTime: Int = 1 // 목표소요시간
+    @State var timeRemaining: Int = 0 // 남은 시간
+    @State var spendTime: Int = 0 // 실제 소요시간
+    @State var timeExtra: Int = 0 // 추가소요시간
+    @State var settingTime: Int = 0 // 원형 타이머 설정용 시간
+    
     @State var isShowGiveupAlert: Bool = false
+    @State var isDecresing: Bool = true
+    @State var isStart: Bool = true
     
     var body: some View {
         VStack {
+            // TODO: RegisterView처럼 랜덤으로 바꿔주기
             // 멘트부분
-            Text("시작이 반이다! \n벌써 할 일 반 했네 최고다~~~")
-                .font(Font.pizzaTitleBold)
-                .padding(.top)
-                .padding(.bottom, 50)
+            if isStart {
+                Text("따라 읽어봐요!")
+                    .font(Font.pizzaTitleBold)
+                    .padding(.top)
+                    .padding(.bottom, 50)
+            } else {
+                Text("시작이 반이다! 시작했네유~")
+                    .font(Font.pizzaTitleBold)
+                    .padding(.top)
+                    .padding(.bottom, 50)
+            }
             // 타이머 부분
             ZStack {
                 Circle()
@@ -39,44 +50,73 @@ struct TimerView: View {
                     .frame(width: CGFloat.screenWidth * 0.75)
                     .rotationEffect(.degrees(-90))
                 VStack {
-                    Image("smilePizza")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: CGFloat.screenWidth * 0.5)
-                    
-                    // 남은시간 줄어드는 타이머
-                    Text(convertSecondsToTime(timeInSecond: timeRemaining))
-                        .font(Font.pizzaTitleBold)
-                        .onReceive(timer) { _ in
-                            timeRemaining -= 1
+                    if isStart {
+                        if timeRemaining != 0 {
+                            Text(String(timeRemaining))
+                                .font(Font.system(size: 40))
+                                .fontWeight(.heavy)
+                                .onReceive(timer) { _ in
+                                    timeRemaining -= 1
+                                }
+                        } else {
+                            Text("시작")
+                                .font(Font.system(size: 40))
+                                .fontWeight(.heavy)
+                                .onReceive(timer) { _ in
+                                    calcRemain()
+                                }
                         }
                         
+                    } else {
+                        Image("smilePizza")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: CGFloat.screenWidth * 0.5)
+                        
+                        if isDecresing {
+                            // 남은시간 줄어드는 타이머
+                            Text(convertSecondsToTime(timeInSecond: timeRemaining))
+                                .font(Font.pizzaTitleBold)
+                                .onReceive(timer) { _ in
+                                    timeRemaining -= 1
+                                    if timeRemaining == 0 {
+                                        turnMode()
+                                    }
+                                }
+                        } else {
+                            // 추가시간 늘어나는 타이머
+                            HStack {
+                                Text("+ \(convertSecondsToTime(timeInSecond: timeExtra))")
+                                    .font(Font.pizzaTitleBold)
+                                    .onReceive(timer) { _ in
+                                        timeExtra += 1
+                                        if timeExtra % 600 == 0 {
+                                            turnMode()
+                                        }
+                                    }
+                            }
+                        }
+                        
+                        // 실제 소요시간 타이머
+                        Text(convertSecondsToTime(timeInSecond: spendTime))
+                            .foregroundColor(Color.textGray)
+                            .onReceive(timer) { _ in
+                                spendTime += 1
+                            }
+                    }
+                    
                 }
             }
-            .onAppear {
-                    calcRemain()
-            }
-            
-            // TODO: 완료 버튼 크게 넓이 맞추기(비율)
-            Button(action: {
-                // 완료
-            }, label: {
-                Text("완료")
-            })
-            .buttonStyle(.borderedProminent)
-            .tint(Color.black)
-            .padding(.top)
-            
-            // 일시정지, 포기
+            // 완료, 포기 버튼
             HStack {
-                Button(action: {
-                    // 일시정지
-                }, label: {
-                    HStack {
-                        Image(systemName: "pause.fill")
-                        Text("일시 정지")
-                    }
-                })
+                NavigationLink {
+                    // TODO: spendTime 업데이트하기
+                    TimerReportView(todo: todo, spendTime: spendTime)
+                } label: {
+                    Image(systemName: "checkmark.seal")
+                    Text("완료")
+                }
+                
                 Button(action: {
                     // 포기 alert띄우기
                     isShowGiveupAlert = true
@@ -90,14 +130,15 @@ struct TimerView: View {
             }
             .buttonStyle(.bordered)
             .tint(Color.black)
-            .padding(.top, 5)
+            .padding(.top, 10)
             
             // 지금 하는 일
             HStack {
                 VStack(alignment: .leading) {
-                    Text(toDo)
+                    Text(todo.content)
                         .font(Font.pizzaHeadline)
                         .padding(.bottom)
+                    // TODO: 날짜 불러오기 date extension
                     Text("오후 5:00")
                         .font(Font.pizzaFootnote)
                 }
@@ -109,6 +150,9 @@ struct TimerView: View {
             .padding([.leading, .trailing, .top], 30)
             
             Spacer()
+        }
+        .onAppear {
+            startTodo()
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -130,55 +174,63 @@ struct TimerView: View {
             }, secondaryButton: .cancel(Text("취소")))
         }
     }
+    
     // TODO: 한시간 안넘어가면 분, 초 만 보여주기
     // 초 -> HH:MM:SS로 보여주기
     func convertSecondsToTime(timeInSecond: Int) -> String {
         let hours = timeInSecond / 3600 // 시
         let minutes = (timeInSecond - hours*3600) / 60 // 분
         let seconds = timeInSecond % 60 // 초
-        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
         
-//        if timeInSecond >= 3600 {
-//            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
-//        } else {
-//            return String(format: "%02i:%02i", minutes, seconds)
-//        }
+        if timeInSecond >= 3600 {
+            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        } else {
+            return String(format: "%02i:%02i", minutes, seconds)
+        }
     }
     
+    func startTodo() {
+        self.settingTime = 3
+        self.timeRemaining = settingTime
+    }
+    
+    // TODO: data 구조보고 변수명 바꿔주기
     // 남은 시간 계산하기
     func calcRemain() {
-        let calendar = Calendar.current
-        // TODO: 이거 대신 그냥 tagetTime으로 변경
-        let targetTime : Date = calendar.date(byAdding: .second, value: 3700, to: startTime, wrappingComponents: false) ?? Date()
-        let remainSeconds = Int(targetTime.timeIntervalSince(startTime))
-        self.settingTime = remainSeconds
-        self.timeRemaining = remainSeconds
-    }
-    // 추가 시간 계산하기
-    func calcExtra() {
-        let calendar = Calendar.current
-        // TODO: 이거 대신 그냥 tagetTime으로 변경
-        let targetTime : Date = calendar.date(byAdding: .second, value: 3800, to: startTime, wrappingComponents: false) ?? Date()
-        let remainSeconds = Int(currnetTime.timeIntervalSince(targetTime))
-        self.settingTime = 3600 // 원을 한시간으로 잡기?
-        self.timeExtra = remainSeconds
-    }
-    // 총 걸린 시간 계산하기
-    func calcTotal() -> String {
-        let spendTime = Date()
-        let totalTime = Int(currnetTime.timeIntervalSince(spendTime))
-        return self.convertSecondsToTime(timeInSecond: totalTime)
+        isStart = false
+        // TODO: targetTime 초? or 분?
+        self.settingTime = todo.targetTime
+        self.timeRemaining = settingTime
     }
     
+    func turnMode() {
+        self.isDecresing = false
+        self.settingTime = 600
+    }
+
+    
     func progress() -> CGFloat {
-        return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
+        if isStart {
+            return CGFloat(0)
+        } else {
+            if isDecresing {
+                return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
+            } else {
+                return (CGFloat(timeExtra % 60) / CGFloat(settingTime))
+            }
+        }
     }
 }
 
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            TimerView()
+            TimerView(todo: Todo(id: UUID().uuidString,
+                                 content: "이력서 작성하기",
+                                 startTime: Date(),
+                                 targetTime: 60,
+                                 spendTime: Date() + 5400,
+                                 status: .ready))
         }
     }
 }

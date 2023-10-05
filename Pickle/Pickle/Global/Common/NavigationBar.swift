@@ -11,6 +11,7 @@ struct NavigationBar: ViewModifier {
     @Environment(\.dismiss) var dismiss
     
     let title: String
+    let visible: Bool
     
     func body(content: Content) -> some View {
         content
@@ -24,8 +25,9 @@ struct NavigationBar: ViewModifier {
                     .foregroundColor(.black)
                 }
             }
-            .navigationTitle(title)
+            .toolbar(visible ? .visible : .hidden, for: .tabBar)
             .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(title)
             .navigationBarBackButtonHidden()
     }
 }

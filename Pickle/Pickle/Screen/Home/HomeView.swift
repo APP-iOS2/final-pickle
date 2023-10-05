@@ -49,9 +49,11 @@ struct HomeView: View {
             
             // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 댐
             ForEach(sampleTodoList) { todo in
-                TodoCellView(content: todo.content, startTime: todo.startTime)
+
+                TodoCellView(todo: todo)
                     .onTapGesture {
                         isShowingEditTodo = true
+
                     }
             }
         }

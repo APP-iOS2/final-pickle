@@ -20,11 +20,11 @@ struct TodoCellView: View {
                 .padding(.vertical, 4)
             
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(content)
                         .font(.pizzaBody)
                     
-                    Text("시작 \(startTime.format("HH:mm"))")
+                    Text("\(startTime.format("a h:mm")) - \(startTime.adding(minutes: 10).format("a h:mm")) (10분)")
                         .font(.pizzaFootnote)
                 }
                 

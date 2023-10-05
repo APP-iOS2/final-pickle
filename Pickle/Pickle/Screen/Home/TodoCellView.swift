@@ -10,8 +10,8 @@
 import SwiftUI
 
 struct TodoCellView: View {
-    var content: String
-    var startTime: Date
+
+    var todo: Todo
     
     var body: some View {
         ZStack {
@@ -22,11 +22,12 @@ struct TodoCellView: View {
                 .padding(.vertical, 4)
             
             HStack {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(content)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(todo.content)
                         .font(.pizzaBody)
                     
-                    Text("\(startTime.format("a h:mm")) (10분)")
+                    Text("\(todo.startTime.format("a h:mm")) (10분)")
 //                    Text("\(startTime.format("a h:mm")) - \(startTime.adding(minutes: 10).format("a h:mm")) (10분)")
                         .font(.pizzaFootnote)
                 }
@@ -34,7 +35,7 @@ struct TodoCellView: View {
                 Spacer()
                 
                 NavigationLink {
-                    TimerView()
+                    TimerView(todo: todo)
                 } label: {
                     ZStack {
                         Rectangle()
@@ -55,6 +56,12 @@ struct TodoCellView: View {
 
 struct TodoCellView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoCellView(content: "할일", startTime: Date())
+
+        TodoCellView(todo: Todo(id: UUID().uuidString,
+                                content: "이력서 작성하기",
+                                startTime: Date(),
+                                targetTime: 3600,
+                                spendTime: Date() + 5400,
+                                status: .ready))
     }
 }

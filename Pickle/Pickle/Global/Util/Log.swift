@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class Log {
     enum Level: String {
         case verbose = "🔎 VERBOSE"
@@ -48,4 +47,3 @@ extension Log {
         log(message, level: .error, fileName: fileName, line: line, funcName: funcName)
     }
 }
-

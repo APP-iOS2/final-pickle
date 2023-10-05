@@ -10,15 +10,18 @@ import RealmSwift
 
 class BaseRepository<T> {
     
-    private var dbStore: DBStore
+    //MARK: Before
+    //    private var dbStore: DBStore
+    //    required init(dbStore: DBStore) {
+    //        self.dbStore = dbStore
+    //    }
     
-    required init(dbStore: DBStore) {
-        self.dbStore = dbStore
-    }
+    //    required init(dbStore: DBStore = FireBaseStore()) {
+    //        self.dbStore = dbStore
+    //    }
     
-//    required init(dbStore: DBStore = FireBaseStore()) {
-//        self.dbStore = dbStore
-//    }
+    //MARK: After
+    @Injected var dbStore: DBStore
     
     func fetch(_ model: T.Type,
                predicate: NSPredicate?,

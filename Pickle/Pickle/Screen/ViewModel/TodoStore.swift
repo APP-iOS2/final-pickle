@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-                
+
 //                              UserRepository                                            CoreData
 // TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
 // MissionStore               MissionRepository                                           FireStore
@@ -15,15 +15,16 @@ final class TodoStore: ObservableObject {
     
     @Published var todos: [Todo] = []
     
-    //MARK: DI - propertywrapper OR init, dicontainer
+    // MARK: DI - propertywrapper OR init, dicontainer
     //    struct Dependency {
     //        var todoRepository: TodoRepository
     //    }
-    private let repository: TodoRepositoryProtocol
-    
-    init(repository: TodoRepositoryProtocol) {
-        self.repository = repository
-    }
+    //    private let repository: TodoRepositoryProtocol
+    //
+    //    init(repository: TodoRepositoryProtocol) {
+    //        self.repository = repository
+    //    }
+    @Injected var repository: TodoRepositoryProtocol
     
     func fetch() async -> [Todo] {
         await withCheckedContinuation { continuation in

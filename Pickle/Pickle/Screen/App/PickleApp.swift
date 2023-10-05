@@ -7,10 +7,21 @@
 
 import SwiftUI
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        PickleApp.setUpDependency()
+        
+        return true
+    }
+}
+
 @main
 struct PickleApp: App {
-    @StateObject private var todoStore = TodoStore(repository: TodoRepository.create(with: RealmStore()))
-    
+//    @StateObject private var todoStore = TodoStore(repository: TodoRepository.create(with: RealmStore()))
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var todoStore = TodoStore()
     var body: some Scene {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
@@ -19,5 +30,13 @@ struct PickleApp: App {
            ContentView()
                 .environmentObject(todoStore)
         }
+    }
+}
+
+extension PickleApp {
+    
+    static func setUpDependency() {
+        DependencyContainer.register(type: DBStore.self, RealmStore())
+        DependencyContainer.register(type: TodoRepositoryProtocol.self , TodoRepository())
     }
 }

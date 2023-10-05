@@ -149,6 +149,8 @@ final class RealmStore: DBStore {
     }
 }
 
+extension RealmStore: Dependency {}
+
 struct Sorted {
     var key: String
     var ascending: Bool = true

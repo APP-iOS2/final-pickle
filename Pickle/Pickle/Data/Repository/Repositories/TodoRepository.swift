@@ -13,9 +13,9 @@ protocol UserRepositoryProtocol {
 }
 
 final class UserRepository: BaseRepository<UserDTO>, UserRepositoryProtocol {
-    required init(dbStore: DBStore) {
-        super.init(dbStore: dbStore)
-    }
+//    required init(dbStore: DBStore) {
+//        super.init(dbStore: dbStore)
+//    }
     
     func getUser() {
         super.fetch(UserDTO.self,
@@ -26,7 +26,7 @@ final class UserRepository: BaseRepository<UserDTO>, UserRepositoryProtocol {
     }
 }
 
-protocol TodoRepositoryProtocol {
+protocol TodoRepositoryProtocol: Dependency {
     func fetchTodo(sorted: Sorted, _ completion: @escaping ([Todo]) -> Void)
     func create(_ completion: @escaping (TodoObject) -> Void)
     func saveTodo(todo: Todo)
@@ -35,15 +35,8 @@ protocol TodoRepositoryProtocol {
     func updateTodo(todo: Todo)
 }
 
+
 final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
-    
-    required init(dbStore: DBStore) {
-        super.init(dbStore: dbStore)
-    }
-    
-    static func create(with store: DBStore) -> TodoRepository {
-        return TodoRepository(dbStore: store)
-    }
     
     func fetchTodo(sorted: Sorted = Sorted(key: "startTime", ascending: true), _ completion: @escaping ([Todo]) -> Void) {
         

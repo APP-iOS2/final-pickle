@@ -24,12 +24,7 @@ struct CalendarView: View {
             
             ScrollView(.vertical) {
                 VStack {
-<<<<<<< HEAD
-                    TaskView()
-=======
                     taskView()
-                    
->>>>>>> a797767 (fix: 함수 네이밍 lowercase)
                 }
             }
             .scrollIndicators(.hidden)

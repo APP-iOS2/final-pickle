@@ -36,7 +36,7 @@ extension Todo: MappableProtocol {
     func mapToPersistenceObject() -> TodoObject {
         return TodoObject(content: self.content,
                           startTime: self.startTime,
-                          targetTime: self.targetTime,
+                          targetTime: Date(), //self.targetTime,
                           spendTime: self.spendTime,
                           status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
     }
@@ -45,7 +45,7 @@ extension Todo: MappableProtocol {
         let todo: Todo = Todo(id: object.id.stringValue,
                               content: object.content,
                               startTime: object.startTime,
-                              targetTime: object.targetTime,
+                              targetTime: 0,
                               spendTime: object.spendTime,
                               status: TodoStatus(rawValue: object.status.rawValue) ?? .ready)
         return todo

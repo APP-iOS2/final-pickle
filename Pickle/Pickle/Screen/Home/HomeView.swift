@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import RealmSwift
 struct HomeView: View {
     @State private var goalProgress: Double = 0.0
     @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요

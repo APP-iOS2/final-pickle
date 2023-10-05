@@ -19,8 +19,7 @@ private class Migrator {
     
     func updateSchema() {
         //1 -> 2
-        let config = Realm.Configuration(schemaVersion: 1)
-        { migration , oldSchemaVersion in
+        let config = Realm.Configuration(schemaVersion: 1) { migration ,oldSchemaVersion in
             
             //        Migration Behavior
             //            if oldSchemaVersion < 1 {

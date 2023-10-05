@@ -33,7 +33,10 @@ struct RegisterView: View {
     }
     
     @Environment(\.dismiss) var dissmiss
-    @Environment(\.realm) var realm: Realm
+//    @Environment(\.realm) var realm: Realm
+//    @ObservedResults(TodoObject.self) var value: Results<TodoObject>
+    
+    @EnvironmentObject var todoStore: TodoStore
     
     @State private var content: String = ""
     @State private var showingStartTimeSheet: Bool = false
@@ -42,10 +45,9 @@ struct RegisterView: View {
     
     @State private var startTimes = Date()
     @State private var targetTimes: String = "10분"
-    
     @State private var seletedAlarm: String = "시간 선택"
-    @State private var placeHolderText: String = ""
     
+    @State private var placeHolderText: String = ""
     @State private var tasks: Task<Void, Error>? {
         willSet {
             self.placeHolderText = ""
@@ -96,23 +98,25 @@ struct RegisterView: View {
                     Spacer()
                     
                     confirmActionButton {
-                        let flag = false
+                        let flag = true
                         
                         let resultTime = todoTimeResult
                         print("startTime: \(startTimes.adding(minutes: 0))")
                         print("resultTime : \(resultTime)")
                         if flag {
-                            let todo = TodoObject(content: content ,
-                                                  startTime: startTimes.adding(minutes: 0),
-                                                  targetTime: resultTime,
-                                                  spendTime: startTimes.adding(minutes: 0),
-                                                  status: .ready)
-                            try! realm.write {
-                                realm.add(todo)
-                            }
-                        } else {
-                            dissmiss()
+                            let todo = Todo(id: UUID().uuidString,
+                                            content: content,
+                                            startTime: startTimes.adding(minutes: 0),
+                                            targetTime: resultTime,
+                                            spendTime: startTimes.adding(minutes: 0),
+                                            status: .ready)
+                            
+                            todoStore.add(todo: todo)
+//                            realm.add(<#T##object: Object##Object#>)
+//                            Transaction
+//                            작업 create,add,delete,update - 들어오면 -> 디스크
                         }
+                        dissmiss()
                     }
                 }
                 .frame(minHeight: geometry.size.height)

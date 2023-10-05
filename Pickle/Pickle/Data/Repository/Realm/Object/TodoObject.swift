@@ -5,7 +5,7 @@
 //  Created by 박형환 on 9/27/23.
 //
 
-import Foundation
+import SwiftUI
 import RealmSwift
 
 class TodoObject: Object, Identifiable {
@@ -16,7 +16,7 @@ class TodoObject: Object, Identifiable {
     @Persisted var targetTime: Date
     @Persisted var spendTime: Date
     @Persisted var status: TodoStatusPersisted
-    
+//    @objc dynamic var heelo: String
     
     convenience init(content: String,
                      startTime: Date,
@@ -37,7 +37,6 @@ class TodoObject: Object, Identifiable {
     }
 }
 
-
 enum TodoStatusPersisted: String, PersistableEnum {
     case ready
     case ongoing
@@ -45,7 +44,7 @@ enum TodoStatusPersisted: String, PersistableEnum {
     case giveUp
 }
 
-extension TodoObject {
+extension TodoObject{
     static let todo: TodoObject = .init(value: ["id": ObjectId.generate(),
                                                 "content": "안녕하세요",
                                                 "startTime": Date(),

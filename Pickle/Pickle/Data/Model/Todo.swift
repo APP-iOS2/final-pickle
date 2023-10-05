@@ -23,6 +23,33 @@ enum Status: String {
     case ongoing
     case done
     case giveUp
+    
+    var value: String {
+        self.rawValue
+    }
+}
+
+extension Todo: MappableProtocol {
+    
+    typealias PersistenceType = TodoObject
+    
+    func mapToPersistenceObject() -> TodoObject {
+        return TodoObject(content: self.content,
+                          startTime: self.startTime,
+                          targetTime: self.targetTime,
+                          spendTime: self.spendTime,
+                          status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
+    }
+    
+    static func mapFromPersistenceObject(_ object: TodoObject) -> Todo {
+        let todo: Todo = Todo(id: object.id.stringValue,
+                              content: object.content,
+                              startTime: object.startTime,
+                              targetTime: object.targetTime,
+                              spendTime: object.spendTime,
+                              status: TodoStatus(rawValue: object.status.rawValue) ?? .ready)
+        return todo
+    }
 }
 
 let sampleTodoList: [Todo] = [

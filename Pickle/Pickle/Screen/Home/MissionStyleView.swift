@@ -114,7 +114,7 @@ struct TimeMissionStyleView: View {
                         .font(.pizzaBody)
                         .foregroundColor(Color.black.opacity(0.6))
                     
-                    Text("currentTime: \(currentTime) / wakeupTime: \(wakeupTime)")
+//                    Text("currentTime: \(currentTime) / wakeupTime: \(wakeupTime)")
                 }
                 
                 Spacer(minLength: 10)

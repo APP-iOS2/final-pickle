@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct CalendarView: View {
-    @State private var currentDate: Date = .init()
     @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
     @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
     }
+    
     @Namespace private var animation
     
     var body: some View {
@@ -25,16 +25,13 @@ struct CalendarView: View {
             ScrollView(.vertical) {
                 VStack {
                     TaskView()
-                    
                 }
-                .hSpacing(.center)
-                .vSpacing(.center)
             }
             .scrollIndicators(.hidden)
         }
-        .vSpacing(.top)
         .onAppear {
-            if weekSlider.isEmpty{
+            
+            if weekSlider.isEmpty {
                 let currentWeek = Date().fetchWeek()
                 
                 if let firstDate = currentWeek.first?.date {
@@ -49,9 +46,11 @@ struct CalendarView: View {
                 }
             }
         }
-        
+        .onChange(of: calendarModel.currentDay) { newValue in
+            calendarModel.filterTodayTasks()
+        }
     }
-
+    
     func paginationWeek() {
         
         // MARK: - safe check
@@ -73,27 +72,28 @@ struct CalendarView: View {
                 
                 currentWeekIndex = weekSlider.count - 2
             }
-                
+            
         }
         
     }
-
+    
     // MARK: - Header 뷰
     @ViewBuilder
     func HeaderView() -> some View {
-        HStack(spacing: 10) {
+        HStack {
             VStack(alignment: .leading, spacing: 10) {
-                Text(currentDate.formatted(date: .abbreviated, time: .omitted))
+                
+                Text(calendarModel.currentDay.format("YYYY년 MM월 dd일"))
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
                 
-                if currentDate.isToday {
-                    Text("Today")
+                if calendarModel.currentDay.isToday {
+                    Text("오늘")
                         .font(.largeTitle)
                         .bold()
                 } else {
-                    Text(currentDate.format("EE"))
+                    Text(calendarModel.currentDay.format("EEEE"))
                         .font(.largeTitle)
                         .bold()
                 }
@@ -108,7 +108,7 @@ struct CalendarView: View {
                 }
                 .padding(.horizontal, -10)
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 100)
+                .frame(height: 90)
             }
             .hLeading()
         }
@@ -138,14 +138,14 @@ struct CalendarView: View {
                     Text(day.date.format("dd"))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(isSameDate(day.date, date2: currentDate) ? .white : .gray)
+                        .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
                         .frame(width: 35, height: 35)
                         .background {
                             
-                            if isSameDate(day.date, date2: currentDate) {
+                            if isSameDate(day.date, date2: calendarModel.currentDay) {
                                 Circle()
                                     .fill(Color.orange)
-                                    .matchedGeometryEffect(id: "TABINDICATOR", in: animation)
+                                
                             }
                             // MARK: - Indicator to show, which one is Today
                             if day.date.isToday {
@@ -170,7 +170,7 @@ struct CalendarView: View {
                     
                     // MARK: - Updating Current Date
                     withAnimation(.snappy) {
-                        currentDate = day.date
+                        calendarModel.currentDay = day.date
                     }
                 }
                 
@@ -197,24 +197,31 @@ struct CalendarView: View {
     }
     
     // MARK: - TaskView
+    @ViewBuilder
     func TaskView() -> some View {
         VStack(alignment: .leading, spacing: 35) {
-            ForEach($tasks) { $task in
-                TaskRowView(task: $task)
-                    .background(alignment: .leading) {
-                        if tasks.last?.id != task.id {
-                            Rectangle()
-                                .frame(width: 1)
-                                .offset(x: 8)
-                                .padding(.bottom, -35)
-                        }
-                    }
+            
+            if let tasks = calendarModel.filteredTasks {
                 
+                if tasks.isEmpty {
+                    
+                    Text("No Tasks Found!!!")
+                        .font(.system(size: 16))
+                        .fontWeight(.light)
+                        .offset(y: 100)
+                } else {
+                    ForEach($tasks) { task in
+                       // TaskRowView
+                        TaskRowView(task: task)
+                    }
+                }
+            } else {
+                ProgressView()
             }
         }
         .padding([.vertical, .leading], 15)
-        
     }
+    
 }
 
 struct CalendarView_Previews: PreviewProvider {
@@ -245,16 +252,14 @@ extension View {
         return Calendar.current.isDate(date1, inSameDayAs: date2)
     }
     
-
-    
     // MARK: - Safe Area
-//    func getSafeArea() -> UIEdgeInsets {
-//        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-//            return .zero
-//        }
-//        guard let safeArea = screen.windows.first?.safeAreaInsets else {
-//            return .zero
-//        }
-//        return safeArea
-//    }
+    //    func getSafeArea() -> UIEdgeInsets {
+    //        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+    //            return .zero
+    //        }
+    //        guard let safeArea = screen.windows.first?.safeAreaInsets else {
+    //            return .zero
+    //        }
+    //        return safeArea
+    //    }
 }

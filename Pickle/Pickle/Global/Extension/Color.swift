@@ -22,6 +22,8 @@ extension Color {
     static var textGray: Color {
         return Color(hex: 0x707072)
     }
+    
+    
 }
 
 extension Color {

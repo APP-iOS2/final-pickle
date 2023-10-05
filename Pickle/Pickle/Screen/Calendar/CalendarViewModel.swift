@@ -14,9 +14,7 @@ class CalendarViewModel: ObservableObject {
         CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
         CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
-        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -3000)),
-
-        
+        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
     ]
     
     // MARK: - 초기화
@@ -53,7 +51,7 @@ class CalendarViewModel: ObservableObject {
             let filtered = self.storedTasks.filter {
                 return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
             }
-                .sorted { task1, task2 in
+            .sorted { task1, task2 in
                     task1.creationDate < task2.creationDate
                 }
                     
@@ -72,6 +70,7 @@ class CalendarViewModel: ObservableObject {
         
         return formatter.string(from: date)
     }
+    
     // MARK: - checking if current date is today or not
     func isToday(date: Date) -> Bool {
         let calendar = Calendar.current
@@ -85,6 +84,4 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
-    
-    
 }

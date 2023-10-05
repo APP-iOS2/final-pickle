@@ -34,6 +34,8 @@ struct ContentView: View {
                     .environment(\.symbolVariants, .none)
             }.tag(2)
         }
+        
+
     }
 }
 

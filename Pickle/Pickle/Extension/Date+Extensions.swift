@@ -13,10 +13,12 @@ extension Date {
     
     // MARK: - Custom Date Format
     func format(_ format: String) -> String {
+
         Date.formatter.dateFormat = format
         Date.formatter.locale = Locale(identifier: "ko_kr")
         Date.formatter.timeZone = TimeZone(abbreviation: "KST")
         return Date.formatter.string(from: self)
+
     }
     
     struct WeekDay: Identifiable {

@@ -9,12 +9,15 @@ import SwiftUI
 
 @main
 struct PickleApp: App {
+    @StateObject private var todoStore = TodoStore(repository: TodoRepository.create(with: RealmStore()))
+    
     var body: some Scene {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
             
            ContentView()
+                .environmentObject(todoStore)
         }
     }
 }

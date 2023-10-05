@@ -8,8 +8,24 @@
 import SwiftUI
 
 struct SettingView: View {
+    @State private var is24HourClock: Bool = true
+    
     var body: some View {
         List {
+            Section {
+                HStack {
+                    Image(systemName: "clock")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.gray)
+                        .padding(.trailing)
+                    
+                    Toggle("24시간제", isOn: $is24HourClock)
+                    // TODO: 시간 표시하는 곳 체크해서 24시/12시 변환하기
+                }
+            }
+            
             Section {
                 NavigationLink {
                     // MARK: 테마

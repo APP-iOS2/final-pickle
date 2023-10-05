@@ -37,7 +37,7 @@ struct TaskRowView: View {
                 }
                 
                 if task.creationDate.isSameHour {
-                    Text("-current task-")
+                    Text("이제 할일")
                         .font(.pizzaCaption)
                         .foregroundStyle(.gray)
                 }

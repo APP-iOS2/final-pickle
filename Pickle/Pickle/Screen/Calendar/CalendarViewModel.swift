@@ -51,7 +51,7 @@ class CalendarViewModel: ObservableObject {
             let filtered = self.storedTasks.filter {
                 return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
             }
-                .sorted { task1, task2 in
+            .sorted { task1, task2 in
                     task1.creationDate < task2.creationDate
                 }
                     

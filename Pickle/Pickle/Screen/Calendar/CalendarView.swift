@@ -208,10 +208,11 @@ struct CalendarView: View {
                     Text("No Tasks Found!!!")
                         .font(.system(size: 16))
                         .fontWeight(.light)
-                        .offset(y:100)
+                        .offset(y: 100)
                 } else {
-                    ForEach(tasks) { task in
-                        TaskCardView(task: task)
+                    ForEach($tasks) { task in
+                       // TaskRowView
+                        TaskRowView(task: task)
                     }
                 }
             } else {
@@ -221,26 +222,6 @@ struct CalendarView: View {
         .padding([.vertical, .leading], 15)
     }
     
-    func TaskCardView(task: CalendarSampleTask) -> some View {
-        HStack(alignment:.top, spacing: 15) {
-
-
-            Circle()
-                .fill(Color.blue)
-                .frame(width:10, height:10)
-                .padding(4)
-                .background(.white.shadow(.drop(color: .black.opacity(0.1), radius: 3)), in: .circle)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(task.calendarTitle)
-                    .fontWeight(.medium)
-                    .foregroundStyle(.black)
-                    .strikethrough(task.isCompleted, pattern: .solid, color: .black)
-            }
-            
-        }
-        .hSpacing(.leading)
-    }
 }
 
 struct CalendarView_Previews: PreviewProvider {

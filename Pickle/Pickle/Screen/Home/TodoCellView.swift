@@ -5,6 +5,8 @@
 //  Created by 최소정 on 2023/09/25.
 //
 
+// TODO: 종료 시간 표시 여부, 재생 심볼 확정하기
+
 import SwiftUI
 
 struct TodoCellView: View {
@@ -24,7 +26,8 @@ struct TodoCellView: View {
                     Text(content)
                         .font(.pizzaBody)
                     
-                    Text("\(startTime.format("a h:mm")) - \(startTime.adding(minutes: 10).format("a h:mm")) (10분)")
+                    Text("\(startTime.format("a h:mm")) (10분)")
+//                    Text("\(startTime.format("a h:mm")) - \(startTime.adding(minutes: 10).format("a h:mm")) (10분)")
                         .font(.pizzaFootnote)
                 }
                 
@@ -39,6 +42,8 @@ struct TodoCellView: View {
                             .foregroundColor(.clear)
                         
                         Image(systemName: "play.fill")
+//                        Image(systemName: "play.circle")
+//                            .font(.pizzaTitle2)
                             .foregroundColor(.black)
                     }
                 }

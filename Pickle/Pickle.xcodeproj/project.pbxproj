@@ -42,6 +42,11 @@
 		960C41962ACE4396009A0093 /* MissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41952ACE4396009A0093 /* MissionRepository.swift */; };
 		960C419A2ACE7AF9009A0093 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41992ACE7AF9009A0093 /* Log.swift */; };
 		960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419C2ACE8276009A0093 /* TodoStore.swift */; };
+		960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */; };
+		960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* DependencyType.swift */; };
+		960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */; };
+		960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */; };
+		960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */; };
 		961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296952AC16FBE009A9815 /* BackColorModifier.swift */; };
 		961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296972AC17120009A9815 /* TextFieldModifier.swift */; };
 		963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* Migrator.swift */; };
@@ -97,6 +102,11 @@
 		960C41952ACE4396009A0093 /* MissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionRepository.swift; sourceTree = "<group>"; };
 		960C41992ACE7AF9009A0093 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		960C419C2ACE8276009A0093 /* TodoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoStore.swift; sourceTree = "<group>"; };
+		960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
+		960C41A12ACEF0FA009A0093 /* DependencyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyType.swift; sourceTree = "<group>"; };
+		960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injected+Wrapper.swift"; sourceTree = "<group>"; };
+		960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+Extension.swift"; sourceTree = "<group>"; };
+		960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappableProtocol.swift; sourceTree = "<group>"; };
 		961296952AC16FBE009A9815 /* BackColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackColorModifier.swift; sourceTree = "<group>"; };
 		961296972AC17120009A9815 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 		963AFF8E2AC3319D00835FD8 /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
@@ -148,7 +158,6 @@
 			children = (
 				21FA26752AC2A05E00877122 /* Global */,
 				2137D59D2AC149A200AFE225 /* Data */,
-				2137D5962AC1485900AFE225 /* ViewModel */,
 				2137D58B2AC1474500AFE225 /* Screen */,
 				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
 				2137D57E2AC1459D00AFE225 /* Preview Content */,
@@ -167,6 +176,7 @@
 		2137D58B2AC1474500AFE225 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				2137D5962AC1485900AFE225 /* ViewModel */,
 				2137D5AE2AC14F5900AFE225 /* App */,
 				2137D5972AC148CE00AFE225 /* Home */,
 				960C41972ACE7A08009A0093 /* Add */,
@@ -287,6 +297,7 @@
 		21FA26752AC2A05E00877122 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				960C419E2ACEEFC9009A0093 /* Injected */,
 				960C41982ACE7AF4009A0093 /* Util */,
 				2137D5AB2AC14EE800AFE225 /* Common */,
 				2137D5A22AC14C1800AFE225 /* Extension */,
@@ -299,7 +310,7 @@
 			children = (
 				960C41872ACE3922009A0093 /* Protocol */,
 				963AFF902AC339ED00835FD8 /* Realm */,
-				960C41882ACE392A009A0093 /* Repository */,
+				960C41882ACE392A009A0093 /* Repositories */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -308,18 +319,20 @@
 			isa = PBXGroup;
 			children = (
 				960C41892ACE3945009A0093 /* DBStore.swift */,
+				960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		960C41882ACE392A009A0093 /* Repository */ = {
+		960C41882ACE392A009A0093 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
 				960C41832ACDA42B009A0093 /* BaseRepository.swift */,
 				960C418D2ACE3FCA009A0093 /* TodoRepository.swift */,
 				960C41952ACE4396009A0093 /* MissionRepository.swift */,
+				960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */,
 			);
-			path = Repository;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		960C418F2ACE4068009A0093 /* Store */ = {
@@ -355,6 +368,16 @@
 				960C41992ACE7AF9009A0093 /* Log.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		960C419E2ACEEFC9009A0093 /* Injected */ = {
+			isa = PBXGroup;
+			children = (
+				960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */,
+				960C41A12ACEF0FA009A0093 /* DependencyType.swift */,
+				960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */,
+			);
+			path = Injected;
 			sourceTree = "<group>";
 		};
 		963AFF902AC339ED00835FD8 /* Realm */ = {
@@ -470,6 +493,7 @@
 				21FA267F2AC2BB3800877122 /* Pizza.swift in Sources */,
 				960C418E2ACE3FCA009A0093 /* TodoRepository.swift in Sources */,
 				960C419A2ACE7AF9009A0093 /* Log.swift in Sources */,
+				960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */,
 				963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */,
 				963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */,
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
@@ -483,6 +507,7 @@
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
+				960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */,
 				961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */,
 				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
 				B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */,
@@ -493,6 +518,7 @@
 				A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
 				21FA26792AC2A16900877122 /* ServiceEmpty.swift in Sources */,
+				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */,
 				2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */,
@@ -513,6 +539,8 @@
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
 				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,
 				2137D5912AC1476700AFE225 /* MissionView.swift in Sources */,
+				960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */,
+				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

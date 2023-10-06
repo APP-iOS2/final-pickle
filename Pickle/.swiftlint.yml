@@ -25,6 +25,6 @@ disabled_rules:  # 아래 룰은 검사 대상에서 제외하겠다는 뜻
 
 # 타입/함수/파일 등의 코드길이 제한을 변경하겠다는 뜻
 type_body_length: 250
-line_length: 120
+line_length: 150
 function_body_length: 50
 file_length: 500

@@ -24,6 +24,7 @@ final class TodoStore: ObservableObject {
     //    init(repository: TodoRepositoryProtocol) {
     //        self.repository = repository
     //    }
+    
     @Injected var repository: TodoRepositoryProtocol
     
     func fetch() async -> [Todo] {

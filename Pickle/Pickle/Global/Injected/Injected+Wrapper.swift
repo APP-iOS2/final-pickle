@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 @propertyWrapper
 struct Injected<Dependency> {
 
@@ -18,7 +17,6 @@ struct Injected<Dependency> {
             let serviceName = String(describing: Dependency.self)
             fatalError("No service of type \(serviceName) registered!")
         }
-
         self.service = service
     }
 

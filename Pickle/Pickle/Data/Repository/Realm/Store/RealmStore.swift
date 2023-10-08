@@ -155,6 +155,14 @@ struct Sorted {
     var key: String
     var ascending: Bool = true
 }
+extension Sorted {
+    static var missionAscending: Self {
+        Sorted(key: "date", ascending: true)
+    }
+    static var missionDscending: Self {
+        Sorted(key: "date", ascending: false)
+    }
+}
 
 struct RealmProvider {
     

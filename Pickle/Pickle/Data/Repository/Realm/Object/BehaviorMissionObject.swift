@@ -8,15 +8,24 @@
 import Foundation
 import RealmSwift
 
-class BehaviorMissionObject: Object, Identifiable {
+class BehaviorMissionObject: Object, MissionObject, Identifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var title: String
-    @Persisted var status: Status.RawValue
+    @Persisted var status: TodoStatusPersisted
     @Persisted var myStep: Double      // 사용자 걸음수
     @Persisted var missionStep: Double // 미션 걸음수
     @Persisted var date: Date  // 투두 생성 날짜,시간
     
     override class func primaryKey() -> String? {
         "id"
+    }
+    
+    convenience init(title: String, status: TodoStatusPersisted, myStep: Double, missionStep: Double, date: Date) {
+        self.init()
+        self.title = title
+        self.status = status
+        self.myStep = myStep
+        self.missionStep = missionStep
+        self.date = date
     }
 }

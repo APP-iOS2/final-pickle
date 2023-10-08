@@ -25,11 +25,14 @@ final class TodoStore: ObservableObject {
     //        self.repository = repository
     //    }
     
-    @Injected var repository: TodoRepositoryProtocol
+    @Injected(TodoRepoKey.self) var repository: TodoRepositoryProtocol
+    //    @Injected var repository: TodoRepositoryProtocol
     
+    @MainActor
     func fetch() async -> [Todo] {
         await withCheckedContinuation { continuation in
             repository.fetchTodo(sorted: Sorted(key: "startTime", ascending: true)) { value in
+                self.todos = value
                 continuation.resume(with: .success(value))
             }
         }

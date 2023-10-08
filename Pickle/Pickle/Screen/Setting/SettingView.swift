@@ -18,7 +18,7 @@ struct SettingView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.secondary)
                         .padding(.trailing)
                     
                     Toggle("24시간제", isOn: $is24HourClock)
@@ -35,7 +35,7 @@ struct SettingView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                             .padding(.trailing)
                         
                         Text("테마")
@@ -50,7 +50,7 @@ struct SettingView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                             .padding(.trailing)
                         
                         Text("알림")
@@ -67,7 +67,7 @@ struct SettingView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                             .padding(.trailing)
                         
                         Text("통계")
@@ -82,7 +82,7 @@ struct SettingView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.secondary)
                             .padding(.trailing)
                         
                         Text("뱃지")
@@ -90,6 +90,7 @@ struct SettingView: View {
                 }
             }
         }
+        .navigationTitle("설정")
     }
 }
 

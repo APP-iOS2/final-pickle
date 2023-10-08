@@ -16,7 +16,7 @@ struct TodoCellView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.lightGray)
+                .fill(.quaternary)
                 .frame(height: 80)
                 .padding(.horizontal)
                 .padding(.vertical, 4)
@@ -45,7 +45,7 @@ struct TodoCellView: View {
                         Image(systemName: "play.fill")
 //                        Image(systemName: "play.circle")
 //                            .font(.pizzaTitle2)
-                            .foregroundColor(.black)
+                            .foregroundColor(.primary)
                     }
                 }
             }

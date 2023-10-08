@@ -13,11 +13,11 @@ struct TimerView: View {
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @State var targetTime: Int = 1 // 목표소요시간
-    @State var timeRemaining: Int = 0 // 남은 시간
-    @State var spendTime: Int = 0 // 실제 소요시간
-    @State var timeExtra: Int = 0 // 추가소요시간
-    @State var settingTime: Int = 0 // 원형 타이머 설정용 시간
+    @State var targetTime: TimeInterval = 1 // 목표소요시간
+    @State var timeRemaining: TimeInterval = 0 // 남은 시간
+    @State var spendTime: TimeInterval = 0 // 실제 소요시간
+    @State var timeExtra: TimeInterval = 0 // 추가소요시간
+    @State var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
     
     @State var isShowGiveupAlert: Bool = false
     @State var isDecresing: Bool = true
@@ -52,7 +52,7 @@ struct TimerView: View {
                 VStack {
                     if isStart {
                         if timeRemaining != 0 {
-                            Text(String(timeRemaining))
+                            Text(String(format: "%g", timeRemaining))
                                 .font(Font.system(size: 40))
                                 .fontWeight(.heavy)
                                 .onReceive(timer) { _ in
@@ -66,7 +66,6 @@ struct TimerView: View {
                                     calcRemain()
                                 }
                         }
-                        
                     } else {
                         Image("smilePizza")
                             .resizable()
@@ -90,7 +89,7 @@ struct TimerView: View {
                                     .font(Font.pizzaTitleBold)
                                     .onReceive(timer) { _ in
                                         timeExtra += 1
-                                        if timeExtra % 600 == 0 {
+                                        if timeExtra.truncatingRemainder(dividingBy: 600) == 0 {
                                             turnMode()
                                         }
                                     }
@@ -104,14 +103,13 @@ struct TimerView: View {
                                 spendTime += 1
                             }
                     }
-                    
                 }
             }
             // 완료, 포기 버튼
             HStack {
                 NavigationLink {
                     // TODO: spendTime 업데이트하기
-                    TimerReportView(todo: todo, spendTime: spendTime)
+                    TimerReportView(todo: todo, spendTime: Int(spendTime))
                 } label: {
                     Image(systemName: "checkmark.seal")
                     Text("완료")
@@ -177,10 +175,10 @@ struct TimerView: View {
     
     // TODO: 한시간 안넘어가면 분, 초 만 보여주기
     // 초 -> HH:MM:SS로 보여주기
-    func convertSecondsToTime(timeInSecond: Int) -> String {
-        let hours = timeInSecond / 3600 // 시
-        let minutes = (timeInSecond - hours*3600) / 60 // 분
-        let seconds = timeInSecond % 60 // 초
+    func convertSecondsToTime(timeInSecond: TimeInterval) -> String {
+        let hours: Int = Int(timeInSecond / 3600)
+        let minutes: Int = Int(timeInSecond - Double(hours) * 3600) / 60
+        let seconds: Int = Int(timeInSecond.truncatingRemainder(dividingBy: 60))
         
         if timeInSecond >= 3600 {
             return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
@@ -208,7 +206,7 @@ struct TimerView: View {
         self.settingTime = 600
     }
 
-    
+
     func progress() -> CGFloat {
         if isStart {
             return CGFloat(0)
@@ -216,7 +214,7 @@ struct TimerView: View {
             if isDecresing {
                 return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
             } else {
-                return (CGFloat(timeExtra % 60) / CGFloat(settingTime))
+                return (CGFloat(timeExtra.truncatingRemainder(dividingBy: 60)) / CGFloat(settingTime))
             }
         }
     }

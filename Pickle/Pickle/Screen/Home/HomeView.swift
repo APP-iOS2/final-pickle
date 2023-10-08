@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import RealmSwift
+
 struct HomeView: View {
     @State private var goalProgress: Double = 0.0
     @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요
@@ -14,6 +14,8 @@ struct HomeView: View {
     @State private var tabBarVisibility: Visibility = .visible
     @State private var isShowingEditTodo: Bool = false
     let goalTotal: Double = 8
+    
+    @EnvironmentObject var todoStore: TodoStore
     
     var body: some View {
         ScrollView {
@@ -48,14 +50,15 @@ struct HomeView: View {
             .padding(.horizontal)
             
             // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 댐
-            ForEach(sampleTodoList) { todo in
-
+            ForEach(todoStore.todos, id: \.id) { todo in
                 TodoCellView(todo: todo)
                     .onTapGesture {
                         isShowingEditTodo = true
-
                     }
             }
+        }
+        .task {
+            todoStore.fetch()
         }
         .navigationTitle(Date().format("MM월 dd일 EEEE"))
         .navigationBarTitleDisplayMode(.inline)
@@ -94,10 +97,9 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            HomeView()
-        }
+#Preview {
+    NavigationStack {
+        HomeView()
+            .environmentObject(TodoStore())
     }
 }

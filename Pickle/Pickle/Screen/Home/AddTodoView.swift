@@ -13,7 +13,7 @@ struct AddTodoView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text("할일 편집")
+                RegisterView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

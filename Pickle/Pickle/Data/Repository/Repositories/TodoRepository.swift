@@ -16,7 +16,6 @@ final class UserRepository: BaseRepository<UserDTO>, UserRepositoryProtocol {
 //    required init(dbStore: DBStore) {
 //        super.init(dbStore: dbStore)
 //    }
-    
     func getUser() {
         super.fetch(UserDTO.self,
                     predicate: nil,
@@ -47,12 +46,6 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
             let todos = value.map { Todo.mapFromPersistenceObject($0) }
             completion(todos)
         }
-        
-//        super.fetch(TodoObject.self,
-//                    predicate: nil,
-//                    sorted: sorted) {
-//            completion($0)
-//        }
     }
     
     func create(_ completion: @escaping (TodoObject) -> Void) {

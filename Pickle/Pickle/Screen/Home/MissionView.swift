@@ -7,8 +7,21 @@
 
 import SwiftUI
 
+// TODO: // 타임 섹션
+// 열
+// 행동 섹션
+// 열
+
+// 미션 배치 (타임 + 행동)
+// 열
+
 struct MissionView: View {
     @State var showsAlert: Bool = false
+    
+    //    @EnvironmentObject var missionStore: MissionStore
+    //    
+    //    @State private var timeMission: [TimeMission] = [.init()]
+    //    @State private var behaviorMission: [BehaviorMission] = [.init()]
     
     var body: some View {
         ScrollView {

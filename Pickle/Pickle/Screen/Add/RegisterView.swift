@@ -33,9 +33,6 @@ struct RegisterView: View {
     }
     
     @Environment(\.dismiss) var dissmiss
-//    @Environment(\.realm) var realm: Realm
-//    @ObservedResults(TodoObject.self) var value: Results<TodoObject>
-    
     @EnvironmentObject var todoStore: TodoStore
     
     @State private var content: String = ""
@@ -61,7 +58,7 @@ struct RegisterView: View {
         (0...300)
             .filter { $0 % targetTimeUnit.value == 0 }
             .reduce(into: [String]()) { original, value in
-                original.append("\(value) 분")
+                original.append("\(value)분")
             }
     }
     
@@ -99,22 +96,18 @@ struct RegisterView: View {
                     
                     confirmActionButton {
                         let flag = true
+                        let resultTime = todoTimeResult.adding(minutes: 0)
+                        let startTime = startTimes.adding(minutes: 0)
                         
-                        let resultTime = todoTimeResult
-                        print("startTime: \(startTimes.adding(minutes: 0))")
-                        print("resultTime : \(resultTime)")
                         if flag {
                             let todo = Todo(id: UUID().uuidString,
                                             content: content,
-                                            startTime: startTimes.adding(minutes: 0),
-                                            targetTime: 100,
-                                            spendTime: startTimes.adding(minutes: 0),
+                                            startTime: startTime,
+                                            targetTime: resultTime.timeIntervalSince(startTime),
+                                            spendTime: startTime,
                                             status: .ready)
                             
                             todoStore.add(todo: todo)
-//                            realm.add(<#T##object: Object##Object#>)
-//                            Transaction
-//                            작업 create,add,delete,update - 들어오면 -> 디스크
                         }
                         dissmiss()
                     }

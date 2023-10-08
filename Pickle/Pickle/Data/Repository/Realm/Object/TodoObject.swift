@@ -13,14 +13,14 @@ class TodoObject: Object, Identifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var content: String
     @Persisted var startTime: Date
-    @Persisted var targetTime: Date
+    @Persisted var targetTime: TimeInterval
     @Persisted var spendTime: Date
     @Persisted var status: TodoStatusPersisted
 //    @objc dynamic var heelo: String
     
     convenience init(content: String,
                      startTime: Date,
-                     targetTime: Date,
+                     targetTime: TimeInterval,
                      spendTime: Date,
                      status: TodoStatusPersisted) {
         self.init()
@@ -48,7 +48,7 @@ extension TodoObject{
     static let todo: TodoObject = .init(value: ["id": ObjectId.generate(),
                                                 "content": "안녕하세요",
                                                 "startTime": Date(),
-                                                "targetTime": Date(),
+                                                "targetTime": 1000,
                                                 "spendTime": Date(),
                                                 "status": TodoStatus(rawValue: "ongoing")!.rawValue])
 }

@@ -19,7 +19,7 @@ struct HomeView: View {
     
     var body: some View {
         ScrollView {
-            CircleView(slices: Int(goalProgress))
+            PizzaView(taskPercentage: goalProgress/goalTotal)
                 .frame(width: 200, height: 200)
                 .padding()
             
@@ -34,7 +34,7 @@ struct HomeView: View {
                     goalProgress = 0
                 }
             }
-            .foregroundStyle(.gray)
+            .foregroundStyle(.secondary)
             
             VStack(spacing: 8) {
                 Text("\(Int(goalProgress)) / \(Int(goalTotal))")
@@ -44,7 +44,7 @@ struct HomeView: View {
                     .font(.pizzaHeadline)
                 
                 ProgressView(value: goalProgress, total: goalTotal)
-                    .progressViewStyle(LinearProgressViewStyle(tint: .black))
+                    .progressViewStyle(LinearProgressViewStyle(tint: .primary))
                     .padding()
             }
             .padding(.horizontal)
@@ -79,7 +79,7 @@ struct HomeView: View {
                     .backKeyModifier(visible: false)
             } label: {
                 Image(systemName: "plus.circle")
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
             }
         }
         
@@ -88,6 +88,7 @@ struct HomeView: View {
                 MissionView()
                     .backKeyModifier(visible: false)
             } label: {
+                // TODO: 다크모드 대응
                 Image("mission")
                     .resizable()
                     .scaledToFit()

@@ -11,12 +11,13 @@ struct Todo: Identifiable {
     let id: String
     var content: String
     var startTime: Date     // 시작 시간 (15시부터)
-    var targetTime: Int    // 목표 시간 (16시까지)
+    var targetTime: TimeInterval    // 목표 시간 (16시까지)
     var spendTime: Date     // 실제 종료 시간 (16시반까지)
     var status: Status
 }
 
 typealias TodoStatus = Status
+typealias MissionStatus = Status
 enum Status: String {
     // 진행전 진행중 완료 포기
     case ready
@@ -27,6 +28,19 @@ enum Status: String {
     var value: String {
         self.rawValue
     }
+    
+    var string: String {
+        switch self {
+        case .ready:
+            return "아직"
+        case .ongoing:
+            return "진행중"
+        case .done:
+            return "완료"
+        case .giveUp:
+            return "포기"
+        }
+    }
 }
 
 extension Todo: MappableProtocol {
@@ -36,7 +50,7 @@ extension Todo: MappableProtocol {
     func mapToPersistenceObject() -> TodoObject {
         return TodoObject(content: self.content,
                           startTime: self.startTime,
-                          targetTime: Date(), //self.targetTime,
+                          targetTime: self.targetTime, //self.targetTime,
                           spendTime: self.spendTime,
                           status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
     }
@@ -45,7 +59,7 @@ extension Todo: MappableProtocol {
         let todo: Todo = Todo(id: object.id.stringValue,
                               content: object.content,
                               startTime: object.startTime,
-                              targetTime: 0,
+                              targetTime: object.targetTime,
                               spendTime: object.spendTime,
                               status: TodoStatus(rawValue: object.status.rawValue) ?? .ready)
         return todo

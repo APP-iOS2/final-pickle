@@ -58,7 +58,7 @@ struct HomeView: View {
             }
         }
         .task {
-            todoStore.fetch()
+            await todoStore.fetch()
         }
         .navigationTitle(Date().format("MM월 dd일 EEEE"))
         .navigationBarTitleDisplayMode(.inline)

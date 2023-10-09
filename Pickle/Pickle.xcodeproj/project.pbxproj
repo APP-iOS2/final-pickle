@@ -57,6 +57,7 @@
 		96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
 		96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
 		96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4AB2AD17829003BC207 /* Midiator.swift */; };
+		96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4A82AD403BB001B2960 /* MissionType.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
 		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
 		96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
@@ -123,6 +124,7 @@
 		96A1D4A62ACFE384003BC207 /* MissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStore.swift; sourceTree = "<group>"; };
 		96A1D4A92AD176B6003BC207 /* Injection+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injection+Key.swift"; sourceTree = "<group>"; };
 		96A1D4AB2AD17829003BC207 /* Midiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Midiator.swift; sourceTree = "<group>"; };
+		96A1E4A82AD403BB001B2960 /* MissionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionType.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
 		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				2137D5A02AC14A0400AFE225 /* ViewModelTest.swift */,
 				960C419C2ACE8276009A0093 /* TodoStore.swift */,
 				96A1D4A62ACFE384003BC207 /* MissionStore.swift */,
+				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -573,6 +576,7 @@
 				960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */,
 				21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */,
 				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,
+				96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

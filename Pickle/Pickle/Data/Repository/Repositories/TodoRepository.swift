@@ -38,7 +38,6 @@ protocol TodoRepositoryProtocol: Dependency {
 final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
     
     func fetchTodo(sorted: Sorted = Sorted(key: "startTime", ascending: true), _ completion: @escaping ([Todo]) -> Void) {
-        
         // MARK: Example -> NSPredicate(format: "id == %@", id)
         // MARK: Example -> Sorted(key: <#T##String#>, ascending: <#T##Bool#>)
         super.fetch(TodoObject.self, predicate: nil, sorted: sorted) {

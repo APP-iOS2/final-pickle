@@ -58,7 +58,7 @@ struct HomeView: View {
             }
         }
         .task {
-            await todoStore.fetch()
+            let _ = await todoStore.fetch()
         }
         .navigationTitle(Date().format("MM월 dd일 EEEE"))
         .navigationBarTitleDisplayMode(.inline)
@@ -82,7 +82,6 @@ struct HomeView: View {
                     .foregroundColor(.primary)
             }
         }
-        
         ToolbarItem(placement: .navigationBarLeading) {
             NavigationLink {
                 MissionView()

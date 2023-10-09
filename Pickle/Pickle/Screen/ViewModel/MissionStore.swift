@@ -11,47 +11,6 @@ import SwiftUI
 // TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
 // MissionStore               MissionRepository                                           FireStore
 
-enum MissionType {
-    case time(TimeMission)
-    case behavior(BehaviorMission)
-    
-    var anyMission: any Mission {
-        switch self {
-        case .time(let timeMission):
-            return timeMission
-        case .behavior(let behaviorMission):
-            return behaviorMission
-        }
-    }
-    
-    var type: MissionRepositoryType {
-        switch self {
-        case .time(_):
-            return .time
-        case .behavior(_):
-            return .behavior
-        }
-    }
-}
-
-enum MissionRepositoryType {
-    case time
-    case behavior
-    case none
-}
-
-enum CommandType {
-    case create
-    case delete
-    case deleteAll
-    case add
-    case fetch
-}
-
-struct Command {
-    var command: () -> ()
-}
-
 final class MissionStore: ObservableObject {
     
     @Published var timeMissions: [TimeMission] = []
@@ -70,13 +29,13 @@ final class MissionStore: ObservableObject {
     @Injected(TimeRepoKey.self) var timeMissionRepository: any TimeRepositoryProtocol
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
     
-    struct Command {
-        var command: (() -> Void)?
-    }
-    
-    lazy var commandMap: [() -> ()] = [
-        timeMissionRepository.deleteAll
-    ]
+//    struct Command {
+//        var command: (() -> Void)?
+//    }
+//    
+//    lazy var commandMap: [() -> ()] = [
+//        timeMissionRepository.deleteAll
+//    ]
     //    @Injected(MissionMediator.self) var mediator: MissionMediator
     
     // MARK: 1안 그냥 되는대로 하다가 나중에 생각한다. 너무 처음부터 빡세게 생각하는것 같다.
@@ -143,28 +102,4 @@ final class MissionStore: ObservableObject {
             behaviorMissionRepository.create { _ in }
         }
     }
-    
-    //    private func command(mission type1: MissionType, command type2: CommandType) {
-    //        switch type1 {
-    //        case .time(let timeMission):
-    //            break
-    //        case .behavior(let behaviorMission):
-    //            <#code#>
-    //        }
-    //    }
-    //
-    //    private func command(command type: CommandType) {
-    //        switch type {
-    //        case .create:
-    //            <#code#>
-    //        case .delete:
-    //            <#code#>
-    //        case .deleteAll:
-    //            <#code#>
-    //        case .add:
-    //            <#code#>
-    //        case .fetch:
-    //            <#code#>
-    //        }
-    //    }
 }

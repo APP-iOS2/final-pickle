@@ -6,3 +6,32 @@
 //
 
 import Foundation
+
+enum MissionType {
+    case time(TimeMission)
+    case behavior(BehaviorMission)
+    
+    var anyMission: any Mission {
+        switch self {
+        case .time(let timeMission):
+            return timeMission
+        case .behavior(let behaviorMission):
+            return behaviorMission
+        }
+    }
+    
+    var type: MissionRepositoryType {
+        switch self {
+        case .time(_):
+            return .time
+        case .behavior(_):
+            return .behavior
+        }
+    }
+}
+
+enum MissionRepositoryType {
+    case time
+    case behavior
+    case none
+}

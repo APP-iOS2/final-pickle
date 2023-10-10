@@ -151,7 +151,6 @@ struct CalendarView: View {
         }
         .padding()
         .hSpacing(.leading)
-        .background(Color.white)
         .onChange(of: currentWeekIndex) { newValue in
             
             // MARK: - Creating when it reaches first/last page
@@ -170,7 +169,7 @@ struct CalendarView: View {
                     Text(day.date.format("E"))
                         .font(.callout)
                         .fontWeight(.medium)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.primary)
                     
                     Text(day.date.format("dd"))
                         .font(.callout)

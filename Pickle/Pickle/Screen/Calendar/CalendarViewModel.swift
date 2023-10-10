@@ -10,7 +10,7 @@ import SwiftUI
 class CalendarViewModel: ObservableObject {
     
     @Published var storedTasks: [CalendarSampleTask] = [
-    
+        
         CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
         CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
@@ -46,21 +46,17 @@ class CalendarViewModel: ObservableObject {
     }
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
-        DispatchQueue.global(qos: .userInteractive).async {
-            let calendar  = Calendar.current
-            let filtered = self.storedTasks.filter {
-                return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
-            }
-            .sorted { task1, task2 in
-                    task1.creationDate < task2.creationDate
-                }
-                    
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.filteredTasks = filtered
-                }
-            }
+        
+        let calendar  = Calendar.current
+        let filtered = self.storedTasks.filter {
+            return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
         }
+            .sorted { task1, task2 in
+                task1.creationDate < task2.creationDate
+            }
+    
+        self.filteredTasks = filtered
+    
     }
     
     func extractDate(date: Date, format: String) -> String {

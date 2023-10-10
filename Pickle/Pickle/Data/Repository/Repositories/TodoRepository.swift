@@ -7,29 +7,12 @@
 
 import Foundation
 
-struct UserDTO: Storable { }
-protocol UserRepositoryProtocol {
-    
-}
-
-final class UserRepository: BaseRepository<UserDTO>, UserRepositoryProtocol {
-//    required init(dbStore: DBStore) {
-//        super.init(dbStore: dbStore)
-//    }
-    func getUser() {
-        super.fetch(UserDTO.self,
-                    predicate: nil,
-                    sorted: .init(key: ""),
-                    completion: { userDTO in
-        })
-    }
-}
-
 protocol TodoRepositoryProtocol: Dependency {
     func fetchTodo(sorted: Sorted, _ completion: @escaping ([Todo]) -> Void)
     func create(_ completion: @escaping (TodoObject) -> Void)
     func saveTodo(todo: Todo)
     func deleteTodo(todo: Todo)
+    func deleteTodo(model: Todo)
     func deleteAll()
     func updateTodo(todo: Todo)
 }
@@ -73,6 +56,16 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         let object = todo.mapToPersistenceObject()
         do {
             try super.delete(object: object)
+        } catch {
+            Log.error("error \(error)")
+        }
+    }
+    
+    func deleteTodo(model: Todo) {
+        let id = model.id
+        let object = model.mapToPersistenceObject()
+        do {
+            try super.delete(object: object, id: id)
         } catch {
             Log.error("error \(error)")
         }

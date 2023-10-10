@@ -14,39 +14,35 @@ import RealmSwift
 //    @Published
 //}
 
-enum RealmError: Error {
-    case notRealmObject
-}
-
 //final class FireBaseStore: DBStore {
-//    
+//
 //    func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T : Storable {
 //        <#code#>
 //    }
-//    
+//
 //    func save(object: Storable) throws {
 //        <#code#>
 //    }
-//    
+//
 //    func update(object: Storable) throws {
 //        <#code#>
 //    }
-//    
+//
 //    func delete(object: Storable) throws {
 //        <#code#>
 //    }
-//    
+//
 //    func deleteAll<T>(_ model: T.Type) throws where T : Storable {
 //        <#code#>
 //    }
-//    
+//
 //    func fetch<T>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, complection: ([T]) -> Void) throws where T : Storable {
 //        <#code#>
 //    }
 //}
 
 final class RealmStore: DBStore {
-
+    
     private(set) var realmStore: Realm?
     
     init(name: String = "main.realm") {
@@ -109,6 +105,22 @@ final class RealmStore: DBStore {
             realm.delete(object)
         }
     }
+    func delete<T>(model: T.Type, id: String) throws {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type,
+            let objectID = try? ObjectId(string: id)
+        else {
+            throw RealmError.notRealmObject
+        }
+        try realm.write {
+            if let value = realm.object(ofType: model, forPrimaryKey: objectID) {
+                realm.delete(value)
+            } else {
+                throw RealmError.deleteFailed
+            }
+        }
+    }
     
     func deleteAll<T>(_ model: T.Type) throws where T: Storable {
         guard
@@ -125,7 +137,7 @@ final class RealmStore: DBStore {
         }
     }
     
-    func fetch<T>(_ model: T.Type, 
+    func fetch<T>(_ model: T.Type,
                   predicate: NSPredicate?,
                   sorted: Sorted?,
                   complection: ([T]) -> Void) throws where T: Storable {
@@ -159,8 +171,13 @@ extension Sorted {
     static var missionAscending: Self {
         Sorted(key: "date", ascending: true)
     }
+    
     static var missionDscending: Self {
         Sorted(key: "date", ascending: false)
+    }
+    
+    static var createdAscending: Self {
+        Sorted(key: "createdAt", ascending: true)
     }
 }
 

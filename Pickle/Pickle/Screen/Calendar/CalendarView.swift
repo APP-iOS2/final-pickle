@@ -12,6 +12,8 @@ struct CalendarView: View {
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
+    @State private var weekToMonth: Bool = false
+    
     @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
     }
     
@@ -88,14 +90,48 @@ struct CalendarView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
                 
-                if calendarModel.currentDay.isToday {
-                    Text("오늘")
-                        .font(.largeTitle)
-                        .bold()
-                } else {
-                    Text(calendarModel.currentDay.format("EEEE"))
-                        .font(.largeTitle)
-                        .bold()
+                HStack {
+                    if calendarModel.currentDay.isToday {
+                        Text("오늘")
+                            .font(.largeTitle)
+                            .bold()
+                    } else {
+                        Text(calendarModel.currentDay.format("EEEE"))
+                            .font(.largeTitle)
+                            .bold()
+                    }
+                    Spacer()
+                    Button(action: {
+                        print("주간")
+                        weekToMonth.toggle()
+                        print(weekToMonth)
+                    }, label: {
+                      Text("주간")
+                            .font(.headline)
+                            .bold()
+                    })
+                    .padding(.horizontal, 1)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle(radius: 50))
+                    
+                    Button(action: {
+                        print("이전주로")
+                    }, label: {
+                        Image(systemName: "chevron.left")
+                    })
+                    Button(action: {
+                        print("오늘주로")
+                    }, label: {
+                        Text("오늘")
+                            .font(.pizzaBody)
+                            //.fontWeight(.medium)
+                    })
+                    Button(action: {
+                        print("다음주")
+                    }, label: {
+                        Image(systemName: "chevron.right")
+                    })
+                    
                 }
                 
                 TabView(selection: $currentWeekIndex) {
@@ -109,6 +145,7 @@ struct CalendarView: View {
                 .padding(.horizontal, -10)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: 90)
+                
             }
             .hLeading()
         }
@@ -210,7 +247,7 @@ struct CalendarView: View {
                         .offset(y: 100)
                 } else {
                     ForEach($tasks) { task in
-                       // TaskRowView
+                        // TaskRowView
                         TaskRowView(task: task)
                     }
                 }
@@ -232,7 +269,7 @@ struct CalendarView_Previews: PreviewProvider {
 extension View {
     func hLeading() -> some View {
         self
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
         
     }
     func hTrailing() -> some View {

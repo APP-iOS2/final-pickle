@@ -35,7 +35,11 @@ struct RegisterView: View {
     @Environment(\.dismiss) var dissmiss
     @EnvironmentObject var todoStore: TodoStore
     
-    @State private var content: String = ""
+    @Binding var willUpdateTodo: Todo
+    
+    var isModify: Bool
+    
+    @State(wrappedValue: "") private var content: String
     @State private var showingStartTimeSheet: Bool = false
     @State private var showingTargetTimeSheet: Bool = false
     @State private var showingWeekSheet: Bool = false
@@ -43,6 +47,11 @@ struct RegisterView: View {
     @State private var startTimes = Date()
     @State private var targetTimes: String = "10분"
     @State private var seletedAlarm: String = "시간 선택"
+    
+    @State private var showSuccessAlert: Bool = false
+    @State private var showFailedAlert: Bool = false
+    @State private var showUpdateSuccessAlert: Bool = false
+    @State private var showUpdateEqual: Bool = false
     
     @State private var placeHolderText: String = ""
     @State private var tasks: Task<Void, Error>? {
@@ -55,7 +64,7 @@ struct RegisterView: View {
     private let targetTimeUnit: TimeUnit = .ten
     
     private var targetTimeUnitStrs: [String] {
-        (0...300)
+        (10...300)
             .filter { $0 % targetTimeUnit.value == 0 }
             .reduce(into: [String]()) { original, value in
                 original.append("\(value)분")
@@ -73,6 +82,26 @@ struct RegisterView: View {
             return startTimes.adding(minutes: 10)
         }
     }
+    
+    private var computedTodo: Todo {
+        let resultTime = todoTimeResult.adding(minutes: 0)
+        let startTime = startTimes.adding(minutes: 0)
+        let isPersisted = willUpdateTodo.isNotPersisted()
+        return Todo(id: isPersisted ? UUID().uuidString : willUpdateTodo.id,
+                    content: content,
+                    startTime: startTime,
+                    targetTime: resultTime.timeIntervalSince(startTime),
+                    spendTime: startTime,
+                    status: .ready)
+    }
+    
+    private var notEqualContent: Bool {
+        !computedTodo.isEqualContent(todo: willUpdateTodo)
+    }
+    
+    private var isRightContent: Bool {
+        content.count >= 5
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -84,7 +113,6 @@ struct RegisterView: View {
                         .padding(.top, 40)
                     
                     // repeatDay
-                    
                     timeConstraintPickCell("시작시간",
                                              binding: $startTimes,
                                              show: $showingStartTimeSheet)
@@ -95,21 +123,7 @@ struct RegisterView: View {
                     Spacer()
                     
                     confirmActionButton {
-                        let flag = true
-                        let resultTime = todoTimeResult.adding(minutes: 0)
-                        let startTime = startTimes.adding(minutes: 0)
-                        
-                        if flag {
-                            let todo = Todo(id: UUID().uuidString,
-                                            content: content,
-                                            startTime: startTime,
-                                            targetTime: resultTime.timeIntervalSince(startTime),
-                                            spendTime: startTime,
-                                            status: .ready)
-                            
-                            todoStore.add(todo: todo)
-                        }
-                        dissmiss()
+                        todoAddUpdateAction()
                     }
                 }
                 .frame(minHeight: geometry.size.height)
@@ -120,14 +134,70 @@ struct RegisterView: View {
             updateTextField(Const.ALL.randomElement()!)
         }
         .onAppear {
+            if isModify { 
+                self.content = willUpdateTodo.content
+                self.targetTimes = targetToTimeString(willUpdateTodo.targetTime)
+                self.startTimes = willUpdateTodo.startTime
+            }
             updateTextField(Const.ALL.randomElement()!)
+        }
+        .failedAlert(
+          isPresented: $showFailedAlert,
+          title: "실패",
+          alertContent: "5글자 이상 입력해주세요",
+          primaryButtonTitle: "확인",
+          primaryAction: { /* 알럿 확인 버튼 액션 */  }
+        )
+        .failedAlert(
+            isPresented: $showUpdateEqual,
+            title: "실패",
+            alertContent: "같은 내용입니다.",
+            primaryButtonTitle: "확인",
+            primaryAction: {   }
+        )
+        .successAlert(
+            isPresented: $showUpdateSuccessAlert,
+            title: "수정 성공",
+            alertContent: "성공적으로 수정하셨습니다",
+            primaryButtonTitle: "뒤로가기",
+            primaryAction: { dissmiss() }
+        )
+        .successAlert(
+            isPresented: $showSuccessAlert,
+            title: "저장 성공",
+            alertContent: "성공적으로 할일을 등록하셨습니다",
+            primaryButtonTitle: "뒤로가기",
+            primaryAction: { dissmiss() }
+        )
+    }
+    
+    private func targetToTimeString(_ time: TimeInterval) -> String {
+        let value: Int = Int(time / 60)
+        return "\(value)분"
+    }
+    
+    private func todoAddUpdateAction() {
+        if isModify && notEqualContent {
+            Task {
+                todoStore.update(todo: computedTodo)
+                _ = await todoStore.fetch()
+                showUpdateSuccessAlert.toggle()
+            }
+        } else {
+            if isModify { showUpdateEqual.toggle(); return }
+            
+            let flag = isRightContent
+            let todo = computedTodo
+            
+            if flag { todoStore.add(todo: todo); showSuccessAlert.toggle() }
+            else { showFailedAlert.toggle() }
         }
     }
     
     @ViewBuilder
     private var todoTitleInputField: some View {
         VStack {
-            Text("할일 추가")
+            Text(isModify ? "수정하기" : "할일 추가")
                 .font(Font.pizzaTitle2)
                 .bold()
             
@@ -254,7 +324,7 @@ struct RegisterView: View {
         Button {
             action()
         } label: {
-            Text("확인")
+            Text( isModify ? "수정" : "확인")
                 .cornerRadiusModifier()
         }
     }
@@ -339,5 +409,5 @@ extension RegisterView {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: true)
 }

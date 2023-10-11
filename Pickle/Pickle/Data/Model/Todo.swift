@@ -61,13 +61,20 @@ extension Todo: MappableProtocol {
     typealias PersistenceType = TodoObject
     
     func mapToPersistenceObject() -> TodoObject {
-        
-        return TodoObject(id: self.id,
-                          content: self.content,
-                          startTime: self.startTime,
-                          targetTime: self.targetTime, //self.targetTime,
-                          spendTime: self.spendTime,
-                          status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
+        if let id = UUID(uuidString: self.id) {
+            return TodoObject(content: self.content,
+                              startTime: self.startTime,
+                              targetTime: self.targetTime, //self.targetTime,
+                              spendTime: self.spendTime,
+                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
+        } else {
+            return TodoObject(id: self.id,
+                              content: self.content,
+                              startTime: self.startTime,
+                              targetTime: self.targetTime, //self.targetTime,
+                              spendTime: self.spendTime,
+                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
+        }
     }
     
     static func mapFromPersistenceObject(_ object: TodoObject) -> Todo {

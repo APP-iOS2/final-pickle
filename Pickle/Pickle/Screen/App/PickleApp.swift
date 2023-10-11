@@ -9,7 +9,7 @@ import SwiftUI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
         PickleApp.setUpDependency()
        
@@ -23,6 +23,7 @@ struct PickleApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var todoStore = TodoStore()
     @StateObject private var missionStore = MissionStore()
+    @StateObject private var userStore = UserStore()
     
     var body: some Scene {
         WindowGroup {
@@ -30,8 +31,12 @@ struct PickleApp: App {
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
             
            ContentView()
+                .task {
+                    try? await userStore.fetchUser()
+                }
                 .environmentObject(todoStore)
                 .environmentObject(missionStore)
+                .environmentObject(userStore)
         }
     }
 }
@@ -43,9 +48,6 @@ extension PickleApp {
         DependencyContainer.register(TodoRepoKey.self, TodoRepository())
         DependencyContainer.register(BehaviorRepoKey.self, BehaviorMissionRepository())
         DependencyContainer.register(TimeRepoKey.self, TimeMissionRepository())
-        //        DependencyContainer.register(type: DBStore.self, RealmStore())
-        //        DependencyContainer.register(type: TodoRepositoryProtocol.self, TodoRepository())
-        //        DependencyContainer.register(type: (any BehaviorRepositoryProtocol).self, BehaviorMissionRepository())
-        //        DependencyContainer.register(type: (any TimeRepositoryProtocol).self, TimeMissionRepository())
+        DependencyContainer.register(UserRepoKey.self, UserRepository())
     }
 }

@@ -28,4 +28,9 @@ class BehaviorMissionObject: Object, MissionObject, Identifiable {
         self.missionStep = missionStep
         self.date = date
     }
+    
+    convenience init(id: String, title: String, status: TodoStatusPersisted, myStep: Double, missionStep: Double, date: Date) {
+        self.init(title: title, status: status, myStep: myStep, missionStep: missionStep, date: date)
+        self.id = try! ObjectId(string: id)
+    }
 }

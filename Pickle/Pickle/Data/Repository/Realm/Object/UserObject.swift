@@ -28,6 +28,19 @@ class UserObject: Object, Identifiable {
         self.createdAt = createdAt
     }
     
+    convenience init(id: String,
+                     nickName: String,
+                     currentPizzaCount: Int,
+                     currentPizzaSlice: Int,
+                     createdAt: Date) {
+        
+        self.init(nickName: nickName,
+                  currentPizzaCount: currentPizzaCount,
+                  currentPizzaSlice: currentPizzaSlice,
+                  createdAt: createdAt)
+        self.id = try! ObjectId(string: id)
+    }
+    
     class override func primaryKey() -> String? {
         "id"
     }

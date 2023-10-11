@@ -13,9 +13,6 @@ protocol UserRepositoryProtocol: Dependency {
 }
 
 final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
-    //    required init(dbStore: DBStore) {
-    //        super.init(dbStore: dbStore)
-    //    }
     
     func getUser(_ completion: @escaping (User?) -> Void) {
         super.fetch(UserObject.self,

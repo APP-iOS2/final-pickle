@@ -21,13 +21,30 @@ class TimeMissionObject: Object, MissionObject, Identifiable {
     @Persisted var date: Date
     @Persisted var wakeupTime: Date    // 기상 목표 시간
     
-    convenience init(title: String, status: TodoStatusPersisted, date: Date, wakeupTime: Date) {
+    convenience init(title: String,
+                     status: TodoStatusPersisted,
+                     date: Date,
+                     wakeupTime: Date) {
         self.init()
         self.id = id
         self.title = title
         self.status = status
         self.date = date
         self.wakeupTime = wakeupTime
+    }
+    
+    convenience init(id: String,
+                     title: String,
+                     status: TodoStatusPersisted,
+                     date: Date,
+                     wakeupTime: Date) {
+        
+        self.init(title: title,
+                  status: status,
+                  date: date,
+                  wakeupTime: wakeupTime)
+        
+        self.id = try! ObjectId(string: id)
     }
     
     override class func primaryKey() -> String? {

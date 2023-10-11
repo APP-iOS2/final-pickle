@@ -10,3 +10,4 @@ import Foundation
 extension TodoObject: Storable {}
 extension BehaviorMissionObject: Storable {}
 extension TimeMissionObject: Storable {}
+extension UserObject: Storable {}

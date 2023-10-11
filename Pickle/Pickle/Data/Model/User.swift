@@ -24,10 +24,18 @@ extension User: MappableProtocol {
     typealias PersistenceType = UserObject
     
     func mapToPersistenceObject() -> PersistenceType {
-        return UserObject(nickName: self.nickName, 
-                          currentPizzaCount: self.currentPizzaCount,
-                          currentPizzaSlice: self.currentPizzaSlice, 
-                          createdAt: self.createdAt)
+        if let id = UUID(uuidString: self.id) {
+            return UserObject(nickName: self.nickName,
+                              currentPizzaCount: self.currentPizzaCount,
+                              currentPizzaSlice: self.currentPizzaSlice,
+                              createdAt: self.createdAt)
+        } else {
+            return UserObject(id: self.id,
+                              nickName: self.nickName,
+                              currentPizzaCount: self.currentPizzaCount,
+                              currentPizzaSlice: self.currentPizzaSlice,
+                              createdAt: self.createdAt)
+        }
     }
     
     static func mapFromPersistenceObject(_ object: PersistenceType) -> Self {

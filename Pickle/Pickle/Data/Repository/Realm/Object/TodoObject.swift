@@ -16,7 +16,6 @@ class TodoObject: Object, Identifiable {
     @Persisted var targetTime: TimeInterval
     @Persisted var spendTime: Date
     @Persisted var status: TodoStatusPersisted
-    //    @objc dynamic var heelo: String
     
     convenience init(content: String,
                      startTime: Date,

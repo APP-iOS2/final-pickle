@@ -28,7 +28,16 @@ final class TodoStore: ObservableObject {
     @Injected(TodoRepoKey.self) var repository: TodoRepositoryProtocol
     //    @Injected var repository: TodoRepositoryProtocol
     
+    func getSeletedTodo(id: String) -> Todo {
+        if let todo = self.todos.filter { $0.id == id }.first {
+            return todo
+        } else {
+            assert(false, "getSeleted Todo Failed")
+        }
+    }
+    
     @MainActor
+    @discardableResult
     func fetch() async -> [Todo] {
         await withCheckedContinuation { continuation in
             repository.fetchTodo(sorted: Sorted(key: "startTime", ascending: true)) { value in
@@ -44,7 +53,10 @@ final class TodoStore: ObservableObject {
     }
     
     func delete(todo: Todo) {
-        repository.deleteTodo(todo: todo)
+//        repository.deleteTodo(todo: todo)
+        repository.deleteTodo(model: todo)
+        self.todos.removeAll(where: { $0.id == todo.id })
+        // TODO: Delete가 실패 했을때 처리 해야함
     }
     
     /// 전체 목록 Delete

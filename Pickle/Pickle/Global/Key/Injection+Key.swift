@@ -38,3 +38,9 @@ struct BehaviorRepoKey: InjectionKey {
     typealias Value = BehaviorRepositoryProtocol
     static var type: DependencyType = .automatic
 }
+
+struct UserRepoKey: InjectionKey {
+    typealias Value = UserRepository
+    static var type: DependencyType = .automatic
+}
+

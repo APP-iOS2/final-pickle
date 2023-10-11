@@ -58,6 +58,12 @@
 		96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
 		96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4AB2AD17829003BC207 /* Midiator.swift */; };
 		96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4A82AD403BB001B2960 /* MissionType.swift */; };
+		96A1E4AB2AD4DD0A001B2960 /* FaildAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */; };
+		96A1E4AD2AD5277E001B2960 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AC2AD5277E001B2960 /* UserRepository.swift */; };
+		96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AE2AD527B4001B2960 /* UserObject.swift */; };
+		96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B02AD52919001B2960 /* UserStore.swift */; };
+		96A1E4B42AD5384B001B2960 /* RealmError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B32AD5384B001B2960 /* RealmError.swift */; };
+		96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B52AD53866001B2960 /* PersistentedError.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
 		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
 		96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
@@ -125,6 +131,12 @@
 		96A1D4A92AD176B6003BC207 /* Injection+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injection+Key.swift"; sourceTree = "<group>"; };
 		96A1D4AB2AD17829003BC207 /* Midiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Midiator.swift; sourceTree = "<group>"; };
 		96A1E4A82AD403BB001B2960 /* MissionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionType.swift; sourceTree = "<group>"; };
+		96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaildAlert.swift; sourceTree = "<group>"; };
+		96A1E4AC2AD5277E001B2960 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		96A1E4AE2AD527B4001B2960 /* UserObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserObject.swift; sourceTree = "<group>"; };
+		96A1E4B02AD52919001B2960 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
+		96A1E4B32AD5384B001B2960 /* RealmError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmError.swift; sourceTree = "<group>"; };
+		96A1E4B52AD53866001B2960 /* PersistentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentedError.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
 		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
@@ -205,6 +217,7 @@
 			children = (
 				2137D5A02AC14A0400AFE225 /* ViewModelTest.swift */,
 				960C419C2ACE8276009A0093 /* TodoStore.swift */,
+				96A1E4B02AD52919001B2960 /* UserStore.swift */,
 				96A1D4A62ACFE384003BC207 /* MissionStore.swift */,
 				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
 			);
@@ -279,6 +292,7 @@
 				961296972AC17120009A9815 /* TextFieldModifier.swift */,
 				960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */,
 				B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */,
+				96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -348,6 +362,7 @@
 			children = (
 				960C41832ACDA42B009A0093 /* BaseRepository.swift */,
 				960C418D2ACE3FCA009A0093 /* TodoRepository.swift */,
+				96A1E4AC2AD5277E001B2960 /* UserRepository.swift */,
 				960C41952ACE4396009A0093 /* TimeMissionRepository.swift */,
 				96A1D4AB2AD17829003BC207 /* Midiator.swift */,
 				96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */,
@@ -367,6 +382,7 @@
 		960C41902ACE41CB009A0093 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				96A1E4AE2AD527B4001B2960 /* UserObject.swift */,
 				963AFF912AC33A1800835FD8 /* TodoObject.swift */,
 				963AFF932AC33EAF00835FD8 /* MissionObject.swift */,
 				960C41932ACE4236009A0093 /* BehaviorMissionObject.swift */,
@@ -404,6 +420,7 @@
 		963AFF902AC339ED00835FD8 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
+				96A1E4B22AD53837001B2960 /* Type */,
 				960C418F2ACE4068009A0093 /* Store */,
 				960C41902ACE41CB009A0093 /* Object */,
 			);
@@ -416,6 +433,15 @@
 				96A1D4A92AD176B6003BC207 /* Injection+Key.swift */,
 			);
 			path = Key;
+			sourceTree = "<group>";
+		};
+		96A1E4B22AD53837001B2960 /* Type */ = {
+			isa = PBXGroup;
+			children = (
+				96A1E4B32AD5384B001B2960 /* RealmError.swift */,
+				96A1E4B52AD53866001B2960 /* PersistentedError.swift */,
+			);
+			path = Type;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -532,6 +558,7 @@
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */,
 				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
+				96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
@@ -548,14 +575,17 @@
 				2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */,
 				A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
+				96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */,
 				21FA26792AC2A16900877122 /* ServiceEmpty.swift in Sources */,
 				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */,
 				2137D5A12AC14A0400AFE225 /* ViewModelTest.swift in Sources */,
 				960C418C2ACE3969009A0093 /* RealmStore.swift in Sources */,
+				96A1E4AB2AD4DD0A001B2960 /* FaildAlert.swift in Sources */,
 				960C41862ACE390A009A0093 /* URL.swift in Sources */,
 				2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */,
+				96A1E4AD2AD5277E001B2960 /* UserRepository.swift in Sources */,
 				960C418A2ACE3945009A0093 /* DBStore.swift in Sources */,
 				2137D5952AC1479700AFE225 /* SettingView.swift in Sources */,
 				2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */,
@@ -569,6 +599,7 @@
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */,
 				960C41942ACE4236009A0093 /* BehaviorMissionObject.swift in Sources */,
+				96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */,
 				96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */,
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
 				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,
@@ -577,6 +608,7 @@
 				21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */,
 				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,
 				96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */,
+				96A1E4B42AD5384B001B2960 /* RealmError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

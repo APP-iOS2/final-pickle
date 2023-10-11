@@ -16,7 +16,7 @@ class TodoObject: Object, Identifiable {
     @Persisted var targetTime: TimeInterval
     @Persisted var spendTime: Date
     @Persisted var status: TodoStatusPersisted
-//    @objc dynamic var heelo: String
+    //    @objc dynamic var heelo: String
     
     convenience init(content: String,
                      startTime: Date,
@@ -24,12 +24,25 @@ class TodoObject: Object, Identifiable {
                      spendTime: Date,
                      status: TodoStatusPersisted) {
         self.init()
-        self.id = id
         self.content = content
         self.startTime = startTime
         self.targetTime = targetTime
         self.spendTime = spendTime
         self.status = status
+    }
+    
+    convenience init(id: String,
+                     content: String,
+                     startTime: Date,
+                     targetTime: TimeInterval,
+                     spendTime: Date,
+                     status: TodoStatusPersisted) {
+        self.init(content: content,
+                  startTime: startTime,
+                  targetTime: targetTime,
+                  spendTime: spendTime,
+                  status: status)
+        self.id = try! ObjectId(string: id)
     }
     
     class override func primaryKey() -> String? {

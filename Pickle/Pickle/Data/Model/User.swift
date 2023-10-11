@@ -19,3 +19,23 @@ struct User {
  - 포인트
  - 통계
  */
+
+extension User: MappableProtocol {
+    typealias PersistenceType = UserObject
+    
+    func mapToPersistenceObject() -> PersistenceType {
+        return UserObject(nickName: self.nickName, 
+                          currentPizzaCount: self.currentPizzaCount,
+                          currentPizzaSlice: self.currentPizzaSlice, 
+                          createdAt: self.createdAt)
+    }
+    
+    static func mapFromPersistenceObject(_ object: PersistenceType) -> Self {
+        User(id: object.id.stringValue,
+             nickName: object.nickName,
+             currentPizzaCount: object.currentPizzaCount,
+             currentPizzaSlice: object.currentPizzaSlice,
+             createdAt: object.createdAt)
+    }
+    
+}

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct Todo: Identifiable {
     let id: String
@@ -13,7 +14,19 @@ struct Todo: Identifiable {
     var startTime: Date     // 시작 시간 (15시부터)
     var targetTime: TimeInterval    // 목표 시간 (16시까지)
     var spendTime: Date     // 실제 종료 시간 (16시반까지)
-    var status: Status
+    var status: TodoStatus
+}
+
+extension Todo: Equatable {
+    func isEqualContent(todo: Self) -> Bool {
+        self.content == todo.content &&
+        self.startTime == todo.startTime &&
+        self.targetTime == todo.targetTime
+    }
+    
+    func isNotPersisted() -> Bool {
+        self.id == ""
+    }
 }
 
 typealias TodoStatus = Status
@@ -48,7 +61,9 @@ extension Todo: MappableProtocol {
     typealias PersistenceType = TodoObject
     
     func mapToPersistenceObject() -> TodoObject {
-        return TodoObject(content: self.content,
+        
+        return TodoObject(id: self.id,
+                          content: self.content,
                           startTime: self.startTime,
                           targetTime: self.targetTime, //self.targetTime,
                           spendTime: self.spendTime,
@@ -66,6 +81,14 @@ extension Todo: MappableProtocol {
     }
 }
 
+extension Todo {
+    static var sample: Todo = .init(id: "",
+                                    content: "",
+                                    startTime: Date(),
+                                    targetTime: 0,
+                                    spendTime: Date(),
+                                    status: .ready)
+}
 let sampleTodoList: [Todo] = [
     Todo(id: UUID().uuidString,
          content: "이력서 작성하기",

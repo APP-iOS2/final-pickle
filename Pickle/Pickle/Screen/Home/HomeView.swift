@@ -13,6 +13,8 @@ struct HomeView: View {
     @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
     @State private var tabBarVisibility: Visibility = .visible
     @State private var isShowingEditTodo: Bool = false
+    
+    @State private var seletedTodo: Todo = Todo.sample
     let goalTotal: Double = 8
     
     @EnvironmentObject var todoStore: TodoStore
@@ -53,12 +55,13 @@ struct HomeView: View {
             ForEach(todoStore.todos, id: \.id) { todo in
                 TodoCellView(todo: todo)
                     .onTapGesture {
-                        isShowingEditTodo = true
+                        seletedTodo = todo
+                        isShowingEditTodo.toggle()
                     }
             }
         }
         .task {
-            let _ = await todoStore.fetch()
+            await todoStore.fetch()
         }
         .navigationTitle(Date().format("MM월 dd일 EEEE"))
         .navigationBarTitleDisplayMode(.inline)
@@ -67,7 +70,8 @@ struct HomeView: View {
         }
         .toolbar(tabBarVisibility, for: .tabBar)
         .fullScreenCover(isPresented: $isShowingEditTodo) {
-            AddTodoView(isShowingEditTodo: $isShowingEditTodo)
+            AddTodoView(isShowingEditTodo: $isShowingEditTodo,
+                        todo: $seletedTodo)
         }
     }
     
@@ -75,7 +79,7 @@ struct HomeView: View {
     var toolbarBuillder: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink {
-                RegisterView()
+                RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: false)
                     .backKeyModifier(visible: false)
             } label: {
                 Image(systemName: "plus.circle")

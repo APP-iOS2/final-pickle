@@ -19,6 +19,7 @@ protocol DBStore: Dependency {
     func save(object: Storable) throws
     func update(object: Storable) throws
     func delete(object: Storable) throws
+    func delete<T: Storable>(model: T.Type, id: String) throws
     func deleteAll<T: Storable>(_ model: T.Type) throws
     func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, complection: ([T]) -> Void) throws
 }

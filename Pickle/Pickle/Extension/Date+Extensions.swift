@@ -25,6 +25,12 @@ extension Date {
         var date: Date
     }
     
+    struct MonthDate: Identifiable {
+        var id = UUID().uuidString
+        var day: Int
+        var date: Date
+    }
+    
     // MARK: - Checking whether the Date is Today
     var isToday: Bool {
         return Calendar.current.isDateInToday(self)
@@ -70,6 +76,17 @@ extension Date {
         }
         
         return week
+    }
+    
+    func fetchMonth() -> [Date] {
+        let calendar = Calendar.autoupdatingCurrent
+        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
+        var range = calendar.range(of: .day, in: .month, for: startDate)!
+        range.removeLast()
+        return range.compactMap{ day -> Date in
+            return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
+        }
+        
     }
     
     // MARK: - Creating Next Week, based on the Last Current Week's Date

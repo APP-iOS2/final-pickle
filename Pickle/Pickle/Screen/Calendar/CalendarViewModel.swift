@@ -17,6 +17,8 @@ class CalendarViewModel: ObservableObject {
         CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
     ]
     
+    
+    
     // MARK: - 초기화
     init() {
         fetchCurrentWeek()
@@ -28,6 +30,8 @@ class CalendarViewModel: ObservableObject {
     @Published var currentWeek: [Date] = []
     // MARK: - Current Day
     @Published var currentDay: Date = Date()
+    
+    @State var currentMonth: Int = 0
     
     func fetchCurrentWeek() {
         let today = Date()
@@ -44,6 +48,16 @@ class CalendarViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchCurrentMonth() -> [Date] {
+        
+        let calendar = Calendar.autoupdatingCurrent
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return  [] }
+        let result = currentMonth.fetchMonth()
+        return result
+        }
+    
+    
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
         
@@ -80,4 +94,10 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
+    
+//    func getCurrentMonth() -> Date {
+//        let calendar = Calendar.autoupdatingCurrent
+//        
+//        guard let currentMonth = calendar.date(byAdding: .month, value: self.current, to: <#T##Date#>)
+//    }
 }

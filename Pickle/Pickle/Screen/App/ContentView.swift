@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
+
     var body: some View {
         TabView {
             NavigationStack {
@@ -33,6 +35,9 @@ struct ContentView: View {
                 Label("설정", systemImage: "gearshape")
                     .environment(\.symbolVariants, .none)
             }.tag(2)
+        }
+        .fullScreenCover(isPresented: $isOnboardingViewActive) {
+            SetNotiView(isShowingOnboarding: $isOnboardingViewActive)
         }
     }
 }

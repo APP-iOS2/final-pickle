@@ -11,8 +11,12 @@ struct TimerReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     
+    @Binding var isShowingReportSheet: Bool
+    @Binding var isComplete: Bool
+    @Binding var isShowingTimerView: Bool
+    
     var todo: Todo
-    var spendTime: Int
+    var spendTime: TimeInterval
     
     var body: some View {
         VStack {
@@ -30,7 +34,7 @@ struct TimerReportView: View {
                         HStack {
                             Text("총 소요 시간")
                             Spacer()
-                            Text(convertSecondsToTime(timeInSecond: spendTime))
+                            Text(convertSecondsToTime(timeInSecond: Int(spendTime)))
                         }
                     }
                     .font(.pizzaTitle2Bold)
@@ -71,10 +75,15 @@ struct TimerReportView: View {
             }
             
             Button(action: {
-                
+                isShowingTimerView = false
+                isShowingReportSheet = false
+                dismiss()
             }, label: {
                 Text("확인")
             })
+        }
+        .onAppear {
+            isComplete = true
         }
     }
     func convertSecondsToTime(timeInSecond: Int) -> String {
@@ -92,7 +101,7 @@ struct TimerReportView: View {
 
 struct TimerReportView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerReportView(todo: Todo(id: UUID().uuidString,
+        TimerReportView(isShowingReportSheet: .constant(false), isComplete: .constant(false), isShowingTimerView: .constant(false), todo: Todo(id: UUID().uuidString,
                                    content: "이력서 작성하기",
                                    startTime: Date(),
                                    targetTime: 60,

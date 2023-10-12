@@ -10,8 +10,10 @@
 import SwiftUI
 
 struct TodoCellView: View {
-
+    
     var todo: Todo
+    
+    @State var isShowingTimerView: Bool = false
     
     var body: some View {
         ZStack {
@@ -34,8 +36,10 @@ struct TodoCellView: View {
                 
                 Spacer()
                 
-                NavigationLink {
-                    TimerView(todo: todo)
+                Button {
+                    isShowingTimerView = true
+//                    TimerView(todo: todo)
+//                        .backKeyModifier(visible: false)
                 } label: {
                     ZStack {
                         Rectangle()
@@ -51,7 +55,11 @@ struct TodoCellView: View {
             }
             .padding(.horizontal, 40)
         }
+        .fullScreenCover(isPresented: $isShowingTimerView) {
+            TimerView(todo: todo, isShowingTimerView: $isShowingTimerView)
+        }
     }
+    
 }
 
 struct TodoCellView_Previews: PreviewProvider {

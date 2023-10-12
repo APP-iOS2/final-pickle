@@ -30,12 +30,13 @@ struct MissionSettingView: View {
 }
 
 struct TimeMissionSettingView: View {
+    @EnvironmentObject var missionStore: MissionStore
+    @Binding var timeMission: TimeMission
     
-    @Binding var title: String
+    var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
     
-    @Binding var wakeupTime: Date
-    @State var changedWakeupTime: Date
+    @State private var changedWakeupTime: Date = Date()
     
     var body: some View {
         VStack {
@@ -53,7 +54,7 @@ struct TimeMissionSettingView: View {
                 Spacer()
                 
                 Button {
-                    wakeupTime = changedWakeupTime
+                    timeMission.wakeupTime = changedWakeupTime
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")
@@ -97,10 +98,8 @@ struct BehaviorMissionSettingView: View {
 struct MissionSettingView_Previews: PreviewProvider {
     static var previews: some View {
         MissionSettingView(title: .constant("오늘의 할일 완료 미션"), isSettingModalPresented: .constant(true))
-        TimeMissionSettingView(title: .constant("기상 미션"),
-    isTimeMissionSettingModalPresented: .constant(true),
-    wakeupTime: .constant(Date()),
-    changedWakeupTime: Date())
+        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")), title: "기상 미션",
+    isTimeMissionSettingModalPresented: .constant(true))
 //        BehaviorMissionSettingView(title: .constant("걷기 미션"),
 //                                   isBehaviorMissionSettingModalPresented: .constant(true))
     }

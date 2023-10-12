@@ -16,31 +16,29 @@ import SwiftUI
 // 열
 
 struct MissionView: View {
-    @State var showsAlert: Bool = false
+    @EnvironmentObject var missionStore: MissionStore
+    @State private var showsAlert: Bool = false
     
-    //    @EnvironmentObject var missionStore: MissionStore
-    //    
-    //    @State private var timeMission: [TimeMission] = [.init()]
-    //    @State private var behaviorMission: [BehaviorMission] = [.init()]
+    @State private var timeMissions: [TimeMission] = [
+        TimeMission(id: UUID().uuidString, title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
+    ]
+    @State private var behaviorMissions: [BehaviorMission] = [
+        BehaviorMission(id: UUID().uuidString, title: "걷기 미션", status: .done, date: Date(), myStep: 5555.0, missionStep: 0.0)
+    ]
     
     var body: some View {
         ScrollView {
             VStack {
                 MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "아직", date: "9/27", showsAlert: $showsAlert)
-                TimeMissionStyleView(twoButton: true,
-                                     title: "기상 미션",
-                                     status: "완료",
-                                     date: "9/27",
-                                     wakeupTime: Date(),
-                                     currentTime: Date(),
-                                     showsAlert: $showsAlert)
-                BehaviorMissionStyleView(twoButton: false,
-                                         title: "걷기 미션",
-                                         status: "완료",
-                                         date: "9/27",
-                                         myStep: 5000.0,
-                                         missionStep: 5000.0,
-                                         changedMissionStep: 0.0, showsAlert: $showsAlert)
+                
+                ForEach($timeMissions) { $timeMission in
+                    TimeMissionStyleView(timeMission: $timeMission, showsAlert: $showsAlert)
+                }
+                
+                ForEach($behaviorMissions) { behaviorMission in
+                    BehaviorMissionStyleView(behaviorMission: behaviorMission, showsAlert: $showsAlert)
+                }
+                
                 Spacer()
             }
         }
@@ -51,11 +49,11 @@ struct MissionView: View {
         .navigationBarTitleDisplayMode(.inline)
         
         .getRewardAlert(
-          isPresented: $showsAlert,
-          title: "미션 성공",
-          point: 1,
-          primaryButtonTitle: "확인",
-          primaryAction: { /* 피자 획득 로직 */ }
+            isPresented: $showsAlert,
+            title: "미션 성공",
+            point: 1,
+            primaryButtonTitle: "확인",
+            primaryAction: { /* 피자 획득 로직 */ }
         )
     }
 }

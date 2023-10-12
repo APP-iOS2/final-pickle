@@ -14,7 +14,8 @@ protocol Mission: MappableProtocol {
     var date: Date { get }
 }
 
-struct TimeMission: Mission {
+
+struct TimeMission: Mission, Identifiable {
     let id: String
     let title: String
     var status: MissionStatus
@@ -30,7 +31,7 @@ struct TimeMission: Mission {
     }
 }
 
-struct BehaviorMission: Mission {
+struct BehaviorMission: Mission, Identifiable {
     let id: String
     let title: String
     var status: MissionStatus

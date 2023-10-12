@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct MissionStyle: Equatable {
-    var twoButton: Bool
-    var title: String
-    var settingValue: String
-}
-
 struct CustomToggleButton: View {
     @Binding var buttonTitle: String
     @Binding var buttonToggle: Bool
@@ -83,15 +77,14 @@ struct Line: Shape {
 }
 
 struct MissionStyleView: View {
-    var twoButton: Bool = false
-    @State var buttonTitle: String = "🍕 받기"
+    @State private var buttonTitle: String = "🍕 받기"
     @State var buttonToggle: Bool
     
     @State var title: String
     var status: String
     var date: String
     
-    @State var isSettingModalPresented = false
+    @State private var isSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var body: some View {
@@ -119,16 +112,6 @@ struct MissionStyleView: View {
                             .stroke(Color(.black), lineWidth: 0.5))
                         .disabled(true)
                     }
-                    
-                    if twoButton {
-                        CustomButton(buttonText: "설정", buttonTextColor: .white, buttonColor: .black, action: {
-                            isSettingModalPresented.toggle()
-                        })
-                        .sheet(isPresented: $isSettingModalPresented) {
-                            MissionSettingView(title: $title, isSettingModalPresented: $isSettingModalPresented)
-                                .presentationDetents([.fraction(0.3)])
-                        }
-                    }
                 }
             }
         }
@@ -142,29 +125,27 @@ struct MissionStyleView: View {
 }
 
 struct TimeMissionStyleView: View {
-    var twoButton: Bool = false
-    @State var buttonTitle: String = "🍕 받기"
-    @State var buttonToggle: Bool = false
+    @EnvironmentObject var missionStore: MissionStore
+    @Binding var timeMission: TimeMission
     
-    @State var title: String
-    var status: String
-    var date: String
+    @State private var buttonTitle: String = "🍕 받기"
+    @State private var buttonToggle: Bool = false
     
-    @State var wakeupTime: Date
-    var currentTime: Date
+    private let currentTime: Date = Date()
     
-    @State var isTimeMissionSettingModalPresented = false
+    private let twoButton: Bool = true
+    @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(title)
+                    Text(timeMission.title)
                         .font(.pizzaTitle2Bold)
                         .padding(.bottom, 1)
                     
-                    Text("\(wakeupTime.format("HH:mm"))")
+                    Text("\(timeMission.wakeupTime.format("HH:mm"))")
                         .font(.pizzaBody)
                         .foregroundColor(Color.black.opacity(0.6))
                 }
@@ -172,7 +153,7 @@ struct TimeMissionStyleView: View {
                 Spacer(minLength: 10)
                 VStack {
                     // 현재 시간과 목표 기상시간 비교
-                    if currentTime > wakeupTime.adding(minutes: -10) && currentTime < wakeupTime.adding(minutes: 10) {
+                    if currentTime > timeMission.wakeupTime.adding(minutes: -10) && currentTime < timeMission.wakeupTime.adding(minutes: 10) {
                         CustomToggleButton(buttonTitle: $buttonTitle, buttonToggle: $buttonToggle, action: {
                             buttonTitle = "성공"
                             buttonToggle = true
@@ -193,10 +174,9 @@ struct TimeMissionStyleView: View {
                             isTimeMissionSettingModalPresented.toggle()
                         })
                         .sheet(isPresented: $isTimeMissionSettingModalPresented) {
-                            TimeMissionSettingView(title: $title,
-                                                   isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented,
-                                                   wakeupTime: $wakeupTime,
-                                                   changedWakeupTime: Date())
+                            TimeMissionSettingView(timeMission: $timeMission,
+                                                   title: timeMission.title,
+                                                   isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
                             .presentationDetents([.fraction(0.4)])
                         }
                     }
@@ -213,34 +193,36 @@ struct TimeMissionStyleView: View {
 }
 
 struct BehaviorMissionStyleView: View {
-    var twoButton: Bool = false
-    @State var buttonTitle1: String = "🍕 받기"
-    @State var buttonTitle2: String = "🍕 받기"
-    @State var buttonTitle3: String = "🍕 받기"
-    @State var buttonToggle1: Bool = false
-    @State var buttonToggle2: Bool = false
-    @State var buttonToggle3: Bool = false
+    @EnvironmentObject var missionStore: MissionStore
+    @Binding var behaviorMission: BehaviorMission
     
-    @State var title: String
-    var status: String
-    var date: String
+    @State private var buttonTitle1: String = "🍕 받기"
+    @State private var buttonTitle2: String = "🍕 받기"
+    @State private var buttonTitle3: String = "🍕 받기"
+    @State private var buttonToggle1: Bool = false
+    @State private var buttonToggle2: Bool = false
+    @State private var buttonToggle3: Bool = false
     
-    @State var myStep: Double
-    @State var missionStep: Double
-    @State var changedMissionStep: Double
+//    @State var title: String
+//    var status: String
+//    var date: String
+//    
+//    @State var myStep: Double
+//    @State var missionStep: Double
+//    @State private var changedMissionStep: Double
     
-    @State var isBehaviorMissionSettingModalPresented = false
+    @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text(title)
+                Text(behaviorMission.title)
                     .font(.pizzaTitle2Bold)
                     .padding(.bottom, 1)
                 Spacer()
                 
-                Text("현재 \(lround(myStep)) 걸음")
+                Text("현재 \(lround(behaviorMission.myStep)) 걸음")
                     .font(.pizzaBody)
                     .foregroundColor(Color.black.opacity(0.6))
             }
@@ -282,7 +264,7 @@ struct BehaviorMissionStyleView: View {
             HStack {
                 Spacer()
                 // 내 걸음수와 목표 걸음수 비교
-                if myStep >= 1000 {
+                if behaviorMission.myStep >= 1000 {
                     CustomToggleButton(buttonTitle: $buttonTitle1, buttonToggle: $buttonToggle1, action: {
                         buttonTitle1 = "성공"
                         buttonToggle1 = true
@@ -297,7 +279,7 @@ struct BehaviorMissionStyleView: View {
                     .disabled(true)
                 }
                 Spacer()
-                if myStep >= 5000 {
+                if behaviorMission.myStep >= 5000 {
                     CustomToggleButton(buttonTitle: $buttonTitle2, buttonToggle: $buttonToggle2, action: {
                         buttonTitle2 = "성공"
                         buttonToggle2 = true
@@ -312,7 +294,7 @@ struct BehaviorMissionStyleView: View {
                     .disabled(true)
                 }
                 Spacer()
-                if myStep >= 10000 {
+                if behaviorMission.myStep >= 10000 {
                     CustomToggleButton(buttonTitle: $buttonTitle3, buttonToggle: $buttonToggle3, action: {
                         buttonTitle3 = "성공"
                         buttonToggle3 = true
@@ -340,21 +322,17 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        MissionStyleView(twoButton: false, buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
-        TimeMissionStyleView(twoButton: true,
-                             title: "기상 미션",
-                             status: "완료",
-                             date: "9/27",
-                             wakeupTime: Date(),
-                             currentTime: Date(),
-                             showsAlert: .constant(false))
-        BehaviorMissionStyleView(twoButton: false,
-                                 title: "걷기 미션",
-                                 status: "완료",
-                                 date: "9/27",
-                                 myStep: 5555.0,
-                                 missionStep: 5000.0,
-                                 changedMissionStep: 0.0, 
+        MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
+        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
+        // .constant 고정값
+        BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
                                  showsAlert: .constant(false))
+//        BehaviorMissionStyleView(title: "걷기 미션",
+//                                 status: "완료",
+//                                 date: "9/27",
+//                                 myStep: 5555.0,
+//                                 missionStep: 5000.0,
+//                                 changedMissionStep: 0.0, 
+//                                 showsAlert: .constant(false))
     }
 }

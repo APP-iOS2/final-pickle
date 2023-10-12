@@ -10,12 +10,14 @@ import SwiftUI
 class CalendarViewModel: ObservableObject {
     
     @Published var storedTasks: [CalendarSampleTask] = [
-    
+        
         CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
         CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
         CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
     ]
+    
+    
     
     // MARK: - 초기화
     init() {
@@ -28,6 +30,8 @@ class CalendarViewModel: ObservableObject {
     @Published var currentWeek: [Date] = []
     // MARK: - Current Day
     @Published var currentDay: Date = Date()
+    
+    @State var currentMonth: Int = 0
     
     func fetchCurrentWeek() {
         let today = Date()
@@ -44,23 +48,29 @@ class CalendarViewModel: ObservableObject {
             }
         }
     }
+    
+    func fetchCurrentMonth() -> [Date] {
+        
+        let calendar = Calendar.autoupdatingCurrent
+        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return  [] }
+        let result = currentMonth.fetchMonth()
+        return result
+        }
+    
+    
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
-        DispatchQueue.global(qos: .userInteractive).async {
-            let calendar  = Calendar.current
-            let filtered = self.storedTasks.filter {
-                return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
-            }
-            .sorted { task1, task2 in
-                    task1.creationDate < task2.creationDate
-                }
-                    
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.filteredTasks = filtered
-                }
-            }
+        
+        let calendar  = Calendar.current
+        let filtered = self.storedTasks.filter {
+            return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
         }
+            .sorted { task1, task2 in
+                task1.creationDate < task2.creationDate
+            }
+    
+        self.filteredTasks = filtered
+    
     }
     
     func extractDate(date: Date, format: String) -> String {
@@ -84,4 +94,10 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
+    
+//    func getCurrentMonth() -> Date {
+//        let calendar = Calendar.autoupdatingCurrent
+//        
+//        guard let currentMonth = calendar.date(byAdding: .month, value: self.current, to: <#T##Date#>)
+//    }
 }

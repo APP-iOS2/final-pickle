@@ -75,6 +75,7 @@
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
 		B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */; };
 		B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
+		B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */; };
 		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
 		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
 		B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B22AC29CB900744EB7 /* OffsetKey.swift */; };
@@ -149,6 +150,7 @@
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
 		B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAlert.swift; sourceTree = "<group>"; };
 		B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyView.swift; sourceTree = "<group>"; };
 		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
 		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B7C341B22AC29CB900744EB7 /* OffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsetKey.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			children = (
 				2137D5922AC1478C00AFE225 /* CalendarView.swift */,
 				B7C341B22AC29CB900744EB7 /* OffsetKey.swift */,
+				B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */,
 				B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */,
 				B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */,
 				B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */,
@@ -562,6 +565,7 @@
 				963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */,
 				963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */,
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
+				B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
 				21E7118B2AD48DE9002B8069 /* SetNotiView.swift in Sources */,
 				960C41922ACE41E1009A0093 /* Object+Extensions.swift in Sources */,

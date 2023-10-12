@@ -31,7 +31,7 @@ struct TaskRowView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(task.calendarTitle)
                         .fontWeight(.semibold)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.primary)
                         .strikethrough(task.isCompleted, pattern: .solid, color: .black)
                     
                 }
@@ -39,12 +39,12 @@ struct TaskRowView: View {
                 if task.creationDate.isSameHour {
                     Text("이제 할일")
                         .font(.pizzaCaption)
-                        .foregroundStyle(.gray)
+                        .foregroundStyle(.primary)
                 }
                 
                 Label(task.creationDate.format("HH:mm a"), systemImage: "clock")
                     .font(.caption)
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                     .padding(.horizontal)
                     .hSpacing(.trailing)
             }

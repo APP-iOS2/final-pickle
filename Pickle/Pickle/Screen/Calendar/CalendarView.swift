@@ -12,6 +12,8 @@ struct CalendarView: View {
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
+    @State private var weekToMonth: Bool = false
+    
     @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
     }
     
@@ -49,6 +51,10 @@ struct CalendarView: View {
         .onChange(of: calendarModel.currentDay) { newValue in
             calendarModel.filterTodayTasks()
         }
+        .onChange(of: calendarModel.currentMonth) { newValue in
+            
+        }
+        
     }
     
     func paginationWeek() {
@@ -88,33 +94,74 @@ struct CalendarView: View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
                 
-                if calendarModel.currentDay.isToday {
-                    Text("오늘")
-                        .font(.largeTitle)
-                        .bold()
-                } else {
-                    Text(calendarModel.currentDay.format("EEEE"))
-                        .font(.largeTitle)
-                        .bold()
-                }
-                
-                TabView(selection: $currentWeekIndex) {
-                    ForEach(weekSlider.indices, id: \.self) { index in
-                        let week = weekSlider[index]
-                        WeekView(week)
-                            .tag(index)
+                HStack {
+                    if calendarModel.currentDay.isToday {
+                        Text("오늘")
+                            .font(.largeTitle)
+                            .bold()
+                    } else {
+                        Text(calendarModel.currentDay.format("EEEE"))
+                            .font(.largeTitle)
+                            .bold()
                     }
+                    Spacer()
+                    Button(action: {
+                        print("주간")
+                        weekToMonth.toggle()
+                        print(weekToMonth)
+                    }, label: {
+                        Text("주간")
+                            .font(.headline)
+                            .bold()
+                    })
+                    .padding(.horizontal, 1)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle(radius: 50))
+                    
+                    Button(action: {
+                        calendarModel.currentMonth -= 1
+                        
+                    }, label: {
+                        Image(systemName: "chevron.left")
+                    })
+                    Button(action: {
+                        print("오늘주로")
+                    }, label: {
+                        Text("오늘")
+                            .font(.pizzaBody)
+                        //.fontWeight(.medium)
+                    })
+                    Button(action: {
+                        calendarModel.currentMonth += 1
+                    }, label: {
+                        Image(systemName: "chevron.right")
+                    })
                     
                 }
-                .padding(.horizontal, -10)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: 90)
+                
+                if weekToMonth {
+                    
+                    MonthlyView()
+                    
+                } else {
+                    
+                    TabView(selection: $currentWeekIndex) {
+                        ForEach(weekSlider.indices, id: \.self) { index in
+                            let week = weekSlider[index]
+                            WeekView(week)
+                                .tag(index)
+                        }
+                        
+                    }
+                    .padding(.horizontal, -10)
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .frame(height: 90)
+                }
             }
             .hLeading()
         }
         .padding()
         .hSpacing(.leading)
-        .background(Color.white)
         .onChange(of: currentWeekIndex) { newValue in
             
             // MARK: - Creating when it reaches first/last page
@@ -133,7 +180,7 @@ struct CalendarView: View {
                     Text(day.date.format("E"))
                         .font(.callout)
                         .fontWeight(.medium)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.primary)
                     
                     Text(day.date.format("dd"))
                         .font(.callout)
@@ -195,70 +242,107 @@ struct CalendarView: View {
         }
         
     }
-    
-    // MARK: - TaskView
-    func taskView() -> some View {
-        VStack(alignment: .leading, spacing: 35) {
-            
-            if let tasks = calendarModel.filteredTasks {
-                
-                if tasks.isEmpty {
-                    
-                    Text("No Tasks Found!!!")
-                        .font(.system(size: 16))
-                        .fontWeight(.light)
-                        .offset(y: 100)
-                } else {
-                    ForEach($tasks) { task in
-                       // TaskRowView
-                        TaskRowView(task: task)
+
+    // MARK: - Montly View
+    func monthlyView() -> some View {
+        let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+        return VStack {
+            HStack {
+                ForEach(days, id: \.self) { day in
+                    VStack(spacing: 8) {
+                        Text(day)
+                            .font(.callout)
+                            .fontWeight(.medium)
+                            .foregroundColor(.primary)
+                        
                     }
+                    HStack {
+                        let colums = Array(repeating: GridItem(.flexible()), count: 7)
+                        LazyVGrid(columns: colums, spacing: 15) {
+                            
+                            ForEach(calendarModel.fetchCurrentMonth(), id: \.self) { day in
+                                
+                                Text(day.format("dd"))
+                                    .font(.callout)
+                                    .fontWeight(.semibold)
+                            }
+                            
+                        }
+                    }
+                    
                 }
-            } else {
-                ProgressView()
+                
             }
         }
-        .padding([.vertical, .leading], 15)
+//        .onChange(of: calendarModel.currentMonth) { newValue in
+//            calendarModel.currentWeek = calendarModel.fetchCurrentMonth()
+//        
+//        }
     }
-    
-}
-
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView()
-    }
-}
-
-extension View {
-    func hLeading() -> some View {
-        self
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+            
+            // MARK: - TaskView
+            func taskView() -> some View {
+                VStack(alignment: .leading, spacing: 35) {
+                    
+                    if let tasks = calendarModel.filteredTasks {
+                        
+                        if tasks.isEmpty {
+                            
+                            Text("No Tasks Found!!!")
+                                .font(.system(size: 16))
+                                .fontWeight(.light)
+                                .offset(y: 100)
+                        } else {
+                            ForEach($tasks) { task in
+                                // TaskRowView
+                                TaskRowView(task: task)
+                            }
+                        }
+                    } else {
+                        ProgressView()
+                    }
+                }
+                .padding([.vertical, .leading], 15)
+            }
+            
+        }
         
-    }
-    func hTrailing() -> some View {
-        self
-            .frame(maxWidth: .infinity, alignment: .trailing)
+        struct CalendarView_Previews: PreviewProvider {
+            static var previews: some View {
+                CalendarView()
+            }
+        }
         
-    }
-    func hCenter() -> some View {
-        self
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
-        
-    }
-    
-    // MARK: - Checking Two dates are same
-    func isSameDate(_ date1: Date, date2: Date) -> Bool {
-        return Calendar.current.isDate(date1, inSameDayAs: date2)
-    }
-    
-    // MARK: - Safe Area
-    //    func getSafeArea() -> UIEdgeInsets {
-    //        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-    //            return .zero
-    //        }
-    //        guard let safeArea = screen.windows.first?.safeAreaInsets else {
-    //            return .zero
-    //        }
-    //        return safeArea
-    //    }
-}
+        extension View {
+            func hLeading() -> some View {
+                self
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+            }
+            func hTrailing() -> some View {
+                self
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                
+            }
+            func hCenter() -> some View {
+                self
+                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+                
+            }
+            
+            // MARK: - Checking Two dates are same
+            func isSameDate(_ date1: Date, date2: Date) -> Bool {
+                return Calendar.current.isDate(date1, inSameDayAs: date2)
+            }
+            
+            // MARK: - Safe Area
+            //    func getSafeArea() -> UIEdgeInsets {
+            //        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            //            return .zero
+            //        }
+            //        guard let safeArea = screen.windows.first?.safeAreaInsets else {
+            //            return .zero
+            //        }
+            //        return safeArea
+            //    }
+        }

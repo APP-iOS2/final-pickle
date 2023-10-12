@@ -24,6 +24,7 @@ struct PickleApp: App {
     @StateObject private var todoStore = TodoStore()
     @StateObject private var missionStore = MissionStore()
     @StateObject private var userStore = UserStore()
+    @StateObject private var notificationManager = NotificationManager()
     
     var body: some Scene {
         WindowGroup {
@@ -37,6 +38,7 @@ struct PickleApp: App {
                 .environmentObject(todoStore)
                 .environmentObject(missionStore)
                 .environmentObject(userStore)
+                .environmentObject(notificationManager)
         }
     }
 }

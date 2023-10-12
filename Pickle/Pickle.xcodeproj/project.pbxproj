@@ -27,6 +27,9 @@
 		2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */; };
 		2137D5B22AC1E54100AFE225 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5B12AC1E54100AFE225 /* CircleView.swift */; };
 		21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CD68752AD31FC2006DAB62 /* PizzaView.swift */; };
+		21E711892AD48A01002B8069 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E711882AD48A01002B8069 /* NotificationManager.swift */; };
+		21E7118B2AD48DE9002B8069 /* SetNotiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E7118A2AD48DE9002B8069 /* SetNotiView.swift */; };
+		21E7118F2AD53862002B8069 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E7118E2AD53862002B8069 /* LocalNotification.swift */; };
 		21FA26772AC2A10800877122 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA26762AC2A10800877122 /* Todo.swift */; };
 		21FA26792AC2A16900877122 /* ServiceEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA26782AC2A16900877122 /* ServiceEmpty.swift */; };
 		21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267A2AC2ADFB00877122 /* Mission.swift */; };
@@ -100,6 +103,9 @@
 		2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCellView.swift; sourceTree = "<group>"; };
 		2137D5B12AC1E54100AFE225 /* CircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		21CD68752AD31FC2006DAB62 /* PizzaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaView.swift; sourceTree = "<group>"; };
+		21E711882AD48A01002B8069 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		21E7118A2AD48DE9002B8069 /* SetNotiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotiView.swift; sourceTree = "<group>"; };
+		21E7118E2AD53862002B8069 /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		21FA26762AC2A10800877122 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		21FA26782AC2A16900877122 /* ServiceEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceEmpty.swift; sourceTree = "<group>"; };
 		21FA267A2AC2ADFB00877122 /* Mission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
@@ -220,6 +226,7 @@
 				96A1E4B02AD52919001B2960 /* UserStore.swift */,
 				96A1D4A62ACFE384003BC207 /* MissionStore.swift */,
 				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
+				21E711882AD48A01002B8069 /* NotificationManager.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -257,6 +264,7 @@
 			isa = PBXGroup;
 			children = (
 				2137D5942AC1479700AFE225 /* SettingView.swift */,
+				21E7118A2AD48DE9002B8069 /* SetNotiView.swift */,
 			);
 			path = Setting;
 			sourceTree = "<group>";
@@ -322,6 +330,7 @@
 				21FA267A2AC2ADFB00877122 /* Mission.swift */,
 				21FA267C2AC2B50D00877122 /* User.swift */,
 				21FA267E2AC2BB3800877122 /* Pizza.swift */,
+				21E7118E2AD53862002B8069 /* LocalNotification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -554,6 +563,7 @@
 				963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */,
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
+				21E7118B2AD48DE9002B8069 /* SetNotiView.swift in Sources */,
 				960C41922ACE41E1009A0093 /* Object+Extensions.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */,
@@ -598,12 +608,14 @@
 				96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */,
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */,
+				21E7118F2AD53862002B8069 /* LocalNotification.swift in Sources */,
 				960C41942ACE4236009A0093 /* BehaviorMissionObject.swift in Sources */,
 				96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */,
 				96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */,
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
 				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,
 				2137D5912AC1476700AFE225 /* MissionView.swift in Sources */,
+				21E711892AD48A01002B8069 /* NotificationManager.swift in Sources */,
 				960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */,
 				21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */,
 				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,

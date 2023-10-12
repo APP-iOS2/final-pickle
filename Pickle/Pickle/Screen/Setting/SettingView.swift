@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct SettingView: View {
+    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var notificationManager: NotificationManager
+
     @State private var is24HourClock: Bool = true
+    @State private var isShowingMoveToSettingAlert: Bool = false
     
     var body: some View {
         List {
@@ -42,9 +46,9 @@ struct SettingView: View {
                     }
                 }
                 
-                NavigationLink {
-                    // MARK: 알림 설정
-                } label: {
+//                NavigationLink {
+//                    // MARK: 알림 설정
+//                } label: {
                     HStack {
                         Image(systemName: "bell.badge")
                             .resizable()
@@ -54,8 +58,16 @@ struct SettingView: View {
                             .padding(.trailing)
                         
                         Text("알림")
+                        
+                        Spacer()
+                        
+                        Text("설정하러 가기")
+                            .foregroundStyle(.secondary)
                     }
-                }
+                    .onTapGesture {
+                        isShowingMoveToSettingAlert = true
+                    }
+//                }
             }
             
             Section {
@@ -91,6 +103,18 @@ struct SettingView: View {
             }
         }
         .navigationTitle("설정")
+        .alert("설정 앱으로 이동하여 알림 권한을 변경합니다.", isPresented: $isShowingMoveToSettingAlert) {
+            Button {
+                dismiss()
+            } label: {
+                Text("취소")
+            }
+            Button {
+                notificationManager.openSettings()
+            } label: {
+                Text("확인")
+            }
+        }
     }
 }
 
@@ -98,6 +122,7 @@ struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             SettingView()
+                .environmentObject(NotificationManager())
         }
     }
 }

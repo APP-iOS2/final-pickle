@@ -23,10 +23,16 @@ struct TimerReportView: View {
             Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
                 .font(Font.pizzaHeadlineBold)
                 .padding()
+            
+            Image("smilePizza")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: .screenWidth * 0.75)
+
             VStack {
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.lightGray)
+                        .fill(.quaternary)
                         .frame(height: 80)
                         .padding(.horizontal)
                         .padding(.vertical, 4)
@@ -42,7 +48,7 @@ struct TimerReportView: View {
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.lightGray)
+                        .fill(.quaternary)
                         .frame(height: 80)
                         .padding(.horizontal)
                         .padding(.vertical, 4)
@@ -58,7 +64,7 @@ struct TimerReportView: View {
                 }
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.lightGray)
+                        .fill(.quaternary)
                         .frame(height: 80)
                         .padding(.horizontal)
                         .padding(.vertical, 4)
@@ -80,7 +86,15 @@ struct TimerReportView: View {
                 dismiss()
             }, label: {
                 Text("확인")
+                    .font(.title3)
+                    .bold()
+                    .padding(.vertical, 8)
+                    .frame(width: .screenWidth * 0.2)
+                    .foregroundColor(.primary)
+                    .colorInvert()
             })
+            .buttonStyle(.borderedProminent)
+            .tint(.primary)
         }
         .onAppear {
             isComplete = true

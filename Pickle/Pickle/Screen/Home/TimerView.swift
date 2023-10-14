@@ -56,12 +56,12 @@ struct TimerView: View {
             ZStack {
                 Circle()
                     .fill(.clear)
-                    .frame(width: CGFloat.screenWidth * 0.75)
+                    .frame(width: .screenWidth * 0.75)
                     .overlay(Circle().stroke(.tertiary, lineWidth: 5))
                 Circle()
                     .trim(from: 0, to: progress())
                     .stroke(Color.primary, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                    .frame(width: CGFloat.screenWidth * 0.75)
+                    .frame(width: .screenWidth * 0.75)
                     .rotationEffect(.degrees(-90))
                 
                 if isStart {
@@ -85,7 +85,8 @@ struct TimerView: View {
                     if isDecresing {
                         // 남은시간 줄어드는 타이머
                         Text(convertSecondsToTime(timeInSecond: timeRemaining))
-                            .font(Font.pizzaTitleBold)
+                            .font(.system(size: 40))
+                            .fontWeight(.heavy)
                             .onReceive(timer) { _ in
                                 if !isComplete {
                                     timeRemaining -= 1
@@ -102,7 +103,8 @@ struct TimerView: View {
                         // 추가시간 늘어나는 타이머
                         HStack {
                             Text("+ \(convertSecondsToTime(timeInSecond: timeExtra))")
-                                .font(Font.pizzaTitleBold)
+                                .font(.system(size: 40))
+                                .fontWeight(.heavy)
                                 .onReceive(timer) { _ in
                                     if !isStart && !isComplete {
                                         timeExtra += 1
@@ -251,14 +253,14 @@ struct TimerView: View {
         }
     }
 }
-
+    
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             TimerView(todo: Todo(id: UUID().uuidString,
                                  content: "이력서 작성하기",
                                  startTime: Date(),
-                                 targetTime: 60,
+                                 targetTime: 3800,
                                  spendTime: Date() + 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
         }

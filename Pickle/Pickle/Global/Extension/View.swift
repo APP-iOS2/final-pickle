@@ -44,3 +44,23 @@ extension View {
     }
 
 }
+
+extension View {
+
+    /// Navigation Bar의 Appearence를 셋팅하는 함수, 현재는 고정값으로 되어있어서 함수 내부를 직접 수정해야함
+    func navigationAppearenceSetting() {
+        let appear = UINavigationBarAppearance()
+        
+        let atters: [NSAttributedString.Key: Any] = [
+            .font: UIFont.init(name: "NanumSquareNeo-aLt", size: 16)!
+        ]
+        
+        let large: [NSAttributedString.Key: Any]  = [.font: UIFont(name: "NanumSquareNeo-cBd", size: 27)!]
+
+        appear.largeTitleTextAttributes = large
+        appear.titleTextAttributes = atters
+        
+        UINavigationBar.appearance().standardAppearance = appear
+        UINavigationBar.appearance().compactAppearance = appear
+    }
+}

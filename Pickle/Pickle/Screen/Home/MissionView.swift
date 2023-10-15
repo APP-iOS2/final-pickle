@@ -12,12 +12,13 @@ import SwiftUI
 // 행동 섹션
 // 열
 
-// 미션 배치 (타임 + 행동)
-// 열
-
 struct MissionView: View {
     @EnvironmentObject var missionStore: MissionStore
     @State private var showsAlert: Bool = false
+    
+    // 앱 켰을때 날짜 기억
+    @State private var day: Date = Date()
+    // 설정
     
     @State private var timeMissions: [TimeMission] = [
         TimeMission(id: UUID().uuidString, title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
@@ -41,6 +42,20 @@ struct MissionView: View {
                 
                 Spacer()
             }
+        }
+        .onAppear {
+            // 시간 말고 날짜만 비교
+            if day != Date.now {
+                // 상태 초기화 후 날짜 다시 저장
+                
+                day = Date.now
+            }
+            
+            Task {
+                  let isSuccess = try await HealthKitStorage.shared.requestAuthorizationIfNeeded()
+                  // 권한을 허용했다는 여부는 아니다!
+                  print("성공 여부", isSuccess)
+                }
         }
         .refreshable {
             

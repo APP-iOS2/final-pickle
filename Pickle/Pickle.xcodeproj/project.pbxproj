@@ -78,6 +78,7 @@
 		96CF08EB2AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
 		96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
 		A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
+		B0B5E6BE2ADA5DE40096F677 /* HealthKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B5E6BD2ADA5DE40096F677 /* HealthKit.swift */; };
 		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
 		B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */; };
@@ -161,6 +162,9 @@
 		96CF08EC2AD90A7900648B59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
+		B0B5E6BB2ADA5A360096F677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pickle.entitlements; sourceTree = "<group>"; };
+		B0B5E6BD2ADA5DE40096F677 /* HealthKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKit.swift; sourceTree = "<group>"; };
 		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
 		B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAlert.swift; sourceTree = "<group>"; };
@@ -206,7 +210,8 @@
 		2137D5772AC1459C00AFE225 /* Pickle */ = {
 			isa = PBXGroup;
 			children = (
-				96CF08EC2AD90A7900648B59 /* Info.plist */,
+				B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */,
+				B0B5E6BB2ADA5A360096F677 /* Info.plist */,
 				21FA26752AC2A05E00877122 /* Global */,
 				2137D59D2AC149A200AFE225 /* Data */,
 				2137D58B2AC1474500AFE225 /* Screen */,
@@ -309,6 +314,7 @@
 				B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */,
 				960C41852ACE390A009A0093 /* URL.swift */,
 				2137D5A92AC14EA500AFE225 /* View.swift */,
+				B0B5E6BD2ADA5DE40096F677 /* HealthKit.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -613,6 +619,7 @@
 				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
 				96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
+				B0B5E6BE2ADA5DE40096F677 /* HealthKit.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
@@ -791,10 +798,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = 2JZ8QNS5D4;
+				DEVELOPMENT_TEAM = 7Y6TYDQ939;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;
@@ -822,10 +830,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = 2JZ8QNS5D4;
+				DEVELOPMENT_TEAM = 7Y6TYDQ939;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;

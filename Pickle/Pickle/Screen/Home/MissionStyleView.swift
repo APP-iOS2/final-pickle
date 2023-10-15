@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import HealthKit
 
 struct CustomToggleButton: View {
     @Binding var buttonTitle: String
@@ -203,14 +204,6 @@ struct BehaviorMissionStyleView: View {
     @State private var buttonToggle2: Bool = false
     @State private var buttonToggle3: Bool = false
     
-//    @State var title: String
-//    var status: String
-//    var date: String
-//    
-//    @State var myStep: Double
-//    @State var missionStep: Double
-//    @State private var changedMissionStep: Double
-    
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
@@ -327,12 +320,5 @@ struct MissionStyle_Previews: PreviewProvider {
         // .constant 고정값
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
                                  showsAlert: .constant(false))
-//        BehaviorMissionStyleView(title: "걷기 미션",
-//                                 status: "완료",
-//                                 date: "9/27",
-//                                 myStep: 5555.0,
-//                                 missionStep: 5000.0,
-//                                 changedMissionStep: 0.0, 
-//                                 showsAlert: .constant(false))
     }
 }

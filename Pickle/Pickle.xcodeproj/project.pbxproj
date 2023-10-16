@@ -159,7 +159,6 @@
 		96CF08E32AD9098400648B59 /* NanumSquareNeoOTF-Lt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Lt.otf"; sourceTree = "<group>"; };
 		96CF08E42AD9098400648B59 /* Chab.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chab.otf; sourceTree = "<group>"; };
 		96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Rg.otf"; sourceTree = "<group>"; };
-		96CF08EC2AD90A7900648B59 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
 		B0B5E6BB2ADA5A360096F677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -799,13 +798,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = 7Y6TYDQ939;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -817,8 +820,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sojung.Pickle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -831,13 +836,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = 7Y6TYDQ939;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -849,8 +858,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.sojung.Pickle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

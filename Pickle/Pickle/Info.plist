@@ -11,9 +11,5 @@
 		<string>NanumSquareNeoOTF-Rg.otf</string>
 		<string>Chab.otf</string>
 	</array>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
 </dict>
 </plist>

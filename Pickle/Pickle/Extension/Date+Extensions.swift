@@ -78,22 +78,11 @@ extension Date {
         return week
     }
     
-    func fetchMonth() -> [Date] {
-        let calendar = Calendar.autoupdatingCurrent
-        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
-        var range = calendar.range(of: .day, in: .month, for: startDate)!
-        range.removeLast()
-        return range.compactMap { day -> Date in
-            return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
-        }
-        
-    }
-    
     // MARK: - Creating Next Week, based on the Last Current Week's Date
     func createNextWeek() -> [WeekDay] {
         
         let calendar = Calendar.autoupdatingCurrent
-        let startOfLastDate = calendar.startOfDay(for: self)
+        let startOfLastDate = calendar.startOfDay(for: Date.now)
         
         guard let nextDate = calendar.date(byAdding: .day, value: 1, to: startOfLastDate) else {
             return []
@@ -107,7 +96,7 @@ extension Date {
     func createPreviousWeek() -> [WeekDay] {
         
         let calendar = Calendar.autoupdatingCurrent
-        let startOfFirstDate = calendar.startOfDay(for: self)
+        let startOfFirstDate = calendar.startOfDay(for: Date.now)
         
         guard let previousDate = calendar.date(byAdding: .day, value: -1, to: startOfFirstDate) else {
             return []
@@ -116,4 +105,25 @@ extension Date {
         return fetchWeek(previousDate)
         
     }
+
+    func fetchMonth() -> [Date] {
+        let calendar = Calendar.autoupdatingCurrent
+        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
+        let range = calendar.range(of: .day, in: .month, for: startDate)!
+        return range.compactMap { day -> Date in
+            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+        }
+        
+    }
+    
+//    func fetchWeek1() -> [Date] {
+//        let calendar = Calendar.autoupdatingCurrent
+//        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.weekOfMonth], from: self))!
+//        let range = calendar.range(of: .day, in: .weekOfMonth, for: startDate)!
+//        return range.compactMap { day -> Date in
+//            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+//        }
+//        
+//    }
+    
 }

@@ -11,11 +11,13 @@ class CalendarViewModel: ObservableObject {
     
     @Published var storedTasks: [CalendarSampleTask] = [
         
-        CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
+        CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(), isCompleted: true),
         CalendarSampleTask(calendarTitle: "ProtoType", calendarDescription: "Pizza", creationDate: Date()),
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
-        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
+        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -108000)),
+        CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -800000), isCompleted: true),
     ]
+    
     // MARK: - 초기화
     init() {
         fetchCurrentWeek()
@@ -31,6 +33,7 @@ class CalendarViewModel: ObservableObject {
     @Published var currentDay: Date = Date()
     
     @Published var currentMonthIndex: Int = 0
+    @Published var currentWeekIndex: Int = 0
     
     func fetchCurrentWeek() {
         let today = Date()
@@ -48,26 +51,20 @@ class CalendarViewModel: ObservableObject {
         }
     }
     
-//    func fetchCurrentMonth() -> [Date] {
-//        
-//        let calendar = Calendar.autoupdatingCurrent
-//        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonthIndex, to: Date()) else { return  [] }
-//        let result = currentMonth.fetchMonth()
-//        return result
-//        }
-
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
         
         let calendar  = Calendar.current
-        let filtered = self.storedTasks.filter {
-            return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
+        let filtered = storedTasks.filter {
+            
+         calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
+            
         }
-            .sorted { task1, task2 in
-                task1.creationDate < task2.creationDate
-            }
+//            .sorted { task1, task2 in
+//                task1.creationDate < task2.creationDate
+//            }
     
-        self.filteredTasks = filtered
+        self.filteredTasks = filtered.sorted(by: { $0.creationDate < $1.creationDate })
     
     }
     
@@ -79,6 +76,38 @@ class CalendarViewModel: ObservableObject {
         return formatter.string(from: date)
     }
     
+//    func getCurrentWeek() -> Date {
+//        
+//        let calendar = Calendar.autoupdatingCurrent
+//        
+//        guard let currentWeek =  calendar.date(byAdding: .weekOfMonth, value: self.currentWeekIndex, to: Date()) else { return Date() }
+//        
+//        return currentWeek
+//    }
+//    
+//    func extractWeek() -> [Date.WeekDay] {
+//        let calendar = Calendar.autoupdatingCurrent
+//        
+//        let currentWeek = getCurrentWeek()
+//        
+//        var resultWeek = currentWeek.fetchWeek1().compactMap { date -> Date.WeekDay in
+//            let day = calendar.component(.weekOfMonth, from: date)
+//            let resultDay = Date.WeekDay(date: date)
+//
+//            return resultDay
+//            
+//        }
+//        
+//        let firstWeekDay = calendar.component(.weekday, from: resultWeek.first?.date ?? Date())
+//        
+//        for _ in 0..<firstWeekDay - 1 {
+//            resultWeek.insert(Date.WeekDay(date: Date()), at: 0)
+//        }
+//  
+//        return resultWeek
+//    
+//    }
+    
     func getCurrentMonth() -> Date {
         
         let calendar = Calendar.autoupdatingCurrent
@@ -88,6 +117,7 @@ class CalendarViewModel: ObservableObject {
         return currentMonth
     }
     
+    //해당 월을 저장하기 위함
     func extractMonth() -> [Date.MonthDate] {
         let calendar = Calendar.autoupdatingCurrent
         
@@ -100,7 +130,13 @@ class CalendarViewModel: ObservableObject {
             return resultDay
             
         }
-        print(resultMonth)
+        
+        let firstWeekDay = calendar.component(.weekday, from: resultMonth.first?.date ?? Date())
+        
+        for _ in 0..<firstWeekDay - 1 {
+            resultMonth.insert(Date.MonthDate(day: -1, date: Date()), at: 0)
+        }
+  
         return resultMonth
     
     }
@@ -118,5 +154,6 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
-
+    
+   
 }

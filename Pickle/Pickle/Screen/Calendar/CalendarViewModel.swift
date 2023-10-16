@@ -16,9 +16,6 @@ class CalendarViewModel: ObservableObject {
         CalendarSampleTask(calendarTitle: "Not Current Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: 3000)),
         CalendarSampleTask(calendarTitle: "Past Task", calendarDescription: "Pizza", creationDate: Date(timeIntervalSinceNow: -8000)),
     ]
-    
-    
-    
     // MARK: - 초기화
     init() {
         fetchCurrentWeek()
@@ -28,10 +25,12 @@ class CalendarViewModel: ObservableObject {
     @Published var filteredTasks: [CalendarSampleTask]?
     // MARK: - Current Week Days
     @Published var currentWeek: [Date] = []
+    
+    @Published var currentMonth: [Date.MonthDate] = []
     // MARK: - Current Day
     @Published var currentDay: Date = Date()
     
-    @State var currentMonth: Int = 0
+    @Published var currentMonthIndex: Int = 0
     
     func fetchCurrentWeek() {
         let today = Date()
@@ -49,15 +48,14 @@ class CalendarViewModel: ObservableObject {
         }
     }
     
-    func fetchCurrentMonth() -> [Date] {
-        
-        let calendar = Calendar.autoupdatingCurrent
-        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return  [] }
-        let result = currentMonth.fetchMonth()
-        return result
-        }
-    
-    
+//    func fetchCurrentMonth() -> [Date] {
+//        
+//        let calendar = Calendar.autoupdatingCurrent
+//        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonthIndex, to: Date()) else { return  [] }
+//        let result = currentMonth.fetchMonth()
+//        return result
+//        }
+
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
         
@@ -81,6 +79,32 @@ class CalendarViewModel: ObservableObject {
         return formatter.string(from: date)
     }
     
+    func getCurrentMonth() -> Date {
+        
+        let calendar = Calendar.autoupdatingCurrent
+        
+        guard let currentMonth =  calendar.date(byAdding: .month, value: self.currentMonthIndex, to: Date()) else { return Date() }
+        
+        return currentMonth
+    }
+    
+    func extractMonth() -> [Date.MonthDate] {
+        let calendar = Calendar.autoupdatingCurrent
+        
+        let currentMonth = getCurrentMonth()
+        
+        var resultMonth = currentMonth.fetchMonth().compactMap { date -> Date.MonthDate in
+            let day = calendar.component(.day, from: date)
+            let resultDay = Date.MonthDate(day: day, date: date)
+
+            return resultDay
+            
+        }
+        print(resultMonth)
+        return resultMonth
+    
+    }
+    
     // MARK: - checking if current date is today or not
     func isToday(date: Date) -> Bool {
         let calendar = Calendar.current
@@ -94,10 +118,5 @@ class CalendarViewModel: ObservableObject {
         let currentHour = calendar.component(.hour, from: Date())
         return hour == currentHour
     }
-    
-//    func getCurrentMonth() -> Date {
-//        let calendar = Calendar.autoupdatingCurrent
-//        
-//        guard let currentMonth = calendar.date(byAdding: .month, value: self.current, to: <#T##Date#>)
-//    }
+
 }

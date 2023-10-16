@@ -25,7 +25,7 @@ extension Date {
         var date: Date
     }
     
-    struct MonthDate: Identifiable {
+    struct MonthDate: Identifiable, Hashable {
         var id = UUID().uuidString
         var day: Int
         var date: Date
@@ -83,7 +83,7 @@ extension Date {
         let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
         var range = calendar.range(of: .day, in: .month, for: startDate)!
         range.removeLast()
-        return range.compactMap{ day -> Date in
+        return range.compactMap { day -> Date in
             return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
         }
         

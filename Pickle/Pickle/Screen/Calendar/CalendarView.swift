@@ -51,9 +51,9 @@ struct CalendarView: View {
         .onChange(of: calendarModel.currentDay) { newValue in
             calendarModel.filterTodayTasks()
         }
-        .onChange(of: calendarModel.currentMonth) { newValue in
-            
-        }
+//        .onChange(of: calendarModel.currentMonth) { newValue in
+//            
+//        }
         
     }
     
@@ -119,7 +119,10 @@ struct CalendarView: View {
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                     
                     Button(action: {
-                        calendarModel.currentMonth -= 1
+                        withAnimation {
+                            calendarModel.currentMonthIndex -= 1
+                        }
+                        print(calendarModel.currentMonth)
                         
                     }, label: {
                         Image(systemName: "chevron.left")
@@ -129,10 +132,13 @@ struct CalendarView: View {
                     }, label: {
                         Text("오늘")
                             .font(.pizzaBody)
-                        //.fontWeight(.medium)
                     })
                     Button(action: {
-                        calendarModel.currentMonth += 1
+                        
+                        withAnimation {
+                            calendarModel.currentMonthIndex += 1
+                        }
+                        print(calendarModel.currentMonth)
                     }, label: {
                         Image(systemName: "chevron.right")
                     })
@@ -141,7 +147,7 @@ struct CalendarView: View {
                 
                 if weekToMonth {
                     
-                    MonthlyView()
+                    monthlyView()
                     
                 } else {
                     
@@ -242,70 +248,70 @@ struct CalendarView: View {
         }
         
     }
-
+    
     // MARK: - Montly View
     func monthlyView() -> some View {
         let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+        var dates = calendarModel.extractMonth()
         return VStack {
             HStack {
                 ForEach(days, id: \.self) { day in
-                    VStack(spacing: 8) {
-                        Text(day)
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundColor(.primary)
+                    Text(day)
+                        .frame(maxWidth: .infinity)
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
+                    
+                }
+            }
+                HStack {
+                    let colums = Array(repeating: GridItem(.flexible()), count: 7)
+                    LazyVGrid(columns: colums, spacing: 15) {
+                        
+                        ForEach(dates, id: \.self) { day in
+                            
+                            Text("\(day.day)")
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                        }
                         
                     }
-                    HStack {
-                        let colums = Array(repeating: GridItem(.flexible()), count: 7)
-                        LazyVGrid(columns: colums, spacing: 15) {
-                            
-                            ForEach(calendarModel.fetchCurrentMonth(), id: \.self) { day in
-                                
-                                Text(day.format("dd"))
-                                    .font(.callout)
-                                    .fontWeight(.semibold)
-                            }
-                            
-                        }
-                    }
-                    
+                }
+                .onChange(of: calendarModel.currentMonthIndex) { newValue in
+                    calendarModel.currentDay = calendarModel.getCurrentMonth()
                 }
                 
             }
-        }
-//        .onChange(of: calendarModel.currentMonth) { newValue in
-//            calendarModel.currentWeek = calendarModel.fetchCurrentMonth()
-//        
-//        }
-    }
             
-            // MARK: - TaskView
-            func taskView() -> some View {
-                VStack(alignment: .leading, spacing: 35) {
+        }
+
+    // MARK: - TaskView
+    func taskView() -> some View {
+        VStack(alignment: .leading, spacing: 35) {
+            
+            if let tasks = calendarModel.filteredTasks {
+                
+                if tasks.isEmpty {
                     
-                    if let tasks = calendarModel.filteredTasks {
-                        
-                        if tasks.isEmpty {
-                            
-                            Text("No Tasks Found!!!")
-                                .font(.system(size: 16))
-                                .fontWeight(.light)
-                                .offset(y: 100)
-                        } else {
-                            ForEach($tasks) { task in
-                                // TaskRowView
-                                TaskRowView(task: task)
-                            }
-                        }
-                    } else {
-                        ProgressView()
+                    Text("No Tasks Found!!!")
+                        .font(.system(size: 16))
+                        .fontWeight(.light)
+                        .offset(y: 100)
+                } else {
+                    ForEach($tasks) { task in
+                        // TaskRowView
+                        TaskRowView(task: task)
                     }
                 }
-                .padding([.vertical, .leading], 15)
+            } else {
+                ProgressView()
             }
-            
         }
+        .padding([.vertical, .leading], 15)
+    }
+}
+            
+
         
         struct CalendarView_Previews: PreviewProvider {
             static var previews: some View {

@@ -56,16 +56,16 @@ struct CustomButton: View {
 }
 
 struct MissionTextModifier: ViewModifier {
-  func body(content: Content) -> some View {
-      content
-          .font(.system(size: 15))
-          .frame(width: 70, height: 5)
-          .padding()
-          .background(.white)
-          .cornerRadius(30.0)
-          .overlay(RoundedRectangle(cornerRadius: 30.0)
-              .stroke(Color(.systemGray4), lineWidth: 0.5))
-  }
+    func body(content: Content) -> some View {
+        content
+            .font(.system(size: 15))
+            .frame(width: 70, height: 5)
+            .padding()
+            .background(.white)
+            .cornerRadius(30.0)
+            .overlay(RoundedRectangle(cornerRadius: 30.0)
+                .stroke(Color(.systemGray4), lineWidth: 0.5))
+    }
 }
 
 struct Line: Shape {
@@ -207,6 +207,8 @@ struct BehaviorMissionStyleView: View {
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
+    var healthKitStore: HealthKitStore
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -214,10 +216,15 @@ struct BehaviorMissionStyleView: View {
                     .font(.pizzaTitle2Bold)
                     .padding(.bottom, 1)
                 Spacer()
-                
-                Text("현재 \(lround(behaviorMission.myStep)) 걸음")
-                    .font(.pizzaBody)
-                    .foregroundColor(Color.black.opacity(0.6))
+                if let stepCount = healthKitStore.stepCount {
+                    Text("현재 \(stepCount) 걸음")
+                        .font(.pizzaBody)
+                        .foregroundColor(Color.black.opacity(0.6))
+                } else {
+                    Text("현재 0 걸음")
+                        .font(.pizzaBody)
+                        .foregroundColor(Color.black.opacity(0.6))
+                }
             }
             
             HStack {
@@ -304,6 +311,13 @@ struct BehaviorMissionStyleView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            healthKitStore.fetchStepCount()
+        }
+        .refreshable {
+            healthKitStore.fetchStepCount()
+        }
+        
         .padding()
         .background(Color(UIColor.systemGray6))
         .frame(minWidth: 0, maxWidth: .infinity)
@@ -319,6 +333,6 @@ struct MissionStyle_Previews: PreviewProvider {
         TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
         // .constant 고정값
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
-                                 showsAlert: .constant(false))
+                                 showsAlert: .constant(false), healthKitStore: HealthKitStore())
     }
 }

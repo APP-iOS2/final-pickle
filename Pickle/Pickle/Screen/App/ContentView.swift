@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
+    var healthKitStore: HealthKitStore = HealthKitStore()
 
     var body: some View {
         TabView {
@@ -35,6 +36,13 @@ struct ContentView: View {
                 Label("설정", systemImage: "gearshape")
                     .environment(\.symbolVariants, .none)
             }.tag(2)
+        }
+        .onAppear {
+            healthKitStore.requestAuthorization { success in
+                if success {
+                    healthKitStore.fetchStepCount()
+                }
+            }
         }
         .fullScreenCover(isPresented: $isOnboardingViewActive) {
             SetNotiView(isShowingOnboarding: $isOnboardingViewActive)

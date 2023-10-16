@@ -18,7 +18,6 @@ struct HomeView: View {
     let goalTotal: Double = 8
     
     @EnvironmentObject var todoStore: TodoStore
-    var healthKitStore: HealthKitStore = HealthKitStore()
     
     var body: some View {
         ScrollView {
@@ -73,13 +72,6 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $isShowingEditTodo) {
             AddTodoView(isShowingEditTodo: $isShowingEditTodo,
                         todo: $seletedTodo)
-        }
-        .onAppear {
-            healthKitStore.requestAuthorization { success in
-                if success {
-                    healthKitStore.fetchStepCount()
-                }
-            }
         }
     }
     

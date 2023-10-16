@@ -14,6 +14,7 @@ import SwiftUI
 
 struct MissionView: View {
     @EnvironmentObject var missionStore: MissionStore
+    var healthKitStore: HealthKitStore = HealthKitStore()
     @State private var showsAlert: Bool = false
     
     // 앱 켰을때 날짜 기억
@@ -37,7 +38,7 @@ struct MissionView: View {
                 }
                 
                 ForEach($behaviorMissions) { behaviorMission in
-                    BehaviorMissionStyleView(behaviorMission: behaviorMission, showsAlert: $showsAlert)
+                    BehaviorMissionStyleView(behaviorMission: behaviorMission, showsAlert: $showsAlert, healthKitStore: healthKitStore)
                 }
                 
                 Spacer()
@@ -50,12 +51,6 @@ struct MissionView: View {
                 
                 day = Date.now
             }
-            
-            Task {
-                  let isSuccess = try await HealthKitStorage.shared.requestAuthorizationIfNeeded()
-                  // 권한을 허용했다는 여부는 아니다!
-                  print("성공 여부", isSuccess)
-                }
         }
         .refreshable {
             

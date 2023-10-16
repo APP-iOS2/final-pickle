@@ -69,7 +69,7 @@ struct TodoCellView_Previews: PreviewProvider {
                                 content: "이력서 작성하기",
                                 startTime: Date(),
                                 targetTime: 3600,
-                                spendTime: Date() + 5400,
+                                spendTime: 5400,
                                 status: .ready))
     }
 }

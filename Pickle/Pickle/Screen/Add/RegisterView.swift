@@ -91,7 +91,7 @@ struct RegisterView: View {
                     content: content,
                     startTime: startTime,
                     targetTime: resultTime.timeIntervalSince(startTime),
-                    spendTime: startTime,
+                    spendTime: 0,
                     status: .ready)
     }
     

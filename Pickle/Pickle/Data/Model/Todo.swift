@@ -12,8 +12,8 @@ struct Todo: Identifiable {
     let id: String
     var content: String
     var startTime: Date     // 시작 시간 (15시부터)
-    var targetTime: TimeInterval    // 목표 시간 (16시까지)
-    var spendTime: Date     // 실제 종료 시간 (16시반까지)
+    var targetTime: TimeInterval    // 목표 소요 시간 ex) 30분
+    var spendTime: TimeInterval     // 실제 소요 시간 ex) 32분
     var status: TodoStatus
 }
 
@@ -93,7 +93,7 @@ extension Todo {
                                     content: "",
                                     startTime: Date(),
                                     targetTime: 0,
-                                    spendTime: Date(),
+                                    spendTime: 10,
                                     status: .ready)
 }
 let sampleTodoList: [Todo] = [
@@ -101,18 +101,18 @@ let sampleTodoList: [Todo] = [
          content: "이력서 작성하기",
          startTime: Date(),
          targetTime: 3600,
-         spendTime: Date() + 5400,
+         spendTime: 5400,
          status: .ready),
     Todo(id: UUID().uuidString,
          content: "ADS 작성하기",
          startTime: Date(),
          targetTime: 1800,
-         spendTime: Date() + 1800,
+         spendTime: 1800,
          status: .ready),
     Todo(id: UUID().uuidString,
          content: "Readme 작성하기",
          startTime: Date(),
          targetTime: 5400,
-         spendTime: Date() + 3600,
+         spendTime: 3600,
          status: .ready),
 ]

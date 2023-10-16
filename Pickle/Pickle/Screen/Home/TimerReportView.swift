@@ -72,7 +72,7 @@ struct TimerReportView: View {
                         HStack {
                             Text("종료 시간")
                             Spacer()
-                            Text("\(todo.spendTime.format("a hh:mm"))")
+                            Text("\((todo.startTime + spendTime).format("a hh:mm"))")
                         }
                     }
                     .font(.pizzaTitle2Bold)
@@ -119,7 +119,7 @@ struct TimerReportView_Previews: PreviewProvider {
                                    content: "이력서 작성하기",
                                    startTime: Date(),
                                    targetTime: 60,
-                                   spendTime: Date() + 5400,
+                                   spendTime: 5400,
                                    status: .ready),
                         spendTime: 603)
         

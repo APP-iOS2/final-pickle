@@ -260,9 +260,10 @@ struct TimerView_Previews: PreviewProvider {
             TimerView(todo: Todo(id: UUID().uuidString,
                                  content: "이력서 작성하기",
                                  startTime: Date(),
-                                 targetTime: 3800,
-                                 spendTime: Date() + 5400,
+                                 targetTime: 60,
+                                 spendTime: 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
+                .environmentObject(TodoStore())
         }
     }
 }

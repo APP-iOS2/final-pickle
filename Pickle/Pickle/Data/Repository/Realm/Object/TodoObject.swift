@@ -14,13 +14,13 @@ class TodoObject: Object, Identifiable {
     @Persisted var content: String
     @Persisted var startTime: Date
     @Persisted var targetTime: TimeInterval
-    @Persisted var spendTime: Date
+    @Persisted var spendTime: TimeInterval
     @Persisted var status: TodoStatusPersisted
     
     convenience init(content: String,
                      startTime: Date,
                      targetTime: TimeInterval,
-                     spendTime: Date,
+                     spendTime: TimeInterval,
                      status: TodoStatusPersisted) {
         self.init()
         self.content = content
@@ -34,7 +34,7 @@ class TodoObject: Object, Identifiable {
                      content: String,
                      startTime: Date,
                      targetTime: TimeInterval,
-                     spendTime: Date,
+                     spendTime: TimeInterval,
                      status: TodoStatusPersisted) {
         self.init(content: content,
                   startTime: startTime,

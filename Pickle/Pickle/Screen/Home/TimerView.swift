@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimerView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var todoStore: TodoStore
     
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -43,7 +44,7 @@ struct TimerView: View {
                     .padding(.bottom, 40)
             } else {
                 Text(todo.content)
-                    .font(Font.pizzaTitleBold)
+                    .font(Font.system(size: 28, weight: .bold))
                     .padding(.top)
                 
                 // TODO: RegisterView처럼 랜덤으로 바꿔주기
@@ -129,6 +130,7 @@ struct TimerView: View {
                         isShowGiveupAlert = true
                         isComplete = true
                     } else {
+                        updateDone(spendTime: spendTime)
                         isShowingReportSheet = true
                         isComplete = true
                     }
@@ -145,6 +147,7 @@ struct TimerView: View {
                 
                 Button(action: {
                     // 포기 alert띄우기
+                    updateGiveup(spendTime: spendTime)
                     isGiveupSign = true
                     isShowGiveupAlert = true
                 }, label: {
@@ -192,8 +195,38 @@ struct TimerView: View {
         }
         // TimerReportView Sheet로!
         .sheet(isPresented: $isShowingReportSheet) {
-            TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo, spendTime: spendTime)
+            TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
         }
+    }
+    
+    func updateStart() {
+        let todo = Todo(id: todo.id,
+                        content: todo.content,
+                        startTime: Date(),
+                        targetTime: todo.targetTime,
+                        spendTime: todo.spendTime,
+                        status: .ongoing)
+        todoStore.update(todo: todo)
+    }
+    
+    func updateGiveup(spendTime: TimeInterval) {
+        let todo = Todo(id: todo.id,
+                        content: todo.content,
+                        startTime: todo.startTime,
+                        targetTime: todo.targetTime,
+                        spendTime: spendTime,
+                        status: .giveUp)
+        todoStore.update(todo: todo)
+    }
+    
+    func updateDone(spendTime: TimeInterval) {
+        let todo = Todo(id: todo.id,
+                        content: todo.content,
+                        startTime: todo.startTime,
+                        targetTime: todo.targetTime,
+                        spendTime: spendTime,
+                        status: .done)
+        todoStore.update(todo: todo)
     }
     
     // TODO: 한시간 안넘어가면 분, 초 만 보여주기
@@ -231,8 +264,7 @@ struct TimerView: View {
     // 남은 시간 계산하기
     func calcRemain() {
         isStart = false
-        // TODO: targetTime 초? or 분?
-        // TODO: 여기서 시작시간 update
+        updateStart()
         self.settingTime = todo.targetTime
         self.timeRemaining = settingTime
     }
@@ -260,9 +292,10 @@ struct TimerView_Previews: PreviewProvider {
             TimerView(todo: Todo(id: UUID().uuidString,
                                  content: "이력서 작성하기",
                                  startTime: Date(),
-                                 targetTime: 3800,
-                                 spendTime: Date() + 5400,
+                                 targetTime: 60,
+                                 spendTime: 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
+                .environmentObject(TodoStore())
         }
     }
 }

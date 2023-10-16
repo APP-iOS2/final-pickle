@@ -10,74 +10,82 @@ import SwiftUI
 struct TimerReportView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var todoStore: TodoStore
     
     @Binding var isShowingReportSheet: Bool
     @Binding var isComplete: Bool
     @Binding var isShowingTimerView: Bool
     
     var todo: Todo
-    var spendTime: TimeInterval
     
     var body: some View {
         VStack {
-            Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
-                .font(Font.pizzaHeadlineBold)
-                .padding()
+            if todo.spendTime >= 60{
+                Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
+                    .font(.pizzaBody)
+                    .padding()
+                
+                Image("smilePizza")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: .screenWidth * 0.75)
+            } else {
+                Text("다음에는 피자 조각을 얻어봐요")
+                    .font(.pizzaBody)
+                    .padding()
+            }
             
-            Image("smilePizza")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: .screenWidth * 0.75)
-
             VStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.quaternary)
-                        .frame(height: 80)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
+                VStack {
                     Group {
                         HStack {
-                            Text("총 소요 시간")
+                            Text("목표 시간")
                             Spacer()
-                            Text(convertSecondsToTime(timeInSecond: Int(spendTime)))
+                            Text(convertSecondsToTime(timeInSecond: Int(todo.targetTime)))
+                        }
+                        HStack {
+                            Text("소요 시간")
+                            Spacer()
+                            Text(convertSecondsToTime(timeInSecond: Int(todo.spendTime)))
                         }
                     }
-                    .font(.pizzaTitle2Bold)
-                    .padding(.horizontal, 40)
+                    .font(.pizzaBody)
+                    .padding(.horizontal, 5)
+                    .padding()
                 }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.quaternary)
-                        .frame(height: 80)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
+                .clipShape(RoundedRectangle(cornerRadius: 12)) // clip corners
+                .background(
+                    RoundedRectangle(cornerRadius: 12) // stroke border
+                        .stroke(.quaternary, lineWidth: 1)
+                )
+                .padding(.horizontal, .screenWidth * 0.1)
+                .padding(.bottom)
+                
+                VStack {
                     Group {
                         HStack {
                             Text("시작 시간")
                             Spacer()
                             Text("\(todo.startTime.format("a hh:mm"))")
                         }
-                    }
-                    .font(.pizzaTitle2Bold)
-                    .padding(.horizontal, 40)
-                }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(.quaternary)
-                        .frame(height: 80)
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
-                    Group {
                         HStack {
                             Text("종료 시간")
                             Spacer()
-                            Text("\(todo.spendTime.format("a hh:mm"))")
+                            Text("\((todo.startTime + todo.spendTime).format("a hh:mm"))")
                         }
                     }
-                    .font(.pizzaTitle2Bold)
-                    .padding(.horizontal, 40)
+                    .font(.pizzaBody)
+                    .padding(.horizontal, 5)
+                    .padding()
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 12)) // clip corners
+                .background(
+                    RoundedRectangle(cornerRadius: 12) // stroke border
+                        .stroke(.quaternary, lineWidth: 1)
+                )
+                .padding(.horizontal, .screenWidth * 0.1)
+                .padding(.bottom)
+                
             }
             
             Button(action: {
@@ -86,7 +94,7 @@ struct TimerReportView: View {
                 dismiss()
             }, label: {
                 Text("확인")
-                    .font(.title3)
+                    .font(.pizzaBody)
                     .bold()
                     .padding(.vertical, 8)
                     .frame(width: .screenWidth * 0.2)
@@ -97,31 +105,29 @@ struct TimerReportView: View {
             .tint(.primary)
         }
         .onAppear {
-            isComplete = true
+           isComplete = true
+        }
+        .task {
+            await todoStore.fetch()
         }
     }
+    
     func convertSecondsToTime(timeInSecond: Int) -> String {
-        let hours = timeInSecond / 3600 // 시
-        let minutes = (timeInSecond - hours*3600) / 60 // 분
-        let seconds = timeInSecond % 60 // 초
+        let minutes = timeInSecond / 60 // 분
+        return String(format: "%02i분 ", minutes)
         
-        if timeInSecond >= 3600 {
-            return String(format: "%02i시간 %02i분 %02i초", hours, minutes, seconds)
-        } else {
-            return String(format: "%02i분 %02i초", minutes, seconds)
-        }
     }
 }
 
 struct TimerReportView_Previews: PreviewProvider {
     static var previews: some View {
         TimerReportView(isShowingReportSheet: .constant(false), isComplete: .constant(false), isShowingTimerView: .constant(false), todo: Todo(id: UUID().uuidString,
-                                   content: "이력서 작성하기",
-                                   startTime: Date(),
-                                   targetTime: 60,
-                                   spendTime: Date() + 5400,
-                                   status: .ready),
-                        spendTime: 603)
+                                                                                                                                               content: "이력서 작성하기",
+                                                                                                                                               startTime: Date(),
+                                                                                                                                               targetTime: 60,
+                                                                                                                                               spendTime: 5400,
+                                                                                                                                               status: .ready))
+        .environmentObject(TodoStore())
         
     }
 }

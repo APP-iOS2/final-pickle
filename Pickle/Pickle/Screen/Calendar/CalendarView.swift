@@ -30,23 +30,23 @@ struct CalendarView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .onAppear {
-            
-            if weekSlider.isEmpty {
-                let currentWeek = Date().fetchWeek()
-                
-                if let firstDate = currentWeek.first?.date {
-                    
-                    weekSlider.append(firstDate.createPreviousWeek())
-                }
-                weekSlider.append(currentWeek)
-                
-                if let lastDate = currentWeek.last?.date {
-                    weekSlider.append(lastDate.createNextWeek())
-                    
-                }
-            }
-        }
+        //        .onAppear {
+        //
+        //            if weekSlider.isEmpty {
+        //                let currentWeek = Date().fetchWeek()
+        //
+        //                if let firstDate = currentWeek.first?.date {
+        //
+        //                    weekSlider.append(firstDate.createPreviousWeek())
+        //                }
+        //                weekSlider.append(currentWeek)
+        //
+        //                if let lastDate = currentWeek.last?.date {
+        //                    weekSlider.append(lastDate.createNextWeek())
+        //
+        //                }
+        //            }
+        //        }
         .onChange(of: calendarModel.currentDay) { newValue in
             calendarModel.filterTodayTasks()
         }
@@ -76,6 +76,7 @@ struct CalendarView: View {
     //                weekSlider.removeFirst()
     //
     //                currentWeekIndex = weekSlider.count - 2
+    //            }
     //            }
     //
     //        }
@@ -107,9 +108,9 @@ struct CalendarView: View {
                     Button(action: {
                         print("주간")
                         weekToMonth.toggle()
-                        print(weekToMonth)
+                        
                     }, label: {
-                        Text("주간")
+                        weekToMonth == true ? Text("월") : Text("주")
                             .font(.headline)
                             .bold()
                     })
@@ -118,27 +119,42 @@ struct CalendarView: View {
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                     
                     Button(action: {
-                        calendarModel.currentMonthIndex -= 1
+                        if weekToMonth {
+                            calendarModel.currentMonthIndex -= 1
+                            
+                        } else {
+                            calendarModel.currentWeekIndex -= 1
+                            calendarModel.createPreviousWeek()
+                        }
                         
                     }, label: {
                         Image(systemName: "chevron.left")
                     })
                     Button(action: {
-                        calendarModel.currentMonthIndex = 0
-                        calendarModel.currentDay = Date()
+                        
+                        calendarModel.resetForTodayButton()
+                        
                     }, label: {
                         Text("오늘")
                             .font(.pizzaBody)
                         
                     })
                     Button(action: {
-                        calendarModel.currentMonthIndex += 1
+                        if weekToMonth {
+                            calendarModel.currentMonthIndex += 1
+                        } else {
+                            calendarModel.currentWeekIndex += 1
+                            calendarModel.createNextWeek()
+                        }
                     }, label: {
                         Image(systemName: "chevron.right")
                     })
                     
                 }
-                monthlyView()
+                if weekToMonth {
+                    
+                    monthlyView()
+                } else { WeekView(calendarModel.currentWeek)}
             }
             .hLeading()
         }
@@ -155,74 +171,50 @@ struct CalendarView: View {
     
     // MARK: - Week View
     @ViewBuilder
-    func WeekView(_ week: [Date.WeekDay]) -> some View {
+    func WeekView(_ week: [Date]) -> some View {
         HStack(spacing: 0) {
-            ForEach(week) { day in
+            ForEach(week, id:\.self) { day in
                 VStack(spacing: 8) {
-                    Text(day.date.format("E"))
+                    Text(day.format("E"))
                         .font(.callout)
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
                     
-                    Text(day.date.format("dd"))
+                    Text(day.format("dd"))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
+                        .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .black : .gray)
                         .frame(width: 35, height: 35)
-                        .background {
-                            
-                            if isSameDate(day.date, date2: calendarModel.currentDay) {
+                        .background{
+                            if isSameDate(day, date2: calendarModel.currentDay) {
                                 Circle()
                                     .fill(Color.orange)
-                                
                             }
-                            // MARK: - Indicator to show, which one is Today
-                            if day.date.isToday {
+                            
+                            if day.isToday {
                                 Circle()
                                     .fill(Color.blue)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
                                     .offset(y: -66)
                             }
-                            Circle()
-                                .fill(Color.red)
-                                .frame(width: 5, height: 5)
-                                .vSpacing(.bottom)
-                                .offset(y: 12)
-                            
                         }
+                    
                         .background(.white.shadow(.drop(radius: 1)), in: .circle)
                 }
                 .hCenter()
                 .contentShape(.rect)
-                //                .onTapGesture {
-                //
-                //                    // MARK: - Updating Current Date
-                //                    withAnimation(.snappy) {
-                //                        calendarModel.currentDay = day.date
-                //                    }
-                //                }
+                .onTapGesture {
+                    
+                    // MARK: - Updating Current Date
+                    withAnimation(.snappy) {
+                        calendarModel.currentDay = day
+                    }
+                }
                 
             }
             
         }
-        //        .background {
-        //            GeometryReader {
-        //                let minX = $0.frame(in: .global).minX
-        //
-        //                Color.clear
-        //                    .preference(key: OffsetKey.self, value: minX)
-        //                    .onPreferenceChange(OffsetKey.self) { value in
-        //                        // MARK: - when the offset reaches 15 and the createweek is toggled then generating next set of week
-        //                        if value.rounded() == 15 && createWeek {
-        //                            paginationWeek()
-        //                            print("Generate")
-        //                            createWeek =  false
-        //                        }
-        //                    }
-        //            }
-        //        }
-        
     }
     
     // MARK: - Montly View
@@ -289,17 +281,16 @@ struct CalendarView: View {
             .onChange(of: calendarModel.currentMonthIndex) { newValue in
                 calendarModel.currentDay = calendarModel.getCurrentMonth()
             }
-            
         }
         
     }
     // MARK: - TaskView
     func taskView() -> some View {
-
+        
         VStack(alignment: .leading, spacing: 35) {
-
+            
             ForEach(calendarModel.filteredTasks!) { task in
-
+                
                 TaskRowView(task: task)
             }
         }

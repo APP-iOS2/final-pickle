@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NanumSquareNeoOTF-Bd.otf</string>
@@ -11,9 +15,5 @@
 		<string>NanumSquareNeoOTF-Rg.otf</string>
 		<string>Chab.otf</string>
 	</array>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>건강 데이터를 조회할 때 사용되는 필요한 권한입니다.</string>
 </dict>
 </plist>

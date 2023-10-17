@@ -23,6 +23,9 @@ extension Color {
         return Color(hex: 0x707072)
     }
     
+    static var pickle: Color {
+        return Color.init(hex: 0x359059)
+    }
     
 }
 

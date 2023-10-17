@@ -14,8 +14,7 @@ struct CalendarView: View {
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     
-    @State private var tasks = CalendarViewModel().storedTasks.sorted { $0.creationDate < $1.creationDate
-    }
+    @State private var tasks = CalendarViewModel().filteredTasks
     
     @Namespace private var animation
     
@@ -31,57 +30,58 @@ struct CalendarView: View {
             }
             .scrollIndicators(.hidden)
         }
-        .onAppear {
-            
-            if weekSlider.isEmpty {
-                let currentWeek = Date().fetchWeek()
-                
-                if let firstDate = currentWeek.first?.date {
-                    
-                    weekSlider.append(firstDate.createPreviousWeek())
-                }
-                weekSlider.append(currentWeek)
-                
-                if let lastDate = currentWeek.last?.date {
-                    weekSlider.append(lastDate.createNextWeek())
-                    
-                }
-            }
-        }
+        //        .onAppear {
+        //
+        //            if weekSlider.isEmpty {
+        //                let currentWeek = Date().fetchWeek()
+        //
+        //                if let firstDate = currentWeek.first?.date {
+        //
+        //                    weekSlider.append(firstDate.createPreviousWeek())
+        //                }
+        //                weekSlider.append(currentWeek)
+        //
+        //                if let lastDate = currentWeek.last?.date {
+        //                    weekSlider.append(lastDate.createNextWeek())
+        //
+        //                }
+        //            }
+        //        }
         .onChange(of: calendarModel.currentDay) { newValue in
             calendarModel.filterTodayTasks()
         }
-        .onChange(of: calendarModel.currentMonth) { newValue in
-            
-        }
+        //        .onChange(of: calendarModel.currentMonth) { newValue in
+        //
+        //        }
         
     }
     
-    func paginationWeek() {
-        
-        // MARK: - safe check
-        if weekSlider.indices.contains(currentWeekIndex) {
-            if let firstDate =  weekSlider[currentWeekIndex].first?.date, currentWeekIndex == 0 {
-                
-                // MARK: - inserting new week at 0th index and removing last arry item
-                weekSlider.insert(firstDate.createPreviousWeek(), at: 0 )
-                weekSlider.removeLast()
-                currentWeekIndex = 1
-                
-            }
-            
-            if let lastDate = weekSlider[currentWeekIndex].last?.date, currentWeekIndex == (weekSlider.count - 1) {
-                
-                // MARK: - Appending new week at last index and removing first arry item
-                weekSlider.append(lastDate.createNextWeek())
-                weekSlider.removeFirst()
-                
-                currentWeekIndex = weekSlider.count - 2
-            }
-            
-        }
-        
-    }
+    //    func paginationWeek() {
+    //
+    //        // MARK: - safe check
+    //        if weekSlider.indices.contains(currentWeekIndex) {
+    //            if let firstDate =  weekSlider[currentWeekIndex].first?.date, currentWeekIndex == 0 {
+    //
+    //                // MARK: - inserting new week at 0th index and removing last arry item
+    //                weekSlider.insert(firstDate.createPreviousWeek(), at: 0 )
+    //                weekSlider.removeLast()
+    //                currentWeekIndex = 1
+    //
+    //            }
+    //
+    //            if let lastDate = weekSlider[currentWeekIndex].last?.date, currentWeekIndex == (weekSlider.count - 1) {
+    //
+    //                // MARK: - Appending new week at last index and removing first arry item
+    //                weekSlider.append(lastDate.createNextWeek())
+    //                weekSlider.removeFirst()
+    //
+    //                currentWeekIndex = weekSlider.count - 2
+    //            }
+    //            }
+    //
+    //        }
+    //
+    //    }
     
     // MARK: - Header 뷰
     @ViewBuilder
@@ -108,9 +108,9 @@ struct CalendarView: View {
                     Button(action: {
                         print("주간")
                         weekToMonth.toggle()
-                        print(weekToMonth)
+                        
                     }, label: {
-                        Text("주간")
+                        weekToMonth == true ? Text("월") : Text("주")
                             .font(.headline)
                             .bold()
                     })
@@ -119,96 +119,87 @@ struct CalendarView: View {
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                     
                     Button(action: {
-                        calendarModel.currentMonth -= 1
+                        if weekToMonth {
+                            calendarModel.currentMonthIndex -= 1
+                            
+                        } else {
+                            calendarModel.currentWeekIndex -= 1
+                            calendarModel.createPreviousWeek()
+                        }
                         
                     }, label: {
                         Image(systemName: "chevron.left")
                     })
                     Button(action: {
-                        print("오늘주로")
+                        
+                        calendarModel.resetForTodayButton()
+                        
                     }, label: {
                         Text("오늘")
                             .font(.pizzaBody)
-                        //.fontWeight(.medium)
+                        
                     })
                     Button(action: {
-                        calendarModel.currentMonth += 1
+                        if weekToMonth {
+                            calendarModel.currentMonthIndex += 1
+                        } else {
+                            calendarModel.currentWeekIndex += 1
+                            calendarModel.createNextWeek()
+                        }
                     }, label: {
                         Image(systemName: "chevron.right")
                     })
                     
                 }
-                
                 if weekToMonth {
                     
-                    MonthlyView()
-                    
-                } else {
-                    
-                    TabView(selection: $currentWeekIndex) {
-                        ForEach(weekSlider.indices, id: \.self) { index in
-                            let week = weekSlider[index]
-                            WeekView(week)
-                                .tag(index)
-                        }
-                        
-                    }
-                    .padding(.horizontal, -10)
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(height: 90)
-                }
+                    monthlyView()
+                } else { WeekView(calendarModel.currentWeek)}
             }
             .hLeading()
         }
         .padding()
         .hSpacing(.leading)
-        .onChange(of: currentWeekIndex) { newValue in
-            
-            // MARK: - Creating when it reaches first/last page
-            if newValue == 0 || newValue == (weekSlider.count - 1) {
-                createWeek = true
-            }
-        }
+        //        .onChange(of: currentWeekIndex) { newValue in
+        //
+        //            // MARK: - Creating when it reaches first/last page
+        //            if newValue == 0 || newValue == (weekSlider.count - 1) {
+        //                createWeek = true
+        //            }
+        //        }
     }
     
     // MARK: - Week View
     @ViewBuilder
-    func WeekView(_ week: [Date.WeekDay]) -> some View {
+    func WeekView(_ week: [Date]) -> some View {
         HStack(spacing: 0) {
-            ForEach(week) { day in
+            ForEach(week, id:\.self) { day in
                 VStack(spacing: 8) {
-                    Text(day.date.format("E"))
+                    Text(day.format("E"))
                         .font(.callout)
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
                     
-                    Text(day.date.format("dd"))
+                    Text(day.format("dd"))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
+                        .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .black : .gray)
                         .frame(width: 35, height: 35)
-                        .background {
-                            
-                            if isSameDate(day.date, date2: calendarModel.currentDay) {
+                        .background{
+                            if isSameDate(day, date2: calendarModel.currentDay) {
                                 Circle()
                                     .fill(Color.orange)
-                                
                             }
-                            // MARK: - Indicator to show, which one is Today
-                            if day.date.isToday {
+                            
+                            if day.isToday {
                                 Circle()
                                     .fill(Color.blue)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
                                     .offset(y: -66)
                             }
-                            Circle()
-                                .fill(Color.red)
-                                .frame(width: 5, height: 5)
-                                .vSpacing(.bottom)
-                                .offset(y: 12)
-                            
                         }
+                    
                         .background(.white.shadow(.drop(radius: 1)), in: .circle)
                 }
                 .hCenter()
@@ -217,132 +208,122 @@ struct CalendarView: View {
                     
                     // MARK: - Updating Current Date
                     withAnimation(.snappy) {
-                        calendarModel.currentDay = day.date
+                        calendarModel.currentDay = day
                     }
                 }
                 
             }
             
         }
-        .background {
-            GeometryReader {
-                let minX = $0.frame(in: .global).minX
-                
-                Color.clear
-                    .preference(key: OffsetKey.self, value: minX)
-                    .onPreferenceChange(OffsetKey.self) { value in
-                        // MARK: - when the offset reaches 15 and the createweek is toggled then generating next set of week
-                        if value.rounded() == 15 && createWeek {
-                            paginationWeek()
-                            print("Generate")
-                            createWeek =  false
-                        }
-                    }
-            }
-        }
-        
     }
-
+    
     // MARK: - Montly View
     func monthlyView() -> some View {
         let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+        let dates = calendarModel.extractMonth()
         return VStack {
+            
             HStack {
                 ForEach(days, id: \.self) { day in
-                    VStack(spacing: 8) {
-                        Text(day)
-                            .font(.callout)
-                            .fontWeight(.medium)
-                            .foregroundColor(.primary)
-                        
-                    }
-                    HStack {
-                        let colums = Array(repeating: GridItem(.flexible()), count: 7)
-                        LazyVGrid(columns: colums, spacing: 15) {
-                            
-                            ForEach(calendarModel.fetchCurrentMonth(), id: \.self) { day in
-                                
-                                Text(day.format("dd"))
-                                    .font(.callout)
-                                    .fontWeight(.semibold)
-                            }
-                            
-                        }
-                    }
+                    Text(day)
+                        .frame(maxWidth: .infinity)
+                        .font(.callout)
+                        .fontWeight(.medium)
+                        .foregroundColor(.primary)
                     
                 }
-                
             }
-        }
-//        .onChange(of: calendarModel.currentMonth) { newValue in
-//            calendarModel.currentWeek = calendarModel.fetchCurrentMonth()
-//        
-//        }
-    }
-            
-            // MARK: - TaskView
-            func taskView() -> some View {
-                VStack(alignment: .leading, spacing: 35) {
+            HStack {
+                let colums = Array(repeating: GridItem(.flexible()), count: 7)
+                LazyVGrid(columns: colums, spacing: 15) {
                     
-                    if let tasks = calendarModel.filteredTasks {
+                    ForEach(dates, id: \.self) { day in
                         
-                        if tasks.isEmpty {
+                        if day.day == -1 {
+                            Text("")
                             
-                            Text("No Tasks Found!!!")
-                                .font(.system(size: 16))
-                                .fontWeight(.light)
-                                .offset(y: 100)
                         } else {
-                            ForEach($tasks) { task in
-                                // TaskRowView
-                                TaskRowView(task: task)
-                            }
+                            Text("\(day.day)")
+                                .font(.callout)
+                                .fontWeight(.semibold)
+                                .background {
+                                    
+                                    if isSameDate(day.date, date2: calendarModel.currentDay) {
+                                        Circle()
+                                            .fill(Color.orange)
+                                    }
+                                    
+                                    // MARK: - Indicator to show, which one is Today
+                                    if day.date.isToday {
+                                        Circle()
+                                            .fill(Color.blue)
+                                            .frame(width: 5, height: 5)
+                                            .vSpacing(.bottom)
+                                            .offset(y: -22)
+                                    }
+                                    
+                                }
+                                .onTapGesture {
+                                    
+                                    // MARK: - Updating Current Date
+                                    withAnimation(.snappy) {
+                                        calendarModel.currentDay = day.date
+                                    }
+                                }
                         }
-                    } else {
-                        ProgressView()
+                        
                     }
+                    .padding(.vertical, 8)
+                    .frame(height: 30)
+                    
                 }
-                .padding([.vertical, .leading], 15)
             }
-            
-        }
-        
-        struct CalendarView_Previews: PreviewProvider {
-            static var previews: some View {
-                CalendarView()
+            .onChange(of: calendarModel.currentMonthIndex) { newValue in
+                calendarModel.currentDay = calendarModel.getCurrentMonth()
             }
         }
         
-        extension View {
-            func hLeading() -> some View {
-                self
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-            }
-            func hTrailing() -> some View {
-                self
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                
-            }
-            func hCenter() -> some View {
-                self
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
-                
-            }
+    }
+    // MARK: - TaskView
+    func taskView() -> some View {
+        
+        VStack(alignment: .leading, spacing: 35) {
             
-            // MARK: - Checking Two dates are same
-            func isSameDate(_ date1: Date, date2: Date) -> Bool {
-                return Calendar.current.isDate(date1, inSameDayAs: date2)
+            ForEach(calendarModel.filteredTasks!) { task in
+                
+                TaskRowView(task: task)
             }
-            
-            // MARK: - Safe Area
-            //    func getSafeArea() -> UIEdgeInsets {
-            //        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            //            return .zero
-            //        }
-            //        guard let safeArea = screen.windows.first?.safeAreaInsets else {
-            //            return .zero
-            //        }
-            //        return safeArea
-            //    }
         }
+        .padding([.vertical, .leading], 15)
+    }
+    
+}
+
+struct CalendarView_Previews: PreviewProvider {
+    static var previews: some View {
+        CalendarView()
+    }
+}
+
+extension View {
+    func hLeading() -> some View {
+        self
+            .frame(maxWidth: .infinity, alignment: .leading)
+        
+    }
+    func hTrailing() -> some View {
+        self
+            .frame(maxWidth: .infinity, alignment: .trailing)
+        
+    }
+    func hCenter() -> some View {
+        self
+            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+        
+    }
+    
+    // MARK: - Checking Two dates are same
+    func isSameDate(_ date1: Date, date2: Date) -> Bool {
+        return Calendar.current.isDate(date1, inSameDayAs: date2)
+    }
+}

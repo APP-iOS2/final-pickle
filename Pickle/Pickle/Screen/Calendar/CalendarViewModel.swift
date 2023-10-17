@@ -18,28 +18,34 @@ class CalendarViewModel: ObservableObject {
     ]
     
     
-    
     // MARK: - 초기화
     init() {
-        fetchCurrentWeek()
+        fetchCurrentWeek(date: currentDay)
         filterTodayTasks()
     }
     // MARK: - filtering today tasks
     @Published var filteredTasks: [CalendarSampleTask]?
     // MARK: - Current Week Days
     @Published var currentWeek: [Date] = []
+    
+    // MARK: - Current Month
+    @Published var currentMonth: [Date.MonthDate] = []
     // MARK: - Current Day
     @Published var currentDay: Date = Date()
     
-    @State var currentMonth: Int = 0
+    @Published var currentMonthIndex: Int = 0
+    @Published var currentWeekIndex: Int = 0
     
-    func fetchCurrentWeek() {
-        let today = Date()
-        let calendar = Calendar.current
-        
-        let week = calendar.dateInterval(of: .weekOfMonth, for: today)
-        
-        guard let firstWeekDay = week?.start else {
+    func fetchCurrentWeek(date: Date = Date()) {
+        currentWeek.removeAll()
+        let calendar = Calendar.autoupdatingCurrent
+        let startOfDate = calendar.startOfDay(for: date)
+        let weekForDate = calendar.dateInterval(of: .weekOfMonth, for: startOfDate)
+
+//        
+//        let week = week.dateInterval(of: .weekOfMonth, for: date)
+//        
+        guard let firstWeekDay = weekForDate?.start else {
             return
         }
         (1...7).forEach { day in
@@ -49,28 +55,16 @@ class CalendarViewModel: ObservableObject {
         }
     }
     
-    func fetchCurrentMonth() -> [Date] {
-        
-        let calendar = Calendar.autoupdatingCurrent
-        guard let currentMonth = calendar.date(byAdding: .month, value: self.currentMonth, to: Date()) else { return  [] }
-        let result = currentMonth.fetchMonth()
-        return result
-        }
-    
-    
     // MARK: - Filter Today Tasks
     func filterTodayTasks() {
         
         let calendar  = Calendar.current
-        let filtered = self.storedTasks.filter {
-            return calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
+        let filtered = storedTasks.filter {
+            calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
         }
-            .sorted { task1, task2 in
-                task1.creationDate < task2.creationDate
-            }
-    
-        self.filteredTasks = filtered
-    
+        
+        self.filteredTasks = filtered.sorted(by: { $0.creationDate < $1.creationDate })
+        
     }
     
     func extractDate(date: Date, format: String) -> String {
@@ -79,6 +73,49 @@ class CalendarViewModel: ObservableObject {
         formatter.dateFormat = format
         
         return formatter.string(from: date)
+    }
+    
+    func getCurrentWeek() -> Date {
+        
+        let calendar = Calendar.autoupdatingCurrent
+        
+        guard let currentWeek =  calendar.date(byAdding: .day, value: 7 * self.currentWeekIndex, to: Date()) else { return Date() }
+        let startOfDate = calendar.startOfDay(for: currentWeek)
+        
+        
+        return currentWeek
+    }
+    
+    func getCurrentMonth() -> Date {
+        
+        let calendar = Calendar.autoupdatingCurrent
+        
+        guard let currentMonth =  calendar.date(byAdding: .month, value: self.currentMonthIndex, to: Date()) else { return Date() }
+        
+        return currentMonth
+    }
+    //해당 월을 저장하기 위함
+    func extractMonth() -> [Date.MonthDate] {
+        let calendar = Calendar.autoupdatingCurrent
+        
+        let currentMonth = getCurrentMonth()
+        
+        var resultMonth = currentMonth.fetchMonth().compactMap { date -> Date.MonthDate in
+            let day = calendar.component(.day, from: date)
+            let resultDay = Date.MonthDate(day: day, date: date)
+            
+            return resultDay
+            
+        }
+        
+        let firstWeekDay = calendar.component(.weekday, from: resultMonth.first?.date ?? Date())
+        
+        for _ in 0..<firstWeekDay - 1 {
+            resultMonth.insert(Date.MonthDate(day: -1, date: Date()), at: 0)
+        }
+        
+        return resultMonth
+        
     }
     
     // MARK: - checking if current date is today or not
@@ -95,9 +132,41 @@ class CalendarViewModel: ObservableObject {
         return hour == currentHour
     }
     
-//    func getCurrentMonth() -> Date {
-//        let calendar = Calendar.autoupdatingCurrent
-//        
-//        guard let currentMonth = calendar.date(byAdding: .month, value: self.current, to: <#T##Date#>)
-//    }
+    //    func getCurrentMonth() -> Date {
+    //        let calendar = Calendar.autoupdatingCurrent
+    //
+    //        guard let currentMonth = calendar.date(byAdding: .month, value: self.current, to: <#T##Date#>)
+    //    }
+    
+    // MARK: - Creating Next Week, based on the Last Current Week's Date
+    func createNextWeek(){
+        currentWeek.removeAll()
+        let calendar = Calendar.autoupdatingCurrent
+        let startOfLastDate = calendar.startOfDay(for: currentDay)
+        
+        let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate)
+        print(nextDate!)
+        return fetchCurrentWeek(date: nextDate!)
+        
+    }
+    
+    // MARK: - Creating Previous Week, based on the First Current Week's Date
+    func createPreviousWeek() {
+        currentWeek.removeAll()
+        let calendar = Calendar.autoupdatingCurrent
+        let startOfFirstDate = calendar.startOfDay(for: currentDay)
+        
+        let previousDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfFirstDate)
+
+        return fetchCurrentWeek(date: previousDate!)
+        
+    }
+    
+    
+    func resetForTodayButton() {
+        currentMonthIndex = 0
+        currentWeekIndex = 0
+        currentDay = Date()
+        fetchCurrentWeek(date: Date())
+    }
 }

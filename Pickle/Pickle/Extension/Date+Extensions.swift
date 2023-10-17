@@ -25,7 +25,7 @@ extension Date {
         var date: Date
     }
     
-    struct MonthDate: Identifiable {
+    struct MonthDate: Identifiable,Hashable {
         var id = UUID().uuidString
         var day: Int
         var date: Date
@@ -83,7 +83,20 @@ extension Date {
         let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
         var range = calendar.range(of: .day, in: .month, for: startDate)!
         range.removeLast()
-        return range.compactMap{ day -> Date in
+        return range.compactMap { day -> Date in
+            return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
+        }
+        
+    }
+    
+    func fetchWeek() -> [Date] {
+        let calendar = Calendar.autoupdatingCurrent
+        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
+        
+        //let ddate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.], from: <#T##Date#>))
+        var range = calendar.range(of: .day, in: .weekOfMonth, for: startDate)!
+        range.removeLast()
+        return range.compactMap { day -> Date in
             return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
         }
         
@@ -91,7 +104,6 @@ extension Date {
     
     // MARK: - Creating Next Week, based on the Last Current Week's Date
     func createNextWeek() -> [WeekDay] {
-        
         let calendar = Calendar.autoupdatingCurrent
         let startOfLastDate = calendar.startOfDay(for: self)
         

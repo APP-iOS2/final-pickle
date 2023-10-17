@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TaskRowView: View {
     
-    @Binding var task: CalendarSampleTask
+    var task: CalendarSampleTask
     
     var indicatorColor: Color {
         if task.isCompleted {

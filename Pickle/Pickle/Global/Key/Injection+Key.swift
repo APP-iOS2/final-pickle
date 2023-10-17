@@ -26,7 +26,7 @@ struct TodoRepoKey: InjectionKey {
 
 struct DBStoreKey: InjectionKey {
     typealias Value = DBStore
-    static var type: DependencyType = .automatic
+    static var type: DependencyType = .singleton
 }
 
 struct TimeRepoKey: InjectionKey {
@@ -40,7 +40,6 @@ struct BehaviorRepoKey: InjectionKey {
 }
 
 struct UserRepoKey: InjectionKey {
-    typealias Value = UserRepository
-    static var type: DependencyType = .automatic
+    typealias Value = UserRepositoryProtocol
+    static var type: DependencyType = .singleton
 }
-

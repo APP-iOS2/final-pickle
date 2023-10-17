@@ -49,7 +49,6 @@ class BaseRepository<T> {
         try dbStore.delete(model: T.self, id: id)
     }
     
-    
     func update(object: T) throws where T: Storable {
         try dbStore.update(object: object)
     }

@@ -95,12 +95,13 @@ struct BehaviorMissionSettingView: View {
     }
 }
 
-struct MissionSettingView_Previews: PreviewProvider {
-    static var previews: some View {
-        MissionSettingView(title: .constant("오늘의 할일 완료 미션"), isSettingModalPresented: .constant(true))
-        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")), title: "기상 미션",
-    isTimeMissionSettingModalPresented: .constant(true))
+#Preview {
+//        MissionSettingView(title: .constant("오늘의 할일 완료 미션"),
+//                           isSettingModalPresented: .constant(true))
+//        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")),
+//                               title: "기상 미션",
+//    isTimeMissionSettingModalPresented: .constant(true))
+    Text("Value Is not")
 //        BehaviorMissionSettingView(title: .constant("걷기 미션"),
 //                                   isBehaviorMissionSettingModalPresented: .constant(true))
-    }
 }

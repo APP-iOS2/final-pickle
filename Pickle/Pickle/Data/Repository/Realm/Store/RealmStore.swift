@@ -105,6 +105,7 @@ final class RealmStore: DBStore {
             realm.delete(object)
         }
     }
+    
     func delete<T>(model: T.Type, id: String) throws {
         guard
             let realm = realmStore,

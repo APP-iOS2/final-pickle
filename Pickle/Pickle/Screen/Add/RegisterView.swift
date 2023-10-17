@@ -32,7 +32,6 @@ struct RegisterView: View {
         }
     }
     
-    @Environment(\.dismiss) var dissmiss
     @EnvironmentObject var todoStore: TodoStore
     
     @Binding var willUpdateTodo: Todo
@@ -102,7 +101,7 @@ struct RegisterView: View {
     private var isRightContent: Bool {
         content.count >= 5
     }
-
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
@@ -112,10 +111,9 @@ struct RegisterView: View {
                     todoTitleInputField
                         .padding(.top, 40)
                     
-                    // repeatDay
                     timeConstraintPickCell("시작시간",
-                                             binding: $startTimes,
-                                             show: $showingStartTimeSheet)
+                                           binding: $startTimes,
+                                           show: $showingStartTimeSheet)
                     
                     targetTimePickCell("목표시간",
                                        binding: $targetTimes,
@@ -134,41 +132,17 @@ struct RegisterView: View {
             updateTextField(Const.ALL.randomElement()!)
         }
         .onAppear {
-            if isModify { 
+            if isModify {
                 self.content = willUpdateTodo.content
                 self.targetTimes = targetToTimeString(willUpdateTodo.targetTime)
                 self.startTimes = willUpdateTodo.startTime
             }
             updateTextField(Const.ALL.randomElement()!)
         }
-        .failedAlert(
-          isPresented: $showFailedAlert,
-          title: "실패",
-          alertContent: "5글자 이상 입력해주세요",
-          primaryButtonTitle: "확인",
-          primaryAction: { /* 알럿 확인 버튼 액션 */  }
-        )
-        .failedAlert(
-            isPresented: $showUpdateEqual,
-            title: "실패",
-            alertContent: "같은 내용입니다.",
-            primaryButtonTitle: "확인",
-            primaryAction: {   }
-        )
-        .successAlert(
-            isPresented: $showUpdateSuccessAlert,
-            title: "수정 성공",
-            alertContent: "성공적으로 수정하셨습니다",
-            primaryButtonTitle: "뒤로가기",
-            primaryAction: { dissmiss() }
-        )
-        .successAlert(
-            isPresented: $showSuccessAlert,
-            title: "저장 성공",
-            alertContent: "성공적으로 할일을 등록하셨습니다",
-            primaryButtonTitle: "뒤로가기",
-            primaryAction: { dissmiss() }
-        )
+        .differentTypeAlerts(showFailedAlert: $showFailedAlert,
+                             showUpdateEqual: $showUpdateEqual,
+                             showUpdateSuccessAlert: $showUpdateSuccessAlert,
+                             showSuccessAlert: $showSuccessAlert)
     }
     
     private func targetToTimeString(_ time: TimeInterval) -> String {
@@ -320,7 +294,9 @@ struct RegisterView: View {
         }
     }
     
-    private func confirmActionButton(_ action: @escaping () -> Void) -> some View {
+    typealias Completion = () -> Void
+    
+    private func confirmActionButton(_ action: @escaping Completion) -> some View {
         Button {
             action()
         } label: {
@@ -345,6 +321,63 @@ struct RegisterView: View {
             } label: {
                 Text("확인")
             }
+        }
+    }
+}
+
+// MARK: View modifier extension
+extension View {
+    func differentTypeAlerts(showFailedAlert: Binding<Bool>,
+                             showUpdateEqual: Binding<Bool>,
+                             showUpdateSuccessAlert: Binding<Bool>,
+                             showSuccessAlert: Binding<Bool>) -> some View {
+        modifier(RegisterView.DifferentTypeAlerts(showFailedAlert: showFailedAlert,
+                                                  showUpdateEqual: showUpdateEqual,
+                                                  showUpdateSuccessAlert: showUpdateSuccessAlert,
+                                                  showSuccessAlert: showSuccessAlert))
+    }
+}
+
+// MARK: Show Alert View Modifier
+extension RegisterView {
+    
+    struct DifferentTypeAlerts: ViewModifier {
+        @Environment(\.dismiss) var dissmiss
+        @Binding var showFailedAlert: Bool
+        @Binding var showUpdateEqual: Bool
+        @Binding var showUpdateSuccessAlert: Bool
+        @Binding var showSuccessAlert: Bool
+        
+        func body(content: Content) -> some View {
+            content
+                .failedAlert(
+                    isPresented: $showFailedAlert,
+                    title: "실패",
+                    alertContent: "5글자 이상 입력해주세요",
+                    primaryButtonTitle: "확인",
+                    primaryAction: { /* 알럿 확인 버튼 액션 */  }
+                )
+                .failedAlert(
+                    isPresented: $showUpdateEqual,
+                    title: "실패",
+                    alertContent: "같은 내용입니다.",
+                    primaryButtonTitle: "확인",
+                    primaryAction: {   }
+                )
+                .successAlert(
+                    isPresented: $showUpdateSuccessAlert,
+                    title: "수정 성공",
+                    alertContent: "성공적으로 수정하셨습니다",
+                    primaryButtonTitle: "뒤로가기",
+                    primaryAction: { dissmiss() }
+                )
+                .successAlert(
+                    isPresented: $showSuccessAlert,
+                    title: "저장 성공",
+                    alertContent: "성공적으로 할일을 등록하셨습니다",
+                    primaryButtonTitle: "뒤로가기",
+                    primaryAction: { dissmiss() }
+                )
         }
     }
 }

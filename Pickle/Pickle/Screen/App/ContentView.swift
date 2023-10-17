@@ -18,7 +18,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("홈", systemImage: "house")
-                    .environment(\.symbolVariants, .none)
+                    .environment(\.symbolVariants, .fill)
             }.tag(0)
             
             NavigationStack {
@@ -26,7 +26,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("달력", systemImage: "calendar")
-                    .environment(\.symbolVariants, .none)
+                    .environment(\.symbolVariants, .fill)
             }.tag(1)
             
             NavigationStack {
@@ -34,8 +34,9 @@ struct ContentView: View {
             }
             .tabItem {
                 Label("설정", systemImage: "gearshape")
-                    .environment(\.symbolVariants, .none)
-            }.tag(2)
+                    .environment(\.symbolVariants, .fill)
+            }
+            .tag(2)
         }
         .onAppear {
             healthKitStore.requestAuthorization { success in
@@ -47,9 +48,12 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $isOnboardingViewActive) {
             SetNotiView(isShowingOnboarding: $isOnboardingViewActive)
         }
+        .tint(.pickle)
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(TodoStore())
+        .environmentObject(MissionStore())
 }

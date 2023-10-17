@@ -31,6 +31,7 @@ extension Todo: Equatable {
 
 typealias TodoStatus = Status
 typealias MissionStatus = Status
+
 enum Status: String {
     // 진행전 진행중 완료 포기
     case ready
@@ -61,7 +62,15 @@ extension Todo: MappableProtocol {
     typealias PersistenceType = TodoObject
     
     func mapToPersistenceObject() -> TodoObject {
-        if let id = UUID(uuidString: self.id) {
+        if self.id.count < 12 {
+            return TodoObject(content: self.content,
+                              startTime: self.startTime,
+                              targetTime: self.targetTime, //self.targetTime,
+                              spendTime: self.spendTime,
+                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
+        }
+        
+        if let _ = UUID(uuidString: self.id) {
             return TodoObject(content: self.content,
                               startTime: self.startTime,
                               targetTime: self.targetTime, //self.targetTime,

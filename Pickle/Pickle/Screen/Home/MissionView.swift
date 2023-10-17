@@ -57,7 +57,6 @@ struct MissionView: View {
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)
-        
         .getRewardAlert(
             isPresented: $showsAlert,
             title: "미션 성공",

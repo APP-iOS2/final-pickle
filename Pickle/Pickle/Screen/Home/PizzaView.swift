@@ -10,12 +10,19 @@ import SwiftUI
 struct PizzaView: View {
     let taskPercentage: Double // 0 ~ 1 사이 값이 들어옴 (바깥에서 퍼센트 계산을 해서 넣어주는 게 편함)
     
+    @Binding var content: String
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
                 Image("potatoPizza")
                     .resizable()
                     .scaledToFit()
+                
+                DotCircleView(content: $content,
+                              taskPercentage: taskPercentage)
+                .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+                .zIndex(1)
                 
                 Circle()
                     .trim(from: taskPercentage, to: 1)
@@ -28,5 +35,5 @@ struct PizzaView: View {
 }
 
 #Preview {
-    PizzaView(taskPercentage: 0.25)
+    PizzaView(taskPercentage: 0.25, content: .constant("value"))
 }

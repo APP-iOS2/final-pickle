@@ -60,7 +60,7 @@ struct FaildAlertModifier: ViewModifier {
                 if isPresented {
                     Rectangle()
                         .fill(.black.opacity(0.5))
-//                        .blur(radius: isPresented ? 2 : 0)
+                    //                        .blur(radius: isPresented ? 2 : 0)
                         .ignoresSafeArea(.all)
                         .onTapGesture {
                             self.isPresented = false // 외부 영역 터치 시 내려감
@@ -68,7 +68,7 @@ struct FaildAlertModifier: ViewModifier {
                     
                     FaildAlert(
                         isPresented: self.$isPresented,
-                        title: self.title, 
+                        title: self.title,
                         content: alertContent,
                         primaryButtonTitle: self.primaryButtonTitle,
                         primaryAction: self.primaryAction
@@ -131,14 +131,13 @@ struct FaildAlert: View {
     }
 }
 
-//#Preview {
-////    Text("미션 완료 알럿 테스트")
-////        .modifier(
-//////            FaildAlertModifier(
-//////                isPresented: .constant(true),
-//////                title: "실패",
-//////                point: 1,
-//////                primaryButtonTitle: "확인",
-//////                primaryAction: { })
-////        )
-//}
+#Preview {
+    Text("미션 완료 알럿 테스트")
+        .modifier(
+            FaildAlertModifier(isPresented: .constant(true),
+                               title: "",
+                               alertContent: "",
+                               primaryButtonTitle: "",
+                               primaryAction: { })
+        )
+}

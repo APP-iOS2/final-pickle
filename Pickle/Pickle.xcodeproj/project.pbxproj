@@ -53,6 +53,9 @@
 		963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* Migrator.swift */; };
 		963AFF922AC33A1800835FD8 /* TodoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF912AC33A1800835FD8 /* TodoObject.swift */; };
 		963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF932AC33EAF00835FD8 /* MissionObject.swift */; };
+		965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */; };
+		965C9BA22ADAB2380015ABBE /* PickleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BA12ADAB2380015ABBE /* PickleTests.swift */; };
+		965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
 		96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
 		96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
@@ -66,6 +69,7 @@
 		96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B52AD53866001B2960 /* PersistentedError.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
 		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
+		96C64FE32ADC2C450042204A /* CustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C64FE22ADC2C450042204A /* CustomSheetView.swift */; };
 		96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
 		96CF08E62AD9098400648B59 /* NanumSquareNeoOTF-Eb.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E02AD9098300648B59 /* NanumSquareNeoOTF-Eb.otf */; };
 		96CF08E72AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */; };
@@ -86,6 +90,16 @@
 		B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B22AC29CB900744EB7 /* OffsetKey.swift */; };
 		B7C341B52AC2CA7400744EB7 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		965C9BA32ADAB2380015ABBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2137D56D2AC1459C00AFE225 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2137D5742AC1459C00AFE225;
+			remoteInfo = Pickle;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2137D5752AC1459C00AFE225 /* Pickle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +149,10 @@
 		963AFF8E2AC3319D00835FD8 /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
 		963AFF912AC33A1800835FD8 /* TodoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoObject.swift; sourceTree = "<group>"; };
 		963AFF932AC33EAF00835FD8 /* MissionObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionObject.swift; sourceTree = "<group>"; };
+		965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSelectedView.swift; sourceTree = "<group>"; };
+		965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		965C9BA12ADAB2380015ABBE /* PickleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleTests.swift; sourceTree = "<group>"; };
+		965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaAlert.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
 		96A1D4A62ACFE384003BC207 /* MissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStore.swift; sourceTree = "<group>"; };
 		96A1D4A92AD176B6003BC207 /* Injection+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injection+Key.swift"; sourceTree = "<group>"; };
@@ -146,6 +164,7 @@
 		96A1E4B02AD52919001B2960 /* UserStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStore.swift; sourceTree = "<group>"; };
 		96A1E4B32AD5384B001B2960 /* RealmError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmError.swift; sourceTree = "<group>"; };
 		96A1E4B52AD53866001B2960 /* PersistentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentedError.swift; sourceTree = "<group>"; };
+		96C64FE22ADC2C450042204A /* CustomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetView.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		96CF08E02AD9098300648B59 /* NanumSquareNeoOTF-Eb.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Eb.otf"; sourceTree = "<group>"; };
 		96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Bd.otf"; sourceTree = "<group>"; };
@@ -179,6 +198,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		965C9B9C2ADAB2380015ABBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -187,6 +213,7 @@
 			children = (
 				2137D5872AC1460F00AFE225 /* .swiftlint.yml */,
 				2137D5772AC1459C00AFE225 /* Pickle */,
+				965C9BA02ADAB2380015ABBE /* PickleTests */,
 				2137D5762AC1459C00AFE225 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -196,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				2137D5752AC1459C00AFE225 /* Pickle.app */,
+				965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -252,6 +280,8 @@
 			isa = PBXGroup;
 			children = (
 				2137D5892AC1473C00AFE225 /* HomeView.swift */,
+				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
+				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
 				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
 				2137D58E2AC1476000AFE225 /* TimerView.swift */,
 				A0052FB32ACD48A3005B3263 /* TimerReportView.swift */,
@@ -313,12 +343,8 @@
 		2137D5AB2AC14EE800AFE225 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */,
-				961296952AC16FBE009A9815 /* BackColorModifier.swift */,
-				961296972AC17120009A9815 /* TextFieldModifier.swift */,
-				960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */,
-				B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */,
-				96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */,
+				965C9BE92ADB06250015ABBE /* Alert */,
+				965C9BE82ADB06110015ABBE /* Modifier */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -454,6 +480,35 @@
 			path = Realm;
 			sourceTree = "<group>";
 		};
+		965C9BA02ADAB2380015ABBE /* PickleTests */ = {
+			isa = PBXGroup;
+			children = (
+				965C9BA12ADAB2380015ABBE /* PickleTests.swift */,
+			);
+			path = PickleTests;
+			sourceTree = "<group>";
+		};
+		965C9BE82ADB06110015ABBE /* Modifier */ = {
+			isa = PBXGroup;
+			children = (
+				2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */,
+				961296952AC16FBE009A9815 /* BackColorModifier.swift */,
+				961296972AC17120009A9815 /* TextFieldModifier.swift */,
+				960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */,
+			);
+			path = Modifier;
+			sourceTree = "<group>";
+		};
+		965C9BE92ADB06250015ABBE /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */,
+				965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */,
+				B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		96A1D4A82AD176AD003BC207 /* Key */ = {
 			isa = PBXGroup;
 			children = (
@@ -509,6 +564,24 @@
 			productReference = 2137D5752AC1459C00AFE225 /* Pickle.app */;
 			productType = "com.apple.product-type.application";
 		};
+		965C9B9E2ADAB2380015ABBE /* PickleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 965C9BA52ADAB2380015ABBE /* Build configuration list for PBXNativeTarget "PickleTests" */;
+			buildPhases = (
+				965C9B9B2ADAB2380015ABBE /* Sources */,
+				965C9B9C2ADAB2380015ABBE /* Frameworks */,
+				965C9B9D2ADAB2380015ABBE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				965C9BA42ADAB2380015ABBE /* PBXTargetDependency */,
+			);
+			name = PickleTests;
+			productName = PickleTests;
+			productReference = 965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -516,11 +589,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					2137D5742AC1459C00AFE225 = {
 						CreatedOnToolsVersion = 14.3.1;
+					};
+					965C9B9E2ADAB2380015ABBE = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 2137D5742AC1459C00AFE225;
 					};
 				};
 			};
@@ -541,6 +618,7 @@
 			projectRoot = "";
 			targets = (
 				2137D5742AC1459C00AFE225 /* Pickle */,
+				965C9B9E2ADAB2380015ABBE /* PickleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -559,6 +637,13 @@
 				96CF08EB2AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf in Resources */,
 				96CF08E72AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf in Resources */,
 				2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		965C9B9D2ADAB2380015ABBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,6 +677,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */,
+				965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */,
 				21FA267F2AC2BB3800877122 /* Pizza.swift in Sources */,
 				960C418E2ACE3FCA009A0093 /* TodoRepository.swift in Sources */,
 				960C419A2ACE7AF9009A0093 /* Log.swift in Sources */,
@@ -626,12 +712,14 @@
 				A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
 				96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */,
+				965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */,
 				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */,
 				960C418C2ACE3969009A0093 /* RealmStore.swift in Sources */,
 				96A1E4AB2AD4DD0A001B2960 /* FaildAlert.swift in Sources */,
 				960C41862ACE390A009A0093 /* URL.swift in Sources */,
+				96C64FE32ADC2C450042204A /* CustomSheetView.swift in Sources */,
 				96A1E4AD2AD5277E001B2960 /* UserRepository.swift in Sources */,
 				960C418A2ACE3945009A0093 /* DBStore.swift in Sources */,
 				2137D5952AC1479700AFE225 /* SettingView.swift in Sources */,
@@ -661,7 +749,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		965C9B9B2ADAB2380015ABBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				965C9BA22ADAB2380015ABBE /* PickleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		965C9BA42ADAB2380015ABBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2137D5742AC1459C00AFE225 /* Pickle */;
+			targetProxy = 965C9BA32ADAB2380015ABBE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2137D5812AC1459D00AFE225 /* Debug */ = {
@@ -786,10 +890,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = HP4XA8YZN3;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;
@@ -808,6 +915,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -820,10 +929,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Pickle/Pickle.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Preview Content\"";
-				DEVELOPMENT_TEAM = HP4XA8YZN3;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Pickle/Info.plist;
@@ -842,9 +954,58 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		965C9BA62ADAB2380015ABBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2JZ8QNS5D4;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.swift.cv.appschool.PickleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pickle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pickle";
+			};
+			name = Debug;
+		};
+		965C9BA72ADAB2380015ABBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2JZ8QNS5D4;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = kr.swift.cv.appschool.PickleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pickle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Pickle";
 			};
 			name = Release;
 		};
@@ -865,6 +1026,15 @@
 			buildConfigurations = (
 				2137D5842AC1459D00AFE225 /* Debug */,
 				2137D5852AC1459D00AFE225 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		965C9BA52ADAB2380015ABBE /* Build configuration list for PBXNativeTarget "PickleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				965C9BA62ADAB2380015ABBE /* Debug */,
+				965C9BA72ADAB2380015ABBE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

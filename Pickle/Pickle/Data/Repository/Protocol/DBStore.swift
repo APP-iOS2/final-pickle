@@ -19,9 +19,14 @@ protocol DBStore: Dependency {
     func save(object: Storable) throws
     func update(object: Storable) throws
     func delete(object: Storable) throws
+    
+    /// 특정 모델을 Delete 하는 함수 입니다.
+    /// - Parameters:
+    ///   - model: 삭제할 데이터의 타입
+    ///   - id: 삭제할 데이터의 ID값
     func delete<T: Storable>(model: T.Type, id: String) throws
+    
+    
     func deleteAll<T: Storable>(_ model: T.Type) throws
     func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, complection: ([T]) -> Void) throws
 }
-
-

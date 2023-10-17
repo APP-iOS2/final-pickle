@@ -45,7 +45,7 @@ final class MissionStore: ObservableObject {
     // MARK: 5안 store(viewModel)를 쪼갠다
     
     @MainActor
-    func fetch() async -> ([TimeMission],[BehaviorMission]) {
+    func fetch() async -> ([TimeMission], [BehaviorMission]) {
         async let timeMission = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
         async let behaviorMission = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
         

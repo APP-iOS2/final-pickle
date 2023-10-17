@@ -8,7 +8,6 @@
 import SwiftUI
 
 extension View {
-    
     func getRewardAlert(
         isPresented: Binding<Bool>,
         title: String,

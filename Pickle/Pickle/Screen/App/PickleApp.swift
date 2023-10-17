@@ -19,7 +19,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct PickleApp: App {
-//    @StateObject private var todoStore = TodoStore(repository: TodoRepository.create(with: RealmStore()))
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var todoStore = TodoStore()
     @StateObject private var missionStore = MissionStore()
@@ -30,8 +29,7 @@ struct PickleApp: App {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
-            
-           ContentView()
+            ContentView()
                 .task {
                     try? await userStore.fetchUser()
                 }

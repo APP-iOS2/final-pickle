@@ -25,7 +25,7 @@ extension Date {
         var date: Date
     }
     
-    struct MonthDate: Identifiable {
+    struct MonthDate: Identifiable,Hashable {
         var id = UUID().uuidString
         var day: Int
         var date: Date

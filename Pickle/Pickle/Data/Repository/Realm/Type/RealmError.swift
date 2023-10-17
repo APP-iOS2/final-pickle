@@ -12,4 +12,5 @@ import Foundation
 enum RealmError: Error {
     case notRealmObject
     case deleteFailed
+    case saveFailed
 }

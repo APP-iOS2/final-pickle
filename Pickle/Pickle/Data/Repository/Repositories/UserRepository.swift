@@ -7,9 +7,10 @@
 
 import Foundation
 
-
-protocol UserRepositoryProtocol: Dependency {
-    
+protocol UserRepositoryProtocol: Dependency, AnyObject {
+    func getUser(_ completion: @escaping (User?) -> Void)
+    func addUser(model: User) throws
+    func updateUser(model: User) throws
 }
 
 final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
@@ -28,12 +29,19 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
         })
     }
     
-    func addUser() throws {
+    func addUser(model: User) throws {
+        let object = model.mapToPersistenceObject()
         do {
-            try super.save(object: UserObject(nickName: "Guest",
-                                              currentPizzaCount: 0,
-                                              currentPizzaSlice: 0,
-                                              createdAt: Date()))
+            try super.save(object: object)
+        } catch {
+            throw PersistentedError.addFaild
+        }
+    }
+    
+    func updateUser(model: User) throws {
+        let object = model.mapToPersistenceObject()
+        do {
+            try super.update(object: object)
         } catch {
             throw PersistentedError.addFaild
         }

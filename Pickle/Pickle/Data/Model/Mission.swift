@@ -35,16 +35,12 @@ struct BehaviorMission: Mission, Identifiable {
     let title: String
     var status: MissionStatus
     var date: Date  // 투두 생성 날짜,시간
-    var myStep: Double      // 사용자 걸음수
-    var missionStep: Double // 미션 걸음수
     
-    init(id: String, title: String = "", status: MissionStatus = .ready, date: Date = Date(), myStep: Double = 0, missionStep: Double = 0) {
+    init(id: String, title: String = "", status: MissionStatus = .ready, date: Date = Date()) {
         self.id = id
         self.title = title
         self.status = status
         self.date = date
-        self.myStep = myStep
-        self.missionStep = missionStep
     }
 }
 
@@ -82,15 +78,11 @@ extension BehaviorMission {
         if let id = UUID(uuidString: self.id) {
             return BehaviorMissionObject(title: self.title,
                                          status: .init(rawValue: self.status.value) ?? .ready,
-                                         myStep: self.myStep,
-                                         missionStep: self.missionStep,
                                          date: self.date)
         } else {
             return BehaviorMissionObject(id: self.id,
                                          title: self.title,
                                          status: .init(rawValue: self.status.value) ?? .ready,
-                                         myStep: self.myStep,
-                                         missionStep: self.missionStep,
                                          date: self.date)
         }
     }
@@ -99,8 +91,6 @@ extension BehaviorMission {
         BehaviorMission(id: object.id.stringValue,
                         title: object.title,
                         status: .init(rawValue: object.status.rawValue) ?? .ready,
-                        date: object.date,
-                        myStep: object.myStep,
-                        missionStep: object.missionStep)
+                        date: object.date)
     }
 }

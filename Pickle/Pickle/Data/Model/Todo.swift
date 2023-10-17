@@ -31,6 +31,7 @@ extension Todo: Equatable {
 
 typealias TodoStatus = Status
 typealias MissionStatus = Status
+
 enum Status: String {
     // 진행전 진행중 완료 포기
     case ready

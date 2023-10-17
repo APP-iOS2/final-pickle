@@ -46,7 +46,6 @@ class UserObject: Object, Identifiable {
     }
 }
 
-
 extension UserObject {
     static let user: UserObject = .init(nickName: "",
                                         currentPizzaCount: 100,

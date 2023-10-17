@@ -41,6 +41,7 @@ class TodoObject: Object, Identifiable {
                   targetTime: targetTime,
                   spendTime: spendTime,
                   status: status)
+        
         self.id = try! ObjectId(string: id)
     }
     

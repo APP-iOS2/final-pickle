@@ -8,9 +8,43 @@
 import SwiftUI
 import HealthKit
 
-struct CustomToggleButton: View {
-    @Binding var buttonTitle: String
-    @Binding var buttonToggle: Bool
+struct MissionButton: View {
+    @Binding var status: Status
+    
+    var buttonTitle: String {
+        switch status {
+        case .ready:
+            return "피자 대기"
+        case .complete:
+            return "피자 받기"
+        case .done:
+            return "획득 완료"
+        default:
+            return "피자"
+        }
+    }
+    
+    var buttonTitleColor: Color {
+        switch status {
+        case .ready:
+            return .defaultGray
+        case .complete, .done:
+            return .white
+        default:
+            return .black
+        }
+    }
+    
+    var buttonColor: Color {
+        switch status {
+        case .ready:
+            return .lightGray
+        case .complete, .done:
+            return .black
+        default:
+            return .white
+        }
+    }
     
     let action: () -> Void
     
@@ -19,38 +53,28 @@ struct CustomToggleButton: View {
             Button(action: action) {
                 Text(buttonTitle)
                     .font(.pizzaHeadline)
-                    .foregroundColor(buttonToggle ? .gray : .white)
+                    .foregroundColor(buttonTitleColor)
             }
             .frame(width: 70, height: 5)
             .padding()
-            .background(buttonToggle ? .white : .black)
-            .cornerRadius(30.0)
-            .overlay(RoundedRectangle(cornerRadius: 30.0)
+            .background(buttonColor)
+            .cornerRadius(10.0)
+            .overlay(RoundedRectangle(cornerRadius: 10.0)
                 .stroke(Color(.systemGray4), lineWidth: 0.5))
         }
     }
 }
 
-struct CustomButton: View {
-    @State var buttonText: String
-    @State var buttonTextColor: Color
-    @State var buttonColor: Color
-    
+struct EditButton: View {
     let action: () -> Void
     
     var body: some View {
         VStack {
             Button(action: action) {
-                Text(buttonText)
-                    .font(.pizzaHeadline)
-                    .foregroundColor(buttonTextColor)
+                Text("수정")
+                    .font(.pizzaFootnote)
+                    .foregroundColor(.textGray)
             }
-            .frame(width: 70, height: 5)
-            .padding()
-            .background(buttonColor)
-            .cornerRadius(30.0)
-            .overlay(RoundedRectangle(cornerRadius: 30.0)
-                .stroke(Color(.systemGray4), lineWidth: 0.5))
         }
     }
 }
@@ -78,12 +102,21 @@ struct Line: Shape {
 }
 
 struct MissionStyleView: View {
-    @State private var buttonTitle: String = "🍕 받기"
-    @State var buttonToggle: Bool
+    @Binding var status: Status
     
     @State var title: String
-    var status: String
     var date: String
+    
+    var buttonSwitch: Bool {
+        switch status {
+        case .ready, .done:
+            return true
+        case .complete:
+            return false
+        default:
+            return false
+        }
+    }
     
     @State private var isSettingModalPresented = false
     @Binding var showsAlert: Bool
@@ -99,19 +132,12 @@ struct MissionStyleView: View {
                 
                 Spacer(minLength: 10)
                 VStack {
-                    if status == "완료" {
-                        CustomToggleButton(buttonTitle: $buttonTitle, buttonToggle: $buttonToggle, action: {
-                            buttonTitle = "성공"
-                            buttonToggle = true
+                    if status == .complete {
+                        MissionButton(status: $status, action: {
+                            status = .done
                             showsAlert = true
                         })
-                        .disabled(buttonToggle)
-                    } else {
-                        CustomButton(buttonText: "피자 대기", buttonTextColor: .black, buttonColor: .white, action: {
-                        })
-                        .overlay(RoundedRectangle(cornerRadius: 30.0)
-                            .stroke(Color(.black), lineWidth: 0.5))
-                        .disabled(true)
+                        .disabled(buttonSwitch)
                     }
                 }
             }
@@ -128,66 +154,67 @@ struct MissionStyleView: View {
 struct TimeMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @Binding var timeMission: TimeMission
+    @Binding var status: Status
     
-    @State private var buttonTitle: String = "🍕 받기"
-    @State private var buttonToggle: Bool = false
-    
-    private let currentTime: Date = Date()
-    
-    private let twoButton: Bool = true
     @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
+    private let currentTime: Date = Date()
+    var buttonSwitch: Bool {
+        switch status {
+        case .ready, .done:
+            return true
+        case .complete:
+            return false
+        default:
+            return false
+        }
+    }
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(timeMission.title)
-                        .font(.pizzaTitle2Bold)
-                        .padding(.bottom, 1)
-                    
-                    Text("\(timeMission.wakeupTime.format("HH:mm"))")
-                        .font(.pizzaBody)
-                        .foregroundColor(Color.black.opacity(0.6))
-                }
+        HStack(alignment: .bottom) {
+            VStack(alignment: .leading) {
+                Text(timeMission.title)
+                    .font(.pizzaTitle2Bold)
+                    .foregroundColor(.black)
+                    .padding(.bottom, 1)
                 
-                Spacer(minLength: 10)
-                VStack {
-                    // 현재 시간과 목표 기상시간 비교
-                    if currentTime > timeMission.wakeupTime.adding(minutes: -10) && currentTime < timeMission.wakeupTime.adding(minutes: 10) {
-                        CustomToggleButton(buttonTitle: $buttonTitle, buttonToggle: $buttonToggle, action: {
-                            buttonTitle = "성공"
-                            buttonToggle = true
-                            showsAlert = true
-                        })
-                        .disabled(buttonToggle)
-                        
-                    } else {
-                        CustomButton(buttonText: "피자 대기", buttonTextColor: .black, buttonColor: .white, action: {
-                        })
-                        .overlay(RoundedRectangle(cornerRadius: 30.0)
-                            .stroke(Color(.black), lineWidth: 0.5))
-                        .disabled(true)
-                    }
+                HStack {
+                    Text("\(timeMission.wakeupTime.format("HH:mm"))")
+                        .font(.pizzaTitle2)
+                        .foregroundColor(.textGray)
                     
-                    if twoButton {
-                        CustomButton(buttonText: "설정", buttonTextColor: .white, buttonColor: .black, action: {
-                            isTimeMissionSettingModalPresented.toggle()
-                        })
-                        .sheet(isPresented: $isTimeMissionSettingModalPresented) {
-                            TimeMissionSettingView(timeMission: $timeMission,
-                                                   title: timeMission.title,
-                                                   isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
-                            .presentationDetents([.fraction(0.4)])
-                        }
+                    EditButton(action: {
+                        isTimeMissionSettingModalPresented.toggle()
+                    })
+                    .sheet(isPresented: $isTimeMissionSettingModalPresented) {
+                        TimeMissionSettingView(timeMission: $timeMission,
+                                               title: timeMission.title,
+                                               isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
+                        .presentationDetents([.fraction(0.4)])
                     }
                 }
             }
+            
+            Spacer(minLength: 10)
+            // 현재 시간과 목표 기상시간 비교
+            if currentTime > timeMission.wakeupTime.adding(minutes: -10) && currentTime < timeMission.wakeupTime.adding(minutes: 10) {
+                MissionButton(status: $status, action: {
+                    status = .done
+                    showsAlert = true
+                })
+                .disabled(buttonSwitch)
+            }
+        }
+        .onAppear {
+            
         }
         .padding()
-        .background(Color(UIColor.systemGray6))
+        .background(.white)
         .frame(minWidth: 0, maxWidth: .infinity)
-        .cornerRadius(8.0)
+        .cornerRadius(20.0)
+        .overlay(RoundedRectangle(cornerRadius: 20.0)
+            .stroke(Color(.lightGray), lineWidth: 1))
         .padding(.horizontal)
         .padding(.top, 15)
     }
@@ -196,119 +223,62 @@ struct TimeMissionStyleView: View {
 struct BehaviorMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @Binding var behaviorMission: BehaviorMission
-    
-    @State private var buttonTitle1: String = "🍕 받기"
-    @State private var buttonTitle2: String = "🍕 받기"
-    @State private var buttonTitle3: String = "🍕 받기"
-    @State private var buttonToggle1: Bool = false
-    @State private var buttonToggle2: Bool = false
-    @State private var buttonToggle3: Bool = false
+    @Binding var status: Status
     
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var healthKitStore: HealthKitStore
+    var buttonSwitch: Bool {
+        switch status {
+        case .ready, .done:
+            return true
+        case .complete:
+            return false
+        default:
+            return false
+        }
+    }
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
                 Text(behaviorMission.title)
                     .font(.pizzaTitle2Bold)
                     .padding(.bottom, 1)
-                Spacer()
+            
                 if let stepCount = healthKitStore.stepCount {
                     Text("현재 \(stepCount) 걸음")
                         .font(.pizzaBody)
-                        .foregroundColor(Color.black.opacity(0.6))
+                        .foregroundColor(.textGray)
                 } else {
                     Text("현재 0 걸음")
                         .font(.pizzaBody)
-                        .foregroundColor(Color.black.opacity(0.6))
+                        .foregroundColor(.textGray)
                 }
-            }
             
             HStack {
-                Spacer()
-                ZStack {
-                    Line()
-                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(height: 1)
-                    
-                    Text("1,000 보")
-                        .modifier(MissionTextModifier())
-                        .padding(.bottom, 5)
-                }
-                Spacer()
-                ZStack {
-                    Line()
-                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(height: 1)
-                    
-                    Text("5,000 보")
-                        .modifier(MissionTextModifier())
-                        .padding(.bottom, 20)
-                }
-                Spacer()
-                ZStack {
-                    Line()
-                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .frame(height: 1)
-                    
-                    Text("10,000 보")
-                        .modifier(MissionTextModifier())
-                        .padding(.bottom, 35)
-                }
-                Spacer()
-            }
-            
-            HStack {
-                Spacer()
                 // 내 걸음수와 목표 걸음수 비교
-                if behaviorMission.myStep >= 1000 {
-                    CustomToggleButton(buttonTitle: $buttonTitle1, buttonToggle: $buttonToggle1, action: {
-                        buttonTitle1 = "성공"
-                        buttonToggle1 = true
+                if healthKitStore.stepCount ?? 0 >= 1000 {
+                    MissionButton(status: $status, action: {
+                        status = .done
                         showsAlert = true
                     })
-                    .disabled(buttonToggle1)
-                } else {
-                    CustomButton(buttonText: "피자 대기", buttonTextColor: .black, buttonColor: .white, action: {
-                    })
-                    .overlay(RoundedRectangle(cornerRadius: 30.0)
-                        .stroke(Color(.black), lineWidth: 0.5))
-                    .disabled(true)
+                    .disabled(buttonSwitch)
                 }
-                Spacer()
                 if behaviorMission.myStep >= 5000 {
-                    CustomToggleButton(buttonTitle: $buttonTitle2, buttonToggle: $buttonToggle2, action: {
-                        buttonTitle2 = "성공"
-                        buttonToggle2 = true
+                    MissionButton(status: $status, action: {
+                        status = .done
                         showsAlert = true
                     })
-                    .disabled(buttonToggle2)
-                } else {
-                    CustomButton(buttonText: "피자 대기", buttonTextColor: .black, buttonColor: .white, action: {
-                    })
-                    .overlay(RoundedRectangle(cornerRadius: 30.0)
-                        .stroke(Color(.black), lineWidth: 0.5))
-                    .disabled(true)
+                    .disabled(buttonSwitch)
                 }
-                Spacer()
                 if behaviorMission.myStep >= 10000 {
-                    CustomToggleButton(buttonTitle: $buttonTitle3, buttonToggle: $buttonToggle3, action: {
-                        buttonTitle3 = "성공"
-                        buttonToggle3 = true
+                    MissionButton(status: $status, action: {
+                        status = .done
                         showsAlert = true
                     })
-                    .disabled(buttonToggle3)
-                } else {
-                    CustomButton(buttonText: "피자 대기", buttonTextColor: .black, buttonColor: .white, action: {
-                    })
-                    .overlay(RoundedRectangle(cornerRadius: 30.0)
-                        .stroke(Color(.black), lineWidth: 0.5))
-                    .disabled(true)
+                    .disabled(buttonSwitch)
                 }
-                Spacer()
             }
         }
         .onAppear {
@@ -317,11 +287,12 @@ struct BehaviorMissionStyleView: View {
         .refreshable {
             healthKitStore.fetchStepCount()
         }
-        
         .padding()
-        .background(Color(UIColor.systemGray6))
+        .background(.white)
         .frame(minWidth: 0, maxWidth: .infinity)
-        .cornerRadius(8.0)
+        .cornerRadius(20.0)
+        .overlay(RoundedRectangle(cornerRadius: 20.0)
+            .stroke(Color(.lightGray), lineWidth: 1))
         .padding(.horizontal)
         .padding(.top, 15)
     }
@@ -329,10 +300,11 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
-        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
-        // .constant 고정값
+        // 일단 보류
+        //        MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
+        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), showsAlert: .constant(false))
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
-                                 showsAlert: .constant(false), healthKitStore: HealthKitStore())
+                                 status: .constant(.ready), showsAlert: .constant(false), healthKitStore: HealthKitStore())
+        MissionView()
     }
 }

@@ -36,6 +36,7 @@ enum Status: String {
     // 진행전 진행중 완료 포기
     case ready
     case ongoing
+    case complete
     case done
     case giveUp
     
@@ -49,6 +50,8 @@ enum Status: String {
             return "아직"
         case .ongoing:
             return "진행중"
+        case .complete:
+            return "성공"
         case .done:
             return "완료"
         case .giveUp:

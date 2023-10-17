@@ -13,7 +13,7 @@ extension Font {
     static let pizzaTitle2Bold = Font.system(size: 22, weight: .bold)
     static let pizzaHeadlineBold = Font.system(size: 17, weight: .bold)
     
-    static let pizzaTitleBold = chab 
+    static let pizzaTitleBold = chab
     static let pizzaHeadline = nanumEb
     static let pizzaBody = nanumBd
     static let pizzaDescription = nanumBdBody
@@ -30,8 +30,10 @@ extension Font {
     static let nanumBd = Font.custom("NanumSquareNeo-cBd", size: 17, relativeTo: .body)
     static let nanumBdBody = Font.custom("NanumSquareNeo-cBd", size: 13, relativeTo: .body)
     
+    static let nanumEbTitle = Font.custom("NanumSquareNeo-dEb", size: 21, relativeTo: .body)
     static let nanumEb = Font.custom("NanumSquareNeo-dEb", size: 17, relativeTo: .title3)
     static let nanumHv = Font.custom("NanumSquareNeo-eHv", size: 17, relativeTo: .title3)
+    static let nanumLtBody = Font.custom("NanumSquareNeo-aLt", size: 17, relativeTo: .title3)
     static let nanumLt = Font.custom("NanumSquareNeo-aLt", size: 14, relativeTo: .title3)
     static let nanumRg = Font.custom("NanumSquareNeo-bRg", size: 17, relativeTo: .title3)
      

@@ -26,10 +26,10 @@ struct MissionButton: View {
     
     var buttonTitleColor: Color {
         switch status {
-        case .ready:
-            return .defaultGray
-        case .complete, .done:
+        case .ready, .complete:
             return .white
+        case .done:
+            return .secondary
         default:
             return .black
         }
@@ -37,12 +37,23 @@ struct MissionButton: View {
     
     var buttonColor: Color {
         switch status {
-        case .ready:
-            return .lightGray
-        case .complete, .done:
-            return .black
+        case .ready, .complete:
+            return .pickle
+        case .done:
+            return Color(UIColor.secondarySystemBackground)
         default:
             return .white
+        }
+    }
+    
+    var buttonOpacity: Double {
+        switch status {
+        case .ready:
+            return 0.4
+        case .complete, .done:
+            return 1
+        default:
+            return 1
         }
     }
     
@@ -52,12 +63,13 @@ struct MissionButton: View {
         VStack {
             Button(action: action) {
                 Text(buttonTitle)
-                    .font(.pizzaHeadline)
+                    .font(.pizzaBody)
                     .foregroundColor(buttonTitleColor)
             }
             .frame(width: 70, height: 5)
             .padding()
             .background(buttonColor)
+            .opacity(buttonOpacity)
             .cornerRadius(10.0)
             .overlay(RoundedRectangle(cornerRadius: 10.0)
                 .stroke(Color(.systemGray4), lineWidth: 0.5))
@@ -65,39 +77,14 @@ struct MissionButton: View {
     }
 }
 
-struct EditButton: View {
-    let action: () -> Void
-    
-    var body: some View {
-        VStack {
-            Button(action: action) {
-                Text("수정")
-                    .font(.pizzaFootnote)
-                    .foregroundColor(.textGray)
-            }
-        }
-    }
-}
-
-struct MissionTextModifier: ViewModifier {
+struct PizzaTextModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.system(size: 15))
-            .frame(width: 70, height: 5)
-            .padding()
-            .background(.white)
-            .cornerRadius(30.0)
-            .overlay(RoundedRectangle(cornerRadius: 30.0)
-                .stroke(Color(.systemGray4), lineWidth: 0.5))
-    }
-}
-
-struct Line: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: 50, y: 0))
-        path.addLine(to: CGPoint(x: 50, y: 50))
-        return path
+            .font(.system(size: 40))
+            .background(
+                Circle()
+                    .fill(Color(UIColor.secondarySystemBackground))
+                  .scaleEffect(1.6))
     }
 }
 
@@ -175,17 +162,20 @@ struct TimeMissionStyleView: View {
         HStack(alignment: .bottom) {
             VStack(alignment: .leading) {
                 Text(timeMission.title)
-                    .font(.pizzaTitle2Bold)
-                    .foregroundColor(.black)
+                    .font(.nanumEbTitle)
+                    .foregroundColor(.primary)
                     .padding(.bottom, 1)
-                
-                HStack {
-                    Text("\(timeMission.wakeupTime.format("HH:mm"))")
-                        .font(.pizzaTitle2)
-                        .foregroundColor(.textGray)
                     
-                    EditButton(action: {
+                    Button(action: {
                         isTimeMissionSettingModalPresented.toggle()
+                    }, label: {
+                        HStack {
+                            Text("\(timeMission.wakeupTime.format("HH:mm"))")
+                                .font(.pizzaTitle2)
+                            
+                            Image(systemName: "chevron.up.chevron.down")
+                        }
+                        .foregroundColor(.secondary)
                     })
                     .sheet(isPresented: $isTimeMissionSettingModalPresented) {
                         TimeMissionSettingView(timeMission: $timeMission,
@@ -193,24 +183,26 @@ struct TimeMissionStyleView: View {
                                                isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
                         .presentationDetents([.fraction(0.4)])
                     }
-                }
             }
             
             Spacer(minLength: 10)
             // 현재 시간과 목표 기상시간 비교
             if currentTime > timeMission.wakeupTime.adding(minutes: -10) && currentTime < timeMission.wakeupTime.adding(minutes: 10) {
-                MissionButton(status: $status, action: {
-                    status = .done
-                    showsAlert = true
-                })
-                .disabled(buttonSwitch)
+                
             }
+            
+            MissionButton(status: $status, action: {
+                status = .done
+                showsAlert = true
+            })
+            .disabled(buttonSwitch)
         }
         .onAppear {
             
         }
-        .padding()
-        .background(.white)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
+        .background(.clear)
         .frame(minWidth: 0, maxWidth: .infinity)
         .cornerRadius(20.0)
         .overlay(RoundedRectangle(cornerRadius: 20.0)
@@ -242,43 +234,81 @@ struct BehaviorMissionStyleView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-                Text(behaviorMission.title)
-                    .font(.pizzaTitle2Bold)
-                    .padding(.bottom, 1)
+            Text(behaviorMission.title)
+                .font(.nanumEbTitle)
+                .bold()
+                .padding(.bottom, 4)
             
-                if let stepCount = healthKitStore.stepCount {
-                    Text("현재 \(stepCount) 걸음")
-                        .font(.pizzaBody)
-                        .foregroundColor(.textGray)
-                } else {
-                    Text("현재 0 걸음")
-                        .font(.pizzaBody)
-                        .foregroundColor(.textGray)
+            if let stepCount = healthKitStore.stepCount {
+                Text("현재 \(stepCount) 걸음")
+                    .font(.pizzaBody)
+                    .foregroundColor(.textGray)
+            } else {
+                Text("현재 0 걸음")
+                    .font(.pizzaBody)
+                    .foregroundColor(.textGray)
+            }
+            HStack {
+                VStack{
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                        .padding(.vertical, 2)
+                    Text("1,000걸음")
+                        .font(.pizzaRegularSmallTitle)
+                        .bold()
                 }
+                .padding(.leading, 3)
+                Spacer()
+                VStack {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                        .padding(.vertical, 2)
+                    Text("5,000걸음")
+                        .font(.pizzaRegularSmallTitle)
+                        .bold()
+                }
+                .padding(.leading, 4)
+                Spacer()
+                VStack {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                        .padding(.vertical, 2)
+                    Text("10,000걸음")
+                        .font(.pizzaRegularSmallTitle)
+                        .bold()
+                }
+            }
+            .padding(.horizontal, 9)
+            .padding(.vertical, 5)
             
             HStack {
                 // 내 걸음수와 목표 걸음수 비교
-                if healthKitStore.stepCount ?? 0 >= 1000 {
-                    MissionButton(status: $status, action: {
+                MissionButton(status: $status, action: {
+                    if healthKitStore.stepCount ?? 0 >= 1000 {
                         status = .done
                         showsAlert = true
-                    })
-                    .disabled(buttonSwitch)
-                }
-                if behaviorMission.myStep >= 5000 {
-                    MissionButton(status: $status, action: {
+                    }
+                })
+                .disabled(buttonSwitch)
+                
+                MissionButton(status: $status, action: {
+                    if healthKitStore.stepCount ?? 0 >= 5000 {
                         status = .done
                         showsAlert = true
-                    })
-                    .disabled(buttonSwitch)
-                }
-                if behaviorMission.myStep >= 10000 {
-                    MissionButton(status: $status, action: {
+                    }
+                })
+                .disabled(buttonSwitch)
+                
+                MissionButton(status: $status, action: {
+                    if healthKitStore.stepCount ?? 0 >= 10000 {
                         status = .done
                         showsAlert = true
-                    })
-                    .disabled(buttonSwitch)
-                }
+                    }
+                })
+                .disabled(buttonSwitch)
             }
         }
         .onAppear {
@@ -287,8 +317,9 @@ struct BehaviorMissionStyleView: View {
         .refreshable {
             healthKitStore.fetchStepCount()
         }
-        .padding()
-        .background(.white)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 20)
+        .background(.clear)
         .frame(minWidth: 0, maxWidth: .infinity)
         .cornerRadius(20.0)
         .overlay(RoundedRectangle(cornerRadius: 20.0)
@@ -306,5 +337,6 @@ struct MissionStyle_Previews: PreviewProvider {
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
                                  status: .constant(.ready), showsAlert: .constant(false), healthKitStore: HealthKitStore())
         MissionView()
+            .environmentObject(MissionStore())
     }
 }

@@ -10,10 +10,13 @@ import SwiftUI
 //                              UserRepository                                            CoreData
 // TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
 // MissionStore               MissionRepository                                           FireStore
-
+@MainActor
 final class TodoStore: ObservableObject {
     
     @Published var todos: [Todo] = []
+    
+    /// 완료한 todos
+    @Published var complteTask: Int = 0
     
     // MARK: DI - propertywrapper OR init, dicontainer
     //    struct Dependency {
@@ -24,9 +27,11 @@ final class TodoStore: ObservableObject {
     //    init(repository: TodoRepositoryProtocol) {
     //        self.repository = repository
     //    }
+    //    @Injected var repository: TodoRepositoryProtocol
     
     @Injected(TodoRepoKey.self) var repository: TodoRepositoryProtocol
-    //    @Injected var repository: TodoRepositoryProtocol
+    @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
+    
     
     func getSeletedTodo(id: String) -> Todo {
         if let todo = self.todos.filter { $0.id == id }.first {
@@ -36,7 +41,6 @@ final class TodoStore: ObservableObject {
         }
     }
     
-    @MainActor
     @discardableResult
     func fetch() async -> [Todo] {
         await withCheckedContinuation { continuation in
@@ -48,15 +52,17 @@ final class TodoStore: ObservableObject {
     }
     
     func add(todo: Todo) {
-        repository.saveTodo(todo: todo)
-        todos.append(todo)
+        do {
+            try repository.saveTodo(todo: todo)
+            todos.append(todo)
+        } catch {
+            Log.error("failed")
+        }
     }
     
-    func delete(todo: Todo) {
-//        repository.deleteTodo(todo: todo)
-        repository.deleteTodo(model: todo)
+    func delete(todo: Todo) {                               // TODO: Delete가 실패 했을때 처리 해야함
+        repository.deleteTodo(model: todo)                  // repository.deleteTodo(todo: todo)
         self.todos.removeAll(where: { $0.id == todo.id })
-        // TODO: Delete가 실패 했을때 처리 해야함
     }
     
     /// 전체 목록 Delete
@@ -67,6 +73,10 @@ final class TodoStore: ObservableObject {
     
     func update(todo: Todo) {
         repository.updateTodo(todo: todo)
+    }
+    
+    func updateStatus(status: TodoStatus) {
+        
     }
     
     /// 빈 모델 생성

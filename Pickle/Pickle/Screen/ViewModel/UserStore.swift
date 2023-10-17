@@ -7,27 +7,60 @@
 
 import SwiftUI
 
+@MainActor
 final class UserStore: ObservableObject {
     
-    @Published var user: User?
+    @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
     
-    @Injected(UserRepoKey.self) var userRepository: UserRepository
+    @Published var user: User = User.defaultUser
     
-    init() { }
+    var pizzaSlice: Double {
+        Double(user.currentPizzaSlice)
+    }
     
-    @MainActor
+    var pizzaCount: Int {
+        user.currentPizzaCount
+    }
+    
     func fetchUser() async throws {
         self.user = await withCheckedContinuation { continuation in
-            userRepository.getUser { [weak userRepository] value in
-                if let value { continuation.resume(with: .success(value)) }
-                else {
-                    do {
-                        try userRepository?.addUser()
-                    } catch {
-                        print("error: Failed")
-                    }
+            userRepository.getUser { [weak self] value in
+                if let value {
+                    continuation.resume(with: .success(value))
+                } else {
+                    self?.addUser()
                 }
             }
+        }
+        Log.debug("\(String(describing: user))")
+    }
+    
+    func addUser(default user: User = User.defaultUser) {
+        do {
+            try userRepository.addUser(model: user)
+            self.user = user
+        } catch {
+            Log.error("Add User 발생")
+            assert(false, "Add User error발생")
+        }
+    }
+    
+    func addPizzaSlice(slice count: Int) throws {
+        let user = self.user.addPizzaSliceValidation(count: count)
+        do {
+            try userRepository.updateUser(model: user)
+            self.user = user
+        } catch {
+            assert(false)
+        }
+    }
+    
+    func updateUser(user: User) async throws {
+        do {
+            try userRepository.updateUser(model: user)
+        } catch {
+            Log.error("update User Failed")
+            assert(false, "update User Failed")
         }
     }
 }

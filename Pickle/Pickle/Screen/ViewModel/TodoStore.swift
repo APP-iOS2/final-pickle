@@ -32,7 +32,6 @@ final class TodoStore: ObservableObject {
     @Injected(TodoRepoKey.self) var repository: TodoRepositoryProtocol
     @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
     
-    
     func getSeletedTodo(id: String) -> Todo {
         if let todo = self.todos.filter { $0.id == id }.first {
             return todo

@@ -14,6 +14,7 @@ struct TimerView: View {
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    @State private var realStartTime: Date = Date()
     @State private var targetTime: TimeInterval = 1 // 목표소요시간
     @State private var timeRemaining: TimeInterval = 0 // 남은 시간
     @State private var spendTime: TimeInterval = 0 // 실제 소요시간
@@ -128,9 +129,8 @@ struct TimerView: View {
             }
             // MARK: 완료, 포기 버튼
             HStack {
-                // TimerReportView Sheet 로 하기
+                // 완료 버튼
                 Button {
-                    // TODO: spendTime 업데이트하기
                     if isDisabled {
                         isShowGiveupAlert = true
                         isComplete = true
@@ -149,8 +149,10 @@ struct TimerView: View {
                         .clipShape(Circle())
                 }
                 .disabled(isStart)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
+                // 포기버튼
                 Button(action: {
                     // 포기 alert띄우기
                     updateGiveup(spendTime: spendTime)
@@ -166,6 +168,7 @@ struct TimerView: View {
                     
                 })
                 .disabled(isStart)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
             }
@@ -204,7 +207,7 @@ struct TimerView: View {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
         }
     }
-    
+    // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
         let todo = Todo(id: todo.id,
                         content: todo.content,
@@ -213,22 +216,23 @@ struct TimerView: View {
                         spendTime: todo.spendTime,
                         status: .ongoing)
         todoStore.update(todo: todo)
+        self.realStartTime = Date()
     }
-    
+    // 포기시 없데이트, status giveup으로
     func updateGiveup(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
-                        startTime: todo.startTime,
+                        startTime: realStartTime,
                         targetTime: todo.targetTime,
                         spendTime: spendTime,
                         status: .giveUp)
         todoStore.update(todo: todo)
     }
-    
+    // 완료시
     func updateDone(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
-                        startTime: todo.startTime,
+                        startTime: realStartTime,
                         targetTime: todo.targetTime,
                         spendTime: spendTime,
                         status: .done)

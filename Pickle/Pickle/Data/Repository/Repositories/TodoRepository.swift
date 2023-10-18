@@ -11,7 +11,6 @@ protocol TodoRepositoryProtocol: Dependency {
     func fetchTodo(sorted: Sorted, _ completion: @escaping ([Todo]) -> Void)
     func create(_ completion: @escaping (TodoObject) -> Void)
     func saveTodo(todo: Todo) throws
-    func deleteTodo(todo: Todo)
     func deleteTodo(model: Todo)
     func deleteAll()
     func updateTodo(todo: Todo)
@@ -50,16 +49,6 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
 //        do {  try super.save(object: object) }
 //        catch { Log.error("error \(error)") }
-    }
-    
-    func deleteTodo(todo: Todo) {
-        Log.debug("todoValue : \(todo)")
-        let object = todo.mapToPersistenceObject()
-        do {
-            try super.delete(object: object)
-        } catch {
-            Log.error("error \(error)")
-        }
     }
     
     func deleteTodo(model: Todo) {

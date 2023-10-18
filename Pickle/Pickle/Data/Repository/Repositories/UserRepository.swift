@@ -8,23 +8,40 @@
 import Foundation
 
 protocol UserRepositoryProtocol: Dependency, AnyObject {
-    func getUser(_ completion: @escaping (User?) -> Void)
+    func getUser(_ completion: @escaping (Result<User,PersistentedError>) -> Void)
+    func fetchUser() throws -> User
     func addUser(model: User) throws
     func updateUser(model: User) throws
+    func deleteAll() throws
 }
 
 final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
     
-    func getUser(_ completion: @escaping (User?) -> Void) {
+    func fetchUser() throws -> User {
+        do {
+            let value = try super.fetch(UserObject.self,
+                                        predicate: nil,
+                                        sorted: nil)
+            if let first = value.first {
+                return User.mapFromPersistenceObject(first)
+            } else {
+                throw PersistentedError.fetchNothing
+            }
+        } catch {
+            throw PersistentedError.fetchError
+        }
+    }
+   
+    func getUser(_ completion: @escaping (Result<User, PersistentedError>) -> Void) {
         super.fetch(UserObject.self,
                     predicate: nil,
                     sorted: Sorted.createdAscending,
                     completion: { user in
             if let userObject = user.first {
                 let user = User.mapFromPersistenceObject(userObject)
-                completion(user)
+                completion(.success(user))
             } else {
-                completion(nil)
+                completion(.failure(.fetchError))
             }
         })
     }
@@ -44,6 +61,14 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
             try super.update(object: object)
         } catch {
             throw PersistentedError.addFaild
+        }
+    }
+    
+    func deleteAll() throws {
+        do {
+            try super.deleteAll(UserObject.self)
+        } catch {
+            throw PersistentedError.deleteFailed
         }
     }
 }

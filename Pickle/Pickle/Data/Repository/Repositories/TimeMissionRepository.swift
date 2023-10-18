@@ -11,7 +11,8 @@ protocol MissionRepositoryProtocol: Dependency, AnyObject {
     associatedtype DTO: Mission
     associatedtype Persited: MissionObject
     
-    func fetch(sorted: Sorted) async -> [DTO]
+    func fetch(sorted: Sorted) -> [DTO]
+    func fetch(sorted: Sorted) async -> [DTO]  // do not use this method
     func create(_ completion: @escaping (Persited) -> Void)
     func save<T>(model: T) where T: Mission
     func update(model: DTO)
@@ -34,6 +35,16 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
             try super.save(object: data)
         } catch {
             Log.error("error occur: \(error)")
+        }
+    }
+    
+    func fetch(sorted: Sorted) -> [TimeMission] {
+        do {
+            let missionObject = try super.fetch(TimeMissionObject.self, predicate: nil, sorted: Sorted(key: "date", ascending: true))
+            let results = missionObject.map { TimeMission.mapFromPersistenceObject($0) }
+            return results
+        } catch {
+            assert(false)
         }
     }
     
@@ -75,7 +86,7 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
     func delete(model: TimeMission) {
         let persistent = model.mapToPersistenceObject()
         do {
-            try super.delete(object: persistent)
+            try super.delete(object: persistent, id: persistent.id.stringValue)
         } catch {
             Log.error("error: occur: \(error)")
         }

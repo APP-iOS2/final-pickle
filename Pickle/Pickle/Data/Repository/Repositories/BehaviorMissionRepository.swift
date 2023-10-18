@@ -20,6 +20,16 @@ final class BehaviorMissionRepository: BaseRepository<BehaviorMissionObject>, Be
         }
     }
     
+    func fetch(sorted: Sorted) -> [BehaviorMission] {
+        do {
+            let behaviorMissionObject = try super.fetch(BehaviorMissionObject.self, predicate: nil, sorted: Sorted(key: "date", ascending: true))
+            let results = behaviorMissionObject.map { BehaviorMission.mapFromPersistenceObject($0) }
+            return results
+        } catch {
+            assert(false)
+        }
+    }
+    
     func create(_ completion: @escaping (BehaviorMissionObject) -> Void) {
         do {
             try super.create(BehaviorMissionObject.self, completion: completion)
@@ -50,7 +60,7 @@ final class BehaviorMissionRepository: BaseRepository<BehaviorMissionObject>, Be
     func delete(model: BehaviorMission) {
         let persistent = model.mapToPersistenceObject()
         do {
-            try super.delete(object: persistent)
+            try super.delete(object: persistent, id: persistent.id.stringValue)
         } catch {
             Log.error("error: occur: \(error)")
         }

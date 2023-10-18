@@ -13,7 +13,10 @@ struct MissionView: View {
     @State private var showsAlert: Bool = false
     
     // 각각의 미션별로 구분해줘야함
-    @State private var status: Status = .ready
+    @State private var timeStatus: Status = .ready
+    @State private var behaviorStatus1: Status = .ready
+    @State private var behaviorStatus2: Status = .ready
+    @State private var behaviorStatus3: Status = .ready
     
     @State private var timeMissions: [TimeMission] = [
         TimeMission(id: UUID().uuidString, title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
@@ -29,12 +32,14 @@ struct MissionView: View {
                 //                MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "아직", date: "9/27", showsAlert: $showsAlert)
                 
                 ForEach($timeMissions) { $timeMission in
-                    TimeMissionStyleView(timeMission: $timeMission, status: $status, showsAlert: $showsAlert)
+                    TimeMissionStyleView(timeMission: $timeMission, status: $timeStatus, showsAlert: $showsAlert)
                 }
                 
                 ForEach($behaviorMissions) { behaviorMission in
                     BehaviorMissionStyleView(behaviorMission: behaviorMission,
-                                             status: $status,
+                                             status1: $behaviorStatus1,
+                                             status2: $behaviorStatus2,
+                                             status3: $behaviorStatus3,
                                              showsAlert: $showsAlert,
                                              healthKitStore: healthKitStore)
                 }

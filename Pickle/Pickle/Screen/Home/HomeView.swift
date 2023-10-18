@@ -15,7 +15,6 @@ struct HomeView: View {
     
     // @EnvironmentObject var sceneDelegate: SceneDelegate
     @EnvironmentObject var todoStore: TodoStore
-    var healthKitStore: HealthKitStore = HealthKitStore()
     @EnvironmentObject var userStore: UserStore
     
     @State private var goalProgress: Double = 0.0
@@ -27,6 +26,7 @@ struct HomeView: View {
     
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     @State private var seletedTodo: Todo = Todo.sample
+    @State private var seletedPizza: Pizza = Pizza.defaultPizza
     
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     
@@ -48,7 +48,6 @@ struct HomeView: View {
                                                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
                                                 // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
                 todosTaskTableView              // 할일 목록 테이블 뷰
-                
             }.padding(.top, 20)
                 
         }
@@ -60,15 +59,21 @@ struct HomeView: View {
                                                                 /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
         
         .sheetModifier(isPresented: $isPizzaSeleted,            /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
-                       isPurchase: $isPizzaPuchasePresented)
+                       isPurchase: $isPizzaPuchasePresented, 
+                       seletedPizza: $seletedPizza)
         
-        .showPizzaPurchaseAlert($isPizzaPuchasePresented)       /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
-        .onAppear { /* */ }
-        .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
-        .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
-                  perform: { slice in
-            placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
-        })
+        .showPizzaPurchaseAlert(seletedPizza,                  /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+                                $isPizzaPuchasePresented) {    /* 두가지의 (액션)클로져를 받는다, */
+            Log.debug("인앱 결제 액션")                            /* 1. 구매 액션 */
+        } navAction: {                                         /* 2. 피자 완성하러 가기 액션 */
+            Log.debug("피자 완성하러 가기 액션")
+        }
+            .onAppear { /* */ }
+            .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+            .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
+                      perform: { slice in
+                placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
+            })
     }
 }
 
@@ -91,6 +96,9 @@ extension HomeView {
     
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
+            
+            tempButton
+            
             Text("\(pizzaTaskSlice)")
                 .font(.chab)
                 .foregroundStyle(Color.pickle)
@@ -150,9 +158,12 @@ extension View {
     }
     
     func sheetModifier(isPresented: Binding<Bool>,
-                       isPurchase: Binding<Bool>) -> some View {
+                       isPurchase: Binding<Bool>,
+                       seletedPizza: Binding<Pizza>) -> some View {
+        
         modifier(HomeView.SheetModifier(isPresented: isPresented,
-                                        isPizzaPuchasePresented: isPurchase))
+                                        isPizzaPuchasePresented: isPurchase,
+                                        seletedPizza: seletedPizza))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -162,15 +173,19 @@ extension View {
                                                   seletedTodo: item))
     }
     
-    func showPizzaPurchaseAlert(_ isPresented: Binding<Bool>) -> some View {
-        modifier(PizzaAlertModifier(isPresented: isPresented,
-                                    title: "치즈피자",
+    func showPizzaPurchaseAlert(_ pizza: Pizza,
+                                _ isPizzaPuchasePresented: Binding<Bool>,
+                                _ purchaseAction: @escaping () -> Void,
+                                navAction: @escaping () -> Void) -> some View {
+        modifier(PizzaAlertModifier(isPresented: isPizzaPuchasePresented,
+                                    title: "\(pizza.name)",
                                     price: "1,200원",
                                     descripation: "피자 2판을 완성하면 얻을수 있어요",
-                                    image: "potatoPizza",
+                                    image: "\(pizza.image)",
                                     puchaseButtonTitle: "피자 구매하기",
                                     primaryButtonTitle: "피자 완성하러 가기",
-                                    primaryAction: { Log.debug("showPizzaPurchaseAlert") }))
+                                    primaryAction: purchaseAction,
+                                    pizzaMakeNavAction: navAction))
     }
 }
 
@@ -198,11 +213,16 @@ extension HomeView {
         @Binding var isPresented: Bool
         @Binding var isPizzaPuchasePresented: Bool
         
+        @State private var pizzas: [Pizza] = []
+        @Binding var seletedPizza: Pizza
+        
         @GestureState private var offset = CGSize.zero
+        @EnvironmentObject var pizzaStore: PizzaStore
         
         func body(content: Content) -> some View {
             
             content
+                .task { pizzas = await pizzaStore.fetch()}
                 .overlay {
                     if isPresented {
                         // For getting frame for image
@@ -215,8 +235,10 @@ extension HomeView {
             //            .blur(radius: getBlurRadius()) // BlurRadius change depends on offset
                         .ignoresSafeArea()
                         
-                        CustomSheetView(isPizzaPuchasePresented: $isPresented) {
-                            PizzaSelectedView(isPresented: $isPizzaPuchasePresented)
+                        CustomSheetView(isPresented: $isPresented) {
+                            PizzaSelectedView(pizzas: $pizzas,
+                                              seletedPizza: $seletedPizza,
+                                              isPizzaPuchasePresented: $isPizzaPuchasePresented)
                         }.transition(.move(edge: .bottom).combined(with: .opacity))
                     }
                 }
@@ -285,5 +307,7 @@ private struct NavigationModifier: ViewModifier {
     NavigationStack {
         HomeView()
             .environmentObject(TodoStore())
+            .environmentObject(PizzaStore())
+            .environmentObject(UserStore())
     }
 }

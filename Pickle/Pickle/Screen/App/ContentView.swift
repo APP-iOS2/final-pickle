@@ -9,8 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
-    var healthKitStore: HealthKitStore = HealthKitStore()
-
+    @EnvironmentObject var pizzaStore: PizzaStore
+    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var missionStore: MissionStore
+    
+    private var healthKitStore: HealthKitStore = HealthKitStore()
+    
     var body: some View {
         TabView {
             NavigationStack {
@@ -38,6 +42,11 @@ struct ContentView: View {
             }
             .tag(2)
         }
+        .task { 
+            userSetting()        // UserSetting
+            await pizzaSetting() // 피자 첫 실행시 로컬에 저장
+            missionSetting()
+        }
         .onAppear {
             healthKitStore.requestAuthorization { success in
                 if success {
@@ -50,8 +59,57 @@ struct ContentView: View {
         }
         .tint(.pickle)
     }
+    
 }
 
+extension ContentView {
+    
+    /// 처음 한번만 실행되는 함수,
+    /// 피자를 셋팅하여 아직 열리지 않은 피자는 lock 을 true 로 한다.
+    private func pizzaSetting() async {
+        let value = await pizzaStore.fetch()
+        if !value.isEmpty { return }
+        Pizza.allCasePizza.forEach { pizza in
+            do {
+                try pizzaStore.add(pizza: pizza)
+            } catch {
+                errorHandler(error)
+            }
+        }
+    }
+    
+    private func userSetting() {
+        do {
+            try userStore.fetchUser()
+        } catch {
+            errorHandler(error)
+        }
+    }
+    
+    private func missionSetting() {
+        let (t,b) = missionStore.fetch()
+        if t.isEmpty && b.isEmpty { return }
+        if t.isEmpty { 
+            let time = TimeMission(title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
+            missionStore.add(mission: .time(time))
+        }
+        if b.isEmpty {
+            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, date: Date())
+            missionStore.add(mission: .behavior(behavior))
+        }
+    }
+    
+    private func errorHandler(_ error: Error) {
+        guard let error = error as? PersistentedError else { return }
+        if error == .fetchNothing {
+            userStore.addUser()
+        } else if error == .addFaild {
+            Log.error("피자를 추가하는 중에 에러 발생")
+        } else if error == .fetchError {
+            Log.error("페치를 하는 중에 에러 발생")
+        }
+    }
+}
 #Preview {
     ContentView()
         .environmentObject(TodoStore())

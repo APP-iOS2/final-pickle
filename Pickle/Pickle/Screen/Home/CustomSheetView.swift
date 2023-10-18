@@ -40,16 +40,16 @@ struct CustomSheetView<Content: View>: View {
     @GestureState private var dragInfo = DragInfo.inactive
     @State private var yVelocity: Double = 0.0
     @State private var previousDragValue: DragGesture.Value?
-    @Binding var isPizzaPuchasePresented: Bool
+    @Binding var isPresented: Bool
     
     @ViewBuilder let content: () -> Content
     
     private let defaultHeight: CGFloat = CGFloat.screenHeight / 3
-    private let defaultMidHeight: CGFloat = CGFloat.screenHeight / 2 + 40
+    private let defaultMidHeight: CGFloat = CGFloat.screenHeight / 2 - 80
     private let defaultTopHeight: CGFloat = 0
 
-    init(isPizzaPuchasePresented: Binding<Bool>, content: @escaping () -> Content) {
-        self._isPizzaPuchasePresented = isPizzaPuchasePresented
+    init(isPresented: Binding<Bool>, content: @escaping () -> Content) {
+        self._isPresented = isPresented
         self.content = content
     }
     
@@ -136,7 +136,7 @@ struct CustomSheetView<Content: View>: View {
                                     } else {
                                         if offset > 80 {
                                             withAnimation {
-                                                isPizzaPuchasePresented.toggle()
+                                                isPresented.toggle()
                                             }
                                         }
                                         offset = 0

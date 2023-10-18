@@ -95,6 +95,7 @@
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
 		B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */; };
 		B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
+		B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */; };
 		B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */; };
 		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
 		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
@@ -203,6 +204,7 @@
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
 		B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAlert.swift; sourceTree = "<group>"; };
 		B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSummaryView.swift; sourceTree = "<group>"; };
 		B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyView.swift; sourceTree = "<group>"; };
 		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
 		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				2137D5972AC148CE00AFE225 /* Home */,
 				960C41972ACE7A08009A0093 /* Add */,
 				2137D5982AC148E200AFE225 /* Calendar */,
+				B7908DBF2AE01A6B004C5221 /* PizzaSummary */,
 				2137D59A2AC1490500AFE225 /* Setting */,
 			);
 			path = Screen;
@@ -596,6 +599,14 @@
 			path = font;
 			sourceTree = "<group>";
 		};
+		B7908DBF2AE01A6B004C5221 /* PizzaSummary */ = {
+			isa = PBXGroup;
+			children = (
+				B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */,
+			);
+			path = PizzaSummary;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -757,6 +768,7 @@
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
+				B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */,
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,

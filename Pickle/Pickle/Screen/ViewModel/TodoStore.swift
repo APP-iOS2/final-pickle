@@ -72,6 +72,7 @@ final class TodoStore: ObservableObject {
     
     func update(todo: Todo) {
         repository.updateTodo(todo: todo)
+    
     }
     
     func updateStatus(status: TodoStatus) {

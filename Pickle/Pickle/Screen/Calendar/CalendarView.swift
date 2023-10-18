@@ -22,7 +22,7 @@ struct CalendarView: View {
     var body: some View {
         
         VStack(alignment: .leading) {
-            HeaderView()
+            headerView()
             
             ScrollView(.vertical) {
                 VStack {
@@ -46,7 +46,7 @@ struct CalendarView: View {
     
     // MARK: - Header 뷰
     @ViewBuilder
-    func HeaderView() -> some View {
+    func headerView() -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 
@@ -116,7 +116,7 @@ struct CalendarView: View {
                     
                     monthlyView()
                 } else {
-                    WeekView(calendarModel.currentWeek)
+                    weekView(calendarModel.currentWeek)
                 }
             }
             .hLeading()
@@ -127,7 +127,7 @@ struct CalendarView: View {
     
     // MARK: - Week View
     @ViewBuilder
-    func WeekView(_ week: [Date]) -> some View {
+    func weekView(_ week: [Date]) -> some View {
         HStack(spacing: 0) {
             ForEach(week, id:\.self) { day in
                 VStack(spacing: 8) {

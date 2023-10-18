@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct CalendarView: View {
+    
+    @EnvironmentObject var todoStore: TodoStore
     @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
-    
-    @State private var tasks = CalendarViewModel().filteredTasks
+    @State private var filteredTasks: [Todo]?
     
     @Namespace private var animation
     
@@ -30,58 +31,18 @@ struct CalendarView: View {
             }
             .scrollIndicators(.hidden)
         }
-        //        .onAppear {
-        //
-        //            if weekSlider.isEmpty {
-        //                let currentWeek = Date().fetchWeek()
-        //
-        //                if let firstDate = currentWeek.first?.date {
-        //
-        //                    weekSlider.append(firstDate.createPreviousWeek())
-        //                }
-        //                weekSlider.append(currentWeek)
-        //
-        //                if let lastDate = currentWeek.last?.date {
-        //                    weekSlider.append(lastDate.createNextWeek())
-        //
-        //                }
-        //            }
-        //        }
-        .onChange(of: calendarModel.currentDay) { newValue in
-            calendarModel.filterTodayTasks()
+        .task {
+            await todoStore.fetch()
         }
-        //        .onChange(of: calendarModel.currentMonth) { newValue in
-        //
-        //        }
-        
+        .onAppear(perform: {
+            filterTodayTasks(todo: todoStore.todos)
+        })
+
+        .onChange(of: calendarModel.currentDay) { newValue in
+          
+            filterTodayTasks(todo: todoStore.todos)
+        }
     }
-    
-    //    func paginationWeek() {
-    //
-    //        // MARK: - safe check
-    //        if weekSlider.indices.contains(currentWeekIndex) {
-    //            if let firstDate =  weekSlider[currentWeekIndex].first?.date, currentWeekIndex == 0 {
-    //
-    //                // MARK: - inserting new week at 0th index and removing last arry item
-    //                weekSlider.insert(firstDate.createPreviousWeek(), at: 0 )
-    //                weekSlider.removeLast()
-    //                currentWeekIndex = 1
-    //
-    //            }
-    //
-    //            if let lastDate = weekSlider[currentWeekIndex].last?.date, currentWeekIndex == (weekSlider.count - 1) {
-    //
-    //                // MARK: - Appending new week at last index and removing first arry item
-    //                weekSlider.append(lastDate.createNextWeek())
-    //                weekSlider.removeFirst()
-    //
-    //                currentWeekIndex = weekSlider.count - 2
-    //            }
-    //            }
-    //
-    //        }
-    //
-    //    }
     
     // MARK: - Header 뷰
     @ViewBuilder
@@ -154,19 +115,14 @@ struct CalendarView: View {
                 if weekToMonth {
                     
                     monthlyView()
-                } else { WeekView(calendarModel.currentWeek)}
+                } else {
+                    WeekView(calendarModel.currentWeek)
+                }
             }
             .hLeading()
         }
         .padding()
         .hSpacing(.leading)
-        //        .onChange(of: currentWeekIndex) { newValue in
-        //
-        //            // MARK: - Creating when it reaches first/last page
-        //            if newValue == 0 || newValue == (weekSlider.count - 1) {
-        //                createWeek = true
-        //            }
-        //        }
     }
     
     // MARK: - Week View
@@ -284,26 +240,38 @@ struct CalendarView: View {
         }
         
     }
+    
     // MARK: - TaskView
     func taskView() -> some View {
         
         VStack(alignment: .leading, spacing: 35) {
             
-            ForEach(calendarModel.filteredTasks!) { task in
-                
+            ForEach(filteredTasks ?? []) { task in
                 TaskRowView(task: task)
             }
         }
         .padding([.vertical, .leading], 15)
     }
     
+    // MARK: - Filter Today Tasks
+    func filterTodayTasks(todo: [Todo]?){
+    
+        let calendar  = Calendar.current
+        guard let abc = todo else { return }
+        let filtered = abc.filter { calendar.isDate($0.startTime, inSameDayAs: calendarModel.currentDay)
+            }
+            
+        filteredTasks =  filtered
+
+        }
+    
 }
 
-struct CalendarView_Previews: PreviewProvider {
-    static var previews: some View {
-        CalendarView()
-    }
-}
+//struct CalendarView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CalendarView( filteredTasks: Todo.sample)
+//    }
+//}
 
 extension View {
     func hLeading() -> some View {

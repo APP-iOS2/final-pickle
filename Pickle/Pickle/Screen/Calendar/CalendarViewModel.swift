@@ -9,6 +9,8 @@ import SwiftUI
 
 class CalendarViewModel: ObservableObject {
     
+//    @EnvironmentObject var todoStore: TodoStore
+    
     @Published var storedTasks: [CalendarSampleTask] = [
         
         CalendarSampleTask(calendarTitle: "Meeting", calendarDescription: "Discuss", creationDate: Date(),isCompleted: true),
@@ -21,10 +23,10 @@ class CalendarViewModel: ObservableObject {
     // MARK: - 초기화
     init() {
         fetchCurrentWeek(date: currentDay)
-        filterTodayTasks()
+//        filterTodayTasks()
     }
     // MARK: - filtering today tasks
-    @Published var filteredTasks: [CalendarSampleTask]?
+    @Published var filteredTasks: [Todo]?
     // MARK: - Current Week Days
     @Published var currentWeek: [Date] = []
     
@@ -56,16 +58,22 @@ class CalendarViewModel: ObservableObject {
     }
     
     // MARK: - Filter Today Tasks
-    func filterTodayTasks() {
-        
-        let calendar  = Calendar.current
-        let filtered = storedTasks.filter {
-            calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
-        }
-        
-        self.filteredTasks = filtered.sorted(by: { $0.creationDate < $1.creationDate })
-        
-    }
+//    func filterTodayTasks(task: TodoStore) {
+//    
+//        let calendar  = Calendar.current
+////        let filtered : [Todo]
+//        if task.todos.isEmpty {
+//            self.filteredTasks?.append(Todo.sample)
+//        } else {
+//            let filtered = task.todos.filter { calendar.isDate($0.startTime, inSameDayAs: self.currentDay)
+//            }
+//            self.filteredTasks = filtered.sorted(by: { $0.startTime < $1.startTime })
+//        }
+////        let filtered = storedTasks.filter {
+////            calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
+////        }
+//        
+//    }
     
     func extractDate(date: Date, format: String) -> String {
         let formatter = DateFormatter()

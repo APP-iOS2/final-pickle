@@ -10,8 +10,9 @@ import SwiftUI
 struct SettingView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var notificationManager: NotificationManager
+    
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
 
-    @State private var is24HourClock: Bool = true
     @State private var isShowingMoveToSettingAlert: Bool = false
     
     var body: some View {
@@ -26,7 +27,17 @@ struct SettingView: View {
                         .padding(.trailing)
                     
                     Toggle("24시간제", isOn: $is24HourClock)
-                    // TODO: 시간 표시하는 곳 체크해서 24시/12시 변환하기
+                }
+                
+                HStack {
+                    Image(systemName: "clock")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.secondary)
+                        .padding(.trailing)
+                    
+                    Toggle("24시간제", isOn: $is24HourClock)
                 }
             }
             

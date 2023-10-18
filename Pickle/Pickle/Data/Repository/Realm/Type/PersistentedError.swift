@@ -7,9 +7,13 @@
 
 import Foundation
 
-
 enum PersistentedError: Error {
     case fetchNothing
+    case fetchError
     case addFaild
+    case saveFailed
+    case createFailed
     case updateFaild
+    case deleteFailed
+    case deleteAllFailed
 }

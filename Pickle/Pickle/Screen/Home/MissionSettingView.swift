@@ -10,6 +10,7 @@ import SwiftUI
 struct TimeMissionSettingView: View {
     @EnvironmentObject var missionStore: MissionStore
     @Binding var timeMission: TimeMission
+    @Binding var status: Status
     
     var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
@@ -24,11 +25,13 @@ struct TimeMissionSettingView: View {
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("취소")
+                        .font(.pizzaBody)
+                        .foregroundColor(.pickle)
                 }
                 Spacer()
                 
                 Text("\(title) 설정")
-                    .font(.pizzaTitle2Bold)
+                    .font(.nanumEbTitle)
                 Spacer()
                 
                 Button {
@@ -36,6 +39,8 @@ struct TimeMissionSettingView: View {
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")
+                        .font(.pizzaBody)
+                        .foregroundColor(.pickle)
                 }
             }
             .padding()
@@ -53,7 +58,7 @@ struct TimeMissionSettingView: View {
 
 struct MissionSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")), title: "기상 미션",
+        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), title: "기상 미션",
                                isTimeMissionSettingModalPresented: .constant(true))
     }
 }

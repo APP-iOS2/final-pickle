@@ -146,7 +146,6 @@ struct TimeMissionStyleView: View {
     @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
-    private let currentTime: Date = Date()
     var buttonSwitch: Bool {
         switch status {
         case .ready, .done:
@@ -179,17 +178,13 @@ struct TimeMissionStyleView: View {
                     })
                     .sheet(isPresented: $isTimeMissionSettingModalPresented) {
                         TimeMissionSettingView(timeMission: $timeMission,
-                                               title: timeMission.title,
+                                               status: $status, title: timeMission.title,
                                                isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
                         .presentationDetents([.fraction(0.4)])
                     }
             }
             
             Spacer(minLength: 10)
-            // 현재 시간과 목표 기상시간 비교
-            if currentTime > timeMission.wakeupTime.adding(minutes: -10) && currentTime < timeMission.wakeupTime.adding(minutes: 10) {
-                
-            }
             
             MissionButton(status: $status, action: {
                 status = .done
@@ -198,7 +193,10 @@ struct TimeMissionStyleView: View {
             .disabled(buttonSwitch)
         }
         .onAppear {
-            
+            missionComplet()
+        }
+        .refreshable {
+            missionComplet()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -210,6 +208,15 @@ struct TimeMissionStyleView: View {
         .padding(.horizontal)
         .padding(.top, 15)
     }
+    
+    func missionComplet() {
+        // 현재 시간과 목표 기상시간 비교
+        if Date.now > timeMission.wakeupTime.adding(minutes: -10) && Date.now < timeMission.wakeupTime.adding(minutes: 10) {
+            status = .complete
+        } else {
+            status = .ready
+        }
+    }
 }
 
 struct BehaviorMissionStyleView: View {
@@ -218,7 +225,6 @@ struct BehaviorMissionStyleView: View {
     @Binding var status1: Status
     @Binding var status2: Status
     @Binding var status3: Status
-//    let testStep: Int = 5555
     
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
@@ -328,12 +334,10 @@ struct BehaviorMissionStyleView: View {
             }
         }
         .onAppear {
-            healthKitStore.fetchStepCount()
-            missionComplete()
+            healthKitStore.fetchStepCount({ self.missionComplete() })
         }
         .refreshable {
-            healthKitStore.fetchStepCount()
-            missionComplete()
+            healthKitStore.fetchStepCount{ self.missionComplete() }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -348,25 +352,17 @@ struct BehaviorMissionStyleView: View {
     
     func missionComplete() {
         if let stepCount = healthKitStore.stepCount {
-            if stepCount >= 1000 {
+            print("stepCount: \(stepCount)")
+            if stepCount >= 10 {
                 status1 = .complete
             }
             if stepCount >= 5000 {
-                status1 = .complete
+                status2 = .complete
             }
             if stepCount >= 10000 {
-                status1 = .complete
+                status3 = .complete
             }
         }
-//        if testStep >= 1000 {
-//            status1 = .complete
-//        }
-//        if testStep >= 5000 {
-//            status2 = .complete
-//        }
-//        if testStep >= 10000 {
-//            status3 = .complete
-//        }
     }
 }
 

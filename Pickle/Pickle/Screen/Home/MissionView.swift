@@ -12,7 +12,6 @@ struct MissionView: View {
     var healthKitStore: HealthKitStore = HealthKitStore()
     @State private var showsAlert: Bool = false
     
-    // 각각의 미션별로 구분해줘야함
     @State private var timeStatus: Status = .ready
     @State private var behaviorStatus1: Status = .ready
     @State private var behaviorStatus2: Status = .ready
@@ -49,26 +48,26 @@ struct MissionView: View {
         .onAppear {
             // 시간 말고 날짜만 비교
             // 상태 초기화 후 날짜 다시 저장
-            Task {
-                let (_timeMissions, _behaviorMissions) = await missionStore.fetch()
-                timeMissions = _timeMissions
-                behaviorMissions = _behaviorMissions
-                
-                if timeMissions.isEmpty { return }
-                if behaviorMissions.isEmpty { return }
-                
-                if timeMissions[0].date.format("yyyy-mm-dd") != Date.now.format("yyyy-mm-dd") {
-                    missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
-                                                                   title: timeMissions[0].title,
-                                                                   status: .ready,
-                                                                   date: Date.now,
-                                                                   wakeupTime: timeMissions[0].wakeupTime)))
-                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
-                                                                           title: behaviorMissions[0].title,
-                                                                           status: .ready,
-                                                                           date: Date.now)))
-                }
-            }
+//            Task {
+//                let (_timeMissions, _behaviorMissions) = await missionStore.fetch()
+//                timeMissions = _timeMissions
+//                behaviorMissions = _behaviorMissions
+//                
+//                if timeMissions.isEmpty { return }
+//                if behaviorMissions.isEmpty { return }
+//                
+//                if timeMissions[0].date.format("yyyy-mm-dd") != Date.now.format("yyyy-mm-dd") {
+//                    missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
+//                                                                   title: timeMissions[0].title,
+//                                                                   status: .ready,
+//                                                                   date: Date.now,
+//                                                                   wakeupTime: timeMissions[0].wakeupTime)))
+//                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
+//                                                                           title: behaviorMissions[0].title,
+//                                                                           status: .ready,
+//                                                                           date: Date.now)))
+//                }
+//            }
         }
         .refreshable {
             healthKitStore.fetchStepCount()
@@ -90,7 +89,6 @@ struct MissionView_Previews: PreviewProvider {
         NavigationStack {
             MissionView()
                 .environmentObject(MissionStore())
-            // 프리뷰는 여기 있는 뷰만 로드하는 거니까 여기서 생성하지 않은 것들은 값을 넣어줘야함
         }
     }
 }

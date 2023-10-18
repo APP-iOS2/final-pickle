@@ -52,11 +52,11 @@ struct ContentView: View {
             .tag(3)
         }
         .task { 
-            userSetting()        // UserSetting
             await pizzaSetting() // 피자 첫 실행시 로컬에 저장
-            missionSetting()
         }
         .onAppear {
+            userSetting()        // UserSetting
+            missionSetting()
             healthKitStore.requestAuthorization { success in
                 if success {
                     healthKitStore.fetchStepCount()
@@ -87,30 +87,33 @@ extension ContentView {
         }
     }
     
-    private func userSetting() {
+    func userSetting() {
         do {
             try userStore.fetchUser()
         } catch {
             errorHandler(error)
         }
     }
-    
+    // 마이그래이션
+    // 코어데이터할때도 마이그레이션 어쩌고 데이터변경이 일어나면 ~
+    // 배ㅠ포할땐 마이그레이션어쩌고 코드도 넣어서 ? 지금은 그냥 앱삭제 다시깔기
+    // 버전이 바뀌면 파일 바뀌니까 그거에 대응해줘야함
     private func missionSetting() {
-        let (t,b) = missionStore.fetch()
-        if t.isEmpty && b.isEmpty { return }
+        let (t, b) = missionStore.fetch()
+        if !t.isEmpty && !b.isEmpty { return }
         if t.isEmpty { 
             let time = TimeMission(title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
             missionStore.add(mission: .time(time))
         }
         if b.isEmpty {
-            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, date: Date())
+            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, status2: .ready, status3: .ready, date: Date())
             missionStore.add(mission: .behavior(behavior))
         }
     }
     
     private func errorHandler(_ error: Error) {
         guard let error = error as? PersistentedError else { return }
-        if error == .fetchNothing {
+        if error == .fetchUserError {
             userStore.addUser()
         } else if error == .addFaild {
             Log.error("피자를 추가하는 중에 에러 발생")

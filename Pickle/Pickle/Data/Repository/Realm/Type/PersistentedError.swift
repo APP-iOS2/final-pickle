@@ -10,6 +10,8 @@ import Foundation
 enum PersistentedError: Error {
     case fetchNothing
     case fetchError
+    case fetchUserError
+    
     case addFaild
     case saveFailed
     case createFailed

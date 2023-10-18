@@ -25,10 +25,10 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
             if let first = value.first {
                 return User.mapFromPersistenceObject(first)
             } else {
-                throw PersistentedError.fetchNothing
+                throw PersistentedError.fetchUserError
             }
         } catch {
-            throw PersistentedError.fetchError
+            throw PersistentedError.fetchUserError
         }
     }
    

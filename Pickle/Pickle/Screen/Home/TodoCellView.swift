@@ -5,16 +5,17 @@
 //  Created by 최소정 on 2023/09/25.
 //
 
-// TODO: 종료 시간 표시 여부, 재생 심볼 확정하기
-
 import SwiftUI
 
 struct TodoCellView: View {
     
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+    
     var todo: Todo
     
     @State var isShowingTimerView: Bool = false
-    
+        
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
@@ -29,8 +30,7 @@ struct TodoCellView: View {
                     Text(todo.content)
                         .font(.pizzaBody)
                     
-                    Text("\(todo.startTime.format("a h:mm")) (10분)")
-//                    Text("\(startTime.format("a h:mm")) - \(startTime.adding(minutes: 10).format("a h:mm")) (10분)")
+                    Text("\(todo.startTime.format(timeFormat)) (10분)")
                         .font(.pizzaFootnote)
                 }
                 
@@ -54,6 +54,9 @@ struct TodoCellView: View {
                 }
             }
             .padding(.horizontal, 40)
+        }
+        .onAppear {
+            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .fullScreenCover(isPresented: $isShowingTimerView) {
             TimerView(todo: todo, isShowingTimerView: $isShowingTimerView)

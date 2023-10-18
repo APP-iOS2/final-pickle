@@ -27,6 +27,8 @@ extension BehaviorMission {
         BehaviorMission(id: object.id.stringValue,
                         title: object.title,
                         status: .init(rawValue: object.status.rawValue) ?? .ready,
+                        status2: .init(rawValue: object.status.rawValue) ?? .ready,
+                        status3: .init(rawValue: object.status.rawValue) ?? .ready,
                         date: object.date)
     }
 }
@@ -36,7 +38,8 @@ extension BehaviorMission {
         BehaviorMission(id: self.id,
                         title: self.title,
                         status: status,
+                        status2: status,
+                        status3: status,
                         date: self.date)
     }
 }
-

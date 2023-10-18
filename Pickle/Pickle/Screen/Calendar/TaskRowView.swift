@@ -34,7 +34,7 @@ struct TaskRowView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(.primary)
                         .strikethrough(task.status == .complete, pattern: .solid, color: .black)
-                    
+                
                 }
                 
 //                if task.startTime.isSameHour {

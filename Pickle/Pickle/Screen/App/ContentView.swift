@@ -41,6 +41,15 @@ struct ContentView: View {
                     .environment(\.symbolVariants, .fill)
             }
             .tag(2)
+            
+            NavigationStack {
+               PizzaSummaryView()
+            }
+            .tabItem {
+                Label("통계", systemImage: "pencil")
+                    .environment(\.symbolVariants, .fill)
+            }
+            .tag(3)
         }
         .task { 
             userSetting()        // UserSetting

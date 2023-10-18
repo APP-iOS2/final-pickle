@@ -68,7 +68,10 @@ struct HomeView: View {
         } navAction: {                                         /* 2. 피자 완성하러 가기 액션 */
             Log.debug("피자 완성하러 가기 액션")
         }
-            .onAppear { /* */ }
+        .onAppear { /* */
+            Log.debug("ContentView")
+            
+        }
             .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
             .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
                       perform: { slice in

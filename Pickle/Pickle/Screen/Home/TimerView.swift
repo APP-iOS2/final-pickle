@@ -14,44 +14,49 @@ struct TimerView: View {
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    @State private var realStartTime: Date = Date()
     @State private var targetTime: TimeInterval = 1 // 목표소요시간
     @State private var timeRemaining: TimeInterval = 0 // 남은 시간
     @State private var spendTime: TimeInterval = 0 // 실제 소요시간
     @State private var timeExtra: TimeInterval = 0 // 추가소요시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
+    // TODO: completeLimit 바꿔주기 (5분으로)
     @State private var completeLimit: TimeInterval = 10 // 5분 이후
     @State private var isDisabled: Bool = true // 완료버튼 활성화 용도
     
     @State private var isGiveupSign: Bool = false
     @State private var isShowGiveupAlert: Bool = false
-    @State private var isDecresing: Bool = true
-    @State private var isStart: Bool = true
+    @State private var isDecresing: Bool = true // 목표시간 줄어드는
+    @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
     @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
     @Binding var isShowingTimerView: Bool
-    
+
     var body: some View {
         VStack {
             // 멘트부분
             if isStart {
                 Text("따라 읽어봐요!")
-                    .font(Font.pizzaTitleBold)
-                    .padding(.top)
+                    .font(.pizzaRegularTitle)
+                    .padding(.top, 30)
                 
-                Text("")
+                Text(" ")
+                    .font(.pizzaBody)
                     .foregroundColor(.secondary)
                     .padding(.top, 10)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 30)
+                
             } else {
                 Text(todo.content)
-                    .font(Font.system(size: 28, weight: .bold))
-                    .padding(.top)
+                    .font(.pizzaRegularTitle)
+                    .padding(.top, 30)
                 
                 // TODO: RegisterView처럼 랜덤으로 바꿔주기
                 Text("🍕 굽는 중")
+                    .font(.pizzaBody)
                     .foregroundColor(.secondary)
                     .padding(.top, 10)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 30)
             }
             // MARK: 타이머 부분
             ZStack {
@@ -61,33 +66,33 @@ struct TimerView: View {
                     .overlay(Circle().stroke(.tertiary, lineWidth: 5))
                 Circle()
                     .trim(from: 0, to: progress())
-                    .stroke(Color.primary, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .stroke(Color.pickle, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                     .frame(width: .screenWidth * 0.75)
                     .rotationEffect(.degrees(-90))
                 
                 if isStart {
                     if timeRemaining != 0 {
                         Text(String(format: "%g", timeRemaining))
-                            .font(Font.system(size: 40))
-                            .fontWeight(.heavy)
+                            .foregroundColor(.pickle)
+                            .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
                                 timeRemaining -= 1
                             }
                     } else {
                         Text("시작")
-                            .font(Font.system(size: 40))
-                            .fontWeight(.heavy)
+                            .foregroundColor(.pickle)
+                            .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
                                 calcRemain()
                             }
                     }
                 } else {
-                    
+            
                     if isDecresing {
                         // 남은시간 줄어드는 타이머
                         Text(convertSecondsToTime(timeInSecond: timeRemaining))
-                            .font(.system(size: 40))
-                            .fontWeight(.heavy)
+                            .foregroundColor(.pickle)
+                            .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
                                 if !isComplete {
                                     timeRemaining -= 1
@@ -104,8 +109,8 @@ struct TimerView: View {
                         // 추가시간 늘어나는 타이머
                         HStack {
                             Text("+ \(convertSecondsToTime(timeInSecond: timeExtra))")
-                                .font(.system(size: 40))
-                                .fontWeight(.heavy)
+                                .foregroundColor(.pickle)
+                                .font(.pizzaTimerNum)
                                 .onReceive(timer) { _ in
                                     if !isStart && !isComplete {
                                         timeExtra += 1
@@ -117,15 +122,15 @@ struct TimerView: View {
                     
                     // 목표시간 명시
                     Text(convertTargetTimeToString(timeInSecond: todo.targetTime))
+                        .font(.pizzaRegularSmallTitle)
                         .foregroundColor(.secondary)
                         .offset(y: 40)
                 }
             }
             // MARK: 완료, 포기 버튼
             HStack {
-                // TimerReportView Sheet 로 하기
+                // 완료 버튼
                 Button {
-                    // TODO: spendTime 업데이트하기
                     if isDisabled {
                         isShowGiveupAlert = true
                         isComplete = true
@@ -137,14 +142,17 @@ struct TimerView: View {
                 } label: {
                     
                     Text("완료")
-                        .font(.pizzaHeadlineBold)
+                        .font(.pizzaHeadline)
                         .frame(width: 75, height: 75)
                         .foregroundColor(.green)
                         .background(Color(hex: 0xDAFFD9))
                         .clipShape(Circle())
                 }
+                .disabled(isStart)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
+                // 포기버튼
                 Button(action: {
                     // 포기 alert띄우기
                     updateGiveup(spendTime: spendTime)
@@ -152,13 +160,15 @@ struct TimerView: View {
                     isShowGiveupAlert = true
                 }, label: {
                     Text("포기")
-                        .font(.pizzaHeadlineBold)
+                        .font(.pizzaHeadline)
                         .frame(width: 75, height: 75)
                         .foregroundColor(.red)
                         .background(Color(hex: 0xFFDBDB))
                         .clipShape(Circle())
                     
                 })
+                .disabled(isStart)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
             }
@@ -175,7 +185,6 @@ struct TimerView: View {
                 Alert(title: Text("시작 후 5분은 피자조각을 얻지 못해요"),
                       message: Text(""),
                       primaryButton: .destructive(Text("완료")) {
-                    // 포기하기 함수
                     isShowGiveupAlert = true
                     isShowingReportSheet = true
                 }, secondaryButton: .cancel(Text("취소")) {
@@ -198,7 +207,7 @@ struct TimerView: View {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
         }
     }
-    
+    // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
         let todo = Todo(id: todo.id,
                         content: todo.content,
@@ -207,22 +216,23 @@ struct TimerView: View {
                         spendTime: todo.spendTime,
                         status: .ongoing)
         todoStore.update(todo: todo)
+        self.realStartTime = Date()
     }
-    
+    // 포기시 없데이트, status giveup으로
     func updateGiveup(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
-                        startTime: todo.startTime,
+                        startTime: realStartTime,
                         targetTime: todo.targetTime,
                         spendTime: spendTime,
                         status: .giveUp)
         todoStore.update(todo: todo)
     }
-    
+    // 완료시
     func updateDone(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
-                        startTime: todo.startTime,
+                        startTime: realStartTime,
                         targetTime: todo.targetTime,
                         spendTime: spendTime,
                         status: .done)

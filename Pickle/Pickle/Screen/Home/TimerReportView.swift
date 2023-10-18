@@ -20,6 +20,7 @@ struct TimerReportView: View {
     
     var body: some View {
         VStack {
+            // TODO: 60 *5 (5분)으로 바꾸기
             if todo.spendTime >= 60{
                 Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
                     .font(.pizzaBody)
@@ -102,7 +103,7 @@ struct TimerReportView: View {
                     .colorInvert()
             })
             .buttonStyle(.borderedProminent)
-            .tint(.primary)
+            .tint(.pickle)
         }
         .onAppear {
            isComplete = true
@@ -122,7 +123,7 @@ struct TimerReportView: View {
 struct TimerReportView_Previews: PreviewProvider {
     static var previews: some View {
         TimerReportView(isShowingReportSheet: .constant(false), isComplete: .constant(false), isShowingTimerView: .constant(false), todo: Todo(id: UUID().uuidString,
-                                                                                                                                               content: "이력서 작성하기",
+                                                                                                                                    content: "이력서 작성하기",
                                                                                                                                                startTime: Date(),
                                                                                                                                                targetTime: 60,
                                                                                                                                                spendTime: 5400,

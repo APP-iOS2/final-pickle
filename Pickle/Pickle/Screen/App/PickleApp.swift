@@ -23,20 +23,20 @@ struct PickleApp: App {
     @StateObject private var todoStore = TodoStore()
     @StateObject private var missionStore = MissionStore()
     @StateObject private var userStore = UserStore()
+    @StateObject private var pizzaStore = PizzaStore()
     @StateObject private var notificationManager = NotificationManager()
     
     var body: some Scene {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
+            
             ContentView()
-                .task {
-                    try? await userStore.fetchUser()
-                }
                 .environmentObject(todoStore)
                 .environmentObject(missionStore)
                 .environmentObject(userStore)
                 .environmentObject(notificationManager)
+                .environmentObject(pizzaStore)
         }
     }
 }
@@ -49,5 +49,6 @@ extension PickleApp {
         DependencyContainer.register(BehaviorRepoKey.self, BehaviorMissionRepository())
         DependencyContainer.register(TimeRepoKey.self, TimeMissionRepository())
         DependencyContainer.register(UserRepoKey.self, UserRepository())
+        DependencyContainer.register(PizzaRepoKey.self, PizzaRepository())
     }
 }

@@ -43,3 +43,8 @@ struct UserRepoKey: InjectionKey {
     typealias Value = UserRepositoryProtocol
     static var type: DependencyType = .singleton
 }
+
+struct PizzaRepoKey: InjectionKey {
+    typealias Value = PizzaRepositoryProtocol
+    static var type: DependencyType = .singleton
+}

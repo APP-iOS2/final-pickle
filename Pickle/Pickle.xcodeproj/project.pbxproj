@@ -56,6 +56,13 @@
 		965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */; };
 		965C9BA22ADAB2380015ABBE /* PickleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BA12ADAB2380015ABBE /* PickleTests.swift */; };
 		965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */; };
+		96635F5C2ADF9EE60072F21E /* Todo-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5B2ADF9EE60072F21E /* Todo-extension.swift */; };
+		96635F5E2ADF9EEF0072F21E /* TimeMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */; };
+		96635F602ADF9EF50072F21E /* User-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5F2ADF9EF50072F21E /* User-extension.swift */; };
+		96635F622ADF9EFC0072F21E /* Pizza-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F612ADF9EFC0072F21E /* Pizza-extension.swift */; };
+		96635F652ADF9F380072F21E /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F642ADF9F380072F21E /* Status.swift */; };
+		96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */; };
+		96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
 		96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
 		96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
@@ -71,6 +78,10 @@
 		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
 		96C64FE32ADC2C450042204A /* CustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C64FE22ADC2C450042204A /* CustomSheetView.swift */; };
 		96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
+		96CE29C32ADE63A40070EF92 /* PizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C22ADE63A40070EF92 /* PizzaObject.swift */; };
+		96CE29C52ADE66B50070EF92 /* PizzaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C42ADE66B50070EF92 /* PizzaRepository.swift */; };
+		96CE29C72ADEC6560070EF92 /* PizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C62ADEC6560070EF92 /* PizzaStore.swift */; };
+		96CE29C92ADED0CA0070EF92 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C82ADED0CA0070EF92 /* Collection.swift */; };
 		96CF08E62AD9098400648B59 /* NanumSquareNeoOTF-Eb.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E02AD9098300648B59 /* NanumSquareNeoOTF-Eb.otf */; };
 		96CF08E72AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */; };
 		96CF08E82AD9098400648B59 /* NanumSquareNeoOTF-Hv.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E22AD9098400648B59 /* NanumSquareNeoOTF-Hv.otf */; };
@@ -153,6 +164,13 @@
 		965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PickleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		965C9BA12ADAB2380015ABBE /* PickleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleTests.swift; sourceTree = "<group>"; };
 		965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaAlert.swift; sourceTree = "<group>"; };
+		96635F5B2ADF9EE60072F21E /* Todo-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo-extension.swift"; sourceTree = "<group>"; };
+		96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeMission-extension.swift"; sourceTree = "<group>"; };
+		96635F5F2ADF9EF50072F21E /* User-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User-extension.swift"; sourceTree = "<group>"; };
+		96635F612ADF9EFC0072F21E /* Pizza-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pizza-extension.swift"; sourceTree = "<group>"; };
+		96635F642ADF9F380072F21E /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorMission-extension.swift"; sourceTree = "<group>"; };
+		96635F692ADFA4A70072F21E /* KeyPathEditable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathEditable.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
 		96A1D4A62ACFE384003BC207 /* MissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStore.swift; sourceTree = "<group>"; };
 		96A1D4A92AD176B6003BC207 /* Injection+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injection+Key.swift"; sourceTree = "<group>"; };
@@ -166,6 +184,10 @@
 		96A1E4B52AD53866001B2960 /* PersistentedError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentedError.swift; sourceTree = "<group>"; };
 		96C64FE22ADC2C450042204A /* CustomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetView.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		96CE29C22ADE63A40070EF92 /* PizzaObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaObject.swift; sourceTree = "<group>"; };
+		96CE29C42ADE66B50070EF92 /* PizzaRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaRepository.swift; sourceTree = "<group>"; };
+		96CE29C62ADEC6560070EF92 /* PizzaStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaStore.swift; sourceTree = "<group>"; };
+		96CE29C82ADED0CA0070EF92 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		96CF08E02AD9098300648B59 /* NanumSquareNeoOTF-Eb.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Eb.otf"; sourceTree = "<group>"; };
 		96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Bd.otf"; sourceTree = "<group>"; };
 		96CF08E22AD9098400648B59 /* NanumSquareNeoOTF-Hv.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Hv.otf"; sourceTree = "<group>"; };
@@ -268,6 +290,7 @@
 			children = (
 				960C419C2ACE8276009A0093 /* TodoStore.swift */,
 				96A1E4B02AD52919001B2960 /* UserStore.swift */,
+				96CE29C62ADEC6560070EF92 /* PizzaStore.swift */,
 				96A1D4A62ACFE384003BC207 /* MissionStore.swift */,
 				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
 				21E711882AD48A01002B8069 /* NotificationManager.swift */,
@@ -323,6 +346,7 @@
 				960C41822ACDA41C009A0093 /* Repository */,
 				21FA26732AC29F7D00877122 /* Service */,
 				21FA26742AC29F9F00877122 /* Model */,
+				96635F5A2ADF9ECF0072F21E /* Extension */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -334,6 +358,7 @@
 				2137D5A52AC14C7500AFE225 /* Color.swift */,
 				2137D5A72AC14C7A00AFE225 /* Font.swift */,
 				B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */,
+				96CE29C82ADED0CA0070EF92 /* Collection.swift */,
 				960C41852ACE390A009A0093 /* URL.swift */,
 				2137D5A92AC14EA500AFE225 /* View.swift */,
 			);
@@ -369,11 +394,8 @@
 		21FA26742AC29F9F00877122 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				21FA26762AC2A10800877122 /* Todo.swift */,
-				21FA267A2AC2ADFB00877122 /* Mission.swift */,
-				21FA267C2AC2B50D00877122 /* User.swift */,
-				21FA267E2AC2BB3800877122 /* Pizza.swift */,
-				21E7118E2AD53862002B8069 /* LocalNotification.swift */,
+				96635F682ADFA49B0072F21E /* Protocol */,
+				96635F6B2ADFA4AF0072F21E /* Model */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -416,9 +438,10 @@
 				960C41832ACDA42B009A0093 /* BaseRepository.swift */,
 				960C418D2ACE3FCA009A0093 /* TodoRepository.swift */,
 				96A1E4AC2AD5277E001B2960 /* UserRepository.swift */,
+				96CE29C42ADE66B50070EF92 /* PizzaRepository.swift */,
 				960C41952ACE4396009A0093 /* TimeMissionRepository.swift */,
-				96A1D4AB2AD17829003BC207 /* Midiator.swift */,
 				96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */,
+				96A1D4AB2AD17829003BC207 /* Midiator.swift */,
 				960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */,
 			);
 			path = Repositories;
@@ -436,6 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				96A1E4AE2AD527B4001B2960 /* UserObject.swift */,
+				96CE29C22ADE63A40070EF92 /* PizzaObject.swift */,
 				963AFF912AC33A1800835FD8 /* TodoObject.swift */,
 				963AFF932AC33EAF00835FD8 /* MissionObject.swift */,
 				960C41932ACE4236009A0093 /* BehaviorMissionObject.swift */,
@@ -507,6 +531,39 @@
 				B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		96635F5A2ADF9ECF0072F21E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				96635F5B2ADF9EE60072F21E /* Todo-extension.swift */,
+				96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */,
+				96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */,
+				96635F5F2ADF9EF50072F21E /* User-extension.swift */,
+				96635F612ADF9EFC0072F21E /* Pizza-extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		96635F682ADFA49B0072F21E /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				96635F692ADFA4A70072F21E /* KeyPathEditable.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		96635F6B2ADFA4AF0072F21E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				96635F642ADF9F380072F21E /* Status.swift */,
+				21FA26762AC2A10800877122 /* Todo.swift */,
+				21FA267A2AC2ADFB00877122 /* Mission.swift */,
+				21FA267C2AC2B50D00877122 /* User.swift */,
+				21FA267E2AC2BB3800877122 /* Pizza.swift */,
+				21E7118E2AD53862002B8069 /* LocalNotification.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		96A1D4A82AD176AD003BC207 /* Key */ = {
@@ -680,6 +737,7 @@
 				965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */,
 				21FA267F2AC2BB3800877122 /* Pizza.swift in Sources */,
 				960C418E2ACE3FCA009A0093 /* TodoRepository.swift in Sources */,
+				96635F622ADF9EFC0072F21E /* Pizza-extension.swift in Sources */,
 				960C419A2ACE7AF9009A0093 /* Log.swift in Sources */,
 				960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */,
 				963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */,
@@ -691,10 +749,13 @@
 				960C41922ACE41E1009A0093 /* Object+Extensions.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */,
+				96635F652ADF9F380072F21E /* Status.swift in Sources */,
 				B7C341B32AC29CB900744EB7 /* OffsetKey.swift in Sources */,
 				B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */,
 				96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */,
+				96635F5E2ADF9EEF0072F21E /* TimeMission-extension.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
+				96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
@@ -725,26 +786,33 @@
 				2137D5952AC1479700AFE225 /* SettingView.swift in Sources */,
 				2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */,
 				963AFF922AC33A1800835FD8 /* TodoObject.swift in Sources */,
+				96CE29C92ADED0CA0070EF92 /* Collection.swift in Sources */,
 				96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */,
 				960C417F2ACD41CD009A0093 /* CornerButtonModifier.swift in Sources */,
 				B7C341B52AC2CA7400744EB7 /* Date+Extensions.swift in Sources */,
 				961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */,
 				21FA26772AC2A10800877122 /* Todo.swift in Sources */,
 				96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */,
+				96CE29C32ADE63A40070EF92 /* PizzaObject.swift in Sources */,
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */,
 				21E7118F2AD53862002B8069 /* LocalNotification.swift in Sources */,
 				960C41942ACE4236009A0093 /* BehaviorMissionObject.swift in Sources */,
 				96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */,
 				96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */,
+				96CE29C52ADE66B50070EF92 /* PizzaRepository.swift in Sources */,
 				2137D5AA2AC14EA500AFE225 /* View.swift in Sources */,
 				2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */,
 				2137D5912AC1476700AFE225 /* MissionView.swift in Sources */,
+				96635F5C2ADF9EE60072F21E /* Todo-extension.swift in Sources */,
 				21E711892AD48A01002B8069 /* NotificationManager.swift in Sources */,
+				96CE29C72ADEC6560070EF92 /* PizzaStore.swift in Sources */,
 				960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */,
 				21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */,
 				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,
 				96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */,
+				96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */,
+				96635F602ADF9EF50072F21E /* User-extension.swift in Sources */,
 				96A1E4B42AD5384B001B2960 /* RealmError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

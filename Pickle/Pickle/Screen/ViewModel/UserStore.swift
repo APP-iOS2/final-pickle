@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 final class UserStore: ObservableObject {
     
     @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
@@ -22,18 +21,35 @@ final class UserStore: ObservableObject {
         user.currentPizzaCount
     }
     
-    func fetchUser() async throws {
-        self.user = await withCheckedContinuation { continuation in
-            userRepository.getUser { [weak self] value in
-                if let value {
-                    continuation.resume(with: .success(value))
-                } else {
-                    self?.addUser()
-                }
-            }
+    @MainActor
+    func fetchUser() throws {
+        do {
+            self.user = try userRepository.fetchUser()
+            Log.debug("user : \(user)")
+        } catch {
+            Log.error("failed : \(error)")
+            throw error
         }
-        Log.debug("\(String(describing: user))")
     }
+//        try await withCheckedThrowingContinuation { continuation in
+//            var nillableContinuation: CheckedContinuation<User, Error>? = continuation
+//            userRepository.getUser {  result in
+//                switch result {
+//                case .success(let user):
+//                  if let continuation = nillableContinuation {
+//                    nillableContinuation = nil
+//                    continuation.resume(returning: user)
+//                  }
+//
+//                case .failure(let error):
+//                  if let continuation = nillableContinuation {
+//                    nillableContinuation = nil
+//                    continuation.resume(throwing: error)
+//                  }
+//                }
+//            }
+//        }
+// }
     
     func addUser(default user: User = User.defaultUser) {
         do {
@@ -61,6 +77,14 @@ final class UserStore: ObservableObject {
         } catch {
             Log.error("update User Failed")
             assert(false, "update User Failed")
+        }
+    }
+    
+    func deleteuserAll() {
+        do {
+            try userRepository.deleteAll()
+        } catch {
+            Log.error("\(error)")
         }
     }
 }

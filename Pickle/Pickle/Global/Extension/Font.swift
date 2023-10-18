@@ -41,5 +41,6 @@ extension Font {
                          size: CGFloat,
                          style: Font.TextStyle) -> Font {
         Font.custom("\(name)", size: size, relativeTo: style)
+        
     }
 }

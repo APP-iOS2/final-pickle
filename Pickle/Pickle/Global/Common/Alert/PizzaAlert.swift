@@ -16,7 +16,8 @@ extension View {
         image: String,
         puchaseButtonTitle: String,
         primaryButtonTitle: String,
-        primaryAction: @escaping () -> Void
+        primaryAction: @escaping () -> Void,
+        pizzaMakeNavAction: @escaping () -> Void
     ) -> some View {
         return modifier(
             PizzaAlertModifier(isPresented: isPresented,
@@ -26,7 +27,8 @@ extension View {
                                image: image,
                                puchaseButtonTitle: puchaseButtonTitle,
                                primaryButtonTitle: primaryButtonTitle,
-                               primaryAction: primaryAction)
+                               primaryAction: primaryAction,
+                               pizzaMakeNavAction: pizzaMakeNavAction)
         )
     }
 }
@@ -41,6 +43,7 @@ struct PizzaAlertModifier: ViewModifier {
     let puchaseButtonTitle: String
     let primaryButtonTitle: String
     let primaryAction: () -> Void
+    let pizzaMakeNavAction: () -> Void
     
     func body(content: Content) -> some View {
         ZStack {
@@ -51,7 +54,9 @@ struct PizzaAlertModifier: ViewModifier {
                         .fill(.black.opacity(0.5))
                         .ignoresSafeArea(.all)
                         .onTapGesture {
-                            self.isPresented = false // 외부 영역 터치 시 내려감
+                            withAnimation {
+                                self.isPresented.toggle() // 외부 영역 터치 시 내려감
+                            }
                         }
                     
                     PizzaAlert(isPresented: $isPresented,
@@ -61,8 +66,8 @@ struct PizzaAlertModifier: ViewModifier {
                                image: image,
                                puchaseButtonTitle: puchaseButtonTitle,
                                primaryButtonTitle: primaryButtonTitle,
-                               primaryAction: primaryAction)
-                    
+                               puchaseAction: primaryAction,
+                               pizzaMakeNavAction: pizzaMakeNavAction)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
@@ -85,15 +90,33 @@ struct PizzaAlert: View {
     let image: String
     let puchaseButtonTitle: String
     let primaryButtonTitle: String
-    let primaryAction: () -> Void
+    let puchaseAction: () -> Void
+    let pizzaMakeNavAction: () -> Void
     
     var body: some View {
-        VStack(spacing: 22) {
-            VStack(spacing: 8) {
-                Text(title)
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.red.opacity(0.5))
+        VStack(spacing: 30) {
+            VStack(alignment: .center, spacing: 8) {
+                HStack(alignment: .center) {
+                    ZStack {
+                        Text(title)
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(.red.opacity(0.5))
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        
+                        Button(action: {
+                            withAnimation {
+                                isPresented.toggle()
+                            }
+                        }, label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .resizable()
+                                .tint(Color.defaultGray)
+                                .frame(width: 28, height: 28)
+                                .frame(maxWidth: .infinity, alignment: .trailing)
+                        })
+                    }
+                }
                 
                 Text("\(price)")
                     .font(.pizzaRegularSmallTitle)
@@ -104,30 +127,47 @@ struct PizzaAlert: View {
             
             Image("\(image)")
                 .resizable()
-                .frame(width: 100, height: 100, alignment: .center)
+                .frame(width: CGFloat.screenWidth / 2,
+                       height: CGFloat.screenWidth / 2, alignment: .center)
             
             Button {
-                primaryAction()
-                isPresented = false
+                withAnimation {
+                    isPresented.toggle()
+                }
+                puchaseAction()
             } label: {
-                Text(primaryButtonTitle)
-                    .font(.title3)
+                Text(puchaseButtonTitle)
+                    .font(.pizzaBody)
                     .bold()
+                    .tint(.primary).colorInvert()
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .tint(.primary)
+            .tint(Color.defaultGray)
+            
+            Button {
+                withAnimation {
+                    isPresented.toggle()
+                }
+                pizzaMakeNavAction()
+            } label: {
+                Text("\(primaryButtonTitle)")
+                    .font(.pizzaBody)
+                    .tint(Color.pickle)
+                    .padding(.bottom, 10)
+            }
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 25)
         .padding(.vertical, 18)
-        .frame(width: 300)
+        .frame(width: CGFloat.screenWidth - 40)
         .background(
             RoundedRectangle(cornerRadius: 30)
                 .stroke(.black.opacity(0.5))
                 .background(
                     RoundedRectangle(cornerRadius: 30)
-                        .fill(.white)
+                        .fill(.primary)
+                        .colorInvert()
                 )
         )
     }
@@ -136,10 +176,12 @@ struct PizzaAlert: View {
 #Preview {
     Text("미션 완료 알럿 테스트")
         .modifier(PizzaAlertModifier(isPresented: .constant(true),
-                             title: "안녕하세요",
-                             price: "안녕하세요",
-                             descripation: "안녕하세요",
-                             image: "potatoPizza",
-                             puchaseButtonTitle: "안녕하세요",
-                             primaryButtonTitle: "안녕하세요", primaryAction: { } ))
+                                     title: "안녕하세요",
+                                     price: "안녕하세요",
+                                     descripation: "안녕하세요",
+                                     image: "potatoPizza",
+                                     puchaseButtonTitle: "안녕하세요",
+                                     primaryButtonTitle: "안녕하세요", 
+                                     primaryAction: { },
+                                     pizzaMakeNavAction: { } ))
 }

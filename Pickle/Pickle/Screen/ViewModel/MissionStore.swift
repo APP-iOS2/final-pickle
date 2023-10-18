@@ -11,6 +11,7 @@ import SwiftUI
 // TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
 // MissionStore               MissionRepository                                           FireStore
 
+@MainActor
 final class MissionStore: ObservableObject {
     
     @Published var timeMissions: [TimeMission] = []
@@ -43,16 +44,12 @@ final class MissionStore: ObservableObject {
     // MARK: 3안 mediator ?
     // MARK: 4안 command를 딕셔너리로 ?
     // MARK: 5안 store(viewModel)를 쪼갠다
-    
-    @MainActor
-    func fetch() async -> ([TimeMission], [BehaviorMission]) {
-        async let timeMission = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
-        async let behaviorMission = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
-        
-        let (timeMissions, behaviorMissions) = await (timeMission, behaviorMission)
+    func fetch() -> ([TimeMission], [BehaviorMission]) {
+        let timeMission = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
+        let behaviorMission = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
         self.timeMissions = timeMissions
         self.behaviorMissions = behaviorMissions
-        return (self.timeMissions,self.behaviorMissions)
+        return (self.timeMissions, self.behaviorMissions)
     }
     
     func add(mission: MissionType) {

@@ -7,9 +7,7 @@
 
 import SwiftUI
 import RealmSwift
-
-
-
+import Combine
 //class UserVIewMOdel: ObservableObject {
 //    @Published
 //}
@@ -50,7 +48,39 @@ final class RealmStore: DBStore {
                                          schemaVersion: 1)
         let provider = RealmProvider(config: config)
         
-        self.realmStore = provider._realm
+        self.realmStore = provider.realm
+    }
+    
+    func create<T>(_ model: T.Type,
+                   data: Data) throws where T: Storable {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type
+        else {
+            throw RealmError.notRealmObject
+        }
+    
+        try realm.write {
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            let value = realm.create(model, value: json) as! T
+        }
+    }
+    
+    func create<T>(_ model: T.Type,
+                   data: Data,
+                   completion: @escaping (T) -> Void) throws where T: Storable {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type
+        else {
+            throw RealmError.notRealmObject
+        }
+        
+        try realm.write {
+            let json = try! JSONSerialization.jsonObject(with: data, options: [])
+            let value = realm.create(model, value: json) as! T
+        }
+        
     }
     
     func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T: Storable {
@@ -140,6 +170,28 @@ final class RealmStore: DBStore {
     
     func fetch<T>(_ model: T.Type,
                   predicate: NSPredicate?,
+                  sorted: Sorted?) throws -> [T] where T: Storable {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type
+        else {
+            throw RealmError.notRealmObject
+        }
+        
+        var objects = realm.objects(model)
+        
+        if let predicate = predicate {
+            objects = objects.filter(predicate)
+        }
+        
+        if let sorted {
+            objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
+        }
+        return objects.compactMap { $0 as? T }
+    }
+    
+    func fetch<T>(_ model: T.Type,
+                  predicate: NSPredicate?,
                   sorted: Sorted?,
                   complection: ([T]) -> Void) throws where T: Storable {
         guard
@@ -194,7 +246,7 @@ struct RealmProvider {
         return try? Realm(configuration: configuration)
     }
     
-    private var realm: Realm? {
+    var realm: Realm? {
         do {
             return try Realm(configuration: configuration)
         } catch {

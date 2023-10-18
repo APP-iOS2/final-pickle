@@ -16,6 +16,9 @@ protocol Dependency {}
 
 protocol DBStore: Dependency {
     func create<T: Storable>(_ model: T.Type, completion: @escaping (T) -> Void) throws
+    
+    func create<T: Storable>(_ model: T.Type, data: Data, completion: @escaping (T) -> Void) throws
+    
     func save(object: Storable) throws
     func update(object: Storable) throws
     func delete(object: Storable) throws
@@ -26,7 +29,11 @@ protocol DBStore: Dependency {
     ///   - id: 삭제할 데이터의 ID값
     func delete<T: Storable>(model: T.Type, id: String) throws
     
-    
     func deleteAll<T: Storable>(_ model: T.Type) throws
+    
     func fetch<T: Storable>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, complection: ([T]) -> Void) throws
+    
+    func fetch<T>(_ model: T.Type,
+                  predicate: NSPredicate?,
+                  sorted: Sorted?) throws -> [T] where T: Storable
 }

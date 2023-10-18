@@ -25,8 +25,21 @@ class BaseRepository<T> {
     
     func fetch(_ model: T.Type,
                predicate: NSPredicate?,
+               sorted: Sorted?) throws -> [T] where T: Storable {
+        do {
+            return try dbStore.fetch(model,
+                                     predicate: predicate,
+                                     sorted: sorted)
+        } catch {
+            throw error
+        }
+    }
+    
+    func fetch(_ model: T.Type,
+               predicate: NSPredicate?,
                sorted: Sorted,
                completion: ([T]) -> Void) where T: Storable {
+        Log.debug("dbStore: \(dbStore)")
         do {
             try dbStore.fetch(model,
                               predicate: predicate,
@@ -41,9 +54,9 @@ class BaseRepository<T> {
         try dbStore.deleteAll(model)
     }
     
-    func delete(object: T) throws where T: Storable {
-        try dbStore.delete(object: object)
-    }
+//    func delete(object: T) throws where T: Storable {
+//        try dbStore.delete(object: object)
+//    }
     
     func delete(object: T, id: String) throws where T: Storable {
         try dbStore.delete(model: T.self, id: id)
@@ -60,5 +73,11 @@ class BaseRepository<T> {
     func create(_ model: T.Type,
                 completion: @escaping (T) -> Void) throws where T: Storable {
         try dbStore.create(model, completion: completion)
+    }
+    
+    func create(_ model: T.Type,
+                data: Data,
+                completion: @escaping (T) -> Void) throws where T: Storable {
+        try dbStore.create(model, data: data, completion: completion)
     }
 }

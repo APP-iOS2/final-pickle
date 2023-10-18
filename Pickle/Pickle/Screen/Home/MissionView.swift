@@ -45,7 +45,6 @@ struct MissionView: View {
         .onAppear {
             // 시간 말고 날짜만 비교
             // 상태 초기화 후 날짜 다시 저장
-            Task {
 //                let (_timeMissions, _behaviorMissions) = missionStore.fetch()
 //                timeMissions = _timeMissions
 //                behaviorMissions = _behaviorMissions
@@ -78,7 +77,7 @@ struct MissionView: View {
                                                                            status3: behaviorStatus3,
                                                                            date: Date.now)))
                 }
-            }
+            
         }
         .refreshable {
             healthKitStore.fetchStepCount()

@@ -47,8 +47,6 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
             Log.error("error \(error)")
             throw RealmError.saveFailed
         }
-//        do {  try super.save(object: object) }
-//        catch { Log.error("error \(error)") }
     }
     
     func deleteTodo(model: Todo) {
@@ -78,4 +76,3 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
     }
 }
-

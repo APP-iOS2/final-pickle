@@ -43,11 +43,11 @@ struct ContentView: View {
             .tag(2)
         }
         .task { 
-            userSetting()        // UserSetting
             await pizzaSetting() // 피자 첫 실행시 로컬에 저장
-            missionSetting()
         }
         .onAppear {
+            userSetting()        // UserSetting
+            missionSetting()
             healthKitStore.requestAuthorization { success in
                 if success {
                     healthKitStore.fetchStepCount()
@@ -78,7 +78,7 @@ extension ContentView {
         }
     }
     
-    private func userSetting() {
+    func userSetting() {
         do {
             try userStore.fetchUser()
         } catch {
@@ -90,8 +90,8 @@ extension ContentView {
     // 배ㅠ포할땐 마이그레이션어쩌고 코드도 넣어서 ? 지금은 그냥 앱삭제 다시깔기
     // 버전이 바뀌면 파일 바뀌니까 그거에 대응해줘야함
     private func missionSetting() {
-        let (t,b) = missionStore.fetch()
-        if t.isEmpty && b.isEmpty { return }
+        let (t, b) = missionStore.fetch()
+        if !t.isEmpty && !b.isEmpty { return }
         if t.isEmpty { 
             let time = TimeMission(title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
             missionStore.add(mission: .time(time))
@@ -104,7 +104,7 @@ extension ContentView {
     
     private func errorHandler(_ error: Error) {
         guard let error = error as? PersistentedError else { return }
-        if error == .fetchNothing {
+        if error == .fetchUserError {
             userStore.addUser()
         } else if error == .addFaild {
             Log.error("피자를 추가하는 중에 에러 발생")

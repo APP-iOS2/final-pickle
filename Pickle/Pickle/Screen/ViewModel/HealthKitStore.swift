@@ -21,7 +21,7 @@ class HealthKitStore {
         }
     }
     
-    func fetchStepCount() {
+    func fetchStepCount(_ completion: @escaping () -> Void = {}) {
         let calendar = Calendar.current
         let now = Date()
         let startOfDay = calendar.startOfDay(for: now)
@@ -35,6 +35,7 @@ class HealthKitStore {
                 let stepCount = Int(sum.doubleValue(for: HKUnit.count()))
                 DispatchQueue.main.async {
                     self.stepCount = stepCount
+                    completion()
                 }
             } else if let error = error {
                 print("걸음 수 가져오기 실패: \(error.localizedDescription)")

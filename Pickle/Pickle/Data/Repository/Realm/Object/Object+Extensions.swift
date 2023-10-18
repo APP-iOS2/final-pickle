@@ -11,3 +11,4 @@ extension TodoObject: Storable {}
 extension BehaviorMissionObject: Storable {}
 extension TimeMissionObject: Storable {}
 extension UserObject: Storable {}
+extension PizzaObject: Storable {}

@@ -84,7 +84,7 @@ struct PizzaTextModifier: ViewModifier {
             .background(
                 Circle()
                     .fill(Color(UIColor.secondarySystemBackground))
-                  .scaleEffect(1.6))
+                    .scaleEffect(1.6))
     }
 }
 
@@ -164,24 +164,24 @@ struct TimeMissionStyleView: View {
                     .font(.nanumEbTitle)
                     .foregroundColor(.primary)
                     .padding(.bottom, 1)
-                    
-                    Button(action: {
-                        isTimeMissionSettingModalPresented.toggle()
-                    }, label: {
-                        HStack {
-                            Text("\(timeMission.wakeupTime.format("HH:mm"))")
-                                .font(.pizzaTitle2)
-                            
-                            Image(systemName: "chevron.up.chevron.down")
-                        }
-                        .foregroundColor(.secondary)
-                    })
-                    .sheet(isPresented: $isTimeMissionSettingModalPresented) {
-                        TimeMissionSettingView(timeMission: $timeMission,
-                                               status: $status, title: timeMission.title,
-                                               isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
-                        .presentationDetents([.fraction(0.4)])
+                
+                Button(action: {
+                    isTimeMissionSettingModalPresented.toggle()
+                }, label: {
+                    HStack {
+                        Text("\(timeMission.wakeupTime.format("HH:mm"))")
+                            .font(.pizzaTitle2)
+                        
+                        Image(systemName: "chevron.up.chevron.down")
                     }
+                    .foregroundColor(.secondary)
+                })
+                .sheet(isPresented: $isTimeMissionSettingModalPresented) {
+                    TimeMissionSettingView(timeMission: $timeMission,
+                                           status: $status, title: timeMission.title,
+                                           isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
+                    .presentationDetents([.fraction(0.4)])
+                }
             }
             
             Spacer(minLength: 10)
@@ -278,59 +278,54 @@ struct BehaviorMissionStyleView: View {
                     .foregroundColor(.textGray)
             }
             HStack {
-                VStack {
+                VStack(alignment: .center) {
                     Text("🍕")
                         .modifier(PizzaTextModifier())
                         .padding()
-                        .padding(.vertical, 2)
+                    
                     Text("1,000걸음")
                         .font(.pizzaRegularSmallTitle)
                         .bold()
-                }
-                .padding(.leading, 3)
-                Spacer()
-                VStack {
-                    Text("🍕")
-                        .modifier(PizzaTextModifier())
-                        .padding()
-                        .padding(.vertical, 2)
-                    Text("5,000걸음")
-                        .font(.pizzaRegularSmallTitle)
-                        .bold()
-                }
-                .padding(.leading, 4)
-                Spacer()
-                VStack {
-                    Text("🍕")
-                        .modifier(PizzaTextModifier())
-                        .padding()
-                        .padding(.vertical, 2)
-                    Text("10,000걸음")
-                        .font(.pizzaRegularSmallTitle)
-                        .bold()
-                }
-            }
-            .padding(.horizontal, 9)
-            .padding(.vertical, 5)
-            
-            HStack {
+                        .padding(.vertical, 3)
+                    
                     MissionButton(status: $status1) {
                         status1 = .done
                         showsAlert = true
                     }
                     .disabled(buttonSwitch1)
-                
+                }
+                VStack(alignment: .center) {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                    
+                    Text("5,000걸음")
+                        .font(.pizzaRegularSmallTitle)
+                        .bold()
+                        .padding(.vertical, 3)
+                    
                     MissionButton(status: $status2) {
                         status2 = .done
                         showsAlert = true
                     }
                     .disabled(buttonSwitch2)
-                
+                }
+                VStack(alignment: .center) {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                    
+                    Text("10,000걸음")
+                        .font(.pizzaRegularSmallTitle)
+                        .bold()
+                        .padding(.vertical, 3)
+                    
                     MissionButton(status: $status3) {
                         status3 = .done
                         showsAlert = true
                     }
                     .disabled(buttonSwitch3)
+                }
             }
         }
         .onAppear {

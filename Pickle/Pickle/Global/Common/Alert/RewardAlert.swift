@@ -108,7 +108,7 @@ struct RewardAlert: View {
                 
                 Spacer()
                 
-                Text("+\(point)조각")
+                Text("+\(point) 조각")
                     .bold()
                     .foregroundColor(.black)
             }
@@ -125,7 +125,7 @@ struct RewardAlert: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .tint(.black)
+            .tint(Color.pickle)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 18)

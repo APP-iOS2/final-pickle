@@ -43,7 +43,8 @@ struct TimeMissionSettingView: View {
                         .foregroundColor(.pickle)
                 }
             }
-            .padding()
+            .padding(.vertical, 10)
+            .padding(.horizontal, 20)
             
             Divider()
             

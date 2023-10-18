@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimeMissionSettingView: View {
     @EnvironmentObject var missionStore: MissionStore
+    @EnvironmentObject var notificationManager: NotificationManager
     @Binding var timeMission: TimeMission
     @Binding var status: Status
     
@@ -36,6 +37,23 @@ struct TimeMissionSettingView: View {
                 
                 Button {
                     timeMission.wakeupTime = changedWakeupTime
+                    
+                    if status == .ready {
+                        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: changedWakeupTime)
+                        notificationManager.scheduleNotification(
+                            localNotification: LocalNotification(identifier: UUID().uuidString,
+                                                                 title: "기상 미션 알림",
+                                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요.",
+                                                                 dateComponents: dateComponent,
+                                                                 repeats: false,
+                                                                 type: .calendar)
+                        )
+                        missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                                       title: timeMission.title,
+                                                                       status: timeMission.status,
+                                                                       date: Date.now,
+                                                                       wakeupTime: changedWakeupTime)))
+                    }
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")
@@ -59,7 +77,9 @@ struct TimeMissionSettingView: View {
 
 struct MissionSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), title: "기상 미션",
+        TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")),
+                               status: .constant(.ready),
+                               title: "기상 미션",
                                isTimeMissionSettingModalPresented: .constant(true))
     }
 }

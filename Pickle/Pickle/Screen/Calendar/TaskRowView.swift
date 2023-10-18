@@ -11,19 +11,20 @@ struct TaskRowView: View {
     
     var task: Todo
     
-//    var indicatorColor: Color {
-//        if task.isCompleted {
+    var indicatorColor: Color {
+        return task.startTime.isSameHour ? .pickle : .primary
+//        {
 //            return .green
 //        }
 //        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
-//    }
+    }
     var body: some View {
        
-            HStack(alignment: .top, spacing: 15) {
+        HStack(alignment: .center, spacing: 15) {
                 
                 Circle()
-                    .fill(.primary)
-                    .frame(width: 10, height: 10)
+                    .fill(indicatorColor)
+                    .frame(width: 15, height: 15)
                     .padding(4)
                     .background(.white)
                     .background(.white.shadow(.drop(color: .black.opacity(0.1),radius: 3)), in: .circle)
@@ -36,15 +37,16 @@ struct TaskRowView: View {
                     
                 }
                 
-                if task.startTime.isSameHour {
-                    Text("이제 할일")
-                        .font(.pizzaCaption)
-                        .foregroundStyle(.primary)
-                }
+//                if task.startTime.isSameHour {
+//                    Text("이제 할일")
+//                        .font(.pizzaCaption)
+//                        .fontWeight(.semibold)
+//                        .foregroundStyle(indicatorColor)
+//                }
                 
                 Label(task.startTime.format("HH:mm a"), systemImage: "clock")
                     .font(.caption)
-                    .foregroundColor(.primary)
+                    .foregroundColor(indicatorColor)
                     .padding(.horizontal)
                     .hSpacing(.trailing)
             }

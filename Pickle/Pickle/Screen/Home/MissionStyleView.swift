@@ -215,14 +215,37 @@ struct TimeMissionStyleView: View {
 struct BehaviorMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @Binding var behaviorMission: BehaviorMission
-    @Binding var status: Status
+    @Binding var status1: Status
+    @Binding var status2: Status
+    @Binding var status3: Status
+//    let testStep: Int = 5555
     
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var healthKitStore: HealthKitStore
-    var buttonSwitch: Bool {
-        switch status {
+    var buttonSwitch1: Bool {
+        switch status1 {
+        case .ready, .done:
+            return true
+        case .complete:
+            return false
+        default:
+            return false
+        }
+    }
+    var buttonSwitch2: Bool {
+        switch status2 {
+        case .ready, .done:
+            return true
+        case .complete:
+            return false
+        default:
+            return false
+        }
+    }
+    var buttonSwitch3: Bool {
+        switch status3 {
         case .ready, .done:
             return true
         case .complete:
@@ -249,7 +272,7 @@ struct BehaviorMissionStyleView: View {
                     .foregroundColor(.textGray)
             }
             HStack {
-                VStack{
+                VStack {
                     Text("🍕")
                         .modifier(PizzaTextModifier())
                         .padding()
@@ -285,37 +308,32 @@ struct BehaviorMissionStyleView: View {
             .padding(.vertical, 5)
             
             HStack {
-                // 내 걸음수와 목표 걸음수 비교
-                MissionButton(status: $status, action: {
-                    if healthKitStore.stepCount ?? 0 >= 1000 {
-                        status = .done
+                    MissionButton(status: $status1) {
+                        status1 = .done
                         showsAlert = true
                     }
-                })
-                .disabled(buttonSwitch)
+                    .disabled(buttonSwitch1)
                 
-                MissionButton(status: $status, action: {
-                    if healthKitStore.stepCount ?? 0 >= 5000 {
-                        status = .done
+                    MissionButton(status: $status2) {
+                        status2 = .done
                         showsAlert = true
                     }
-                })
-                .disabled(buttonSwitch)
+                    .disabled(buttonSwitch2)
                 
-                MissionButton(status: $status, action: {
-                    if healthKitStore.stepCount ?? 0 >= 10000 {
-                        status = .done
+                    MissionButton(status: $status3) {
+                        status3 = .done
                         showsAlert = true
                     }
-                })
-                .disabled(buttonSwitch)
+                    .disabled(buttonSwitch3)
             }
         }
         .onAppear {
             healthKitStore.fetchStepCount()
+            missionComplete()
         }
         .refreshable {
             healthKitStore.fetchStepCount()
+            missionComplete()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -327,6 +345,29 @@ struct BehaviorMissionStyleView: View {
         .padding(.horizontal)
         .padding(.top, 15)
     }
+    
+    func missionComplete() {
+        if let stepCount = healthKitStore.stepCount {
+            if stepCount >= 1000 {
+                status1 = .complete
+            }
+            if stepCount >= 5000 {
+                status1 = .complete
+            }
+            if stepCount >= 10000 {
+                status1 = .complete
+            }
+        }
+//        if testStep >= 1000 {
+//            status1 = .complete
+//        }
+//        if testStep >= 5000 {
+//            status2 = .complete
+//        }
+//        if testStep >= 10000 {
+//            status3 = .complete
+//        }
+    }
 }
 
 struct MissionStyle_Previews: PreviewProvider {
@@ -335,7 +376,11 @@ struct MissionStyle_Previews: PreviewProvider {
         //        MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
         TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), showsAlert: .constant(false))
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
-                                 status: .constant(.ready), showsAlert: .constant(false), healthKitStore: HealthKitStore())
+                                 status1: .constant(.ready),
+                                 status2: .constant(.ready),
+                                 status3: .constant(.ready),
+                                 showsAlert: .constant(false),
+                                 healthKitStore: HealthKitStore())
         MissionView()
             .environmentObject(MissionStore())
     }

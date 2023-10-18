@@ -71,8 +71,6 @@ struct MissionButton: View {
             .background(buttonColor)
             .opacity(buttonOpacity)
             .cornerRadius(10.0)
-            .overlay(RoundedRectangle(cornerRadius: 10.0)
-                .stroke(Color(.systemGray4), lineWidth: 0.5))
         }
     }
 }
@@ -88,58 +86,9 @@ struct PizzaTextModifier: ViewModifier {
     }
 }
 
-struct MissionStyleView: View {
-    @Binding var status: Status
-    
-    @State var title: String
-    var date: String
-    
-    var buttonSwitch: Bool {
-        switch status {
-        case .ready, .done:
-            return true
-        case .complete:
-            return false
-        default:
-            return false
-        }
-    }
-    
-    @State private var isSettingModalPresented = false
-    @Binding var showsAlert: Bool
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(title)
-                        .font(.pizzaTitle2Bold)
-                        .padding(.bottom, 1)
-                }
-                
-                Spacer(minLength: 10)
-                VStack {
-                    if status == .complete {
-                        MissionButton(status: $status, action: {
-                            status = .done
-                            showsAlert = true
-                        })
-                        .disabled(buttonSwitch)
-                    }
-                }
-            }
-        }
-        .padding()
-        .background(Color(UIColor.systemGray6))
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .cornerRadius(8.0)
-        .padding(.horizontal)
-        .padding(.top, 15)
-    }
-}
-
 struct TimeMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
+    @EnvironmentObject var userStore: UserStore
     @Binding var timeMission: TimeMission
     @Binding var status: Status
     
@@ -188,15 +137,31 @@ struct TimeMissionStyleView: View {
             
             MissionButton(status: $status, action: {
                 status = .done
+                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                               title: timeMission.title,
+                                                               status: status,
+                                                               date: Date.now,
+                                                               wakeupTime: timeMission.wakeupTime)))
+                
+                withAnimation {
+                    do {
+                        try userStore.addPizzaSlice(slice: 1)
+                        print("pizza +1")
+                    } catch {
+                        Log.error("❌피자 조각 추가 실패❌")
+                    }
+                }
                 showsAlert = true
             })
             .disabled(buttonSwitch)
         }
         .onAppear {
             missionComplet()
+//            missionStore.fetch()
         }
         .refreshable {
             missionComplet()
+//            missionStore.fetch()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -221,6 +186,7 @@ struct TimeMissionStyleView: View {
 
 struct BehaviorMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
+    @EnvironmentObject var userStore: UserStore
     @Binding var behaviorMission: BehaviorMission
     @Binding var status1: Status
     @Binding var status2: Status
@@ -290,6 +256,21 @@ struct BehaviorMissionStyleView: View {
                     
                     MissionButton(status: $status1) {
                         status1 = .done
+                        
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: status1,
+                                                                               status2: status2,
+                                                                               status3: status3,
+                                                                               date: Date.now)))
+                        
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
+                            }
+                        }
                         showsAlert = true
                     }
                     .disabled(buttonSwitch1)
@@ -306,6 +287,21 @@ struct BehaviorMissionStyleView: View {
                     
                     MissionButton(status: $status2) {
                         status2 = .done
+                        
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: status1,
+                                                                               status2: status2,
+                                                                               status3: status3,
+                                                                               date: Date.now)))
+                        
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
+                            }
+                        }
                         showsAlert = true
                     }
                     .disabled(buttonSwitch2)
@@ -322,6 +318,20 @@ struct BehaviorMissionStyleView: View {
                     
                     MissionButton(status: $status3) {
                         status3 = .done
+                        
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: status1,
+                                                                               status2: status2,
+                                                                               status3: status3,
+                                                                               date: Date.now)))
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
+                            }
+                        }
                         showsAlert = true
                     }
                     .disabled(buttonSwitch3)
@@ -330,9 +340,11 @@ struct BehaviorMissionStyleView: View {
         }
         .onAppear {
             healthKitStore.fetchStepCount({ self.missionComplete() })
+//            missionStore.fetch()
         }
         .refreshable {
-            healthKitStore.fetchStepCount{ self.missionComplete() }
+            healthKitStore.fetchStepCount { self.missionComplete() }
+//            missionStore.fetch()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -348,7 +360,7 @@ struct BehaviorMissionStyleView: View {
     func missionComplete() {
         if let stepCount = healthKitStore.stepCount {
             print("stepCount: \(stepCount)")
-            if stepCount >= 10 {
+            if stepCount >= 1000 {
                 status1 = .complete
             }
             if stepCount >= 5000 {
@@ -363,10 +375,8 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        // 일단 보류
-        //        MissionStyleView(buttonToggle: false, title: "오늘의 할일 모두 완료", status: "완료", date: "9/27", showsAlert: .constant(false))
         TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), showsAlert: .constant(false))
-        BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "")),
+        BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "", title: "", status: .ready, status2: .ready, status3: .ready, date: Date())),
                                  status1: .constant(.ready),
                                  status2: .constant(.ready),
                                  status3: .constant(.ready),

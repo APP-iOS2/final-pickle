@@ -6,18 +6,58 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
+
+enum SchemeType: Int, Identifiable, CaseIterable {
+    var id: Self { self }
+    case system
+    case light
+    case dark
+}
+
+extension SchemeType {
+    var title: String {
+        switch self {
+        case .system:
+            return "System"
+        case .light:
+            return "Light"
+        case .dark:
+            return "Dark"
+        }
+    }
+}
 
 struct SettingView: View {
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var notificationManager: NotificationManager
     
+    @AppStorage("systemTheme") private var systemTheme: Int = SchemeType.allCases.first!.rawValue
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
-
+    
     @State private var isShowingMoveToSettingAlert: Bool = false
+    @State private var isShowingEmailAlert: Bool = false
+    
+    private var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
+    private var schemeString: String { colorScheme == .light ? "Light Mode" : "Dark Mode" }
+    private var selectedScheme: ColorScheme? {
+        guard let theme = SchemeType(rawValue: systemTheme) else { return nil }
+        switch theme {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        default:
+            return nil
+        }
+    }
+    
+    private let pasteboard = UIPasteboard.general
     
     var body: some View {
         List {
-            Section {
+            Section("앱 설정") {
                 HStack {
                     Image(systemName: "clock")
                         .resizable()
@@ -30,90 +70,98 @@ struct SettingView: View {
                 }
                 
                 HStack {
-                    Image(systemName: "clock")
+                    Image(systemName: "bell.badge")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
                         .foregroundColor(.secondary)
                         .padding(.trailing)
                     
-                    Toggle("24시간제", isOn: $is24HourClock)
+                    Text("알림")
+                    
+                    Spacer()
+                    
+                    Text("\(notificationStatus)")
+                        .foregroundStyle(notificationManager.isGranted ? Color.pickle : Color.secondary)
+                        .onTapGesture {
+                            isShowingMoveToSettingAlert = true
+                        }
                 }
-            }
-            
-            Section {
-                NavigationLink {
-                    // MARK: 테마
-                } label: {
-                    HStack {
-                        Image(systemName: "circle.lefthalf.filled")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.secondary)
-                            .padding(.trailing)
-                        
+                
+                HStack {
+                    Image(systemName: "circle.lefthalf.filled")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.secondary)
+                        .padding(.trailing)
+                    
+                    Picker(selection: $systemTheme) {
+                        ForEach(SchemeType.allCases) { item in
+                            Text(item.title)
+                                .tag(item.rawValue)
+                        }
+                    } label: {
                         Text("테마")
                     }
                 }
-                
-//                NavigationLink {
-//                    // MARK: 알림 설정
-//                } label: {
-                    HStack {
-                        Image(systemName: "bell.badge")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.secondary)
-                            .padding(.trailing)
-                        
-                        Text("알림")
-                        
-                        Spacer()
-                        
-                        Text("설정하러 가기")
-                            .foregroundStyle(.secondary)
-                    }
-                    .onTapGesture {
-                        isShowingMoveToSettingAlert = true
-                    }
-//                }
             }
             
-            Section {
+            Section("앱 정보") {
                 NavigationLink {
-                    // MARK: 통계
+                    // MARK: 가이드
                 } label: {
                     HStack {
-                        Image(systemName: "chart.pie")
-                            .resizable()
+                        Image(systemName: "questionmark.circle")                            .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
                             .foregroundColor(.secondary)
                             .padding(.trailing)
                         
-                        Text("통계")
+                        Text("가이드")
                     }
                 }
                 
                 NavigationLink {
-                    // MARK: 뱃지
+                    // MARK: 앱 정보
                 } label: {
                     HStack {
-                        Image(systemName: "trophy")
+                        Image(systemName: "info.circle")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
                             .foregroundColor(.secondary)
                             .padding(.trailing)
                         
-                        Text("뱃지")
+                        Text("앱 정보")
                     }
+                }
+                
+                HStack {
+                    Image(systemName: "envelope")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.secondary)
+                        .padding(.trailing)
+                    
+                    Text("문의")
+                    
+                    Spacer()
+                }
+                .onTapGesture {
+                    copyToClipboard()
+                    isShowingEmailAlert = true
                 }
             }
         }
         .navigationTitle("설정")
+        .preferredColorScheme(selectedScheme)
+        .onAppear {
+            Task {
+                await notificationManager.getCurrentSetting()
+            }
+        }
         .alert("설정 앱으로 이동하여 알림 권한을 변경합니다.", isPresented: $isShowingMoveToSettingAlert) {
             Button {
                 dismiss()
@@ -126,6 +174,19 @@ struct SettingView: View {
                 Text("확인")
             }
         }
+        .alert("이메일 주소가 복사되었습니다.", isPresented: $isShowingEmailAlert) {
+            Button {
+                dismiss()
+            } label: {
+                Text("확인")
+            }
+        }
+    }
+    
+    func copyToClipboard() {
+        pasteboard.string = "real.do.pizza@gmail.com"
+        
+        print("이메일 복사됨")
     }
 }
 

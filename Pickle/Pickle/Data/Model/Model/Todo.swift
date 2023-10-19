@@ -31,7 +31,7 @@ extension Todo: Equatable {
 
 extension Todo {
     static var sample: Todo = .init(id: "",
-                                    content: "",
+                                    content: "Sample",
                                     startTime: Date(),
                                     targetTime: 0,
                                     spendTime: 10,

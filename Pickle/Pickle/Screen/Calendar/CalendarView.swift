@@ -10,20 +10,32 @@ import SwiftUI
 struct CalendarView: View {
     
     @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var missionStore: MissionStore
+    @EnvironmentObject var userStore: UserStore
     @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
     @State private var weekSlider: [[Date.WeekDay]] = []
     @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     @State private var filteredTasks: [Todo]?
-    
+    @State var todayPieceOfPizza: Int = 0
+//    var indicatorColor: Color {
+//        return task.startTime.isSameHour ? .pickle : .primary
+//        {
+//            return .green
+//        }
+//        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
+//    }
+
     @Namespace private var animation
     
     var body: some View {
         
         VStack(alignment: .leading) {
             headerView()
-            
+            currentPizzaSummaryView()
+                .padding(.horizontal)
+
             ScrollView(.vertical) {
                 VStack {
                     taskView()
@@ -33,15 +45,24 @@ struct CalendarView: View {
         }
         .task {
             await todoStore.fetch()
+            
         }
         .onAppear(perform: {
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
+            missionStore.fetch()
+            todayPizzaCont(todayTasks: filteredTasks ?? [],
+                           timeMissions: missionStore.timeMissions,
+                           behaviorMissions: missionStore.behaviorMissions)
         })
-
+        
         .onChange(of: calendarModel.currentDay) { newValue in
-          
+            
             filterTodayTasks(todo: todoStore.todos)
+//            missionStore.fetch()
+            todayPizzaCont(todayTasks: filteredTasks ?? [],
+                           timeMissions: missionStore.timeMissions,
+                           behaviorMissions: missionStore.behaviorMissions)
         }
     }
     
@@ -67,19 +88,7 @@ struct CalendarView: View {
                             .bold()
                     }
                     Spacer()
-                    Button(action: {
-                        print("주간")
-                        weekToMonth.toggle()
-                        
-                    }, label: {
-                        weekToMonth == true ? Text("월") : Text("주")
-                            .font(.headline)
-                            .bold()
-                    })
-                    .padding(.horizontal, 1)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.roundedRectangle(radius: 50))
-                    
+
                     Button(action: {
                         if weekToMonth {
                             calendarModel.currentMonthIndex -= 1
@@ -112,6 +121,19 @@ struct CalendarView: View {
                         Image(systemName: "chevron.right")
                     })
                     
+                    Button(action: {
+                        print("주간")
+                        weekToMonth.toggle()
+                        calendarModel.resetForTodayButton()
+                        
+                    }, label: {
+                        weekToMonth == true ? Text("월") : Text("주")
+                            .font(.headline)
+                            .bold()
+                    })
+                    .padding(.horizontal, 1)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle(radius: 50))
                 }
                 if weekToMonth {
                     
@@ -140,17 +162,17 @@ struct CalendarView: View {
                     Text(day.format("dd"))
                         .font(.callout)
                         .fontWeight(.bold)
-                        .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .black : .gray)
-                        .frame(width: 35, height: 35)
+                        .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
+                        .frame(width: 30, height: 30)
                         .background{
                             if isSameDate(day, date2: calendarModel.currentDay) {
                                 Circle()
-                                    .fill(Color.orange)
+                                    .fill(Color.pickle)
                             }
                             
                             if day.isToday {
                                 Circle()
-                                    .fill(Color.blue)
+                                    .fill(Color.mainRed)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
                                     .offset(y: -66)
@@ -176,7 +198,7 @@ struct CalendarView: View {
     
     // MARK: - Montly View
     func monthlyView() -> some View {
-        let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+        let days: [String] = ["일", "월", "화", "수", "목", "금", "토", ]
         let dates = calendarModel.extractMonth()
         return VStack {
             
@@ -198,36 +220,41 @@ struct CalendarView: View {
                         
                         if day.day == -1 {
                             Text("")
-                            
                         } else {
+                            
                             Text("\(day.day)")
                                 .font(.callout)
+                                .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
+                            //                                .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
                                 .background {
                                     
                                     if isSameDate(day.date, date2: calendarModel.currentDay) {
                                         Circle()
-                                            .fill(Color.orange)
+                                            .fill(Color.pickle)
+                                            .frame(width: 25, height: 25)
                                     }
                                     
                                     // MARK: - Indicator to show, which one is Today
                                     if day.date.isToday {
                                         Circle()
-                                            .fill(Color.blue)
+                                            .fill(Color.red)
                                             .frame(width: 5, height: 5)
                                             .vSpacing(.bottom)
-                                            .offset(y: -22)
+                                            .offset(y: -32)
                                     }
                                     
                                 }
                                 .onTapGesture {
                                     
                                     // MARK: - Updating Current Date
-                                    withAnimation(.snappy) {
+                                
                                         calendarModel.currentDay = day.date
-                                    }
+                                    
                                 }
                         }
+
+                        
                         
                     }
                     .padding(.vertical, 8)
@@ -254,25 +281,65 @@ struct CalendarView: View {
         .padding([.vertical, .leading], 15)
     }
     
-    // MARK: - Filter Today Tasks
-    func filterTodayTasks(todo: [Todo]?){
-    
-        let calendar  = Calendar.current
-        guard let abc = todo else { return }
-        let filtered = abc.filter { calendar.isDate($0.startTime, inSameDayAs: calendarModel.currentDay)
+    func currentPizzaSummaryView() -> some View {
+        
+        VStack(alignment: .leading) {
+            HStack {
+                Text("오늘 구운 피자")
+                Spacer()
+                Text("🍕")
+                    .bold()
+                Text("x")
+                Text("\(todayPieceOfPizza)")
+                    .font(.pizzaBody)
+                    .foregroundStyle(Color.pickle)
+                Text("조각")
+//                    .font()
+                }
+                .padding()
+                .overlay(RoundedRectangle(cornerRadius: 20.0)
+                .stroke(Color(.lightGray), lineWidth: 1))
             }
-            
-        filteredTasks =  filtered
-
+    }
+    
+    // MARK: - Filter Today Tasks
+    func filterTodayTasks(todo: [Todo]?) {
+        
+        let calendar  = Calendar.current
+        guard let afterTodo = todo else { return }
+        let filtered = afterTodo.filter { calendar.isDate($0.startTime, inSameDayAs: calendarModel.currentDay)
         }
+        
+        filteredTasks =  filtered
+        
+    }
+    
+    func todayPizzaCont(todayTasks: [Todo],
+                        timeMissions: [TimeMission],
+                        behaviorMissions: [BehaviorMission]) {
+        
+        let tempTotalTodayTasks = todayTasks.filter { $0.status == .complete || $0.status == .done
+        }
+        
+        let tempTimeMissionTasks = timeMissions.filter { $0.status == .done
+        }
+        
+        let tempBehaviorMissionTasks = behaviorMissions.filter { $0.status == .done || $0.status2 == .done || $0.status3 == .done
+        }
+    
+        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + tempBehaviorMissionTasks.count
+        
+        todayPieceOfPizza = finalPizzaCount
+    }
     
 }
 
 #Preview {
     
     CalendarView()
-            .environmentObject(TodoStore())
-            .environmentObject(UserStore())
+        .environmentObject(TodoStore())
+        .environmentObject(UserStore())
+        .environmentObject(MissionStore())
     
 }
 

@@ -27,6 +27,10 @@ extension Color {
         return Color.init(hex: 0x359059)
     }
     
+    static var mainRed: Color {
+            return Color.init(hex: 0xE62E2E)
+        }
+    
 }
 
 extension Color {

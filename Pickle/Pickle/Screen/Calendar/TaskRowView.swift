@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskRowView: View {
     
     var task: Todo
-    
+
     var indicatorColor: Color {
         return task.startTime.isSameHour ? .pickle : .primary
 //        {
@@ -21,18 +21,27 @@ struct TaskRowView: View {
     var body: some View {
        
         HStack(alignment: .center, spacing: 15) {
-                
+//            switch task.status {
+//            case .ready:
+//                
+//            case .ongoing:
+//                
+//            case .giveUp:
+//                
+//            case .done,.complete:
+//  
+//            }
                 Circle()
                     .fill(indicatorColor)
                     .frame(width: 15, height: 15)
                     .padding(4)
                     .background(.white)
-                    .background(.white.shadow(.drop(color: .black.opacity(0.1),radius: 3)), in: .circle)
+                    .background(.white.shadow(.inner(color: .primary, radius: 3)), in: .circle)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(task.content)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
+                        .font(.pizzaStoreSmall)
+                        .fontWeight(.regular)
                         .strikethrough(task.status == .complete, pattern: .solid, color: .black)
                 
                 }
@@ -55,6 +64,6 @@ struct TaskRowView: View {
     }
 }
 
-//#Preview {
-//    CalendarView()
-//}
+#Preview {
+    TaskRowView(task: Todo.sample)
+}

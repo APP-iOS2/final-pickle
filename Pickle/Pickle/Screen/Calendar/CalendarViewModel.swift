@@ -89,8 +89,6 @@ class CalendarViewModel: ObservableObject {
         
         guard let currentWeek =  calendar.date(byAdding: .day, value: 7 * self.currentWeekIndex, to: Date()) else { return Date() }
         let startOfDate = calendar.startOfDay(for: currentWeek)
-        
-        
         return currentWeek
     }
     
@@ -111,17 +109,16 @@ class CalendarViewModel: ObservableObject {
         var resultMonth = currentMonth.fetchMonth().compactMap { date -> Date.MonthDate in
             let day = calendar.component(.day, from: date)
             let resultDay = Date.MonthDate(day: day, date: date)
-            
             return resultDay
             
         }
-        
+        print(resultMonth)
+
         let firstWeekDay = calendar.component(.weekday, from: resultMonth.first?.date ?? Date())
-        
+                
         for _ in 0..<firstWeekDay - 1 {
             resultMonth.insert(Date.MonthDate(day: -1, date: Date()), at: 0)
         }
-        
         return resultMonth
         
     }
@@ -147,13 +144,13 @@ class CalendarViewModel: ObservableObject {
     //    }
     
     // MARK: - Creating Next Week, based on the Last Current Week's Date
-    func createNextWeek(){
+    func createNextWeek() {
         currentWeek.removeAll()
         let calendar = Calendar.autoupdatingCurrent
         let startOfLastDate = calendar.startOfDay(for: currentDay)
         
         let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate)
-        print(nextDate!)
+//        print(nextDate!)
         return fetchCurrentWeek(date: nextDate!)
         
     }

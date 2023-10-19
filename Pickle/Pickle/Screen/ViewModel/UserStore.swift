@@ -31,25 +31,6 @@ final class UserStore: ObservableObject {
             throw error
         }
     }
-//        try await withCheckedThrowingContinuation { continuation in
-//            var nillableContinuation: CheckedContinuation<User, Error>? = continuation
-//            userRepository.getUser {  result in
-//                switch result {
-//                case .success(let user):
-//                  if let continuation = nillableContinuation {
-//                    nillableContinuation = nil
-//                    continuation.resume(returning: user)
-//                  }
-//
-//                case .failure(let error):
-//                  if let continuation = nillableContinuation {
-//                    nillableContinuation = nil
-//                    continuation.resume(throwing: error)
-//                  }
-//                }
-//            }
-//        }
-// }
     
     func addUser(default user: User = User.defaultUser) {
         do {

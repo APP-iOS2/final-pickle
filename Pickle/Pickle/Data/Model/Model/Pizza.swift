@@ -28,38 +28,52 @@ extension Pizza: Codable { }
 extension Pizza {
     
     static let defaultPizza: Pizza = .init(name: "Guest",
-                                           image: "potatoPizza",
+                                           image: "potato",
                                            lock: false,
                                            createdAt: Date())
     
-    static let allCasePizza: [Pizza] = [potatoPizza,
-                                        baconPotatoPizza,
-                                        hawaianPizza,
-                                        pepperoniPizza,
-                                        cheesePizza]
+    static let allCasePizza: [Pizza] = 
+    [
+        cheese,
+        margherita,potato,
+        sweetPotato,
+        baconPotato,
+        hawaian,
+        pepperoni,
+    ]
     
-    static let potatoPizza: Pizza = .init(name: "포테이토 피자",
-                                          image: "potatoPizza",
-                                          lock: false,
-                                          createdAt: Date())
+    static let cheese: Pizza = .init( name: "치즈 피자",
+                                           image: "cheese",
+                                           lock: true,
+                                           createdAt: Date())
     
-    static let baconPotatoPizza: Pizza = .init( name: "베이컨 포테이토 피자",
-                                                image: "baconPotatoPizza",
-                                                lock: true,
-                                                createdAt: Date())
-    
-    static let hawaianPizza: Pizza = .init( name: "하와이안 피자",
-                                            image: "hawaianPizza",
-                                            lock: true,
-                                            createdAt: Date())
-    
-    static let pepperoniPizza: Pizza = .init(name: "페퍼로니 피자",
-                                             image: "pepperoniPizza",
+    static let pepperoni: Pizza = .init(name: "페퍼로니 피자",
+                                             image: "pepperoni",
                                              lock: true,
                                              createdAt: Date())
     
-    static let cheesePizza: Pizza = .init( name: "치즈 피자",
-                                           image: "cheesePizza",
-                                           lock: true,
-                                           createdAt: Date())
+    static let potato: Pizza = .init(name: "포테이토 피자",
+                                          image: "potato",
+                                          lock: false,
+                                          createdAt: Date())
+    
+    static let sweetPotato: Pizza = .init(name: "고구마 피자",
+                                          image: "sweetPotato",
+                                          lock: false,
+                                          createdAt: Date())
+    
+    static let baconPotato: Pizza = .init( name: "베이컨 포테이토 피자",
+                                                image: "baconPotato",
+                                                lock: true,
+                                                createdAt: Date())
+    
+    static let hawaian: Pizza = .init( name: "하와이안 피자",
+                                            image: "hawaiian",
+                                            lock: true,
+                                            createdAt: Date())
+    
+    static let margherita: Pizza = .init(name: "마르게리타",
+                                         image: "margherita",
+                                         lock: true,
+                                         createdAt: Date())
 }

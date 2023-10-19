@@ -25,6 +25,9 @@ struct PickleApp: App {
     @StateObject private var userStore = UserStore()
     @StateObject private var pizzaStore = PizzaStore()
     @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var timerVM = TimerViewModel()
+    
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some Scene {
         WindowGroup {
@@ -37,7 +40,51 @@ struct PickleApp: App {
                 .environmentObject(userStore)
                 .environmentObject(notificationManager)
                 .environmentObject(pizzaStore)
+                .environmentObject(timerVM)
+                .onChange(of: scenePhase) { newScene in
+                    if newScene == .background {
+                        print("BACKGROUD")
+                        
+                        timerVM.backgroundTimeStemp = Date()
+                        // 유저디폴트같은데서.......저장해주기
+                    }
+                    if newScene == .active {
+                        print("ACTIVE")
+                        
+                        var diff = Date().timeIntervalSince(timerVM.backgroundTimeStemp)
+                        print("\(TimeInterval(diff))")
+                        print("\(timerVM.timeRemaining)")
+                        print("\(timerVM.timeRemaining > diff)")
+                        
+                        timerVM.spendTime += diff
+                        
+                        if timerVM.timeRemaining > 0 {
+                            if timerVM.timeRemaining > diff {
+                                timerVM.timeRemaining -= diff
+                            } else {
+                                diff -= timerVM.timeRemaining
+                                timerVM.isDecresing = false
+                                timerVM.timeExtra += diff
+                            }
+                        } else {
+                            timerVM.timeExtra += diff
+                        }
+                        
+                    }
+                    
+                }
         }
+       
+    }
+    
+    /// 테스트용
+    private func dummyDelete() {
+        Log.debug("dummy Delete called")
+        userStore.deleteuserAll()
+        missionStore.deleteAll(mission: .time(.init()))
+        missionStore.deleteAll(mission: .behavior(.init()))
+        pizzaStore.deleteAll()
+        Log.debug("dummy Delete end")
     }
 }
 

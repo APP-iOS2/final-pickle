@@ -22,7 +22,8 @@ extension Font {
     static let pizzaRegularSmallTitle = makeFont(name: "NanumSquareNeo-bRg", size: 15, style: .subheadline)
     static let pizzaStoreSmall = makeFont(name: "NanumSquareNeo-aLt", size: 14, style: .body)
     static let pizzaTimerNum = makeFont(name: "LOTTERIACHAB", size: 44, style: .title)
-    static let pizzaRegularTitle = makeFont(name: "NanumSquareNeo-cBd", size: 32, style: .title)
+    static let pizzaRegularTitle = makeFont(name: "NanumSquareNeo-cBd", size: 24, style: .title)
+    static let pizzaBoldButtonTitle = makeFont(name: "NanumSquareNeo-cBd", size: 15, style: .title)
     
     static let pizzaFootnote = Font.system(size: 13, weight: .regular)
     static let pizzaFootnoteBold = Font.system(size: 13, weight: .bold)
@@ -31,7 +32,7 @@ extension Font {
     static let chab = Font.custom("LOTTERIACHAB", size: 28)
     static let nanumBd = Font.custom("NanumSquareNeo-cBd", size: 17, relativeTo: .body)
     static let nanumBdBody = Font.custom("NanumSquareNeo-cBd", size: 13, relativeTo: .body)
-    
+
     static let nanumEbTitle = Font.custom("NanumSquareNeo-dEb", size: 21, relativeTo: .body)
     static let nanumEb = Font.custom("NanumSquareNeo-dEb", size: 17, relativeTo: .title3)
     static let nanumHv = Font.custom("NanumSquareNeo-eHv", size: 17, relativeTo: .title3)

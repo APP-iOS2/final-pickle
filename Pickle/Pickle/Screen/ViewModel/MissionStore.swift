@@ -17,27 +17,8 @@ final class MissionStore: ObservableObject {
     @Published var timeMissions: [TimeMission] = []
     @Published var behaviorMissions: [BehaviorMission] = []
     
-    // MARK: DI - propertywrapper OR init, dicontainer
-    //    struct Dependency {
-    //        var todoRepository: TodoRepository
-    //    }
-    //    private let repository: TodoRepositoryProtocol
-    //
-    //    init(repository: TodoRepositoryProtocol) {
-    //        self.repository = repository
-    //    }
-    
     @Injected(TimeRepoKey.self) var timeMissionRepository: any TimeRepositoryProtocol
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
-    
-//    struct Command {
-//        var command: (() -> Void)?
-//    }
-//    
-//    lazy var commandMap: [() -> ()] = [
-//        timeMissionRepository.deleteAll
-//    ]
-    //    @Injected(MissionMediator.self) var mediator: MissionMediator
     
     // MARK: 1안 그냥 되는대로 하다가 나중에 생각한다. 너무 처음부터 빡세게 생각하는것 같다.
     // MARK: 2안 enum으로 그냥 한다.
@@ -45,11 +26,11 @@ final class MissionStore: ObservableObject {
     // MARK: 4안 command를 딕셔너리로 ?
     // MARK: 5안 store(viewModel)를 쪼갠다
     func fetch() -> ([TimeMission], [BehaviorMission]) {
-        let timeMission = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
-        let behaviorMission = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
-        self.timeMissions = timeMissions
-        self.behaviorMissions = behaviorMissions
-        return (self.timeMissions, self.behaviorMissions)
+        let _timeMissions = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
+        let _behaviorMissions = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
+        // self.timeMissions = _timeMissions
+        // self.behaviorMissions = _behaviorMissions
+        return (_timeMissions, _behaviorMissions)
     }
     
     func add(mission: MissionType) {

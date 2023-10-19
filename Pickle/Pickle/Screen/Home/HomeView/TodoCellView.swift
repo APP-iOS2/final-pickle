@@ -37,10 +37,9 @@ struct TodoCellView: View {
                         Rectangle()
                             .frame(width: 40, height: 40)
                             .foregroundColor(.clear)
-                        
-                        Image(systemName: "play.circle.fill")
-                            .font(.pizzaTitle2)
-                            .foregroundStyle(Color.pickle)
+
+                        Image(systemName: "play.fill")
+                            .foregroundColor(.primary)
                     }
                 }
             }

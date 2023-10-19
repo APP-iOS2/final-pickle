@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    // @State private var userTotalPizza: Int = 0 // 사용자 프로퍼티로 추가 필요
+
     init() {
         navigationAppearenceSetting()
     }
     
-    // @EnvironmentObject var sceneDelegate: SceneDelegate
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
     
@@ -47,7 +46,13 @@ struct HomeView: View {
                                                 
                                                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
                                                 // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
-                todosTaskTableView              // 할일 목록 테이블 뷰
+                if todoStore.todos.isEmpty { 
+                    Text("💡 할일을 추가해 주세요!!")
+                        .font(.pizzaBoldSmallTitle)
+                        .padding(.top, 20)
+                } else {
+                    todosTaskTableView          // 할일 목록 테이블 뷰
+                }
             }.padding(.top, 20)
                 
         }
@@ -59,7 +64,7 @@ struct HomeView: View {
                                                                 /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
         
         .sheetModifier(isPresented: $isPizzaSeleted,            /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
-                       isPurchase: $isPizzaPuchasePresented, 
+                       isPurchase: $isPizzaPuchasePresented,
                        seletedPizza: $seletedPizza)
         
         .showPizzaPurchaseAlert(seletedPizza,                  /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
@@ -70,13 +75,13 @@ struct HomeView: View {
         }
         .onAppear { /* */
             Log.debug("ContentView")
-            
+            placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"  // placeHolder 표시할지 말지 분기처리
         }
-            .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
-            .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
-                      perform: { slice in
-                placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
-            })
+        .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+        .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
+                  perform: { slice in
+            placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
+        })
     }
 }
 
@@ -93,7 +98,6 @@ extension HomeView {
                         isPizzaSeleted.toggle()
                     }
                 }
-            tempView
         }
     }
     
@@ -122,23 +126,6 @@ extension HomeView {
                     seletedTodo = todo
                     isShowingEditTodo.toggle()
                 }
-        }
-    }
-    
-    private var tempView: some View {
-        // MARK: 임시 이미지 추가
-        HStack {
-            Spacer()
-            VStack {
-                Image(systemName: "house")
-                    .renderingMode(.template)
-                    .foregroundStyle(Color.pickle)
-                    .frame(width: 33, height: 33)
-                    .padding(.horizontal, 15)
-                
-                Text("상점")
-                    .font(.pizzaStoreSmall)
-            }
         }
     }
     
@@ -196,24 +183,6 @@ extension View {
 }
 
 extension HomeView {
-//    struct SheetModifier: ViewModifier {
-//        @Binding var isPresented: Bool
-//        @Binding var isPizzaPuchasePresented: Bool
-//        func body(content: Content) -> some View {
-//            content.sheet(isPresented: $isPresented) {
-//                /* 피자 선택 뷰 */
-//                PizzaSelectedView(isPresented: $isPizzaPuchasePresented)
-//                    .presentationDetents(
-//                        isPizzaPuchasePresented ? [.height(CGFloat.screenHeight / 4), .medium] : [.height(CGFloat.screenHeight / 3), .medium]
-//                    )
-//                    .interactiveDismissDisabled(isPizzaPuchasePresented)
-//                    .presentationDragIndicator(.automatic)
-//                    .onTapGesture {
-//                        Log.debug("value Tap Gesture")
-//                    }
-//            }
-//        }
-//    }
     
     struct SheetModifier: ViewModifier {
         @Binding var isPresented: Bool
@@ -235,10 +204,9 @@ extension HomeView {
                         GeometryReader { proxy in
                             let frame = proxy.frame(in: .global)
                             Color.black
-                                .opacity(0.5)
+                                .opacity(0.3)
                                 .frame(width: frame.width, height: frame.height)
                         }
-            //            .blur(radius: getBlurRadius()) // BlurRadius change depends on offset
                         .ignoresSafeArea()
                         
                         CustomSheetView(isPresented: $isPresented) {
@@ -289,7 +257,6 @@ private struct NavigationModifier: ViewModifier {
             } label: {
                 Image(systemName: "plus.circle")
                     .foregroundStyle(Color.pickle)
-                // .foregroundColor(.primary)
             }
         }
         ToolbarItem(placement: .navigationBarLeading) {

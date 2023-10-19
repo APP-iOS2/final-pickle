@@ -122,12 +122,15 @@ struct TimerReportView: View {
 
 struct TimerReportView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerReportView(isShowingReportSheet: .constant(false), isComplete: .constant(false), isShowingTimerView: .constant(false), todo: Todo(id: UUID().uuidString,
-                                                                                                                                    content: "이력서 작성하기",
-                                                                                                                                               startTime: Date(),
-                                                                                                                                               targetTime: 60,
-                                                                                                                                               spendTime: 5400,
-                                                                                                                                               status: .ready))
+        TimerReportView(isShowingReportSheet: .constant(false),
+                        isComplete: .constant(false),
+                        isShowingTimerView: .constant(false),
+                        todo: Todo(id: UUID().uuidString,
+                                   content: "이력서 작성하기",
+                                   startTime: Date(),
+                                   targetTime: 60,
+                                   spendTime: 5400,
+                                   status: .ready))
         .environmentObject(TodoStore())
         
     }

@@ -56,6 +56,7 @@ struct AddTodoView_Previews: PreviewProvider {
         NavigationStack {
             AddTodoView(isShowingEditTodo: .constant(true),
                         todo: .constant(Todo.sample))
+            .environmentObject(TodoStore())
         }
     }
 }

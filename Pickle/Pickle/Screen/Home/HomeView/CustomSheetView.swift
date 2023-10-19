@@ -29,8 +29,8 @@ enum DragInfo {
 }
 
 struct CustomSheetView<Content: View>: View {
-    // Search text binding value
-    @State var searchText: String = ""
+    
+    @Environment(\.colorScheme) var colorScheme
     
     // Gesture properties
     @State private var offset: CGFloat = 0
@@ -68,20 +68,16 @@ struct CustomSheetView<Content: View>: View {
         ZStack {
             // For getting height for drag gesture
             GeometryReader { proxy -> AnyView in
-                let height = proxy.frame(in: .global).height
+                // let height = proxy.frame(in: .global).height
                 let yOffset_height: CGFloat = defaultMidHeight
                 return AnyView(
                     ZStack {
-                        // Bottom Sheet
-//                        BlurView(style: .systemThinMaterialDark)
-//                            .background(Color.white)
-                        
-                        Color.white
+                        Theme.colorMode(colorScheme)
                             .clipShape(CustomCorner(corners: [.topLeft, .topRight], radius: 30))
                         
                         VStack {
                             Capsule()
-                                .fill(Color.gray)
+                                .fill(Theme.colorMode2(colorScheme))
                                 .frame(width: 60, height: 4)
                                 .padding(.top, 10)
                             
@@ -89,10 +85,8 @@ struct CustomSheetView<Content: View>: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         }
                     }
-//                    .border(Color.green, width: 1)
                     .offset(y: yOffset_height)
-//                    .offset(y: -offset > 0 ? -offset <= (yOffset_height) ? offset : -(yOffset_height) : 0)
-                    .offset(y: offset)
+                    .offset(y: -offset > 0 ? -offset <= (yOffset_height) ? offset : -(yOffset_height) : offset)
                     .gesture(
                         DragGesture().updating($gestureOffset, body: { value, state, _ in
                             // save previous value
@@ -102,39 +96,28 @@ struct CustomSheetView<Content: View>: View {
                             state = value.translation.height
                         })
                         .onChanged { value in
-                            Log.debug("gestureOffset: \(String(describing: gestureOffset)))")
-                            Log.debug("lastOffset: \(String(describing: lastOffset)))")
-                            
                             self.offset = gestureOffset + lastOffset
-                            
                             if let previousValue = self.previousDragValue {
-                                
-                                // calc velocity using currentValue and previousValue
+                                // 계산 velocity using currentValue and previousValue
                                 let ( _, yOffset) = self.calcDragVelocity(previousValue: previousValue, currentValue: value)
                                 self.yVelocity = yOffset
                             }
                         }
-                            .onEnded { value in
+                            .onEnded { _ in
                                 let maxHeight = yOffset_height
                                 withAnimation {
-                               
+                                    
                                     Log.debug("self.previousDragValue: \(String(describing: self.previousDragValue?.translation))")
                                     Log.debug("yVelocity: \(String(describing: yVelocity)))")
                                     Log.debug("-offset: \(String(describing: -offset)))")
                                     Log.debug("gestureOffset: \(String(describing: gestureOffset)))")
                                     
-                                    // (1) Mid
-                                    if -offset > 200 && -offset < maxHeight / 2 {
-                                        // * Test each case!
-                                        offset = -(maxHeight / 4)
-                                        
-                                        // (2) Top
-                                    } else if -offset > maxHeight / 2 {
+                                    // 탑
+                                    if -offset > maxHeight / 2 {
                                         offset = -maxHeight
-                                        
-                                        // (3) Bottom
                                     } else {
-                                        if offset > 80 {
+                                        // 바텀
+                                        if offset > 120 {
                                             withAnimation {
                                                 isPresented.toggle()
                                             }
@@ -155,19 +138,6 @@ struct CustomSheetView<Content: View>: View {
     func getBlurRadius() -> CGFloat {
         let progress = -offset / (UIScreen.main.bounds.height - 100)
         return progress * 30
-    }
-}
-
-struct BlurView: UIViewRepresentable {
-    var style: UIBlurEffect.Style
-    
-    func makeUIView(context: Context) -> UIVisualEffectView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: style))
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        
     }
 }
 

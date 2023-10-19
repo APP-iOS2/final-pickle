@@ -50,13 +50,15 @@ struct PizzaItemView: View {
         VStack {
             ZStack {
                 if pizza.lock {
-                    Image("lock.fill")
+                    Image(systemName: "lock.fill")
+                        .foregroundStyle(.white)
                         .frame(width: 30, height: 30, alignment: .center)
                         .zIndex(2)
                 }
                 
                 Image("\(pizza.image)")
                     .resizable()
+                    .scaledToFit()
                     .frame(width: 80)
                     .clipShape( Circle() )
                     .overlay {

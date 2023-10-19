@@ -108,6 +108,7 @@ extension HomeView {
             
             Text(pizzaText)
                 .font(.pizzaHeadline)
+                .padding(.vertical, 8)
         }
         .padding(.horizontal)
     }
@@ -115,6 +116,8 @@ extension HomeView {
     var todosTaskTableView: some View {
         ForEach(todoStore.todos, id: \.id) { todo in
             TodoCellView(todo: todo)
+                .padding(.horizontal)
+                .padding(.vertical, 2)
                 .onTapGesture {
                     seletedTodo = todo
                     isShowingEditTodo.toggle()

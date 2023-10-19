@@ -18,19 +18,13 @@ struct TodoCellView: View {
         
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.quaternary)
-                .frame(height: 80)
-                .padding(.horizontal)
-                .padding(.vertical, 4)
-            
             HStack {
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(todo.content)
                         .font(.pizzaBody)
                     
-                    Text("\(todo.startTime.format(timeFormat)) (10분)")
+                    Text("\(todo.startTime.format(timeFormat)) (\(convertSecondsToTime(timeInSecond: Int(todo.targetTime))))")
                         .font(.pizzaFootnote)
                 }
                 
@@ -38,22 +32,27 @@ struct TodoCellView: View {
                 
                 Button {
                     isShowingTimerView = true
-//                    TimerView(todo: todo)
-//                        .backKeyModifier(visible: false)
                 } label: {
                     ZStack {
                         Rectangle()
                             .frame(width: 40, height: 40)
                             .foregroundColor(.clear)
                         
-                        Image(systemName: "play.fill")
-//                        Image(systemName: "play.circle")
-//                            .font(.pizzaTitle2)
-                            .foregroundColor(.primary)
+                        Image(systemName: "play.circle.fill")
+                            .font(.pizzaTitle2)
+                            .foregroundStyle(Color.pickle)
                     }
                 }
             }
-            .padding(.horizontal, 40)
+            .padding(.horizontal)
+            .frame(height: 80)
+            .background(Color.white)
+            .clipShape(RoundedRectangle(cornerRadius: 8)) // clip corners
+            .background(
+                RoundedRectangle(cornerRadius: 8) // stroke border
+                    .stroke(Color.defaultGray, lineWidth: 2)
+            )
+//            .padding(.horizontal, 12)
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
@@ -63,6 +62,11 @@ struct TodoCellView: View {
         }
     }
     
+    func convertSecondsToTime(timeInSecond: Int) -> String {
+        let minutes = timeInSecond / 60 // 분
+        return String(format: "%02i분", minutes)
+        
+    }
 }
 
 struct TodoCellView_Previews: PreviewProvider {

@@ -102,11 +102,11 @@ extension ContentView {
         let (t, b) = missionStore.fetch()
         if !t.isEmpty && !b.isEmpty { return }
         if t.isEmpty { 
-            let time = TimeMission(title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
+            let time = TimeMission(title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
             missionStore.add(mission: .time(time))
         }
         if b.isEmpty {
-            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, status2: .ready, status3: .ready, date: Date())
+            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, status1: .ready, status2: .ready, date: Date())
             missionStore.add(mission: .behavior(behavior))
         }
     }

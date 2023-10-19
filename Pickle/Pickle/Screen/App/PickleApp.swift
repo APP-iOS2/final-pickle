@@ -82,7 +82,7 @@ struct PickleApp: App {
         Log.debug("dummy Delete called")
         userStore.deleteuserAll()
         missionStore.deleteAll(mission: .time(.init()))
-        missionStore.deleteAll(mission: .behavior(.init(status2: .complete, status3: .complete)))
+        missionStore.deleteAll(mission: .behavior(.init()))
         pizzaStore.deleteAll()
         Log.debug("dummy Delete end")
     }

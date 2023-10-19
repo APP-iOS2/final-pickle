@@ -14,11 +14,15 @@ extension BehaviorMission {
         if let id = UUID(uuidString: self.id) {
             return BehaviorMissionObject(title: self.title,
                                          status: .init(rawValue: self.status.value) ?? .ready,
+                                         status1: .init(rawValue: self.status1.value) ?? .ready,
+                                         status2: .init(rawValue: self.status2.value) ?? .ready,
                                          date: self.date)
         } else {
             return BehaviorMissionObject(id: self.id,
                                          title: self.title,
                                          status: .init(rawValue: self.status.value) ?? .ready,
+                                         status1: .init(rawValue: self.status1.value) ?? .ready,
+                                         status2: .init(rawValue: self.status2.value) ?? .ready,
                                          date: self.date)
         }
     }
@@ -27,8 +31,8 @@ extension BehaviorMission {
         BehaviorMission(id: object.id.stringValue,
                         title: object.title,
                         status: .init(rawValue: object.status.rawValue) ?? .ready,
-                        status2: .init(rawValue: object.status.rawValue) ?? .ready,
-                        status3: .init(rawValue: object.status.rawValue) ?? .ready,
+                        status1: .init(rawValue: object.status1.rawValue) ?? .ready,
+                        status2: .init(rawValue: object.status2.rawValue) ?? .ready,
                         date: object.date)
     }
 }
@@ -38,8 +42,8 @@ extension BehaviorMission {
         BehaviorMission(id: self.id,
                         title: self.title,
                         status: status,
-                        status2: status,
-                        status3: status,
+                        status1: status1,
+                        status2: status2,
                         date: self.date)
     }
 }

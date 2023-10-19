@@ -115,6 +115,7 @@ extension ContentView {
         guard let error = error as? PersistentedError else { return }
         if error == .fetchUserError {
             userStore.addUser()
+            try! userStore.fetchUser()
         } else if error == .addFaild {
             Log.error("피자를 추가하는 중에 에러 발생")
         } else if error == .fetchError {

@@ -69,10 +69,9 @@ final class TodoStore: ObservableObject {
     func deleteAll(todo: Todo) {
         repository.deleteAll()
     }
-    
+
     func update(todo: Todo) {
         repository.updateTodo(todo: todo)
-    
     }
     
     func updateStatus(status: TodoStatus) {

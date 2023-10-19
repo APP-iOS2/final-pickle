@@ -27,7 +27,7 @@ struct PizzaSelectedView: View {
             
             LazyVGrid(columns: columns) {
                 ForEach(pizzas.indices, id: \.self) { index in
-                    PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potatoPizza))
+                    PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potato))
                     .frame(width: CGFloat.screenWidth / 3 - 40)
                     .padding(.horizontal, 10)
                     .onTapGesture {
@@ -38,7 +38,7 @@ struct PizzaSelectedView: View {
             }
             Spacer()
         }
-        .background(Color.white, ignoresSafeAreaEdges: []) // MARK: safe Area 까지 확장되는 이슈 [] 해겨
+        .modeBackground()  // MARK: safe Area 까지 확장되는 이슈 [] 해겨
     }
 }
 
@@ -57,11 +57,9 @@ struct PizzaItemView: View {
                 
                 Image("\(pizza.image)")
                     .resizable()
-               
                     .frame(width: 80)
                     .clipShape( Circle() )
                     .overlay {
-//                        RoundedRectangle(cornerRadius: CGFloat.screenWidth / 3 - 40)
                         Circle()
                             .fill(pizza.lock ? .black.opacity(0.4) : .clear )
                     }
@@ -79,9 +77,7 @@ struct PizzaItemView: View {
 
 #Preview {
     PizzaSelectedView(columns: Array(repeating: .init(.flexible()), count: 3),
-                      pizzas: .constant([Pizza(name: "고구마", image: "고구마피자", lock: false, createdAt: Date()),
-                                         Pizza(name: "고구마", image: "루꼴라피자", lock: false, createdAt: Date()),
-                                         Pizza(name: "고구마", image: "baconPotatoPizza", lock: false, createdAt: Date())]),
-                      seletedPizza: .constant(Pizza(name: "고구마", image: "고구마피자", lock: false, createdAt: Date())),
+                      pizzas: .constant( [Pizza(name: "고구마", image: "baconPotato", lock: false, createdAt: Date())]),
+                      seletedPizza: .constant(Pizza(name: "고구마", image: "baconPotato", lock: false, createdAt: Date())),
                       isPizzaPuchasePresented: .constant(false))
 }

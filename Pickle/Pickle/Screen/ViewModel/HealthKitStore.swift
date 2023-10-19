@@ -9,6 +9,7 @@ import Foundation
 import HealthKit
 
 class HealthKitStore {
+    
     var stepCount: Int? = nil
     let healthStore = HKHealthStore()
     

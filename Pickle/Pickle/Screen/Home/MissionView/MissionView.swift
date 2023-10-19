@@ -27,12 +27,12 @@ struct MissionView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach($timeMissions) { $timeMission in
-                    TimeMissionStyleView(timeMission: $timeMission, status: $timeStatus, showsAlert: $showsAlert)
+                ForEach(timeMissions.indices, id: \.self) { index in
+                    TimeMissionStyleView(timeMission: $timeMissions[index], status: $timeStatus, showsAlert: $showsAlert)
                 }
                 
-                ForEach($behaviorMissions) { behaviorMission in
-                    BehaviorMissionStyleView(behaviorMission: behaviorMission,
+                ForEach(timeMissions.indices, id: \.self) { index in
+                    BehaviorMissionStyleView(behaviorMission: $behaviorMissions[index],
                                              status1: $behaviorStatus1,
                                              status2: $behaviorStatus2,
                                              status3: $behaviorStatus3,
@@ -45,9 +45,9 @@ struct MissionView: View {
         .onAppear {
             // 시간 말고 날짜만 비교
             // 상태 초기화 후 날짜 다시 저장
-//                let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-//                timeMissions = _timeMissions
-//                behaviorMissions = _behaviorMissions
+                let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+                timeMissions = _timeMissions
+                behaviorMissions = _behaviorMissions
                 
                 if timeMissions.isEmpty { return }
                 if behaviorMissions.isEmpty { return }

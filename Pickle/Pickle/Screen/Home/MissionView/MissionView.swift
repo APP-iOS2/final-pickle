@@ -16,7 +16,7 @@ struct MissionView: View {
         TimeMission(id: UUID().uuidString, title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
     ]
     @State private var behaviorMissions: [BehaviorMission] = [
-        BehaviorMission(id: UUID().uuidString, title: "걷기 미션", status: .ready, status2: .ready, status3: .ready, date: Date())
+        BehaviorMission(id: UUID().uuidString, title: "걷기 미션", status: .ready, status1: .ready, status2: .ready, date: Date())
     ]
     
     var body: some View {
@@ -36,8 +36,8 @@ struct MissionView: View {
         }
         .onAppear {
             print("onApear")
-            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
-            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("mission: \(timeMissions[0].date.format("yyyy-MM-dd"))")
+            print("Date: \(Date().format("yyyy-MM-dd"))")
             print("status: \(timeMissions[0].status)")
             // 시간 말고 날짜만 비교
             // 상태 초기화 후 날짜 다시 저장
@@ -48,7 +48,7 @@ struct MissionView: View {
             if timeMissions.isEmpty { return }
             if behaviorMissions.isEmpty { return }
             
-            if timeMissions[0].date.format("yyyy-mm-dd") != Date().format("yyyy-mm-dd") {
+            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
                 missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                                title: timeMissions[0].title,
                                                                status: .ready,
@@ -57,43 +57,43 @@ struct MissionView: View {
                 missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                        title: behaviorMissions[0].title,
                                                                        status: .ready,
+                                                                       status1: .ready,
                                                                        status2: .ready,
-                                                                       status3: .ready,
                                                                        date: Date())))
             }
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
                                                            status: timeMissions[0].status,
-                                                           date: Date(),
+                                                           date: timeMissions[0].date,
                                                            wakeupTime: timeMissions[0].wakeupTime)))
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
                                                                    status: behaviorMissions[0].status,
+                                                                   status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
-                                                                   status3: behaviorMissions[0].status3,
-                                                                   date: Date())))
+                                                                   date: behaviorMissions[0].date)))
         }
         .refreshable {
             print("refreshable")
-            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
-            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("mission: \(timeMissions[0].date.format("yyyy-MM-dd"))")
+            print("Date: \(Date().format("yyyy-MM-dd"))")
             print("status: \(timeMissions[0].status)")
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
                                                            status: timeMissions[0].status,
-                                                           date: Date(),
+                                                           date: timeMissions[0].date,
                                                            wakeupTime: timeMissions[0].wakeupTime)))
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
                                                                    status: behaviorMissions[0].status,
+                                                                   status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
-                                                                   status3: behaviorMissions[0].status3,
-                                                                   date: Date())))
+                                                                   date: behaviorMissions[0].date)))
         }
         .onDisappear {
             print("onDisappear")
-            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
-            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("mission: \(timeMissions[0].date.format("yyyy-MM-dd"))")
+            print("Date: \(Date().format("yyyy-MM-dd"))")
             print("status: \(timeMissions[0].status)")
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
@@ -103,8 +103,8 @@ struct MissionView: View {
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
                                                                    status: behaviorMissions[0].status,
+                                                                   status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
-                                                                   status3: behaviorMissions[0].status3,
                                                                    date: Date())))
         }
         .navigationTitle("미션")

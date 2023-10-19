@@ -77,6 +77,3 @@ struct MissionMediator {
     //    func deleteAll()
     //    func update(model: DTO)
 }
-
-
-

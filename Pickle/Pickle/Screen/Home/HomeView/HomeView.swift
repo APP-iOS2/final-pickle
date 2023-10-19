@@ -265,12 +265,9 @@ private struct NavigationModifier: ViewModifier {
                 MissionView()
                     .backKeyModifier(visible: false)
             } label: {
-                // TODO: 다크모드 대응
                 Image("mission")
-                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(Color.pickle)
                     .frame(width: 24)
             }
         }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TodoCellView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
     @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
     
@@ -25,7 +27,8 @@ struct TodoCellView: View {
                         .font(.pizzaBody)
                     
                     Text("\(todo.startTime.format(timeFormat)) (\(convertSecondsToTime(timeInSecond: Int(todo.targetTime))))")
-                        .font(.pizzaFootnote)
+                        .font(.nanumBdBody)
+                        .foregroundStyle(.secondary)
                 }
                 
                 Spacer()
@@ -38,20 +41,20 @@ struct TodoCellView: View {
                             .frame(width: 40, height: 40)
                             .foregroundColor(.clear)
 
-                        Image(systemName: "play.fill")
-                            .foregroundColor(.primary)
+                        Image(systemName: "play.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.pickle)
                     }
                 }
             }
             .padding(.horizontal)
             .frame(height: 80)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 8)) // clip corners
+            .background(Color.white.opacity(0.15))
+            .clipShape(RoundedRectangle(cornerRadius: 12)) // clip corners
             .background(
-                RoundedRectangle(cornerRadius: 8) // stroke border
-                    .stroke(Color.defaultGray, lineWidth: 2)
+                RoundedRectangle(cornerRadius: 12) // stroke border
+                    .stroke(Color.defaultGray, lineWidth: 1.5)
             )
-//            .padding(.horizontal, 12)
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"

@@ -22,7 +22,7 @@ struct NavigationBar: ViewModifier {
                     } label: {
                         Image(systemName: "chevron.left")
                     }
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                 }
             }
             .toolbar(visible ? .visible : .hidden, for: .tabBar)

@@ -142,5 +142,4 @@ struct PizzaSummaryModifier: ViewModifier {
             .environmentObject(TodoStore())
             .environmentObject(UserStore())
     }
-
 }

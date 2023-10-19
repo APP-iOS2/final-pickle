@@ -115,19 +115,16 @@ struct FaildAlert: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .tint(.green)
+            .tint(.pickle)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 18)
         .frame(width: 300)
-        .background(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(.black.opacity(0.5))
                 .background(
                     RoundedRectangle(cornerRadius: 30)
                         .fill(.white)
                 )
-        )
+        
     }
 }
 

@@ -63,7 +63,7 @@ struct MissionButton: View {
         VStack {
             Button(action: action) {
                 Text(buttonTitle)
-                    .font(.pizzaBody)
+                    .font(.pizzaBoldButtonTitle)
                     .foregroundColor(buttonTitleColor)
             }
             .frame(width: 70, height: 5)
@@ -157,11 +157,9 @@ struct TimeMissionStyleView: View {
         }
         .onAppear {
             missionComplet()
-//            missionStore.fetch()
         }
         .refreshable {
             missionComplet()
-//            missionStore.fetch()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -340,11 +338,9 @@ struct BehaviorMissionStyleView: View {
         }
         .onAppear {
             healthKitStore.fetchStepCount({ self.missionComplete() })
-//            missionStore.fetch()
         }
         .refreshable {
             healthKitStore.fetchStepCount { self.missionComplete() }
-//            missionStore.fetch()
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)

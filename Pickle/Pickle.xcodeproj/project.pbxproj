@@ -63,6 +63,7 @@
 		96635F652ADF9F380072F21E /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F642ADF9F380072F21E /* Status.swift */; };
 		96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */; };
 		96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
+		96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
 		96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
 		96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
@@ -172,6 +173,7 @@
 		96635F642ADF9F380072F21E /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorMission-extension.swift"; sourceTree = "<group>"; };
 		96635F692ADFA4A70072F21E /* KeyPathEditable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathEditable.swift; sourceTree = "<group>"; };
+		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
 		96A1D4A62ACFE384003BC207 /* MissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStore.swift; sourceTree = "<group>"; };
 		96A1D4A92AD176B6003BC207 /* Injection+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injection+Key.swift"; sourceTree = "<group>"; };
@@ -305,18 +307,9 @@
 		2137D5972AC148CE00AFE225 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				2137D5892AC1473C00AFE225 /* HomeView.swift */,
-				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
-				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
-				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
-				2137D58E2AC1476000AFE225 /* TimerView.swift */,
-				A0052FB32ACD48A3005B3263 /* TimerReportView.swift */,
-				2137D5902AC1476700AFE225 /* MissionView.swift */,
-				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
-				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
-				B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */,
-				B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */,
-				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
+				96C872CB2AE0BDB2007BD155 /* TimerView */,
+				96C872CA2AE0BDA2007BD155 /* HomeView */,
+				96C872C92AE0BD85007BD155 /* MissionView */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -520,6 +513,7 @@
 			children = (
 				2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */,
 				961296952AC16FBE009A9815 /* BackColorModifier.swift */,
+				96943B252ADFFDED0026D54F /* BackgroundModifier.swift */,
 				961296972AC17120009A9815 /* TextFieldModifier.swift */,
 				960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */,
 			);
@@ -584,6 +578,39 @@
 				96A1E4B52AD53866001B2960 /* PersistentedError.swift */,
 			);
 			path = Type;
+			sourceTree = "<group>";
+		};
+		96C872C92AE0BD85007BD155 /* MissionView */ = {
+			isa = PBXGroup;
+			children = (
+				2137D5902AC1476700AFE225 /* MissionView.swift */,
+				B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */,
+				B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */,
+			);
+			path = MissionView;
+			sourceTree = "<group>";
+		};
+		96C872CA2AE0BDA2007BD155 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				2137D5892AC1473C00AFE225 /* HomeView.swift */,
+				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
+				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
+				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
+				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
+				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
+				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		96C872CB2AE0BDB2007BD155 /* TimerView */ = {
+			isa = PBXGroup;
+			children = (
+				2137D58E2AC1476000AFE225 /* TimerView.swift */,
+				A0052FB32ACD48A3005B3263 /* TimerReportView.swift */,
+			);
+			path = TimerView;
 			sourceTree = "<group>";
 		};
 		96CF08DF2AD9096B00648B59 /* font */ = {
@@ -777,6 +804,7 @@
 				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
 				B063F5CE2ADD02DB008EF304 /* HealthKitStore.swift in Sources */,
 				B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */,
+				96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */,
 				2137D5A62AC14C7500AFE225 /* Color.swift in Sources */,
 				2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */,
 				B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */,

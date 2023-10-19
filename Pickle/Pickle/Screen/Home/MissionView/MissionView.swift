@@ -12,11 +12,6 @@ struct MissionView: View {
     var healthKitStore: HealthKitStore = HealthKitStore()
     @State private var showsAlert: Bool = false
     
-    @State private var timeStatus: Status = .ready
-    @State private var behaviorStatus1: Status = .ready
-    @State private var behaviorStatus2: Status = .ready
-    @State private var behaviorStatus3: Status = .ready
-    
     @State private var timeMissions: [TimeMission] = [
         TimeMission(id: UUID().uuidString, title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
     ]
@@ -28,14 +23,11 @@ struct MissionView: View {
         ScrollView {
             VStack {
                 ForEach(timeMissions.indices, id: \.self) { index in
-                    TimeMissionStyleView(timeMission: $timeMissions[index], status: $timeStatus, showsAlert: $showsAlert)
+                    TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert)
                 }
                 
                 ForEach(timeMissions.indices, id: \.self) { index in
                     BehaviorMissionStyleView(behaviorMission: $behaviorMissions[index],
-                                             status1: $behaviorStatus1,
-                                             status2: $behaviorStatus2,
-                                             status3: $behaviorStatus3,
                                              showsAlert: $showsAlert,
                                              healthKitStore: healthKitStore)
                 }
@@ -43,54 +35,77 @@ struct MissionView: View {
             }
         }
         .onAppear {
+            print("onApear")
+            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
+            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("status: \(timeMissions[0].status)")
             // 시간 말고 날짜만 비교
             // 상태 초기화 후 날짜 다시 저장
-                let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-                timeMissions = _timeMissions
-                behaviorMissions = _behaviorMissions
-                
-                if timeMissions.isEmpty { return }
-                if behaviorMissions.isEmpty { return }
-                
-                if timeMissions[0].date.format("yyyy-mm-dd") != Date.now.format("yyyy-mm-dd") {
-                    missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
-                                                                   title: timeMissions[0].title,
-                                                                   status: .ready,
-                                                                   date: Date.now,
-                                                                   wakeupTime: timeMissions[0].wakeupTime)))
-                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
-                                                                           title: behaviorMissions[0].title,
-                                                                           status: .ready,
-                                                                           status2: .ready,
-                                                                           status3: .ready,
-                                                                           date: Date.now)))
-                } else {
-                    missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
-                                                                   title: timeMissions[0].title,
-                                                                   status: timeStatus,
-                                                                   date: Date.now,
-                                                                   wakeupTime: timeMissions[0].wakeupTime)))
-                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
-                                                                           title: behaviorMissions[0].title,
-                                                                           status: behaviorStatus1,
-                                                                           status2: behaviorStatus2,
-                                                                           status3: behaviorStatus3,
-                                                                           date: Date.now)))
-                }
-        }
-        .refreshable {
-            healthKitStore.fetchStepCount()
+            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+            timeMissions = _timeMissions
+            behaviorMissions = _behaviorMissions
+            
+            if timeMissions.isEmpty { return }
+            if behaviorMissions.isEmpty { return }
+            
+            if timeMissions[0].date.format("yyyy-mm-dd") != Date().format("yyyy-mm-dd") {
+                missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
+                                                               title: timeMissions[0].title,
+                                                               status: .ready,
+                                                               date: Date(),
+                                                               wakeupTime: timeMissions[0].wakeupTime)))
+                missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
+                                                                       title: behaviorMissions[0].title,
+                                                                       status: .ready,
+                                                                       status2: .ready,
+                                                                       status3: .ready,
+                                                                       date: Date())))
+            }
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
-                                                           status: timeStatus,
-                                                           date: Date.now,
+                                                           status: timeMissions[0].status,
+                                                           date: Date(),
                                                            wakeupTime: timeMissions[0].wakeupTime)))
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
-                                                                   status: behaviorStatus1,
-                                                                   status2: behaviorStatus2,
-                                                                   status3: behaviorStatus3,
-                                                                   date: Date.now)))
+                                                                   status: behaviorMissions[0].status,
+                                                                   status2: behaviorMissions[0].status2,
+                                                                   status3: behaviorMissions[0].status3,
+                                                                   date: Date())))
+        }
+        .refreshable {
+            print("refreshable")
+            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
+            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("status: \(timeMissions[0].status)")
+            missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
+                                                           title: timeMissions[0].title,
+                                                           status: timeMissions[0].status,
+                                                           date: Date(),
+                                                           wakeupTime: timeMissions[0].wakeupTime)))
+            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
+                                                                   title: behaviorMissions[0].title,
+                                                                   status: behaviorMissions[0].status,
+                                                                   status2: behaviorMissions[0].status2,
+                                                                   status3: behaviorMissions[0].status3,
+                                                                   date: Date())))
+        }
+        .onDisappear {
+            print("onDisappear")
+            print("mission: \(timeMissions[0].date.format("yyyy-mm-dd"))")
+            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("status: \(timeMissions[0].status)")
+            missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
+                                                           title: timeMissions[0].title,
+                                                           status: timeMissions[0].status,
+                                                           date: Date(),
+                                                           wakeupTime: timeMissions[0].wakeupTime)))
+            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
+                                                                   title: behaviorMissions[0].title,
+                                                                   status: behaviorMissions[0].status,
+                                                                   status2: behaviorMissions[0].status2,
+                                                                   status3: behaviorMissions[0].status3,
+                                                                   date: Date())))
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)

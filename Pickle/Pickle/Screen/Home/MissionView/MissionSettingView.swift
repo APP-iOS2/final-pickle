@@ -11,7 +11,6 @@ struct TimeMissionSettingView: View {
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var notificationManager: NotificationManager
     @Binding var timeMission: TimeMission
-    @Binding var status: Status
     
     var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
@@ -38,7 +37,7 @@ struct TimeMissionSettingView: View {
                 Button {
                     timeMission.wakeupTime = changedWakeupTime
                     
-                    if status == .ready {
+                    if timeMission.status == .ready {
                         let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: changedWakeupTime)
                         notificationManager.scheduleNotification(
                             localNotification: LocalNotification(identifier: UUID().uuidString,
@@ -52,7 +51,7 @@ struct TimeMissionSettingView: View {
                     missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                                    title: timeMission.title,
                                                                    status: timeMission.status,
-                                                                   date: Date.now,
+                                                                   date: timeMission.date,
                                                                    wakeupTime: changedWakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
@@ -78,7 +77,6 @@ struct TimeMissionSettingView: View {
 struct MissionSettingView_Previews: PreviewProvider {
     static var previews: some View {
         TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")),
-                               status: .constant(.ready),
                                title: "기상 미션",
                                isTimeMissionSettingModalPresented: .constant(true))
     }

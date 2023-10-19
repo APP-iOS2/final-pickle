@@ -201,9 +201,9 @@ struct TimerView: View {
                 })
             }
         }
-        // TimerReportView Sheet로!
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
+                .interactiveDismissDisabled()
         }
     }
     // 시작 시 시간시간 업데이트, status ongoing으로

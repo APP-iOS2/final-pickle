@@ -82,9 +82,9 @@ extension Date {
         let calendar = Calendar.autoupdatingCurrent
         let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
         var range = calendar.range(of: .day, in: .month, for: startDate)!
-        range.removeLast()
+
         return range.compactMap { day -> Date in
-            return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
+            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
         }
         
     }

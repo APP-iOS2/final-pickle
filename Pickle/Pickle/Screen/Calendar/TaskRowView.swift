@@ -10,7 +10,7 @@ import SwiftUI
 struct TaskRowView: View {
     
     var task: Todo
-    
+
     var indicatorColor: Color {
         return task.startTime.isSameHour ? .pickle : .primary
 //        {
@@ -18,22 +18,37 @@ struct TaskRowView: View {
 //        }
 //        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
     }
+    
+    var taskColor: Color {
+        
+        switch task.status {
+        case .ready:
+            return Color.pickle.opacity(0.4)
+        case .done:
+            return Color.pickle
+        case .giveUp:
+            return Color.secondary
+        default:
+            return Color.primary
+        }
+    }
+
     var body: some View {
        
         HStack(alignment: .center, spacing: 15) {
-                
                 Circle()
-                    .fill(indicatorColor)
+                    .fill(taskColor)
                     .frame(width: 15, height: 15)
                     .padding(4)
-                    .background(.white)
-                    .background(.white.shadow(.drop(color: .black.opacity(0.1),radius: 3)), in: .circle)
+//                    .background(.white)
+                    .background(.white, in: .circle)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(task.content)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                        .strikethrough(task.status == .complete, pattern: .solid, color: .black)
+                        .font(.pizzaStoreSmall)
+                        .foregroundStyle(taskColor)
+                        .fontWeight(.regular)
+                        //.strikethrough(task.status == .giveUp, pattern: .solid, color: .black)
                 
                 }
                 
@@ -55,6 +70,6 @@ struct TaskRowView: View {
     }
 }
 
-//#Preview {
-//    CalendarView()
-//}
+#Preview {
+    TaskRowView(task: Todo.sample)
+}

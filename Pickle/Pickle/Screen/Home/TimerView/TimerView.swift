@@ -9,24 +9,23 @@ import SwiftUI
 
 struct TimerView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var todoStore: TodoStore
+    
+    @StateObject var timerVM = TimerViewModel()
     
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @State private var realStartTime: Date = Date()
-    @State private var targetTime: TimeInterval = 1 // 목표소요시간
-    @State private var timeRemaining: TimeInterval = 0 // 남은 시간
-    @State private var spendTime: TimeInterval = 0 // 실제 소요시간
-    @State private var timeExtra: TimeInterval = 0 // 추가소요시간
+    @State private var realStartTime: Date = Date() // 실제 시작 시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
-    // TODO: completeLimit 바꿔주기 (5분으로)
-    @State private var completeLimit: TimeInterval = 10 // 5분 이후
-    @State private var isDisabled: Bool = true // 완료버튼 활성화 용도
+    // TODO: 30초 -> 5분으로 변경하기
+    @State private var completeLimit: TimeInterval = 30 // 5분 이후
     
-    @State private var isGiveupSign: Bool = false
+    @State private var isDisabled: Bool = true // 5분기준 완료 용도
+    @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
     @State private var isShowGiveupAlert: Bool = false
-    @State private var isDecresing: Bool = true // 목표시간 줄어드는
+//    @State private var isDecresing: Bool = true // 목표시간 줄어드는
     @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
     @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
@@ -71,12 +70,12 @@ struct TimerView: View {
                     .rotationEffect(.degrees(-90))
                 
                 if isStart {
-                    if timeRemaining != 0 {
-                        Text(String(format: "%g", timeRemaining))
+                    if timerVM.timeRemaining != 0 {
+                        Text(String(format: "%g", timerVM.timeRemaining))
                             .foregroundColor(.pickle)
                             .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
-                                timeRemaining -= 1
+                                timerVM.timeRemaining -= 1
                             }
                     } else {
                         Text("시작")
@@ -88,19 +87,19 @@ struct TimerView: View {
                     }
                 } else {
             
-                    if isDecresing {
+                    if timerVM.isDecresing {
                         // 남은시간 줄어드는 타이머
-                        Text(convertSecondsToTime(timeInSecond: timeRemaining))
+                        Text(convertSecondsToTime(timeInSecond: timerVM.timeRemaining))
                             .foregroundColor(.pickle)
                             .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
                                 if !isComplete {
-                                    timeRemaining -= 1
-                                    spendTime += 1
-                                    if timeRemaining == 0 {
+                                    timerVM.timeRemaining -= 1
+                                    timerVM.spendTime += 1
+                                    if timerVM.timeRemaining == 0 {
                                         turnMode()
                                     }
-                                    if spendTime >= completeLimit {
+                                    if timerVM.spendTime >= completeLimit {
                                         isDisabled = false
                                     }
                                 }
@@ -108,13 +107,13 @@ struct TimerView: View {
                     } else {
                         // 추가시간 늘어나는 타이머
                         HStack {
-                            Text("+ \(convertSecondsToTime(timeInSecond: timeExtra))")
+                            Text("+ \(convertSecondsToTime(timeInSecond: timerVM.timeExtra))")
                                 .foregroundColor(.pickle)
                                 .font(.pizzaTimerNum)
                                 .onReceive(timer) { _ in
                                     if !isStart && !isComplete {
-                                        timeExtra += 1
-                                        spendTime += 1
+                                        timerVM.timeExtra += 1
+                                        timerVM.spendTime += 1
                                     }
                                 }
                         }
@@ -135,7 +134,7 @@ struct TimerView: View {
                         isShowGiveupAlert = true
                         isComplete = true
                     } else {
-                        updateDone(spendTime: spendTime)
+                        updateDone(spendTime: timerVM.spendTime)
                         isShowingReportSheet = true
                         isComplete = true
                     }
@@ -155,7 +154,7 @@ struct TimerView: View {
                 // 포기버튼
                 Button(action: {
                     // 포기 alert띄우기
-                    updateGiveup(spendTime: spendTime)
+                    updateGiveup(spendTime: timerVM.spendTime)
                     isGiveupSign = true
                     isShowGiveupAlert = true
                 }, label: {
@@ -175,6 +174,38 @@ struct TimerView: View {
             .padding(.top, 10)
             
             Spacer()
+        }
+        .onChange(of: scenePhase) { newScene in
+            if newScene == .background {
+                print("BACKGROUD")
+                
+                timerVM.backgroundTimeStemp = Date()
+                // 유저디폴트같은데서.......저장해주기
+            }
+            if newScene == .active {
+                print("ACTIVE")
+                
+                var diff = Date().timeIntervalSince(timerVM.backgroundTimeStemp)
+                print("\(TimeInterval(diff))")
+                print("\(timerVM.timeRemaining)")
+                print("\(timerVM.timeRemaining > diff)")
+                
+                timerVM.spendTime += diff
+                
+                if timerVM.timeRemaining > 0 {
+                    if timerVM.timeRemaining > diff {
+                        timerVM.timeRemaining -= diff
+                    } else {
+                        diff -= timerVM.timeRemaining
+                        timerVM.isDecresing = false
+                        timerVM.timeExtra += diff
+                    }
+                } else {
+                    timerVM.timeExtra += diff
+                }
+                
+            }
+            
         }
         .onAppear {
             startTodo()
@@ -267,28 +298,28 @@ struct TimerView: View {
     
     func startTodo() {
         self.settingTime = 3
-        self.timeRemaining = settingTime
+        timerVM.timeRemaining = settingTime
     }
-    
-    // TODO: data 구조보고 변수명 바꿔주기
+
     // 남은 시간 계산하기
     func calcRemain() {
         isStart = false
         updateStart()
         self.settingTime = todo.targetTime
-        self.timeRemaining = settingTime
+        timerVM.timeRemaining = settingTime
+        print(timerVM.timeRemaining)
     }
     
     func turnMode() {
-        self.isDecresing = false
+        timerVM.isDecresing = false
     }
     
     func progress() -> CGFloat {
         if isStart {
             return CGFloat(0)
         } else {
-            if isDecresing {
-                return (CGFloat(settingTime - timeRemaining) / CGFloat(settingTime))
+            if timerVM.isDecresing {
+                return (CGFloat(settingTime - timerVM.timeRemaining) / CGFloat(settingTime))
             } else {
                 return 1
             }

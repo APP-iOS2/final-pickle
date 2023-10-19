@@ -25,6 +25,9 @@ struct PickleApp: App {
     @StateObject private var userStore = UserStore()
     @StateObject private var pizzaStore = PizzaStore()
     @StateObject private var notificationManager = NotificationManager()
+    @StateObject private var timerVM = TimerViewModel()
+    
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some Scene {
         WindowGroup {
@@ -37,6 +40,7 @@ struct PickleApp: App {
                 .environmentObject(userStore)
                 .environmentObject(notificationManager)
                 .environmentObject(pizzaStore)
+                .environmentObject(timerVM)
         }
     }
     

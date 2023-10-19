@@ -91,6 +91,7 @@
 		96CF08EB2AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
 		96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
 		A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
+		A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072B9472AE0460E001C3DAF /* TimerViewModel.swift */; };
 		B063F5CE2ADD02DB008EF304 /* HealthKitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */; };
 		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
@@ -199,6 +200,7 @@
 		96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Rg.otf"; sourceTree = "<group>"; };
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
+		A072B9472AE0460E001C3DAF /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStore.swift; sourceTree = "<group>"; };
 		B0B5E6BB2ADA5A360096F677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pickle.entitlements; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
 				21E711882AD48A01002B8069 /* NotificationManager.swift */,
 				B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */,
+				A072B9472AE0460E001C3DAF /* TimerViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				96CE29C92ADED0CA0070EF92 /* Collection.swift in Sources */,
 				96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */,
 				960C417F2ACD41CD009A0093 /* CornerButtonModifier.swift in Sources */,
+				A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */,
 				B7C341B52AC2CA7400744EB7 /* Date+Extensions.swift in Sources */,
 				961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */,
 				21FA26772AC2A10800877122 /* Todo.swift in Sources */,
@@ -1024,7 +1028,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1063,7 +1067,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

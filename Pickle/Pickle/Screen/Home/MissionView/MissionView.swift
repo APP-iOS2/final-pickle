@@ -65,14 +65,14 @@ struct MissionView: View {
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
                                                            status: timeMissions[0].status,
-                                                           date: Date(),
+                                                           date: timeMissions[0].date,
                                                            wakeupTime: timeMissions[0].wakeupTime)))
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
                                                                    status: behaviorMissions[0].status,
                                                                    status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
-                                                                   date: Date())))
+                                                                   date: behaviorMissions[0].date)))
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)

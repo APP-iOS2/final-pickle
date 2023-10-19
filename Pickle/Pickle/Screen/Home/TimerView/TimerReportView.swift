@@ -16,6 +16,9 @@ struct TimerReportView: View {
     @Binding var isComplete: Bool
     @Binding var isShowingTimerView: Bool
     
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+    
     var todo: Todo
     
     var body: some View {
@@ -67,12 +70,12 @@ struct TimerReportView: View {
                         HStack {
                             Text("시작 시간")
                             Spacer()
-                            Text("\(todo.startTime.format("a hh:mm"))")
+                            Text("\(todo.startTime.format(timeFormat))")
                         }
                         HStack {
                             Text("종료 시간")
                             Spacer()
-                            Text("\((todo.startTime + todo.spendTime).format("a hh:mm"))")
+                            Text("\((todo.startTime + todo.spendTime).format(timeFormat))")
                         }
                     }
                     .font(.pizzaBody)
@@ -106,7 +109,8 @@ struct TimerReportView: View {
             .tint(.pickle)
         }
         .onAppear {
-           isComplete = true
+            isComplete = true
+            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .task {
             await todoStore.fetch()

@@ -36,7 +36,7 @@ struct AddTodoView: View {
                         successDelete.toggle()
                     } label: {
                         Text("삭제")
-                            .tint(.primary)
+                            .tint(.red)
                     }
                 }
             }

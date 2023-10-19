@@ -21,9 +21,12 @@ struct SetNotiView: View {
                     .font(.system(size: 50))
                     .padding()
                 
-                Text("피자를 놓치지 않도록")
-                Text("현실도 피자").bold() + Text("에서 알림을 보내드려요.")
-                Text("원활한 서비스 이용을 위해 ") + Text("알림을 허용").bold() + Text("해주세요!")
+                Group {
+                    Text("피자를 놓치지 않도록")
+                    Text("현실도 피자").bold() + Text("에서 알림을 보내드려요.")
+                    Text("원활한 서비스 이용을 위해 ") + Text("알림을 허용").bold() + Text("해주세요!")
+                }
+                .font(.nanumRg)
             }
             
             Spacer()
@@ -39,7 +42,7 @@ struct SetNotiView: View {
                     
                     Rectangle()
                         .frame(width: 301, height: 1)
-                        .foregroundStyle(.quaternary)
+                        .foregroundStyle(.tertiary)
                     
                     HStack(spacing: .zero) {
                         Spacer()
@@ -50,23 +53,23 @@ struct SetNotiView: View {
                         
                         Rectangle()
                             .frame(width: 1, height: 50)
-                            .foregroundStyle(.quaternary)
+                            .foregroundStyle(.tertiary)
                         
                         Text("허용")
                             .frame(width: 150)
                             .bold()
-                            .foregroundStyle(.blue)
+                            .foregroundStyle(Color.pickle)
                         
                         Spacer()
                     }
                     .frame(height: 50)
                 }
                 .frame(width: 301, height: 150)
-                .foregroundStyle(.black)
+                .foregroundStyle(.primary)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.black.opacity(0.2), lineWidth: 1)
+                        .stroke(.tertiary, lineWidth: 1)
                 )
                 
                 Text("👆")
@@ -101,8 +104,7 @@ struct SetNotiView: View {
                 }
             } label: {
                 Text("알림 허용하기")
-                    .cornerRadiusModifier(frame: 300)
-                    .bold()
+                    .primaryButtonModifier(frame: 300)
             }
         }
         .padding()

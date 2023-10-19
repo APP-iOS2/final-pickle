@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		211315902AE1602500FA6492 /* PrimaryButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2113158F2AE1602500FA6492 /* PrimaryButtonModifier.swift */; };
 		2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5782AC1459C00AFE225 /* PickleApp.swift */; };
 		2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D57A2AC1459C00AFE225 /* ContentView.swift */; };
 		2137D57D2AC1459D00AFE225 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /* Assets.xcassets */; };
@@ -116,6 +117,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2113158F2AE1602500FA6492 /* PrimaryButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButtonModifier.swift; sourceTree = "<group>"; };
 		2137D5752AC1459C00AFE225 /* Pickle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pickle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2137D5782AC1459C00AFE225 /* PickleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleApp.swift; sourceTree = "<group>"; };
 		2137D57A2AC1459C00AFE225 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -519,6 +521,7 @@
 				96943B252ADFFDED0026D54F /* BackgroundModifier.swift */,
 				961296972AC17120009A9815 /* TextFieldModifier.swift */,
 				960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */,
+				2113158F2AE1602500FA6492 /* PrimaryButtonModifier.swift */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -809,6 +812,7 @@
 				B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */,
 				96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */,
 				2137D5A62AC14C7500AFE225 /* Color.swift in Sources */,
+				211315902AE1602500FA6492 /* PrimaryButtonModifier.swift in Sources */,
 				2137D57B2AC1459C00AFE225 /* ContentView.swift in Sources */,
 				B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */,
 				96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */,

@@ -38,7 +38,12 @@ struct BehaviorMission: Mission, Identifiable {
     var status3: MissionStatus
     var date: Date  // 투두 생성 날짜,시간
     
-    init(id: String = UUID().uuidString, title: String = "", status: MissionStatus = .ready, status2: MissionStatus, status3: MissionStatus, date: Date = Date()) {
+    init(id: String = UUID().uuidString,
+         title: String = "",
+         status: MissionStatus = .ready,
+         status2: MissionStatus,
+         status3: MissionStatus,
+         date: Date = Date()) {
         self.id = id
         self.title = title
         self.status = status

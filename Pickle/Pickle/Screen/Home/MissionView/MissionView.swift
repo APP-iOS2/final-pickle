@@ -77,7 +77,6 @@ struct MissionView: View {
                                                                            status3: behaviorStatus3,
                                                                            date: Date.now)))
                 }
-            
         }
         .refreshable {
             healthKitStore.fetchStepCount()

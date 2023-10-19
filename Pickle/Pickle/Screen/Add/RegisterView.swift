@@ -367,14 +367,14 @@ extension RegisterView {
                 .successAlert(
                     isPresented: $showUpdateSuccessAlert,
                     title: "수정 성공",
-                    alertContent: "성공적으로 수정하셨습니다",
+                    alertContent: "성공적으로 수정했습니다",
                     primaryButtonTitle: "뒤로가기",
                     primaryAction: { dissmiss() }
                 )
                 .successAlert(
                     isPresented: $showSuccessAlert,
                     title: "저장 성공",
-                    alertContent: "성공적으로 할일을 등록하셨습니다",
+                    alertContent: "성공적으로 할일을 등록했습니다",
                     primaryButtonTitle: "뒤로가기",
                     primaryAction: { dissmiss() }
                 )
@@ -443,4 +443,5 @@ extension RegisterView {
 
 #Preview {
     RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: true)
+        .environmentObject(TodoStore())
 }

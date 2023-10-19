@@ -43,7 +43,7 @@ struct AddTodoView: View {
             .successAlert(
                 isPresented: $successDelete,
                 title: "삭제 성공",
-                alertContent: "성공적으로 수정하셨습니다",
+                alertContent: "성공적으로 수정했습니다",
                 primaryButtonTitle: "뒤로가기",
                 primaryAction: { isShowingEditTodo.toggle() }
             )

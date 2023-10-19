@@ -48,12 +48,12 @@ struct TimeMissionSettingView: View {
                                                                  repeats: false,
                                                                  type: .calendar)
                         )
-                        missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                                       title: timeMission.title,
-                                                                       status: timeMission.status,
-                                                                       date: Date.now,
-                                                                       wakeupTime: changedWakeupTime)))
                     }
+                    missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                                   title: timeMission.title,
+                                                                   status: timeMission.status,
+                                                                   date: Date.now,
+                                                                   wakeupTime: changedWakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")

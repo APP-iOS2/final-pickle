@@ -174,7 +174,7 @@ struct TimeMissionStyleView: View {
     
     func missionComplet() {
         // 현재 시간과 목표 기상시간 비교
-        if Date.now > timeMission.wakeupTime.adding(minutes: -10) && Date.now < timeMission.wakeupTime.adding(minutes: 10) {
+        if Date() > timeMission.wakeupTime.adding(minutes: -10) && Date() < timeMission.wakeupTime.adding(minutes: 10) {
             status = .complete
         } else {
             status = .ready

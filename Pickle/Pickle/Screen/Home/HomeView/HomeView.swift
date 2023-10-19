@@ -48,8 +48,9 @@ struct HomeView: View {
                                                 // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
                 if todoStore.todos.isEmpty { 
                     Text("💡 할일을 추가해 주세요!!")
+                        .frame(maxWidth: .infinity)
                         .font(.pizzaBoldSmallTitle)
-                        .padding(.top, 20)
+                        .padding(.top, 30)
                 } else {
                     todosTaskTableView          // 할일 목록 테이블 뷰
                 }

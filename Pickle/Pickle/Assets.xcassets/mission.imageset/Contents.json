@@ -1,18 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "bullseye-2.png",
-      "idiom" : "universal"
+      "filename" : "mission.png",
+      "idiom" : "universal",
+      "scale" : "1x"
     },
     {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "mission_dark.png",
-      "idiom" : "universal"
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

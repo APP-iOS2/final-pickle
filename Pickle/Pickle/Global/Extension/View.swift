@@ -33,8 +33,16 @@ extension View {
 extension View {
     func cornerRadiusModifier(frame width: CGFloat = 200,
                               cornerRadius: CGFloat = 12) -> some View {
-        modifier(CornerButtonModifier(width: width ,
+        modifier(CornerButtonModifier(width: width,
                                       cornerRadius: cornerRadius))
+    }
+}
+
+extension View {
+    func primaryButtonModifier(frame width: CGFloat = 300, 
+                               cornerRadius: CGFloat = 12) -> some View {
+        modifier(PrimaryButtonModifier(width: width, 
+                                       cornerRadius: cornerRadius))
     }
 }
 

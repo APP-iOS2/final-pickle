@@ -16,11 +16,11 @@ struct CornerButtonModifier: ViewModifier {
         content
             .padding()
             .frame(width: width)
-            .foregroundStyle(.black)
+            .foregroundStyle(.primary)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.black.opacity(0.2), lineWidth: 1)
+                    .stroke(.tertiary, lineWidth: 1)
             )
     }
 }

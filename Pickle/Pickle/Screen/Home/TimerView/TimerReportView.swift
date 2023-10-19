@@ -37,6 +37,10 @@ struct TimerReportView: View {
                 Text("다음에는 피자 조각을 얻어봐요")
                     .font(.pizzaBody)
                     .padding()
+                Image("sadPizza")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: .screenWidth * 0.75)
             }
             
             VStack {

@@ -11,6 +11,7 @@ struct TimerView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var userStore: UserStore
     
     @EnvironmentObject var timerVM: TimerViewModel
     
@@ -25,19 +26,19 @@ struct TimerView: View {
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
     @State private var isShowGiveupAlert: Bool = false
-//    @State private var isDecresing: Bool = true // 목표시간 줄어드는
+    //    @State private var isDecresing: Bool = true // 목표시간 줄어드는
     @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
     @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
     @Binding var isShowingTimerView: Bool
-
+    
     var body: some View {
         VStack {
             // 멘트부분
             if isStart {
                 Text("따라 읽어봐요!")
                     .font(.pizzaRegularTitle)
-                    .padding(.top, 30)
+                    .padding(.top, 50)
                 
                 Text(" ")
                     .font(.pizzaBody)
@@ -48,7 +49,11 @@ struct TimerView: View {
             } else {
                 Text(todo.content)
                     .font(.pizzaRegularTitle)
-                    .padding(.top, 30)
+                    .frame(width: .screenWidth - 50)
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(1)
+                    .padding(.top, 50)
+                    .padding(.horizontal, 10)
                 
                 // TODO: RegisterView처럼 랜덤으로 바꿔주기
                 Text("🍕 굽는 중")
@@ -86,7 +91,7 @@ struct TimerView: View {
                             }
                     }
                 } else {
-            
+                    
                     if timerVM.isDecresing {
                         // 남은시간 줄어드는 타이머
                         Text(convertSecondsToTime(timeInSecond: timerVM.timeRemaining))
@@ -134,6 +139,7 @@ struct TimerView: View {
                         isShowGiveupAlert = true
                         isComplete = true
                     } else {
+                        print(timerVM.spendTime)
                         updateDone(spendTime: timerVM.spendTime)
                         isShowingReportSheet = true
                         isComplete = true
@@ -154,7 +160,6 @@ struct TimerView: View {
                 // 포기버튼
                 Button(action: {
                     // 포기 alert띄우기
-                    updateGiveup(spendTime: timerVM.spendTime)
                     isGiveupSign = true
                     isShowGiveupAlert = true
                 }, label: {
@@ -186,24 +191,28 @@ struct TimerView: View {
                       primaryButton: .destructive(Text("완료")) {
                     isShowGiveupAlert = true
                     isShowingReportSheet = true
+                    print(timerVM.spendTime)
+                    updateDone(spendTime: timerVM.spendTime)
                 }, secondaryButton: .cancel(Text("취소")) {
                     isComplete = false
                 })
-
+                
             } else {
                 Alert(title: Text("정말 포기하시겠습니까?"),
                       message: Text("지금 포기하면 피자조각을 얻지 못해요"),
                       primaryButton: .destructive(Text("포기하기")) {
                     // 포기하기 함수
+                    print(timerVM.spendTime)
+                    updateGiveup(spendTime: timerVM.spendTime)
                     dismiss()
                 }, secondaryButton: .cancel(Text("취소")) {
                     isGiveupSign = false
                 })
             }
         }
-        // TimerReportView Sheet로!
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
+                .interactiveDismissDisabled()
         }
     }
     // 시작 시 시간시간 업데이트, status ongoing으로
@@ -236,6 +245,15 @@ struct TimerView: View {
                         spendTime: spendTime,
                         status: .done)
         todoStore.update(todo: todo)
+        // 5분 이후 완료시 피자 지급
+        // TODO: 5분으로 변경
+        if spendTime > 30 {
+            do {
+                try userStore.addPizzaSlice(slice: 1)
+            } catch {
+                Log.error("❌피자 조각 추가 실패❌")
+            }
+        }
     }
     
     // TODO: 한시간 안넘어가면 분, 초 만 보여주기
@@ -268,7 +286,7 @@ struct TimerView: View {
         self.settingTime = 3
         timerVM.timeRemaining = settingTime
     }
-
+    
     // 남은 시간 계산하기
     func calcRemain() {
         isStart = false
@@ -294,7 +312,7 @@ struct TimerView: View {
         }
     }
 }
-    
+
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
@@ -304,7 +322,7 @@ struct TimerView_Previews: PreviewProvider {
                                  targetTime: 60,
                                  spendTime: 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
-                .environmentObject(TodoStore())
+            .environmentObject(TodoStore())
         }
     }
 }

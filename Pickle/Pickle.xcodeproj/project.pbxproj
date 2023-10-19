@@ -307,8 +307,8 @@
 		2137D5972AC148CE00AFE225 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				96C872CB2AE0BDB2007BD155 /* TimerView */,
 				96C872CA2AE0BDA2007BD155 /* HomeView */,
+				96C872CB2AE0BDB2007BD155 /* TimerView */,
 				96C872C92AE0BD85007BD155 /* MissionView */,
 			);
 			path = Home;

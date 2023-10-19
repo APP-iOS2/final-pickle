@@ -39,6 +39,16 @@ struct PickleApp: App {
                 .environmentObject(pizzaStore)
         }
     }
+    
+    /// 테스트용
+    private func dummyDelete() {
+        Log.debug("dummy Delete called")
+        userStore.deleteuserAll()
+        missionStore.deleteAll(mission: .time(.init()))
+        missionStore.deleteAll(mission: .behavior(.init(status2: .complete, status3: .complete)))
+        pizzaStore.deleteAll()
+        Log.debug("dummy Delete end")
+    }
 }
 
 extension PickleApp {

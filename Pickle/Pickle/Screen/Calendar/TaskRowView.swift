@@ -18,31 +18,37 @@ struct TaskRowView: View {
 //        }
 //        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
     }
+    
+    var taskColor: Color {
+        
+        switch task.status {
+        case .ready:
+            return Color.pickle.opacity(0.4)
+        case .done:
+            return Color.pickle
+        case .giveUp:
+            return Color.secondary
+        default:
+            return Color.primary
+        }
+    }
+
     var body: some View {
        
         HStack(alignment: .center, spacing: 15) {
-//            switch task.status {
-//            case .ready:
-//                
-//            case .ongoing:
-//                
-//            case .giveUp:
-//                
-//            case .done,.complete:
-//  
-//            }
                 Circle()
-                    .fill(indicatorColor)
+                    .fill(taskColor)
                     .frame(width: 15, height: 15)
                     .padding(4)
-                    .background(.white)
-                    .background(.white.shadow(.inner(color: .primary, radius: 3)), in: .circle)
+//                    .background(.white)
+                    .background(.white, in: .circle)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(task.content)
                         .font(.pizzaStoreSmall)
+                        .foregroundStyle(taskColor)
                         .fontWeight(.regular)
-                        .strikethrough(task.status == .complete, pattern: .solid, color: .black)
+                        //.strikethrough(task.status == .giveUp, pattern: .solid, color: .black)
                 
                 }
                 

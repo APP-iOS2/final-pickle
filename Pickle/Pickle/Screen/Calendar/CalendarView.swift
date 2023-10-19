@@ -18,6 +18,7 @@ struct CalendarView: View {
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     @State private var filteredTasks: [Todo]?
+    @State private var filteredTodayMission: [TimeMission]?
     @State var todayPieceOfPizza: Int = 0
 //    var indicatorColor: Color {
 //        return task.startTime.isSameHour ? .pickle : .primary
@@ -50,8 +51,8 @@ struct CalendarView: View {
         .onAppear(perform: {
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
-            missionStore.fetch()
-            todayPizzaCont(todayTasks: filteredTasks ?? [],
+         
+            todayPizzaCount(todayTasks: filteredTasks ?? [],
                            timeMissions: missionStore.timeMissions,
                            behaviorMissions: missionStore.behaviorMissions)
         })
@@ -59,10 +60,11 @@ struct CalendarView: View {
         .onChange(of: calendarModel.currentDay) { newValue in
             
             filterTodayTasks(todo: todoStore.todos)
-//            missionStore.fetch()
-            todayPizzaCont(todayTasks: filteredTasks ?? [],
-                           timeMissions: missionStore.timeMissions,
-                           behaviorMissions: missionStore.behaviorMissions)
+            let time = missionStore.fetch().0
+            let mission = missionStore.fetch().1
+            todayPizzaCount(todayTasks: filteredTasks ?? [],
+                           timeMissions: time,
+                           behaviorMissions: mission)
         }
     }
     
@@ -175,7 +177,7 @@ struct CalendarView: View {
                                     .fill(Color.mainRed)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
-                                    .offset(y: -66)
+                                    .offset(y: -60)
                             }
                         }
                     
@@ -217,12 +219,10 @@ struct CalendarView: View {
                 LazyVGrid(columns: colums, spacing: 15) {
                     
                     ForEach(dates, id: \.self) { day in
-                        
-                        if day.day == -1 {
-                            Text("")
-                        } else {
                             
+                        if day.day != -1 {
                             Text("\(day.day)")
+                                .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
                                 .font(.callout)
                                 .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
@@ -232,28 +232,27 @@ struct CalendarView: View {
                                     if isSameDate(day.date, date2: calendarModel.currentDay) {
                                         Circle()
                                             .fill(Color.pickle)
-                                            .frame(width: 25, height: 25)
                                     }
                                     
                                     // MARK: - Indicator to show, which one is Today
                                     if day.date.isToday {
                                         Circle()
-                                            .fill(Color.red)
+                                            .fill(Color.mainRed)
                                             .frame(width: 5, height: 5)
                                             .vSpacing(.bottom)
-                                            .offset(y: -32)
+                                            .offset(y: -35)
                                     }
                                     
                                 }
                                 .onTapGesture {
                                     
                                     // MARK: - Updating Current Date
-                                
-                                        calendarModel.currentDay = day.date
+                                    
+                                    calendarModel.currentDay = day.date
                                     
                                 }
-                        }
-
+                            
+                        } else { Text("") }
                         
                         
                     }
@@ -314,17 +313,35 @@ struct CalendarView: View {
         
     }
     
-    func todayPizzaCont(todayTasks: [Todo],
+    func filterTodayTimeMission(mission: [TimeMission]) {
+        
+        let calendar  = Calendar.current
+      
+        let filtered = mission.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
+        }
+        
+        filteredTodayMission  =  filtered
+        
+    }
+    
+    func todayPizzaCount(todayTasks: [Todo],
                         timeMissions: [TimeMission],
                         behaviorMissions: [BehaviorMission]) {
+        let calendar  = Calendar.current
         
         let tempTotalTodayTasks = todayTasks.filter { $0.status == .complete || $0.status == .done
         }
         
-        let tempTimeMissionTasks = timeMissions.filter { $0.status == .done
+        let firstStepTimeMission =  timeMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
         }
         
-        let tempBehaviorMissionTasks = behaviorMissions.filter { $0.status == .done || $0.status2 == .done || $0.status3 == .done
+        let tempTimeMissionTasks = firstStepTimeMission.filter { $0.status == .done
+        }
+        
+        let firstStepBehaviorMission =  behaviorMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
+        }
+        
+        let tempBehaviorMissionTasks = firstStepBehaviorMission.filter { $0.status == .done || $0.status1 == .done || $0.status2 == .done
         }
     
         let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + tempBehaviorMissionTasks.count

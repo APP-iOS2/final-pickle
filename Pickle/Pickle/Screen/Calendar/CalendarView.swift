@@ -35,6 +35,7 @@ struct CalendarView: View {
             await todoStore.fetch()
         }
         .onAppear(perform: {
+            calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
         })
 
@@ -267,11 +268,13 @@ struct CalendarView: View {
     
 }
 
-//struct CalendarView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        CalendarView( filteredTasks: Todo.sample)
-//    }
-//}
+#Preview {
+    
+    CalendarView()
+            .environmentObject(TodoStore())
+            .environmentObject(UserStore())
+    
+}
 
 extension View {
     func hLeading() -> some View {

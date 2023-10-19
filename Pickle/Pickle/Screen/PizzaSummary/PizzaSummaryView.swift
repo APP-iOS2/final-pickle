@@ -23,9 +23,10 @@ struct PizzaSummaryView: View {
                 HStack {
                     myPizzaView()
                         .modifier(PizzaSummaryModifier())
+                    
                     myPieceOfPizzaView()
                         .modifier(PizzaSummaryModifier())
-                    
+                   
                 }
                 .padding(.horizontal)
                 HStack {
@@ -37,10 +38,14 @@ struct PizzaSummaryView: View {
             }
 
             Spacer()
+            
                 .task {
                     await todoStore.fetch()
                 }
+               
         }
+
+
         .navigationTitle("통계")
         
     }
@@ -58,8 +63,6 @@ struct PizzaSummaryView: View {
             }
             Spacer()
         }
-        //.modifier(PizzaSummaryModifier())
-        
     }
     
     // MARK: - 나의 피자 조각, 8조각 완성하면 0으로 초기화 되어버림
@@ -87,6 +90,7 @@ struct PizzaSummaryView: View {
                     .font(.pizzaBoldSmallTitle)
                 
                 let tempResult = todoStore.todos.map { $0.spendTime }.reduce(0) { $0 + $1}
+               // let _ =  print("\(tempResult)")
                 let finalSpendTime = convertSecondsToTime(timeInSecond: tempResult)
                 
                 Text("\(finalSpendTime)")
@@ -133,5 +137,10 @@ struct PizzaSummaryModifier: ViewModifier {
 }
 
 #Preview {
-    PizzaSummaryView()
+    NavigationStack {
+        PizzaSummaryView()
+            .environmentObject(TodoStore())
+            .environmentObject(UserStore())
+    }
+
 }

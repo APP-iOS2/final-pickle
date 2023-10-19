@@ -90,13 +90,12 @@ struct TimeMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var userStore: UserStore
     @Binding var timeMission: TimeMission
-    @Binding var status: Status
     
     @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var buttonSwitch: Bool {
-        switch status {
+        switch timeMission.status {
         case .ready, .done:
             return true
         case .complete:
@@ -127,7 +126,7 @@ struct TimeMissionStyleView: View {
                 })
                 .sheet(isPresented: $isTimeMissionSettingModalPresented) {
                     TimeMissionSettingView(timeMission: $timeMission,
-                                           status: $status, title: timeMission.title,
+                                           title: timeMission.title,
                                            isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
                     .presentationDetents([.fraction(0.4)])
                 }
@@ -135,12 +134,12 @@ struct TimeMissionStyleView: View {
             
             Spacer(minLength: 10)
             
-            MissionButton(status: $status, action: {
-                status = .done
+            MissionButton(status: $timeMission.status, action: {
+                timeMission.status = .done
                 missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                                title: timeMission.title,
-                                                               status: status,
-                                                               date: Date.now,
+                                                               status: .done,
+                                                               date: timeMission.date,
                                                                wakeupTime: timeMission.wakeupTime)))
                 
                 withAnimation {
@@ -160,6 +159,10 @@ struct TimeMissionStyleView: View {
         }
         .refreshable {
             missionComplet()
+            print("timeMissionView")
+            print("mission: \(timeMission.date.format("yyyy-mm-dd"))")
+            print("Date: \(Date().format("yyyy-mm-dd"))")
+            print("status: \(timeMission.status)")
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -174,10 +177,10 @@ struct TimeMissionStyleView: View {
     
     func missionComplet() {
         // 현재 시간과 목표 기상시간 비교
-        if Date() > timeMission.wakeupTime.adding(minutes: -10) && Date() < timeMission.wakeupTime.adding(minutes: 10) {
-            status = .complete
-        } else {
-            status = .ready
+        if Date() > timeMission.wakeupTime.adding(minutes: -10)
+            && Date() < timeMission.wakeupTime.adding(minutes: 10)
+            && timeMission.status == . ready {
+                timeMission.status = .complete
         }
     }
 }
@@ -186,16 +189,13 @@ struct BehaviorMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var userStore: UserStore
     @Binding var behaviorMission: BehaviorMission
-    @Binding var status1: Status
-    @Binding var status2: Status
-    @Binding var status3: Status
     
     @State private var isBehaviorMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
     var healthKitStore: HealthKitStore
     var buttonSwitch1: Bool {
-        switch status1 {
+        switch behaviorMission.status {
         case .ready, .done:
             return true
         case .complete:
@@ -205,7 +205,7 @@ struct BehaviorMissionStyleView: View {
         }
     }
     var buttonSwitch2: Bool {
-        switch status2 {
+        switch behaviorMission.status2 {
         case .ready, .done:
             return true
         case .complete:
@@ -215,7 +215,7 @@ struct BehaviorMissionStyleView: View {
         }
     }
     var buttonSwitch3: Bool {
-        switch status3 {
+        switch behaviorMission.status3 {
         case .ready, .done:
             return true
         case .complete:
@@ -252,15 +252,15 @@ struct BehaviorMissionStyleView: View {
                         .bold()
                         .padding(.vertical, 3)
                     
-                    MissionButton(status: $status1) {
-                        status1 = .done
+                    MissionButton(status: $behaviorMission.status) {
+                        behaviorMission.status = .done
                         
                         missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                                title: behaviorMission.title,
-                                                                               status: status1,
-                                                                               status2: status2,
-                                                                               status3: status3,
-                                                                               date: Date.now)))
+                                                                               status: .done,
+                                                                               status2: behaviorMission.status2,
+                                                                               status3: behaviorMission.status3,
+                                                                               date: behaviorMission.date)))
                         
                         withAnimation {
                             do {
@@ -283,16 +283,15 @@ struct BehaviorMissionStyleView: View {
                         .bold()
                         .padding(.vertical, 3)
                     
-                    MissionButton(status: $status2) {
-                        status2 = .done
+                    MissionButton(status: $behaviorMission.status2) {
+                        behaviorMission.status2 = .done
                         
                         missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                                title: behaviorMission.title,
-                                                                               status: status1,
-                                                                               status2: status2,
-                                                                               status3: status3,
-                                                                               date: Date.now)))
-                        
+                                                                               status: behaviorMission.status,
+                                                                               status2: .done,
+                                                                               status3: behaviorMission.status3,
+                                                                               date: behaviorMission.date)))
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)
@@ -314,15 +313,15 @@ struct BehaviorMissionStyleView: View {
                         .bold()
                         .padding(.vertical, 3)
                     
-                    MissionButton(status: $status3) {
-                        status3 = .done
+                    MissionButton(status: $behaviorMission.status3) {
+                        behaviorMission.status3 = .done
                         
                         missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                                title: behaviorMission.title,
-                                                                               status: status1,
-                                                                               status2: status2,
-                                                                               status3: status3,
-                                                                               date: Date.now)))
+                                                                               status: behaviorMission.status,
+                                                                               status2: behaviorMission.status2,
+                                                                               status3: .done,
+                                                                               date: behaviorMission.date)))
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)
@@ -355,15 +354,16 @@ struct BehaviorMissionStyleView: View {
     
     func missionComplete() {
         if let stepCount = healthKitStore.stepCount {
-            print("stepCount: \(stepCount)")
-            if stepCount >= 1000 {
-                status1 = .complete
-            }
-            if stepCount >= 5000 {
-                status2 = .complete
-            }
-            if stepCount >= 10000 {
-                status3 = .complete
+            if behaviorMission.status == .ready {
+                if stepCount >= 100 {
+                    behaviorMission.status = .complete
+                }
+                if stepCount >= 5000 {
+                    behaviorMission.status2 = .complete
+                }
+                if stepCount >= 10000 {
+                    behaviorMission.status3 = .complete
+                }
             }
         }
     }
@@ -371,11 +371,13 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), status: .constant(.ready), showsAlert: .constant(false))
-        BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "", title: "", status: .ready, status2: .ready, status3: .ready, date: Date())),
-                                 status1: .constant(.ready),
-                                 status2: .constant(.ready),
-                                 status3: .constant(.ready),
+        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
+        BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "",
+                                                                            title: "",
+                                                                            status: .ready,
+                                                                            status2: .ready,
+                                                                            status3: .ready,
+                                                                            date: Date())),
                                  showsAlert: .constant(false),
                                  healthKitStore: HealthKitStore())
         MissionView()

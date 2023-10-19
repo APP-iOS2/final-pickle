@@ -12,7 +12,7 @@ struct TimerView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var todoStore: TodoStore
     
-    @StateObject var timerVM = TimerViewModel()
+    @EnvironmentObject var timerVM: TimerViewModel
     
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -174,38 +174,6 @@ struct TimerView: View {
             .padding(.top, 10)
             
             Spacer()
-        }
-        .onChange(of: scenePhase) { newScene in
-            if newScene == .background {
-                print("BACKGROUD")
-                
-                timerVM.backgroundTimeStemp = Date()
-                // 유저디폴트같은데서.......저장해주기
-            }
-            if newScene == .active {
-                print("ACTIVE")
-                
-                var diff = Date().timeIntervalSince(timerVM.backgroundTimeStemp)
-                print("\(TimeInterval(diff))")
-                print("\(timerVM.timeRemaining)")
-                print("\(timerVM.timeRemaining > diff)")
-                
-                timerVM.spendTime += diff
-                
-                if timerVM.timeRemaining > 0 {
-                    if timerVM.timeRemaining > diff {
-                        timerVM.timeRemaining -= diff
-                    } else {
-                        diff -= timerVM.timeRemaining
-                        timerVM.isDecresing = false
-                        timerVM.timeExtra += diff
-                    }
-                } else {
-                    timerVM.timeExtra += diff
-                }
-                
-            }
-            
         }
         .onAppear {
             startTodo()

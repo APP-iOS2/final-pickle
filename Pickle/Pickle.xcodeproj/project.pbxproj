@@ -25,6 +25,7 @@
 		2137D5AA2AC14EA500AFE225 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A92AC14EA500AFE225 /* View.swift */; };
 		2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
 		2137D5B02AC176DB00AFE225 /* TodoCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */; };
+		2160F9772AE2B98900FC9469 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */; };
 		21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CD68752AD31FC2006DAB62 /* PizzaView.swift */; };
 		21E711892AD48A01002B8069 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E711882AD48A01002B8069 /* NotificationManager.swift */; };
 		21E7118B2AD48DE9002B8069 /* SetNotiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E7118A2AD48DE9002B8069 /* SetNotiView.swift */; };
@@ -137,6 +138,7 @@
 		2137D5A92AC14EA500AFE225 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
 		2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCellView.swift; sourceTree = "<group>"; };
+		2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21CD68752AD31FC2006DAB62 /* PizzaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaView.swift; sourceTree = "<group>"; };
 		21E711882AD48A01002B8069 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		21E7118A2AD48DE9002B8069 /* SetNotiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotiView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 			children = (
 				2137D5782AC1459C00AFE225 /* PickleApp.swift */,
 				2137D57A2AC1459C00AFE225 /* ContentView.swift */,
+				2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */,
 				2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */,
 				96CF08E62AD9098400648B59 /* NanumSquareNeoOTF-Eb.otf in Resources */,
+				2160F9772AE2B98900FC9469 /* LaunchScreen.storyboard in Resources */,
 				96CF08E92AD9098400648B59 /* NanumSquareNeoOTF-Lt.otf in Resources */,
 				96CF08E82AD9098400648B59 /* NanumSquareNeoOTF-Hv.otf in Resources */,
 				96CF08EA2AD9098400648B59 /* Chab.otf in Resources */,
@@ -1025,6 +1029,8 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
@@ -1064,6 +1070,8 @@
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "건강 데이터를 조회할 때 사용되는 필요한 권한입니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;

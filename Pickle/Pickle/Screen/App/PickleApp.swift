@@ -29,6 +29,11 @@ struct PickleApp: App {
     
     @Environment(\.scenePhase) var scenePhase
     
+    // Launch Screen Delay
+    init() {
+        Thread.sleep(forTimeInterval: 2)
+    }
+    
     var body: some Scene {
         WindowGroup {
             let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")

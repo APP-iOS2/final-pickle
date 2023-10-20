@@ -13,12 +13,5 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array/>
-	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIColorName</key>
-		<string>LaunchScreenBackground</string>
-		<key>UILaunchScreen</key>
-		<dict/>
-	</dict>
 </dict>
 </plist>

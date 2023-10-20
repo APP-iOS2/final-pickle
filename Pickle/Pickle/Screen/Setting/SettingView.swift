@@ -39,9 +39,9 @@ struct SettingView: View {
     @State private var isShowingMoveToSettingAlert: Bool = false
     @State private var isShowingEmailAlert: Bool = false
     
-    private var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
-    private var schemeString: String { colorScheme == .light ? "Light Mode" : "Dark Mode" }
-    private var selectedScheme: ColorScheme? {
+    var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
+    
+    var selectedScheme: ColorScheme? {
         guard let theme = SchemeType(rawValue: systemTheme) else { return nil }
         switch theme {
         case .light:
@@ -53,7 +53,7 @@ struct SettingView: View {
         }
     }
     
-    private let pasteboard = UIPasteboard.general
+    let pasteboard = UIPasteboard.general
     
     var body: some View {
         List {

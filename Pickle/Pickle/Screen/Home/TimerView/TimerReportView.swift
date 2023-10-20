@@ -11,6 +11,7 @@ struct TimerReportView: View {
     
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var timerVM: TimerViewModel
     
     @Binding var isShowingReportSheet: Bool
     @Binding var isComplete: Bool
@@ -23,8 +24,7 @@ struct TimerReportView: View {
     
     var body: some View {
         VStack {
-            // TODO: 60 *5 (5분)으로 바꾸기
-            if todo.spendTime >= 60{
+            if (todo.status == .done) {
                 Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
                     .font(.pizzaBody)
                     .padding()
@@ -33,7 +33,7 @@ struct TimerReportView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: .screenWidth * 0.75)
-            } else {
+            } else if (todo.status == .giveUp) {
                 Text("다음에는 피자 조각을 얻어봐요")
                     .font(.pizzaBody)
                     .padding()
@@ -115,9 +115,14 @@ struct TimerReportView: View {
         .onAppear {
             isComplete = true
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
+            print("onAppearspendTime:\(todo.spendTime)")
+            print("onAppearstatus:\(todo.status)")
         }
         .task {
             await todoStore.fetch()
+            print("fetchspendTime:\(todo.spendTime)")
+            print("fetchstatus:\(todo.status)")
+
         }
     }
     

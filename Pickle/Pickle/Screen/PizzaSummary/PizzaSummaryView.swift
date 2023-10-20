@@ -18,91 +18,100 @@ struct PizzaSummaryView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading) {
-                
-                HStack {
-                    myPizzaView()
-                        .modifier(PizzaSummaryModifier())
+            ScrollView {
+                VStack(alignment: .leading) {
                     
-                    myPieceOfPizzaView()
-                        .modifier(PizzaSummaryModifier())
-                   
-                }
-                .padding(.horizontal)
-                HStack {
-                    myTotalSpendTimeForPizzaView()
-                        .modifier(PizzaSummaryModifier())
-                    // myPizzaCollectionView()
-                }
-                .padding(.horizontal)
-            }
+                        HStack(spacing: 15) {
+                            myPizzaView()
+                                .modifier(PizzaSummaryModifier())
+                            
+                            myPieceOfPizzaView()
+                                .modifier(PizzaSummaryModifier())
+                           
+                        }
+                        .padding(.horizontal)
+                    
+                        HStack {
+                            myTotalSpendTimeForPizzaView()
+                                .modifier(PizzaSummaryModifier())
 
-            Spacer()
+                        }
+                        .padding(.horizontal)
+                    
+                }
+                
+            }
             
                 .task {
                     await todoStore.fetch()
                 }
-               
+              
         }
 
 
         .navigationTitle("통계")
-        
+
     }
     
     // MARK: - 나의 피자
     func myPizzaView() -> some View {
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("나의 피자")
-                    .font(.pizzaBoldSmallTitle)
+            VStack(alignment: .trailing, spacing: 8) {
+                Text("완성한 피자")
+
+                    .lineLimit(1)
                 Text("\(userStore.pizzaCount) 판")
-                    .font(.nanumEbTitle)
+
                     .foregroundStyle(Color.pickle)
                 
             }
-            Spacer()
+
         }
+
     }
     
     // MARK: - 나의 피자 조각, 8조각 완성하면 0으로 초기화 되어버림
     func myPieceOfPizzaView() -> some View {
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("나의 피자 조각")
-                    .font(.pizzaBoldSmallTitle)
+            VStack(alignment: .trailing, spacing: 8) {
+                Text("구운 피자 조각")
+                    .lineLimit(1)
                 Text("\(myTotalPizza) 조각")
-                    .font(.nanumEbTitle)
+
                     .foregroundStyle(Color.pickle)
+                    
             }
-            Spacer()
+//            .minimumScaleFactor(0.1)
+      
+      
+      
+//            Spacer()
             
         }
+//        .frame(width: 180, height: 100, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//        .overlay(RoundedRectangle(cornerRadius: 20.0)
+//            .stroke(Color(.lightGray), lineWidth: 1))
     }
     
     // MARK: - 피자 구운시간이 아니라 집중한 시간 -> SpendTime 활용하기, 시간이 왔다갔다 난리도 안임
     func myTotalSpendTimeForPizzaView() -> some View {
         
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
+         
+            VStack(alignment: .center, spacing: 8) {
                 
                 Text("피자 구운 시간")
-                    .font(.pizzaBoldSmallTitle)
-                
+                    .lineLimit(1)
+
                 let tempResult = todoStore.todos.map { $0.spendTime }.reduce(0) { $0 + $1}
-               // let _ =  print("\(tempResult)")
                 let finalSpendTime = convertSecondsToTime(timeInSecond: tempResult)
                 
                 Text("\(finalSpendTime)")
-                    .font(.nanumEbTitle)
                     .foregroundStyle(Color.pickle)
                 
             }
-            //  .padding()
-            Spacer()
+
         }
-        
-        //.modifier(PizzaSummaryModifier())
     }
     
     // MARK: - 피자 컬렉션
@@ -110,6 +119,7 @@ struct PizzaSummaryView: View {
     //
     //
     //    }
+    
     func convertSecondsToTime(timeInSecond: Double) -> String {
         let hours: Int = Int(timeInSecond / 3600)
         let minutes: Int = Int(timeInSecond - Double(hours) * 3600) / 60
@@ -124,15 +134,15 @@ struct PizzaSummaryModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .font(.nanumEb)
+            .padding(.vertical, 17)
             .background(.clear)
             .frame(minWidth: 0, maxWidth: .infinity)
             .cornerRadius(20.0)
             .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color(.lightGray), lineWidth: 1))
-//            .padding(.horizontal)
-            .padding(.top, 15)
+            .padding(.top, 8)
+            .minimumScaleFactor(0.1)
     }
 }
 

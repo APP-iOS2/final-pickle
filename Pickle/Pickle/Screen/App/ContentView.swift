@@ -9,11 +9,25 @@ import SwiftUI
 
 struct ContentView: View {
     @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
+    @AppStorage("systemTheme") private var systemTheme: Int = SchemeType.allCases.first!.rawValue
+    
     @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var missionStore: MissionStore
     
     private var healthKitStore: HealthKitStore = HealthKitStore()
+    
+    var selectedScheme: ColorScheme? {
+        guard let theme = SchemeType(rawValue: systemTheme) else { return nil }
+        switch theme {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        default:
+            return nil
+        }
+    }
     
     var body: some View {
         TabView {
@@ -67,8 +81,8 @@ struct ContentView: View {
             SetNotiView(isShowingOnboarding: $isOnboardingViewActive)
         }
         .tint(.pickle)
+        .preferredColorScheme(selectedScheme)
     }
-    
 }
 
 extension ContentView {

@@ -163,7 +163,7 @@ struct CalendarView: View {
                     
                     Text(day.format("dd"))
                         .font(.callout)
-                        .fontWeight(.bold)
+                        .fontWeight(.semibold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
                         .frame(width: 30, height: 30)
                         .background {
@@ -311,7 +311,7 @@ struct CalendarView: View {
         guard let afterTodo = todo else { return }
         let filtered = afterTodo.filter { calendar.isDate($0.startTime, inSameDayAs: calendarModel.currentDay)
         }
-        
+
         filteredTasks =  filtered
         
     }

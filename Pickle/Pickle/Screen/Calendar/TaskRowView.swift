@@ -12,7 +12,7 @@ struct TaskRowView: View {
     var task: Todo
     
     var indicatorColor: Color {
-        return task.startTime.isSameHour ? .pickle : .primary
+        return task.startTime.isSameHour && task.status == .ready ? .pickle : .primary
         //        {
         //            return .green
         //        }
@@ -23,13 +23,13 @@ struct TaskRowView: View {
         
         switch task.status {
         case .ready:
-            return Image(systemName: "seal")
+            return Image(systemName: "circle.dotted")
         case .done:
-            return Image(systemName: "checkmark.seal.fill")
+            return Image(systemName: "checkmark.circle.fill")
         case .giveUp:
-            return Image(systemName: "xmark.seal.fill")
+            return Image(systemName: "xmark.circle.fill")
         default:
-            return Image(systemName: "seal")
+            return Image(systemName: "circle.dotted")
         }
     }
     

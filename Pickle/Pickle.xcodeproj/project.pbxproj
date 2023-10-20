@@ -93,6 +93,7 @@
 		96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
 		A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
 		A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072B9472AE0460E001C3DAF /* TimerViewModel.swift */; };
+		A08EF5412AE265C900349A58 /* GiveupAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08EF5402AE265C900349A58 /* GiveupAlert.swift */; };
 		B063F5CE2ADD02DB008EF304 /* HealthKitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */; };
 		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
@@ -203,6 +204,7 @@
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
 		A072B9472AE0460E001C3DAF /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		A08EF5402AE265C900349A58 /* GiveupAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveupAlert.swift; sourceTree = "<group>"; };
 		B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStore.swift; sourceTree = "<group>"; };
 		B0B5E6BB2ADA5A360096F677 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pickle.entitlements; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 				96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */,
 				965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */,
 				B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */,
+				A08EF5402AE265C900349A58 /* GiveupAlert.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -823,6 +826,7 @@
 				965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */,
 				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
+				A08EF5412AE265C900349A58 /* GiveupAlert.swift in Sources */,
 				960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */,
 				960C418C2ACE3969009A0093 /* RealmStore.swift in Sources */,
 				96A1E4AB2AD4DD0A001B2960 /* FaildAlert.swift in Sources */,

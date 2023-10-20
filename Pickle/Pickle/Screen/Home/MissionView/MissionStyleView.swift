@@ -155,10 +155,10 @@ struct TimeMissionStyleView: View {
             .disabled(buttonSwitch)
         }
         .onAppear {
-            missionComplet()
+            missionComplete()
         }
         .refreshable {
-            missionComplet()
+            missionComplete()
             print("timeMissionView")
             print("mission: \(timeMission.date.format("yyyy-MM-dd"))")
             print("Date: \(Date().format("yyyy-MM-dd"))")
@@ -175,14 +175,19 @@ struct TimeMissionStyleView: View {
         .padding(.top, 15)
     }
     
-    func missionComplet() {
+    func missionComplete() {
         // 현재 시간과 목표 기상시간 비교 .ready .complete .done
-        if Date() > timeMission.wakeupTime.adding(minutes: -10)
-            && Date() < timeMission.wakeupTime.adding(minutes: 10) {
+        if Date() >= timeMission.wakeupTime.adding(minutes: -10)
+            && Date() <= timeMission.wakeupTime.adding(minutes: 10) {
             if timeMission.status != .done {
                 timeMission.status = .complete
                 missionStore.update(mission: .time(TimeMission(id: timeMission.id, title: timeMission.title, status: .complete, date: timeMission.date, wakeupTime: timeMission.wakeupTime)))
-                            }
+            }
+        } else if Date() < timeMission.wakeupTime.adding(minutes: -10) {
+            timeMission.status = .ready
+            missionStore.update(mission: .time(TimeMission(id: timeMission.id, title: timeMission.title, status: .ready, date: timeMission.date, wakeupTime: timeMission.wakeupTime)))
+        } else {
+            
         }
     }
 }
@@ -228,122 +233,122 @@ struct BehaviorMissionStyleView: View {
     }
     
     var body: some View {
-            VStack {
-                HStack {
-                    Text(behaviorMission.title)
-                        .font(.nanumEbTitle)
-                        .bold()
-                        .padding(.bottom, 4)
-                    Spacer()
+        VStack {
+            HStack {
+                Text(behaviorMission.title)
+                    .font(.nanumEbTitle)
+                    .bold()
+                    .padding(.bottom, 4)
+                Spacer()
+            }
+            
+            HStack {
+                if let stepCount = healthKitStore.stepCount {
+                    Text("현재 \(stepCount) 걸음")
+                        .font(.pizzaBody)
+                        .foregroundColor(.textGray)
+                } else {
+                    Text("현재 0 걸음")
+                        .font(.pizzaBody)
+                        .foregroundColor(.textGray)
                 }
-                
-                HStack {
-                    if let stepCount = healthKitStore.stepCount {
-                        Text("현재 \(stepCount) 걸음")
-                            .font(.pizzaBody)
-                            .foregroundColor(.textGray)
-                    } else {
-                        Text("현재 0 걸음")
-                            .font(.pizzaBody)
-                            .foregroundColor(.textGray)
-                    }
-                    Spacer()
-                }
-                
-                HStack(spacing: (.screenWidth - 252) / 8) {
-                    VStack(alignment: .center) {
-                        Text("🍕")
-                            .modifier(PizzaTextModifier())
-                            .padding()
-                        
-                        Text("1,000걸음")
-                            .font(.pizzaBoldButtonTitle)
-                            .bold()
-                            .padding(.vertical, 3)
-                        
-                        MissionButton(status: $behaviorMission.status) {
-                            behaviorMission.status = .done
-                            
-                            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
-                                                                                   title: behaviorMission.title,
-                                                                                   status: .done,
-                                                                                   status1: behaviorMission.status1,
-                                                                                   status2: behaviorMission.status2,
-                                                                                   date: behaviorMission.date)))
-                            
-                            withAnimation {
-                                do {
-                                    try userStore.addPizzaSlice(slice: 1)
-                                } catch {
-                                    Log.error("❌피자 조각 추가 실패❌")
-                                }
-                            }
-                            showsAlert = true
-                        }
-                        .disabled(buttonSwitch1)
-                    }
+                Spacer()
+            }
+            
+            HStack(spacing: (.screenWidth - 252) / 8) {
+                VStack(alignment: .center) {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
                     
-                    VStack(alignment: .center) {
-                        Text("🍕")
-                            .modifier(PizzaTextModifier())
-                            .padding()
+                    Text("1,000걸음")
+                        .font(.pizzaBoldButtonTitle)
+                        .bold()
+                        .padding(.vertical, 3)
+                    
+                    MissionButton(status: $behaviorMission.status) {
+                        behaviorMission.status = .done
                         
-                        Text("5,000걸음")
-                            .font(.pizzaBoldButtonTitle)
-                            .bold()
-                            .padding(.vertical, 3)
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: .done,
+                                                                               status1: behaviorMission.status1,
+                                                                               status2: behaviorMission.status2,
+                                                                               date: behaviorMission.date)))
                         
-                        MissionButton(status: $behaviorMission.status1) {
-                            behaviorMission.status1 = .done
-                            
-                            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
-                                                                                   title: behaviorMission.title,
-                                                                                   status: behaviorMission.status,
-                                                                                   status1: .done,
-                                                                                   status2: behaviorMission.status2,
-                                                                                   date: behaviorMission.date)))
-                            withAnimation {
-                                do {
-                                    try userStore.addPizzaSlice(slice: 1)
-                                } catch {
-                                    Log.error("❌피자 조각 추가 실패❌")
-                                }
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
                             }
-                            showsAlert = true
                         }
-                        .disabled(buttonSwitch2)
+                        showsAlert = true
                     }
-                    VStack(alignment: .center) {
-                        Text("🍕")
-                            .modifier(PizzaTextModifier())
-                            .padding()
-                        
-                        Text("10,000걸음")
-                            .font(.pizzaBoldButtonTitle)
-                            .bold()
-                            .padding(.vertical, 3)
-                        
-                        MissionButton(status: $behaviorMission.status2) {
-                            behaviorMission.status2 = .done
-                            
-                            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
-                                                                                   title: behaviorMission.title,
-                                                                                   status: behaviorMission.status,
-                                                                                   status1: behaviorMission.status1,
-                                                                                   status2: .done,
-                                                                                   date: behaviorMission.date)))
-                            withAnimation {
-                                do {
-                                    try userStore.addPizzaSlice(slice: 1)
-                                } catch {
-                                    Log.error("❌피자 조각 추가 실패❌")
-                                }
-                            }
-                            showsAlert = true
-                        }
-                        .disabled(buttonSwitch3)
-                    }
+                    .disabled(buttonSwitch1)
                 }
+                
+                VStack(alignment: .center) {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                    
+                    Text("5,000걸음")
+                        .font(.pizzaBoldButtonTitle)
+                        .bold()
+                        .padding(.vertical, 3)
+                    
+                    MissionButton(status: $behaviorMission.status1) {
+                        behaviorMission.status1 = .done
+                        
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: behaviorMission.status,
+                                                                               status1: .done,
+                                                                               status2: behaviorMission.status2,
+                                                                               date: behaviorMission.date)))
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
+                            }
+                        }
+                        showsAlert = true
+                    }
+                    .disabled(buttonSwitch2)
+                }
+                VStack(alignment: .center) {
+                    Text("🍕")
+                        .modifier(PizzaTextModifier())
+                        .padding()
+                    
+                    Text("10,000걸음")
+                        .font(.pizzaBoldButtonTitle)
+                        .bold()
+                        .padding(.vertical, 3)
+                    
+                    MissionButton(status: $behaviorMission.status2) {
+                        behaviorMission.status2 = .done
+                        
+                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                               title: behaviorMission.title,
+                                                                               status: behaviorMission.status,
+                                                                               status1: behaviorMission.status1,
+                                                                               status2: .done,
+                                                                               date: behaviorMission.date)))
+                        withAnimation {
+                            do {
+                                try userStore.addPizzaSlice(slice: 1)
+                            } catch {
+                                Log.error("❌피자 조각 추가 실패❌")
+                            }
+                        }
+                        showsAlert = true
+                    }
+                    .disabled(buttonSwitch3)
+                }
+            }
         }
         .onAppear {
             healthKitStore.fetchStepCount({ self.missionComplete() })
@@ -371,9 +376,9 @@ struct BehaviorMissionStyleView: View {
             }
             if behaviorMission.status1 != .done {
                 if stepCount >= 5000 {
-                behaviorMission.status1 = .complete
+                    behaviorMission.status1 = .complete
+                }
             }
-        }
             if behaviorMission.status2 != .done {
                 if stepCount >= 10000 {
                     behaviorMission.status2 = .complete

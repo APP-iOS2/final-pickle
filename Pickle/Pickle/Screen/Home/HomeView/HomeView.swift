@@ -128,8 +128,8 @@ extension HomeView {
     
     var todosTaskTableView: some View {
         // MARK: .ready 필터시 포기, 완료하면 시트 슈루룩 사라져버림
-        ForEach(todoStore.todos.filter { $0.status == .ready }, id: \.id) { todo in
-//        ForEach(todoStore.todos, id: \.id) { todo in
+//        ForEach(todoStore.todos.filter { $0.status == .ready }, id: \.id) { todo in
+        ForEach(todoStore.todos, id: \.id) { todo in
             TodoCellView(todo: todo)
                 .padding(.horizontal)
                 .padding(.vertical, 2)

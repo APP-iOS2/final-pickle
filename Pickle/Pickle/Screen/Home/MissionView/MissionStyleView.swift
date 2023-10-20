@@ -366,7 +366,7 @@ struct BehaviorMissionStyleView: View {
     func missionComplete() {
         if let stepCount = healthKitStore.stepCount {
             if behaviorMission.status != .done {
-                if stepCount >= 1000 {
+                if stepCount >= 1 {
                     behaviorMission.status = .complete
                     missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                            title: behaviorMission.title,
@@ -377,7 +377,7 @@ struct BehaviorMissionStyleView: View {
                 }
             }
             if behaviorMission.status1 != .done {
-                if stepCount >= 5000 {
+                if stepCount >= 7 {
                     behaviorMission.status1 = .complete
                     missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                            title: behaviorMission.title,
@@ -388,7 +388,7 @@ struct BehaviorMissionStyleView: View {
                 }
             }
             if behaviorMission.status2 != .done {
-                if stepCount >= 10000 {
+                if stepCount >= 8 {
                     behaviorMission.status2 = .complete
                     missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
                                                                            title: behaviorMission.title,

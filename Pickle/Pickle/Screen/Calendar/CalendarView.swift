@@ -140,14 +140,16 @@ struct CalendarView: View {
                 if weekToMonth {
                     
                     monthlyView()
+                    
                 } else {
+                    
                     weekView(calendarModel.currentWeek)
+                        .padding(.bottom, 5)
                 }
             }
             .hLeading()
         }
-        .padding()
-        .hSpacing(.leading)
+        .padding(.horizontal)
     }
     
     // MARK: - Week View
@@ -298,7 +300,7 @@ struct CalendarView: View {
                 Text("조각")
 //                    .font()
                 }
-                .padding()
+            .padding([.horizontal,.vertical])
                 .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color.secondary, lineWidth: 1))
             }
@@ -376,7 +378,7 @@ extension View {
     }
     func hCenter() -> some View {
         self
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .center)
         
     }
     

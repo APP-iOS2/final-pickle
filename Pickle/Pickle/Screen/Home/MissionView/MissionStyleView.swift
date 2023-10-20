@@ -159,10 +159,6 @@ struct TimeMissionStyleView: View {
         }
         .refreshable {
             missionComplete()
-            print("timeMissionView")
-            print("mission: \(timeMission.date.format("yyyy-MM-dd"))")
-            print("Date: \(Date().format("yyyy-MM-dd"))")
-            print("status: \(timeMission.status)")
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
@@ -372,16 +368,34 @@ struct BehaviorMissionStyleView: View {
             if behaviorMission.status != .done {
                 if stepCount >= 1000 {
                     behaviorMission.status = .complete
+                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                           title: behaviorMission.title,
+                                                                           status: .complete,
+                                                                           status1: behaviorMission.status1,
+                                                                           status2: behaviorMission.status2,
+                                                                           date: behaviorMission.date)))
                 }
             }
             if behaviorMission.status1 != .done {
                 if stepCount >= 5000 {
                     behaviorMission.status1 = .complete
+                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                           title: behaviorMission.title,
+                                                                           status: behaviorMission.status,
+                                                                           status1: .complete,
+                                                                           status2: behaviorMission.status2,
+                                                                           date: behaviorMission.date)))
                 }
             }
             if behaviorMission.status2 != .done {
                 if stepCount >= 10000 {
                     behaviorMission.status2 = .complete
+                    missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
+                                                                           title: behaviorMission.title,
+                                                                           status: behaviorMission.status,
+                                                                           status1: behaviorMission.status1,
+                                                                           status2: .complete,
+                                                                           date: behaviorMission.date)))
                 }
             }
         }

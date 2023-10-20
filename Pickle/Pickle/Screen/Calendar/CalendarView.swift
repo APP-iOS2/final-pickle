@@ -166,10 +166,11 @@ struct CalendarView: View {
                         .fontWeight(.bold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
                         .frame(width: 30, height: 30)
-                        .background{
+                        .background {
                             if isSameDate(day, date2: calendarModel.currentDay) {
                                 Circle()
                                     .fill(Color.pickle)
+                                
                             }
                             
                             if day.isToday {
@@ -180,8 +181,11 @@ struct CalendarView: View {
                                     .offset(y: -60)
                             }
                         }
-                    
-                        .background(.white.shadow(.drop(radius: 1)), in: .circle)
+                        .overlay(RoundedRectangle(cornerRadius: 20.0)
+                        .stroke(Color.secondary, lineWidth: 1))
+                        
+ 
+                
                 }
                 .hCenter()
                 .contentShape(.rect)
@@ -287,7 +291,6 @@ struct CalendarView: View {
                 Text("오늘 구운 피자")
                 Spacer()
                 Text("🍕")
-                    .bold()
                 Text("x")
                 Text("\(todayPieceOfPizza)")
                     .font(.pizzaBody)
@@ -297,7 +300,7 @@ struct CalendarView: View {
                 }
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 20.0)
-                .stroke(Color(.lightGray), lineWidth: 1))
+                .stroke(Color.secondary, lineWidth: 1))
             }
     }
     

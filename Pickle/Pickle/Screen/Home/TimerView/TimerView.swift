@@ -29,7 +29,10 @@ struct TimerView: View {
     @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
     @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
+    @State private var showingAlert: Bool = false
+    
     @Binding var isShowingTimerView: Bool
+    
     
     var body: some View {
         VStack {
@@ -155,7 +158,8 @@ struct TimerView: View {
                 Button(action: {
                     isComplete = true
                     isGiveupSign = true
-                    isShowGiveupAlert = true // 포기 alert띄우기
+//                    isShowGiveupAlert = true // 포기 alert띄우기
+                    showingAlert = true
                 }, label: {
                     Text("포기")
                         .font(.pizzaHeadline)
@@ -184,24 +188,36 @@ struct TimerView: View {
             startTodo()
         }
         .navigationBarBackButtonHidden(true)
-        .alert(isPresented: $isShowGiveupAlert) {
-            Alert(title: Text("정말 포기하시겠습니까?"),
-                  message: Text("지금 포기하면 피자조각을 얻지 못해요"),
-                  primaryButton: .destructive(Text("포기하기")) {
-                // 포기하기 함수
-                print(timerVM.spendTime)
-                updateGiveup(spendTime: timerVM.spendTime)
-                isShowingReportSheet = true
-            }, secondaryButton: .cancel(Text("취소")) {
-                isGiveupSign = false
-                isComplete = false
-            })
-            
-        }
+//        .alert(isPresented: $isShowGiveupAlert) {
+//            Alert(title: Text("정말 포기하시겠습니까?"),
+//                  message: Text("지금 포기하면 피자조각을 얻지 못해요"),
+//                  primaryButton: .destructive(Text("포기하기")) {
+//                // 포기하기 함수
+//                print(timerVM.spendTime)
+//                updateGiveup(spendTime: timerVM.spendTime)
+//                isShowingReportSheet = true
+//            }, secondaryButton: .cancel(Text("취소")) {
+//                isGiveupSign = false
+//                isComplete = false
+//            })
+//            
+//        }
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
                 .interactiveDismissDisabled()
         }
+        .showGiveupAlert(isPresented: $showingAlert,
+                         title: "포기하시겠어요?",
+                         contents: "지금 포기하면 피자조각을 얻지 못해요",
+                         primaryButtonTitle: "포기하기",
+                         primaryAction: updateGiveup,
+                         primaryparameter: timerVM.spendTime,
+                         secondaryButton: "돌아가기",
+                         secondaryAction: giveupSecondary)
+    }
+    func giveupSecondary() {
+        isGiveupSign = false
+        isComplete = false
     }
     // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
@@ -225,6 +241,7 @@ struct TimerView: View {
                         status: .giveUp)
         todoStore.update(todo: todo)
         timerVM.timerVMreset()
+        isShowingReportSheet = true
     }
     // 완료 + 피자겟챠
     func updateDone(spendTime: TimeInterval) {

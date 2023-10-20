@@ -46,15 +46,23 @@ struct HomeView: View {
                                                 
                                                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
                                                 // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
-                if todoStore.todos.isEmpty { 
-                    Text("💡 할일을 추가해 주세요!!")
-                        .frame(maxWidth: .infinity)
-                        .font(.pizzaBoldSmallTitle)
-                        .padding(.top, 30)
+                if todoStore.todos.isEmpty {
+                    VStack(spacing: 16) {
+                        Image("picklePizza")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: .screenWidth - 200)
+                        
+                        Text("할일을 추가해 주세요!!")
+                            .frame(maxWidth: .infinity)
+                            .font(.pizzaRegularSmallTitle)
+//                            .padding(.top, 30)
+                    }
+                    .padding(.bottom)
                 } else {
                     todosTaskTableView          // 할일 목록 테이블 뷰
                 }
-            }.padding(.top, 20)
+            }.padding(.vertical, 20)
                 
         }
         .navigationSetting()                                    /* 뷰 네비게이션 셋팅 custom modifier */
@@ -119,7 +127,9 @@ extension HomeView {
     }
     
     var todosTaskTableView: some View {
-        ForEach(todoStore.todos, id: \.id) { todo in
+        // MARK: .ready 필터시 포기, 완료하면 시트 슈루룩 사라져버림
+        ForEach(todoStore.todos.filter { $0.status == .ready }, id: \.id) { todo in
+//        ForEach(todoStore.todos, id: \.id) { todo in
             TodoCellView(todo: todo)
                 .padding(.horizontal)
                 .padding(.vertical, 2)

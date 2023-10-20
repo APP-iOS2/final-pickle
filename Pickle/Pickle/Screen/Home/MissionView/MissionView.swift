@@ -38,6 +38,7 @@ struct MissionView: View {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
+            print("onApear: \(timeMissions[0].status)")
             
             if timeMissions.isEmpty { return }
             if behaviorMissions.isEmpty { return }
@@ -60,6 +61,7 @@ struct MissionView: View {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
+            print("refreshable: \(timeMissions[0].status)")
         }
         .onDisappear {
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
@@ -73,6 +75,8 @@ struct MissionView: View {
                                                                    status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
                                                                    date: behaviorMissions[0].date)))
+            print("onDisappear: \(timeMissions[0].status)")
+
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)

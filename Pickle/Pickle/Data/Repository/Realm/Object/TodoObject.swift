@@ -53,6 +53,7 @@ class TodoObject: Object, Identifiable {
 enum TodoStatusPersisted: String, PersistableEnum {
     case ready
     case ongoing
+    case complete
     case done
     case giveUp
 }

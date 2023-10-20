@@ -31,6 +31,10 @@ extension Color {
             return Color.init(hex: 0xE62E2E)
         }
     
+    static var pepperoniRed: Color {
+            return Color.init(hex: 0xFF4145)
+        }
+
 }
 
 extension Color {

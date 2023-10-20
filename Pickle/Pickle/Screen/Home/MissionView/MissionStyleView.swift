@@ -176,11 +176,13 @@ struct TimeMissionStyleView: View {
     }
     
     func missionComplet() {
-        // 현재 시간과 목표 기상시간 비교
+        // 현재 시간과 목표 기상시간 비교 .ready .complete .done
         if Date() > timeMission.wakeupTime.adding(minutes: -10)
-            && Date() < timeMission.wakeupTime.adding(minutes: 10)
-            && timeMission.status == . ready {
-            timeMission.status = .complete
+            && Date() < timeMission.wakeupTime.adding(minutes: 10) {
+            if timeMission.status != .done {
+                timeMission.status = .complete
+                missionStore.update(mission: .time(TimeMission(id: timeMission.id, title: timeMission.title, status: .complete, date: timeMission.date, wakeupTime: timeMission.wakeupTime)))
+                            }
         }
     }
 }
@@ -362,14 +364,20 @@ struct BehaviorMissionStyleView: View {
     
     func missionComplete() {
         if let stepCount = healthKitStore.stepCount {
-            if behaviorMission.status == .ready && stepCount >= 1000 {
-                behaviorMission.status = .complete
+            if behaviorMission.status != .done {
+                if stepCount >= 1000 {
+                    behaviorMission.status = .complete
+                }
             }
-            if behaviorMission.status1 == .ready && stepCount >= 5000 {
+            if behaviorMission.status1 != .done {
+                if stepCount >= 5000 {
                 behaviorMission.status1 = .complete
             }
-            if behaviorMission.status2 == .ready && stepCount >= 10000 {
-                behaviorMission.status2 = .complete
+        }
+            if behaviorMission.status2 != .done {
+                if stepCount >= 10000 {
+                    behaviorMission.status2 = .complete
+                }
             }
         }
         

@@ -49,8 +49,7 @@ struct GiveupAlertModifier: ViewModifier {
             ZStack {
                 if isPresented {
                     Rectangle()
-                        .fill(.primary.opacity(0.3))
-                        .blur(radius: isPresented ? 2 : 0)
+                        .fill(.black.opacity(0.5))
                         .ignoresSafeArea()
                         .onTapGesture {
                             self.isPresented = false // 외부 영역 터치 시 내려감
@@ -90,7 +89,7 @@ struct GiveupAlert: View {
     let secondaryAction: () -> Void
     
     var body: some View {
-        VStack(alignment: .center, spacing: 30) {
+        VStack(alignment: .center, spacing: 20) {
                 Text(title)
                 .font(.pizzaRegularTitle)
             
@@ -98,7 +97,8 @@ struct GiveupAlert: View {
                 .minimumScaleFactor(0.8)
                 .lineLimit(1)
                 .font(.pizzaBody)
-                .foregroundColor(.secondary)
+                .foregroundColor(.textGray)
+                .padding(.bottom, 10)
                 
                 HStack {
                     
@@ -109,8 +109,9 @@ struct GiveupAlert: View {
                         Text(secondaryButton)
                             .foregroundColor(.textGray)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 2)
+                            .padding(.vertical, 5)
                     }
+                    .padding(.horizontal, 10)
                     
                     Button {
                         primaryAction(primaryparameter)
@@ -119,19 +120,20 @@ struct GiveupAlert: View {
                         Text(primaryButtonTitle)                            
                             .foregroundColor(.pepperoniRed)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 2)
+                            .padding(.vertical, 5)
                     }
+                    .padding(.horizontal, 10)
                 }
-                .font(.pizzaBoldButton15)
+                .font(.pizzaBody)
                 .buttonStyle(.borderedProminent)
-                .tint(.lightGray)
+                .tint(Color(.secondarySystemBackground))
                 
         }
         .padding(.horizontal, 25)
         .frame(width: .screenWidth * 0.85, height: .screenWidth * 0.5)
         .background(
             RoundedRectangle(cornerRadius: 30)
-                .stroke(.black.opacity(0.5))
+                .stroke(.clear)                
                 .background(
                     RoundedRectangle(cornerRadius: 30)
                         .fill(.primary)

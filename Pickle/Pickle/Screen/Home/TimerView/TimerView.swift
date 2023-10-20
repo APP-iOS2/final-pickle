@@ -20,7 +20,7 @@ struct TimerView: View {
     @State private var realStartTime: Date = Date() // 실제 시작 시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
     // TODO: 30초 -> 5분으로 변경하기
-    @State private var completeLimit: TimeInterval = 15 // 5분 이후
+    @State private var completeLimit: TimeInterval = 10 // 5분 이후
     
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
@@ -32,7 +32,6 @@ struct TimerView: View {
     @State private var showingAlert: Bool = false
     
     @Binding var isShowingTimerView: Bool
-    
     
     var body: some View {
         VStack {
@@ -146,12 +145,12 @@ struct TimerView: View {
                     Text("완료")
                         .font(.pizzaHeadline)
                         .frame(width: 75, height: 75)
-                        .foregroundColor(.green)
-                        .background(Color(hex: 0xDAFFD9))
+                        .foregroundColor(isDisabled ? .secondary : .green)
+                        .background(isDisabled ? Color(.secondarySystemBackground) : Color(hex: 0xDAFFD9))
                         .clipShape(Circle())
                 }
                 .disabled(isDisabled)
-                .opacity(isDisabled ? 0.35 : 1)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
                 // 포기버튼
@@ -164,12 +163,12 @@ struct TimerView: View {
                     Text("포기")
                         .font(.pizzaHeadline)
                         .frame(width: 75, height: 75)
-                        .foregroundColor(.red)
-                        .background(Color(hex: 0xFFDBDB))
+                        .foregroundColor(isStart ? .secondary : .red)
+                        .background(isStart ? Color(.secondarySystemBackground) :Color(hex: 0xFFDBDB))
                         .clipShape(Circle())
                 })
                 .disabled(isStart)
-                .opacity(isStart ? 0.35 : 1)
+                .opacity(isStart ? 0.5 : 1)
                 .padding([.leading, .trailing], 75)
                 
             }
@@ -179,9 +178,14 @@ struct TimerView: View {
             
             if isDisabled && !isStart {
                 Text("최소 5분 할 일을 하면 피자 조각을 얻을 수 있어요!")
-                    .font(.pizzaDescription)
+                    .font(.pizzaBoldButtonTitle15)
                     .foregroundColor(.secondary)
+                    .frame(width: .screenWidth - 50)
+                    .minimumScaleFactor(0.5)
+                    .lineLimit(2)
+                    .padding(.top, 50)
                     .padding(.bottom, .screenHeight * 0.1)
+                    .padding(.horizontal, 10)
             }
         }
         .onAppear {

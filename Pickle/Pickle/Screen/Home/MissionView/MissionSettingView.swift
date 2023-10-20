@@ -37,6 +37,7 @@ struct TimeMissionSettingView: View {
                 Button {
                     timeMission.wakeupTime = changedWakeupTime
                     
+                    //TODO: 이렇게 하면.... ready아닐때 설정한건 다음에도 울리지 않음
                     if timeMission.status == .ready {
                         let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: changedWakeupTime)
                         notificationManager.scheduleNotification(

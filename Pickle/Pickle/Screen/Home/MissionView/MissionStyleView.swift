@@ -19,6 +19,8 @@ struct MissionButton: View {
             return "피자 받기"
         case .done:
             return "획득 완료"
+        case .fail:
+            return "미션 실패"
         default:
             return "피자"
         }
@@ -28,7 +30,7 @@ struct MissionButton: View {
         switch status {
         case .ready, .complete:
             return .white
-        case .done:
+        case .done, .fail:
             return .secondary
         default:
             return .black
@@ -39,7 +41,7 @@ struct MissionButton: View {
         switch status {
         case .ready, .complete:
             return .pickle
-        case .done:
+        case .done, .fail:
             return Color(UIColor.secondarySystemBackground)
         default:
             return .white
@@ -50,7 +52,7 @@ struct MissionButton: View {
         switch status {
         case .ready:
             return 0.4
-        case .complete, .done:
+        case .complete, .done, .fail:
             return 1
         default:
             return 1
@@ -96,7 +98,7 @@ struct TimeMissionStyleView: View {
     
     var buttonSwitch: Bool {
         switch timeMission.status {
-        case .ready, .done:
+        case .ready, .done, .fail:
             return true
         case .complete:
             return false
@@ -172,18 +174,31 @@ struct TimeMissionStyleView: View {
     }
     
     func missionComplete() {
-        // 현재 시간과 목표 기상시간 비교 .ready .complete .done
+        // 현재 시간과 목표 기상시간 비교 .ready .complete .done .fail
         if Date() >= timeMission.wakeupTime.adding(minutes: -10)
             && Date() <= timeMission.wakeupTime.adding(minutes: 10) {
             if timeMission.status != .done {
                 timeMission.status = .complete
-                missionStore.update(mission: .time(TimeMission(id: timeMission.id, title: timeMission.title, status: .complete, date: timeMission.date, wakeupTime: timeMission.wakeupTime)))
+                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                               title: timeMission.title,
+                                                               status: .complete,
+                                                               date: timeMission.date,
+                                                               wakeupTime: timeMission.wakeupTime)))
             }
         } else if Date() < timeMission.wakeupTime.adding(minutes: -10) {
             timeMission.status = .ready
-            missionStore.update(mission: .time(TimeMission(id: timeMission.id, title: timeMission.title, status: .ready, date: timeMission.date, wakeupTime: timeMission.wakeupTime)))
+            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                           title: timeMission.title,
+                                                           status: .ready,
+                                                           date: timeMission.date,
+                                                           wakeupTime: timeMission.wakeupTime)))
         } else {
-            
+            timeMission.status = .fail
+            missionStore.update(mission:  .time(TimeMission(id: timeMission.id,
+                                                            title: timeMission.title,
+                                                            status: .fail,
+                                                            date: timeMission.date,
+                                                            wakeupTime: timeMission.wakeupTime)))
         }
     }
 }

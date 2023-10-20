@@ -56,6 +56,7 @@ enum TodoStatusPersisted: String, PersistableEnum {
     case complete
     case done
     case giveUp
+    case fail
 }
 
 extension TodoObject{

@@ -17,6 +17,7 @@ enum Status: String {
     case complete
     case done
     case giveUp
+    case fail
     
     var value: String {
         self.rawValue
@@ -34,6 +35,8 @@ enum Status: String {
             return "완료"
         case .giveUp:
             return "포기"
+        case .fail:
+            return "실패"
         }
     }
 }

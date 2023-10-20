@@ -24,6 +24,8 @@ class BehaviorMissionObject: Object, MissionObject, Identifiable {
         self.init()
         self.title = title
         self.status = status
+        self.status1 = status1
+        self.status2 = status2
         self.date = date
     }
     

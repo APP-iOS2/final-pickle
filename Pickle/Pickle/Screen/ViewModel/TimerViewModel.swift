@@ -16,5 +16,12 @@ class TimerViewModel: ObservableObject {
     @Published var backgroundTimeStemp: Date = Date()
     
     @Published var isDecresing: Bool = true // 목표시간 줄어드는
-
+    
+    func timerVMreset() {
+        self.timeRemaining = 0
+        self.timeExtra = 0
+        self.spendTime = 0
+        self.isDecresing = true
+    }
+    
 }

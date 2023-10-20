@@ -12,7 +12,6 @@ struct TimerView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
-    
     @EnvironmentObject var timerVM: TimerViewModel
     
     var todo: Todo
@@ -21,7 +20,7 @@ struct TimerView: View {
     @State private var realStartTime: Date = Date() // 실제 시작 시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
     // TODO: 30초 -> 5분으로 변경하기
-    @State private var completeLimit: TimeInterval = 30 // 5분 이후
+    @State private var completeLimit: TimeInterval = 15 // 5분 이후
     
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
@@ -101,11 +100,12 @@ struct TimerView: View {
                                 if !isComplete {
                                     timerVM.timeRemaining -= 1
                                     timerVM.spendTime += 1
+                                    
+                                    if timerVM.spendTime > completeLimit {
+                                        isDisabled = false
+                                    }
                                     if timerVM.timeRemaining == 0 {
                                         turnMode()
-                                    }
-                                    if timerVM.spendTime >= completeLimit {
-                                        isDisabled = false
                                     }
                                 }
                             }
@@ -135,17 +135,11 @@ struct TimerView: View {
             HStack {
                 // 완료 버튼
                 Button {
-                    if isDisabled {
-                        isShowGiveupAlert = true
-                        isComplete = true
-                    } else {
-                        print(timerVM.spendTime)
-                        updateDone(spendTime: timerVM.spendTime)
-                        isShowingReportSheet = true
-                        isComplete = true
-                    }
+                    print("완료시 spendTime:\(timerVM.spendTime)")
+                    isComplete = true
+                    updateDone(spendTime: timerVM.spendTime)
+                    isShowingReportSheet = true
                 } label: {
-                    
                     Text("완료")
                         .font(.pizzaHeadline)
                         .frame(width: 75, height: 75)
@@ -153,15 +147,15 @@ struct TimerView: View {
                         .background(Color(hex: 0xDAFFD9))
                         .clipShape(Circle())
                 }
-                .disabled(isStart)
-                .opacity(isStart ? 0.5 : 1)
+                .disabled(isDisabled)
+                .opacity(isDisabled ? 0.35 : 1)
                 .padding([.leading, .trailing], 75)
                 
                 // 포기버튼
                 Button(action: {
-                    // 포기 alert띄우기
+                    isComplete = true
                     isGiveupSign = true
-                    isShowGiveupAlert = true
+                    isShowGiveupAlert = true // 포기 alert띄우기
                 }, label: {
                     Text("포기")
                         .font(.pizzaHeadline)
@@ -169,46 +163,40 @@ struct TimerView: View {
                         .foregroundColor(.red)
                         .background(Color(hex: 0xFFDBDB))
                         .clipShape(Circle())
-                    
                 })
                 .disabled(isStart)
-                .opacity(isStart ? 0.5 : 1)
+                .opacity(isStart ? 0.35 : 1)
                 .padding([.leading, .trailing], 75)
                 
             }
             .padding(.top, 10)
             
             Spacer()
+            
+            if isDisabled && !isStart {
+                Text("최소 5분 할 일을 하면 피자 조각을 얻을 수 있어요!")
+                    .font(.pizzaDescription)
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, .screenHeight * 0.1)
+            }
         }
         .onAppear {
             startTodo()
         }
         .navigationBarBackButtonHidden(true)
         .alert(isPresented: $isShowGiveupAlert) {
-            if isDisabled && !isGiveupSign {
-                Alert(title: Text("시작 후 5분은 피자조각을 얻지 못해요"),
-                      message: Text(""),
-                      primaryButton: .destructive(Text("완료")) {
-                    isShowGiveupAlert = true
-                    isShowingReportSheet = true
-                    print(timerVM.spendTime)
-                    updateDone(spendTime: timerVM.spendTime)
-                }, secondaryButton: .cancel(Text("취소")) {
-                    isComplete = false
-                })
-                
-            } else {
-                Alert(title: Text("정말 포기하시겠습니까?"),
-                      message: Text("지금 포기하면 피자조각을 얻지 못해요"),
-                      primaryButton: .destructive(Text("포기하기")) {
-                    // 포기하기 함수
-                    print(timerVM.spendTime)
-                    updateGiveup(spendTime: timerVM.spendTime)
-                    dismiss()
-                }, secondaryButton: .cancel(Text("취소")) {
-                    isGiveupSign = false
-                })
-            }
+            Alert(title: Text("정말 포기하시겠습니까?"),
+                  message: Text("지금 포기하면 피자조각을 얻지 못해요"),
+                  primaryButton: .destructive(Text("포기하기")) {
+                // 포기하기 함수
+                print(timerVM.spendTime)
+                updateGiveup(spendTime: timerVM.spendTime)
+                isShowingReportSheet = true
+            }, secondaryButton: .cancel(Text("취소")) {
+                isGiveupSign = false
+                isComplete = false
+            })
+            
         }
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
@@ -217,11 +205,12 @@ struct TimerView: View {
     }
     // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
+        //        timerVM.timerVMreset()
         let todo = Todo(id: todo.id,
                         content: todo.content,
                         startTime: Date(),
                         targetTime: todo.targetTime,
-                        spendTime: todo.spendTime,
+                        spendTime: 0,
                         status: .ongoing)
         todoStore.update(todo: todo)
         self.realStartTime = Date()
@@ -235,8 +224,9 @@ struct TimerView: View {
                         spendTime: spendTime,
                         status: .giveUp)
         todoStore.update(todo: todo)
+        timerVM.timerVMreset()
     }
-    // 완료시
+    // 완료 + 피자겟챠
     func updateDone(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
@@ -245,15 +235,13 @@ struct TimerView: View {
                         spendTime: spendTime,
                         status: .done)
         todoStore.update(todo: todo)
-        // 5분 이후 완료시 피자 지급
-        // TODO: 5분으로 변경
-        if spendTime > 30 {
-            do {
-                try userStore.addPizzaSlice(slice: 1)
-            } catch {
-                Log.error("❌피자 조각 추가 실패❌")
-            }
+        timerVM.timerVMreset()
+        do {
+            try userStore.addPizzaSlice(slice: 1)
+        } catch {
+            Log.error("❌피자 조각 추가 실패❌")
         }
+        
     }
     
     // TODO: 한시간 안넘어가면 분, 초 만 보여주기
@@ -293,7 +281,7 @@ struct TimerView: View {
         updateStart()
         self.settingTime = todo.targetTime
         timerVM.timeRemaining = settingTime
-        print(timerVM.timeRemaining)
+        timerVM.spendTime = 0
     }
     
     func turnMode() {

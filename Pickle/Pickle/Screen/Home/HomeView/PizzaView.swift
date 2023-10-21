@@ -15,7 +15,7 @@ struct PizzaView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Image("potatoPizza")
+                Image("pepperoni")
                     .resizable()
                     .scaledToFit()
                 

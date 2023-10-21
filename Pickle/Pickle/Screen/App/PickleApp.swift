@@ -51,31 +51,41 @@ struct PickleApp: App {
                         print("BACKGROUD")
                         
                         timerVM.backgroundTimeStemp = Date()
-                        // 유저디폴트같은데서.......저장해주기
+                        print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
+                        timerVM.fromBackground = true
                     }
                     if newScene == .active {
                         print("ACTIVE")
                         
-                        timerVM.makeRandomSaying()
-                        print("\(timerVM.wiseSaying)")
-                        
-                        var diff = Date().timeIntervalSince(timerVM.backgroundTimeStemp)
-                        print("\(TimeInterval(diff))")
-                        print("\(timerVM.timeRemaining)")
-                        print("\(timerVM.timeRemaining > diff)")
-                        
-                        timerVM.spendTime += diff
-                        
-                        if timerVM.timeRemaining > 0 {
-                            if timerVM.timeRemaining > diff {
-                                timerVM.timeRemaining -= diff
+                        if timerVM.fromBackground {
+                            
+                            timerVM.makeRandomSaying()
+                            print("\(timerVM.wiseSaying)")
+                            
+                            print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
+                            
+                            var currentTime: Date = Date()
+                            print("currentTime:\(currentTime) / Date(): \(Date())")
+                            
+                            var diff = currentTime.timeIntervalSince(timerVM.backgroundTimeStemp)
+                            print("diff: \(TimeInterval(diff))")
+                            
+                            print("timeRemaining: \(timerVM.timeRemaining)")
+                            
+                            timerVM.spendTime += diff
+                            
+                            if timerVM.timeRemaining > 0 {
+                                if timerVM.timeRemaining > diff {
+                                    timerVM.timeRemaining -= diff
+                                } else {
+                                    diff -= timerVM.timeRemaining
+                                    timerVM.isDecresing = false
+                                    timerVM.timeExtra += diff
+                                }
                             } else {
-                                diff -= timerVM.timeRemaining
-                                timerVM.isDecresing = false
                                 timerVM.timeExtra += diff
                             }
-                        } else {
-                            timerVM.timeExtra += diff
+                            timerVM.fromBackground = false
                         }
                         
                     }

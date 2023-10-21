@@ -338,7 +338,7 @@ extension TimerView {
         .lineLimit(2)
         .padding(.top, 50)
         .padding(.bottom, .screenHeight * 0.1)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 20)
 
     }
     
@@ -349,10 +349,10 @@ extension TimerView {
             .font(.pizzaBoldButtonTitle15)
             .foregroundColor(.secondary)
             .frame(width: .screenWidth - 50)
-            .lineLimit(2)
+            .lineLimit(4)
             .padding(.top, 50)
             .padding(.bottom, .screenHeight * 0.1)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 20)
 
     }
 }

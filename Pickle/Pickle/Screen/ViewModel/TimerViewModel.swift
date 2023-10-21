@@ -33,9 +33,7 @@ class TimerViewModel: ObservableObject {
     }
     
     func makeRandomSaying() -> String {
-        var randomInt: Int = 0
-        randomInt = Int.random(in: 0...wiseSayingArray.count - 1)
-        wiseSaying = wiseSayingArray[randomInt]
+        wiseSaying = wiseSayingArray.randomElement()!
         return wiseSaying
     }
 }

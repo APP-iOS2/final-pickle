@@ -350,6 +350,7 @@ extension TimerView {
             .foregroundColor(.secondary)
             .frame(width: .screenWidth - 50)
             .lineLimit(4)
+            .minimumScaleFactor(0.7)
             .padding(.top, 50)
             .padding(.bottom, .screenHeight * 0.1)
             .padding(.horizontal, 20)

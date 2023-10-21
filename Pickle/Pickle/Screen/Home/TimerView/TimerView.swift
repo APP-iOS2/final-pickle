@@ -33,179 +33,39 @@ struct TimerView: View {
     
     @Binding var isShowingTimerView: Bool
     
+    @State private var wiseSaying: String = ""
+    
     var body: some View {
-        VStack {
-            // 멘트부분
-            if isStart {
-                Text("따라 읽어봐요!")
-                    .font(.pizzaRegularTitle)
-                    .padding(.top, 50)
-                
-                Text(" ")
-                    .font(.pizzaBody)
-                    .foregroundColor(.secondary)
-                    .padding(.top, 10)
-                    .padding(.bottom, 30)
-                
-            } else {
-                Text(todo.content)
-                    .font(.pizzaRegularTitle)
-                    .frame(width: .screenWidth - 50)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
-                    .padding(.top, 50)
-                    .padding(.horizontal, 10)
-                
-                // TODO: RegisterView처럼 랜덤으로 바꿔주기
-                Text("🍕 굽는 중")
-                    .font(.pizzaBody)
-                    .foregroundColor(.secondary)
-                    .padding(.top, 10)
-                    .padding(.bottom, 30)
+        ZStack {
+            VStack {
+                timerTitleView
+                Spacer()
             }
+            
             // MARK: 타이머 부분
-            ZStack {
-                Circle()
-                    .fill(.clear)
-                    .frame(width: .screenWidth * 0.75)
-                    .overlay(Circle().stroke(.tertiary, lineWidth: 5))
-                Circle()
-                    .trim(from: 0, to: progress())
-                    .stroke(Color.pickle, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                    .frame(width: .screenWidth * 0.75)
-                    .rotationEffect(.degrees(-90))
-                
-                if isStart {
-                    if timerVM.timeRemaining != 0 {
-                        Text(String(format: "%g", timerVM.timeRemaining))
-                            .foregroundColor(.pickle)
-                            .font(.pizzaTimerNum)
-                            .onReceive(timer) { _ in
-                                timerVM.timeRemaining -= 1
-                            }
-                    } else {
-                        Text("시작")
-                            .foregroundColor(.pickle)
-                            .font(.pizzaTimerNum)
-                            .onReceive(timer) { _ in
-                                calcRemain()
-                            }
-                    }
-                } else {
-                    
-                    if timerVM.isDecresing {
-                        // 남은시간 줄어드는 타이머
-                        Text(convertSecondsToTime(timeInSecond: timerVM.timeRemaining))
-                            .foregroundColor(.pickle)
-                            .font(.pizzaTimerNum)
-                            .onReceive(timer) { _ in
-                                if !isComplete {
-                                    timerVM.timeRemaining -= 1
-                                    timerVM.spendTime += 1
-                                    
-                                    if timerVM.spendTime > completeLimit {
-                                        isDisabled = false
-                                    }
-                                    if timerVM.timeRemaining == 0 {
-                                        turnMode()
-                                    }
-                                }
-                            }
-                    } else {
-                        // 추가시간 늘어나는 타이머
-                        HStack {
-                            Text("+ \(convertSecondsToTime(timeInSecond: timerVM.timeExtra))")
-                                .foregroundColor(.pickle)
-                                .font(.pizzaTimerNum)
-                                .onReceive(timer) { _ in
-                                    if !isStart && !isComplete {
-                                        timerVM.timeExtra += 1
-                                        timerVM.spendTime += 1
-                                    }
-                                }
-                        }
-                    }
-                    
-                    // 목표시간 명시
-                    Text(convertTargetTimeToString(timeInSecond: todo.targetTime))
-                        .font(.pizzaRegularSmallTitle)
-                        .foregroundColor(.secondary)
-                        .offset(y: 40)
-                }
-            }
+            circleTimerView
+                .offset(y: -(.screenWidth * 0.18))
+        
             // MARK: 완료, 포기 버튼
-            HStack {
-                // 완료 버튼
-                Button {
-                    print("완료시 spendTime:\(timerVM.spendTime)")
-                    isComplete = true
-                    updateDone(spendTime: timerVM.spendTime)
-                    isShowingReportSheet = true
-                } label: {
-                    Text("완료")
-                        .font(.pizzaHeadline)
-                        .frame(width: 75, height: 75)
-                        .foregroundColor(isDisabled ? .secondary : .green)
-                        .background(isDisabled ? Color(.secondarySystemBackground) : Color(hex: 0xDAFFD9))
-                        .clipShape(Circle())
+            timerButtonView
+                .offset(y: .screenWidth * 0.75 / 2 - 10 )
+            
+            VStack {
+                Spacer()
+                
+                if isDisabled && !isStart {
+                    completeDiscription
+                } else if !isDisabled && !isStart {
+                    wiseSayingView
                 }
-                .disabled(isDisabled)
-                .opacity(isStart ? 0.5 : 1)
-                .padding([.leading, .trailing], 75)
-                
-                // 포기버튼
-                Button(action: {
-                    isComplete = true
-                    isGiveupSign = true
-//                    isShowGiveupAlert = true // 포기 alert띄우기
-                    showingAlert = true
-                }, label: {
-                    Text("포기")
-                        .font(.pizzaHeadline)
-                        .frame(width: 75, height: 75)
-                        .foregroundColor(isStart ? .secondary : .red)
-                        .background(isStart ? Color(.secondarySystemBackground) :Color(hex: 0xFFDBDB))
-                        .clipShape(Circle())
-                })
-                .disabled(isStart)
-                .opacity(isStart ? 0.5 : 1)
-                .padding([.leading, .trailing], 75)
-                
-            }
-            .padding(.top, 10)
-            
-            Spacer()
-            
-            if isDisabled && !isStart {
-                Text("최소 5분 할 일을 하면 피자 조각을 얻을 수 있어요!")
-                    .font(.pizzaBoldButtonTitle15)
-                    .foregroundColor(.secondary)
-                    .frame(width: .screenWidth - 50)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(2)
-                    .padding(.top, 50)
-                    .padding(.bottom, .screenHeight * 0.1)
-                    .padding(.horizontal, 10)
             }
         }
         .onAppear {
             startTodo()
+            timerVM.makeRandomSaying()
+            print("\(timerVM.wiseSaying)")
         }
         .navigationBarBackButtonHidden(true)
-//        .alert(isPresented: $isShowGiveupAlert) {
-//            Alert(title: Text("정말 포기하시겠습니까?"),
-//                  message: Text("지금 포기하면 피자조각을 얻지 못해요"),
-//                  primaryButton: .destructive(Text("포기하기")) {
-//                // 포기하기 함수
-//                print(timerVM.spendTime)
-//                updateGiveup(spendTime: timerVM.spendTime)
-//                isShowingReportSheet = true
-//            }, secondaryButton: .cancel(Text("취소")) {
-//                isGiveupSign = false
-//                isComplete = false
-//            })
-//            
-//        }
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
                 .interactiveDismissDisabled()
@@ -219,6 +79,7 @@ struct TimerView: View {
                          secondaryButton: "돌아가기",
                          secondaryAction: giveupSecondary)
     }
+    
     func giveupSecondary() {
         isGiveupSign = false
         isComplete = false
@@ -322,16 +183,192 @@ struct TimerView: View {
     }
 }
 
+extension TimerView {
+
+    var timerTitleView: some View {
+        VStack {
+            // 멘트부분
+            if isStart {
+                Text("따라 읽어봐요!")
+                    .font(.pizzaRegularTitle)
+            
+            } else {
+                VStack(spacing: 30) {
+                    Text(todo.content)
+                        .font(.pizzaRegularTitle)
+                        .frame(width: .screenWidth - 50)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                        .padding(.horizontal, 10)
+                    
+                    // TODO: RegisterView처럼 랜덤으로 바꿔주기
+                    Text("🍕 굽는 중")
+                        .font(.pizzaBody)
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+        .padding(.top, .screenHeight * 0.05)
+        
+    }
+    
+    var circleTimerView: some View {
+        ZStack {
+            Circle()
+                .fill(.clear)
+                .frame(width: .screenWidth * 0.75)
+                .overlay(Circle().stroke(.tertiary, lineWidth: 5))
+            Circle()
+                .trim(from: 0, to: progress())
+                .stroke(Color.pickle, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                .frame(width: .screenWidth * 0.75)
+                .rotationEffect(.degrees(-90))
+            
+            if isStart {
+                if timerVM.timeRemaining != 0 {
+                    Text(String(format: "%g", timerVM.timeRemaining))
+                        .foregroundColor(.pickle)
+                        .font(.pizzaTimerNum)
+                        .onReceive(timer) { _ in
+                            timerVM.timeRemaining -= 1
+                        }
+                } else {
+                    Text("시작")
+                        .foregroundColor(.pickle)
+                        .font(.pizzaTimerNum)
+                        .onReceive(timer) { _ in
+                            calcRemain()
+                        }
+                }
+            } else {
+                
+                if timerVM.isDecresing {
+                    // 남은시간 줄어드는 타이머
+                    Text(convertSecondsToTime(timeInSecond: timerVM.timeRemaining))
+                        .foregroundColor(.pickle)
+                        .font(.pizzaTimerNum)
+                        .onReceive(timer) { _ in
+                            if !isComplete {
+                                timerVM.timeRemaining -= 1
+                                timerVM.spendTime += 1
+                                
+                                if timerVM.spendTime > completeLimit {
+                                    isDisabled = false
+                                }
+                                if timerVM.timeRemaining == 0 {
+                                    turnMode()
+                                }
+                            }
+                        }
+                } else {
+                    // 추가시간 늘어나는 타이머
+                    HStack {
+                        Text("+ \(convertSecondsToTime(timeInSecond: timerVM.timeExtra))")
+                            .foregroundColor(.pickle)
+                            .font(.pizzaTimerNum)
+                            .onReceive(timer) { _ in
+                                if !isStart && !isComplete {
+                                    timerVM.timeExtra += 1
+                                    timerVM.spendTime += 1
+                                }
+                            }
+                    }
+                }
+                
+                // 목표시간 명시
+                Text(convertTargetTimeToString(timeInSecond: todo.targetTime))
+                    .font(.pizzaRegularSmallTitle)
+                    .foregroundColor(.secondary)
+                    .offset(y: 40)
+            }
+        }
+    }
+    
+    var timerButtonView: some View {
+        HStack {
+            // 완료 버튼
+            Button {
+                print("완료시 spendTime:\(timerVM.spendTime)")
+                isComplete = true
+                updateDone(spendTime: timerVM.spendTime)
+                isShowingReportSheet = true
+            } label: {
+                Text("완료")
+                    .font(.pizzaHeadline)
+                    .frame(width: 75, height: 75)
+                    .foregroundColor(isDisabled ? .secondary : .green)
+                    .background(isDisabled ? Color(.secondarySystemBackground) : Color(hex: 0xDAFFD9))
+                    .clipShape(Circle())
+            }
+            .disabled(isDisabled)
+            .opacity(isStart ? 0.5 : 1)
+            .padding([.leading, .trailing], 75)
+            
+            // 포기버튼
+            Button(action: {
+                isComplete = true
+                isGiveupSign = true
+//                    isShowGiveupAlert = true // 포기 alert띄우기
+                showingAlert = true
+            }, label: {
+                Text("포기")
+                    .font(.pizzaHeadline)
+                    .frame(width: 75, height: 75)
+                    .foregroundColor(isStart ? .secondary : .red)
+                    .background(isStart ? Color(.secondarySystemBackground) :Color(hex: 0xFFDBDB))
+                    .clipShape(Circle())
+            })
+            .disabled(isStart)
+            .opacity(isStart ? 0.5 : 1)
+            .padding([.leading, .trailing], 75)
+            
+        }
+        .padding(.top, 10)
+    }
+    
+    var completeDiscription: some View {
+        VStack(alignment: .center, spacing: 10) {
+            Text("최소 5분 할 일을 하면\n피자 조각을 얻을 수 있어요!")
+        }
+        .multilineTextAlignment(.center)
+        .lineSpacing(10)
+        .font(.pizzaBoldButtonTitle15)
+        .foregroundColor(.secondary)
+        .frame(width: .screenWidth - 50)
+        .lineLimit(2)
+        .padding(.top, 50)
+        .padding(.bottom, .screenHeight * 0.1)
+        .padding(.horizontal, 10)
+
+    }
+    
+    var wiseSayingView: some View {
+        Text("\(timerVM.wiseSaying)")
+            .multilineTextAlignment(.center)
+            .lineSpacing(10)
+            .font(.pizzaBoldButtonTitle15)
+            .foregroundColor(.secondary)
+            .frame(width: .screenWidth - 50)
+            .lineLimit(2)
+            .padding(.top, 50)
+            .padding(.bottom, .screenHeight * 0.1)
+            .padding(.horizontal, 10)
+
+    }
+}
+
 struct TimerView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             TimerView(todo: Todo(id: UUID().uuidString,
-                                 content: "이력서 작성하기",
+                                 content: "이력서 작성하기dfs",
                                  startTime: Date(),
                                  targetTime: 60,
                                  spendTime: 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
             .environmentObject(TodoStore())
+            .environmentObject(TimerViewModel())
+            .environmentObject(UserStore())
         }
     }
 }

@@ -56,6 +56,9 @@ struct PickleApp: App {
                     if newScene == .active {
                         print("ACTIVE")
                         
+                        timerVM.makeRandomSaying()
+                        print("\(timerVM.wiseSaying)")
+                        
                         var diff = Date().timeIntervalSince(timerVM.backgroundTimeStemp)
                         print("\(TimeInterval(diff))")
                         print("\(timerVM.timeRemaining)")

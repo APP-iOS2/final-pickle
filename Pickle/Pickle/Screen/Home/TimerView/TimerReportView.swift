@@ -32,7 +32,7 @@ struct TimerReportView: View {
                 Image("smilePizza")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: .screenWidth * 0.75)
+                    .frame(width: .screenWidth * 0.65)
             } else if (todo.status == .giveUp) {
                 Text("다음에는 피자 조각을 얻어봐요")
                     .font(.pizzaBody)
@@ -40,7 +40,7 @@ struct TimerReportView: View {
                 Image("sadPizza")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: .screenWidth * 0.75)
+                    .frame(width: .screenWidth * 0.65)
             }
             
             VStack {
@@ -111,6 +111,7 @@ struct TimerReportView: View {
             })
             .buttonStyle(.borderedProminent)
             .tint(.pickle)
+            .padding(.bottom, .screenWidth * 0.1)
         }
         .onAppear {
             isComplete = true

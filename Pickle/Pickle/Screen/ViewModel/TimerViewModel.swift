@@ -14,9 +14,9 @@ class TimerViewModel: ObservableObject {
     @Published var spendTime: TimeInterval = 0
     
     @Published var backgroundTimeStemp: Date = Date()
+    @Published var fromBackground: Bool = false
     
-    @Published var isDecresing: Bool = true // 목표시간 줄어드는
-//    @Published var randomInt: Int = 0
+    @Published var isDecresing: Bool = true // 목표시간 줄어드는거 관련 변수
     
     private let wiseSayingArray: [String] = [
         "게으름은 즐겁지만 괴로운 상태다. \n 우리는 행복해지기 위해서 무엇인가 하고 있어야 한다 \n -마하마트 간디-",
@@ -32,9 +32,9 @@ class TimerViewModel: ObservableObject {
         self.isDecresing = true
     }
     
-    func makeRandomSaying() -> String  {
+    func makeRandomSaying() -> String {
         var randomInt: Int = 0
-        randomInt =  Int.random(in: 0...wiseSayingArray.count - 1)
+        randomInt = Int.random(in: 0...wiseSayingArray.count - 1)
         wiseSaying = wiseSayingArray[randomInt]
         return wiseSaying
     }

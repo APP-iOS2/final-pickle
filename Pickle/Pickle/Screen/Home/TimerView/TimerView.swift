@@ -255,7 +255,7 @@ extension TimerView {
                                 if timerVM.spendTime > completeLimit {
                                     isDisabled = false
                                 }
-                                if timerVM.timeRemaining == 0 {
+                                if timerVM.timeRemaining <= 0 {
                                     turnMode()
                                 }
                             }
@@ -363,7 +363,7 @@ struct TimerView_Previews: PreviewProvider {
             TimerView(todo: Todo(id: UUID().uuidString,
                                  content: "이력서 작성하기dfs",
                                  startTime: Date(),
-                                 targetTime: 60,
+                                 targetTime: 15,
                                  spendTime: 5400,
                                  status: .ready), isShowingTimerView: .constant(false))
             .environmentObject(TodoStore())

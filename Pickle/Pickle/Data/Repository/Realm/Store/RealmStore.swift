@@ -9,6 +9,28 @@ import SwiftUI
 import RealmSwift
 import Combine
 
+extension KeyPath {
+    var propertyAsString: String {
+        print("\(self)")
+        return "\(self)".components(separatedBy: ".").last ?? ""
+    }
+    var keyPath: String {
+           let me = String(describing: self)
+           let dropLeading =  "\\" + String(describing: Root.self) + "."
+           let keyPath = "\(me.dropFirst(dropLeading.count))"
+           return keyPath
+       }
+    
+    var stringValue: String {
+           NSExpression(forKeyPath: self).keyPath
+       }
+}
+
+typealias RealmFilter<Object> = (Query<Object>) -> Query<Bool>
+
+enum RFilter<Object: Storable> {
+    case filter(RealmFilter<Object>)
+}
 
 final class RealmStore: DBStore {
     

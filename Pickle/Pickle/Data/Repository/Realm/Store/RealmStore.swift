@@ -118,19 +118,54 @@ final class RealmStore: DBStore {
         }
     }
     
+    // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
+    func update<T: Storable>(_ model: T.Type,
+                             id: String,
+                             query: RealmFilter<T>) throws {
         guard
             let realm = realmStore,
+            let model = model as? Object.Type,
+            let objectID = try? ObjectId(string: id)
         else {
             throw RealmError.notRealmObject
         }
         
         try realm.write {
+//            guard let object = realm.object(ofType: model, forPrimaryKey: objectID) else { return }
+//            Log.debug("object Update Moel RealmFilter: \(object)")
+//            object.objectSchema.properties.forEach { propertyName in
+//                Log.debug(propertyName.name)
+//                Log.debug("value")
+//            }
+            // object.setValue(List<PizzaObject>(), forKey: "pizza")
+//            realm.add(object, update: .modified)
+        }
+    }
+    
+    // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
+    func update<Root,Child>(_ model: Root.Type,
+                            root: Root,
+                            child: Child,
+                            property name: KeyPath<Root,Any>) throws where Root == Storable, Child == Storable {
+        guard
+            let realm = realmStore,
+            let type = model as? Object.Type,
+            let root = root as? Object,
+            let child = child as? Object,
+            let property = root.objectSchema.properties.filter({ $0.name == name.propertyAsString  }).first
+        else {
+            throw RealmError.notRealmObject
+        }
+        
+        try realm.write {
+            let list = root.dynamicList(property.name)
         }
     }
     
     func delete(object: Storable) throws {
         return
     }
+    
     /// Delete Model 메타타입 과 id를 받아서 delete할 오브젝트를 골라 삭제한다.
     /// - Parameters:
     ///   - model: 삭제할 모델의 메타타입

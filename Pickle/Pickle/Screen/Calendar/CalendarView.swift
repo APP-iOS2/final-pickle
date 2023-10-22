@@ -346,10 +346,21 @@ struct CalendarView: View {
         let firstStepBehaviorMission =  behaviorMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
         }
         
-        let tempBehaviorMissionTasks = firstStepBehaviorMission.filter { $0.status == .done || $0.status1 == .done || $0.status2 == .done
+        let tempBehaviorMissionTask0 = firstStepBehaviorMission.filter { $0.status == .done
+            
         }
-    
-        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + tempBehaviorMissionTasks.count
+        
+        let tempBehaviorMissionTask1 = firstStepBehaviorMission.filter {  $0.status1 == .done
+            
+        }
+        
+        let tempBehaviorMissionTask2 = firstStepBehaviorMission.filter {  $0.status2 == .done
+            
+        }
+        let totalBehaviorMissions = tempBehaviorMissionTask0 +  tempBehaviorMissionTask1 + tempBehaviorMissionTask2
+        
+        
+        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + totalBehaviorMissions.count
         
         todayPieceOfPizza = finalPizzaCount
     }

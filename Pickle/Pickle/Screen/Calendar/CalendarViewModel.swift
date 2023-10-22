@@ -92,7 +92,6 @@ class CalendarViewModel: ObservableObject {
             return resultDay
             
         }
-        print(resultMonth)
 
         let firstWeekDay = calendar.component(.weekday, from: resultMonth.first?.date ?? Date())
                 
@@ -130,7 +129,7 @@ class CalendarViewModel: ObservableObject {
         let startOfLastDate = calendar.startOfDay(for: currentDay)
         
         let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate)
-//        print(nextDate!)
+
         return fetchCurrentWeek(date: nextDate!)
         
     }

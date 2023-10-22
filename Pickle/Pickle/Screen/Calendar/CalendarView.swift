@@ -34,9 +34,10 @@ struct CalendarView: View {
         
         VStack(alignment: .leading) {
             headerView()
+                .padding(.top, 15)
+                .padding(.bottom, 8)
             currentPizzaSummaryView()
                 .padding(.horizontal)
-
             ScrollView(.vertical) {
                 VStack {
                     taskView()
@@ -124,7 +125,7 @@ struct CalendarView: View {
                     })
                     
                     Button(action: {
-                        print("주간")
+                    
                         weekToMonth.toggle()
                         calendarModel.resetForTodayButton()
                         
@@ -185,9 +186,7 @@ struct CalendarView: View {
                         }
                         .overlay(RoundedRectangle(cornerRadius: 20.0)
                         .stroke(Color.secondary, lineWidth: 1))
-                        
- 
-                
+                    
                 }
                 .hCenter()
                 .contentShape(.rect)

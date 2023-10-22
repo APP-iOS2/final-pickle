@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+// TODO: 피자 8개를 채웠을때 애니메이션 팝업 OR 다른 액션 고려하기
+// TODO: HomeView 에서 현재 ready 상태만 보여주는 상태 -> 구분하기 다른 상태 고려 GiveUp, done(complte), ongoing
+        // complete과 done의 차이는 ?
+
+// TODO: HomeView TableView에서 자체 삭제 메소드 제공해야하는지 여부
+// TODO: TabView Dissmiss 등록뷰와 미션뷰에서 나올때 애니메이션 없이 onAppear일때 보여짐 -> animation 적용여부 결정
+
+// TODO: HomeView Pizza View 선택 할수 있게 구성하기
+    // 1-1. lock이 아니라면 -> Home에 있는 피자를 변경해야 함
+    // 1-2. lock일 경우에는 토스트 메시지를 보여줘야 하나?
+
 struct HomeView: View {
 
     init() {
@@ -287,7 +298,10 @@ private struct NavigationModifier: ViewModifier {
     var toolbarBuillder: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink {
-                RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: false) /* 등록할때는 willUpdateTodo 사용 x 임으로 샘플값 */
+                RegisterView(willUpdateTodo: .constant(Todo.sample),
+                             successDelete: .constant(false),
+                             isShowingEditTodo: .constant(false),
+                             isModify: false)
                     .backKeyModifier(visible: false)
             } label: {
                 Image(systemName: "plus.circle")
@@ -308,11 +322,25 @@ private struct NavigationModifier: ViewModifier {
     }
 }
 
-#Preview {
-    NavigationStack {
-        HomeView()
-            .environmentObject(TodoStore())
-            .environmentObject(PizzaStore())
-            .environmentObject(UserStore())
+struct HomeView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        NavigationStack {
+            let _ = PreviewsContainer.setUpDependency()
+            let todo = TodoStore()
+            let pizza = PizzaStore()
+            let user = UserStore()
+            let mission = MissionStore()
+            let _ = PreviewsContainer.dependencySetting(pizza: pizza,
+                                                    user: user,
+                                                    todo: todo,
+                                                    mission: mission)
+            HomeView()
+                .environmentObject(todo)
+                .environmentObject(pizza)
+                .environmentObject(user)
+                .environmentObject(mission)
+                .environmentObject(NotificationManager())
+        }
     }
 }

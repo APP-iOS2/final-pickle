@@ -12,7 +12,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
         PickleApp.setUpDependency()
-       
+        let _ = RealmMigrator()
         return true
     }
 }

@@ -12,13 +12,15 @@ struct User: Identifiable {
     var nickName: String
     var currentPizzaCount: Int
     var currentPizzaSlice: Int
+    var pizzas: [Pizza]
     var createdAt: Date  // 유저 계정 생성 날짜,시간
     
-    init(id: String, nickName: String, currentPizzaCount: Int, currentPizzaSlice: Int, createdAt: Date) {
+    init(id: String, nickName: String, currentPizzaCount: Int, currentPizzaSlice: Int, pizzas: [Pizza] = [], createdAt: Date) {
         self.id = id
         self.nickName = nickName
         self.currentPizzaCount = currentPizzaCount
         self.currentPizzaSlice = currentPizzaSlice
+        self.pizzas = pizzas
         self.createdAt = createdAt
     }
 }
@@ -28,6 +30,7 @@ extension User {
                                          nickName: "Guest",
                                          currentPizzaCount: 0,
                                          currentPizzaSlice: 0,
+                                         pizzas: Pizza.allCasePizza,
                                          createdAt: Date())
 }
 

@@ -59,7 +59,7 @@ enum TodoStatusPersisted: String, PersistableEnum {
     case fail
 }
 
-extension TodoObject{
+extension TodoObject {
     static let todo: TodoObject = .init(value: ["id": ObjectId.generate(),
                                                 "content": "안녕하세요",
                                                 "startTime": Date(),

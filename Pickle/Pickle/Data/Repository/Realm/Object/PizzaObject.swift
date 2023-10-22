@@ -9,7 +9,6 @@ import SwiftUI
 import RealmSwift
 
 class PizzaObject: Object, Identifiable {
-    @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var name: String
     @Persisted var image: String
     @Persisted var lock: Bool
@@ -20,7 +19,6 @@ class PizzaObject: Object, Identifiable {
                      lock: Bool,
                      createdAt: Date) {
         self.init()
-        self.id = id
         self.name = name
         self.image = image
         self.lock = lock
@@ -37,17 +35,11 @@ class PizzaObject: Object, Identifiable {
                   image: image,
                   lock: lock,
                   createdAt: createdAt)
-        self.id = try! ObjectId(string: id)
-    }
-    
-    class override func primaryKey() -> String? {
-        "id"
     }
 }
 
 extension PizzaObject {
-    static let pizza = PizzaObject(id: ObjectId.generate().stringValue,
-                                   name: "포테이토",
+    static let pizza = PizzaObject(name: "포테이토",
                                    image: "potatoPizza",
                                    lock: false,
                                    createdAt: Date())

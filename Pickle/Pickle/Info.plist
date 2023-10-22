@@ -12,6 +12,14 @@
 		<string>Chab.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
-	<array/>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+	</array>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.ddudios.realpizza.refresh_badge</string>
+		<string>com.ddudios.realpizza.refresh_process</string>
+	</array>
 </dict>
 </plist>

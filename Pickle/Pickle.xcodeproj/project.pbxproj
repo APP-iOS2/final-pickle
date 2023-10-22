@@ -102,6 +102,7 @@
 		B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
 		B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
 		B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */; };
+		B0CB77662AE57FB70022491A /* MySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB77652AE57FB70022491A /* MySceneDelegate.swift */; };
 		B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
 		B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */; };
 		B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */; };
@@ -219,6 +220,7 @@
 		B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStyleView.swift; sourceTree = "<group>"; };
 		B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionSettingView.swift; sourceTree = "<group>"; };
 		B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardAlert.swift; sourceTree = "<group>"; };
+		B0CB77652AE57FB70022491A /* MySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
 		B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSummaryView.swift; sourceTree = "<group>"; };
 		B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyView.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 			children = (
 				2137D5782AC1459C00AFE225 /* PickleApp.swift */,
 				2137D57A2AC1459C00AFE225 /* ContentView.swift */,
+				B0CB77652AE57FB70022491A /* MySceneDelegate.swift */,
 				2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */,
 				966950EB2AE11C6500676081 /* PreviewsContainer.swift */,
 			);
@@ -813,6 +816,7 @@
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
 				B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
+				B0CB77662AE57FB70022491A /* MySceneDelegate.swift in Sources */,
 				21E7118B2AD48DE9002B8069 /* SetNotiView.swift in Sources */,
 				960C41922ACE41E1009A0093 /* Object+Extensions.swift in Sources */,
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
@@ -1062,7 +1066,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1103,7 +1107,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "realdoPizza-App-Debug";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

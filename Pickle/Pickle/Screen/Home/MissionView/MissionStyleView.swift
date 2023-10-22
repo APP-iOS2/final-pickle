@@ -119,7 +119,7 @@ struct TimeMissionStyleView: View {
                     isTimeMissionSettingModalPresented.toggle()
                 }, label: {
                     HStack {
-                        Text("\(timeMission.wakeupTime.format("HH:mm"))")
+                        Text("\(timeMission.changeWakeupTime.format("HH:mm"))")
                             .font(.pizzaTitle2)
                         
                         Image(systemName: "chevron.up.chevron.down")
@@ -142,7 +142,8 @@ struct TimeMissionStyleView: View {
                                                                title: timeMission.title,
                                                                status: .done,
                                                                date: timeMission.date,
-                                                               wakeupTime: timeMission.wakeupTime)))
+                                                               wakeupTime: timeMission.wakeupTime,
+                                                               changeWakeupTime: timeMission.changeWakeupTime)))
                 
                 withAnimation {
                     do {
@@ -183,7 +184,8 @@ struct TimeMissionStyleView: View {
                                                                title: timeMission.title,
                                                                status: .complete,
                                                                date: timeMission.date,
-                                                               wakeupTime: timeMission.wakeupTime)))
+                                                               wakeupTime: timeMission.wakeupTime,
+                                                               changeWakeupTime: timeMission.changeWakeupTime)))
             }
         } else if Date() < timeMission.wakeupTime.adding(minutes: -10) {
             timeMission.status = .ready
@@ -191,14 +193,16 @@ struct TimeMissionStyleView: View {
                                                            title: timeMission.title,
                                                            status: .ready,
                                                            date: timeMission.date,
-                                                           wakeupTime: timeMission.wakeupTime)))
+                                                           wakeupTime: timeMission.wakeupTime,
+                                                           changeWakeupTime: timeMission.changeWakeupTime)))
         } else {
             timeMission.status = .fail
-            missionStore.update(mission:  .time(TimeMission(id: timeMission.id,
+            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                             title: timeMission.title,
                                                             status: .fail,
                                                             date: timeMission.date,
-                                                            wakeupTime: timeMission.wakeupTime)))
+                                                            wakeupTime: timeMission.wakeupTime,
+                                                            changeWakeupTime: timeMission.changeWakeupTime)))
         }
     }
 }

@@ -38,7 +38,8 @@ struct MissionView: View {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
-            print("onApear: \(behaviorMissions[0].status2)")
+            print("onApear: \(timeMissions[0].wakeupTime)")
+            print("onApear: \(timeMissions[0].changeWakeupTime)")
             
             if timeMissions.isEmpty { return }
             if behaviorMissions.isEmpty { return }
@@ -48,7 +49,8 @@ struct MissionView: View {
                                                                title: timeMissions[0].title,
                                                                status: .ready,
                                                                date: Date(),
-                                                               wakeupTime: timeMissions[0].wakeupTime)))
+                                                               wakeupTime: timeMissions[0].changeWakeupTime,
+                                                               changeWakeupTime: timeMissions[0].changeWakeupTime)))
                 missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                        title: behaviorMissions[0].title,
                                                                        status: .ready,
@@ -61,21 +63,24 @@ struct MissionView: View {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
-            print("refreshable: \(behaviorMissions[0].status2)")
+            print("refreshable: \(timeMissions[0].wakeupTime)")
+            print("refreshable: \(timeMissions[0].changeWakeupTime)")
         }
         .onDisappear {
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
                                                            status: timeMissions[0].status,
                                                            date: timeMissions[0].date,
-                                                           wakeupTime: timeMissions[0].wakeupTime)))
+                                                           wakeupTime: timeMissions[0].wakeupTime,
+                                                           changeWakeupTime: timeMissions[0].changeWakeupTime)))
             missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
                                                                    title: behaviorMissions[0].title,
                                                                    status: behaviorMissions[0].status,
                                                                    status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
                                                                    date: behaviorMissions[0].date)))
-            print("onDisappear: \(behaviorMissions[0].status2)")
+            print("onDisappear: \(timeMissions[0].wakeupTime)")
+            print("onDisappear: \(timeMissions[0].changeWakeupTime)")
 
         }
         .navigationTitle("미션")

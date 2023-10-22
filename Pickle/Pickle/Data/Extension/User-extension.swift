@@ -56,6 +56,18 @@ extension User: Equatable {
         return self
     }
     
+    /// 피자 한개의 잠금해제 메소드
+    /// - Parameter pizza: 잠금 해제할 피자
+    mutating func unlockPizza(pizza: Pizza) {
+        var pizza = pizza
+        pizza.lockToggle()
+        let newPizzas = self.pizzas.map { originalPizza in
+            originalPizza.name == pizza.name ? pizza : originalPizza
+        }
+        self.pizzas = newPizzas
+    }
+
+    // MARK: 안쓰는 메서드 확인후 삭제바람
     func update(_ status: Status) -> Self {
         User(id: self.id,
              nickName: self.nickName,

@@ -8,6 +8,7 @@
 import SwiftUI
 import RealmSwift
 import Combine
+import Realm
 
 extension KeyPath {
     var propertyAsString: String {
@@ -38,6 +39,9 @@ typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
 typealias RNotificationToken = NotificationToken
 final class RealmStore: DBStore {
     
+    enum RealmType {
+        case disk
+        case inmemory
     }
     
     func create<T>(_ model: T.Type,

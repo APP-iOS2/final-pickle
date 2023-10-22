@@ -65,9 +65,7 @@ struct ContentView: View {
             }
             .tag(3)
         }
-        .task { 
-            await pizzaSetting() // 피자 첫 실행시 로컬에 저장
-        }
+        .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
         .onAppear {
             userSetting()        // UserSetting
             missionSetting()
@@ -104,10 +102,13 @@ extension ContentView {
     func userSetting() {
         do {
             try userStore.fetchUser()
+            let user = userStore.user
         } catch {
+            // MARK: Add User Action
             errorHandler(error)
         }
     }
+    
     // 마이그래이션
     // 코어데이터할때도 마이그레이션 어쩌고 데이터변경이 일어나면 ~
     // 배ㅠ포할땐 마이그레이션어쩌고 코드도 넣어서 ? 지금은 그냥 앱삭제 다시깔기
@@ -137,6 +138,7 @@ extension ContentView {
         }
     }
 }
+
 #Preview {
     ContentView()
         .environmentObject(TodoStore())

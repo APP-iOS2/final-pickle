@@ -20,6 +20,7 @@ struct CalendarView: View {
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
     @State var todayPieceOfPizza: Int = 0
+    @State private var offset: CGSize = CGSize()
 //    var indicatorColor: Color {
 //        return task.startTime.isSameHour ? .pickle : .primary
 //        {
@@ -45,6 +46,30 @@ struct CalendarView: View {
             }
             .scrollIndicators(.hidden)
         }
+        .gesture(
+           DragGesture()
+             .onChanged { gesture in
+                 self.offset = gesture.translation
+             }
+             .onEnded { gesture in
+               if gesture.translation.width < -100 {
+                   
+                   if weekToMonth {
+                       calendarModel.currentMonthIndex += 1
+                   } else {
+                       calendarModel.currentWeekIndex += 1
+                   }
+                   
+               } else if gesture.translation.width > 100 {
+                   if weekToMonth {
+                       calendarModel.currentMonthIndex -= 1
+                   } else {
+                       calendarModel.currentWeekIndex -= 1
+                   }
+               }
+                 self.offset = CGSize()
+             }
+         )
         .task {
             await todoStore.fetch()
             
@@ -197,6 +222,8 @@ struct CalendarView: View {
                         calendarModel.currentDay = day
                     }
                 }
+
+             
                 
             }
             

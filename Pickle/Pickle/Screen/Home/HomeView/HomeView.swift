@@ -76,11 +76,17 @@ struct HomeView: View {
                        isPurchase: $isPizzaPuchasePresented,
                        seletedPizza: $seletedPizza)
         
-        .showPizzaPurchaseAlert(seletedPizza,                  /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
-                                $isPizzaPuchasePresented) {    /* 두가지의 (액션)클로져를 받는다, */
-            Log.debug("인앱 결제 액션")                            /* 1. 구매 액션 */
-        } navAction: {                                         /* 2. 피자 완성하러 가기 액션 */
+        .showPizzaPurchaseAlert(seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+                                $isPizzaPuchasePresented) {     /* 두가지의 (액션)클로져를 받는다, */
+            Log.debug("인앱 결제 액션")                             /* 1. 구매 액션 */
+            // MARK: 잠금해제 액션 부터 해보자
+            userStore.unLockPizza(pizza: seletedPizza)
+            updateSignal.toggle()
+        } navAction: {                                          /* 2. 피자 완성하러 가기 액션 */
             Log.debug("피자 완성하러 가기 액션")
+            currentPizzaImg = seletedPizza.image    //MARK: Seleted Pizza 를 완성하러 가기 클릭하면 이미지 변신
+                                                                // MARK: 완성하러 가기 액션은 변경을 시켜야 하나? 일단 해봐 ->
+                                                                // TODO: Navigation To 완성액션으로
         }
         .onAppear { /* */
             Log.debug("ContentView")

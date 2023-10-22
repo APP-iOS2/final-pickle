@@ -46,12 +46,12 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack {
-                makePizzaView()                 /* 피자 뷰 */
+                makePizzaView(pizza: currentPizzaImg)                 /* 피자 뷰 */
                 pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
                                                 
                                                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
-                                                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
-                if todoStore.todos.isEmpty {
+                                                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함. - ready 가 없을때로 변경 - 필터로 완료
+                if todoStore.readyTodos.isEmpty {
                     VStack(spacing: 16) {
                         Image("picklePizza")
                             .resizable()
@@ -108,9 +108,9 @@ struct HomeView: View {
 
 // MARK: HomeView Component , PizzaView, button, temp component, task complte label
 extension HomeView {
-    func makePizzaView() -> some View {
+    func makePizzaView(pizza name: String) -> some View {
         ZStack {
-            PizzaView(taskPercentage: taskPercentage, content: $placeHolderContent)
+            PizzaView(taskPercentage: taskPercentage, pizzaName: name, content: $placeHolderContent)
                 .frame(width: CGFloat.screenWidth / 2,
                        height: CGFloat.screenWidth / 2)
                 .padding()
@@ -140,8 +140,7 @@ extension HomeView {
     
     var todosTaskTableView: some View {
         // MARK: .ready 필터시 포기, 완료하면 시트 슈루룩 사라져버림
-//        ForEach(todoStore.todos.filter { $0.status == .ready }, id: \.id) { todo in
-        ForEach(todoStore.todos, id: \.id) { todo in
+        ForEach(todoStore.readyTodos, id: \.id) { todo in
             TodoCellView(todo: todo)
                 .padding(.horizontal)
                 .padding(.vertical, 2)

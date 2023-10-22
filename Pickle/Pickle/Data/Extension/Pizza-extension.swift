@@ -21,8 +21,7 @@ extension Pizza: MappableProtocol {
                                lock: self.lock,
                                createdAt: self.createdAt)
         } else {
-            return PizzaObject(id: self.id,
-                               name: self.name,
+            return PizzaObject(name: self.name,
                                image: self.image,
                                lock: self.lock,
                                createdAt: self.createdAt)
@@ -30,8 +29,7 @@ extension Pizza: MappableProtocol {
     }
     
     static func mapFromPersistenceObject(_ object: PersistenceType) -> Self {
-        Pizza(id: object.id.stringValue,
-              name: object.name,
+        Pizza(name: object.name,
               image: object.image,
               lock: object.lock,
               createdAt: object.createdAt)

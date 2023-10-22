@@ -161,6 +161,23 @@ final class RealmStore: DBStore {
         return objects.compactMap { $0 as? T }
     }
     
+    func notificationToken<T>(_ model: T.Type,
+                              id: String,
+                              keyPaths: [PartialKeyPath<T>],
+                              _ completion: @escaping ObjectCompletion<T>) throws -> NotificationToken where T: Storable, T: ObjectBase  {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type,
+            let id =  try? ObjectId(string: id)
+        else {
+            Log.error("notification Token guard error")
+            throw RealmError.notRealmObject
+        }
+        let object = realm.object(ofType: model, forPrimaryKey: id)
+        guard let object else { throw RealmError.invalidObjectORPrimaryKey }
+        return object.observe(keyPaths: keyPaths, completion)
+    }
+    
     func fetch<T>(_ model: T.Type,
                   predicate: NSPredicate?,
                   sorted: Sorted?,

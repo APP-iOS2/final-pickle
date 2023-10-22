@@ -57,6 +57,9 @@ class BaseRepository<T> {
 //    func delete(object: T) throws where T: Storable {
 //        try dbStore.delete(object: object)
 //    }
+    func delete(object: T) throws where T: Storable {
+        try dbStore.delete(object: object)
+    }
     
     func delete(object: T, id: String) throws where T: Storable {
         try dbStore.delete(model: T.self, id: id)
@@ -64,6 +67,10 @@ class BaseRepository<T> {
     
     func update(object: T) throws where T: Storable {
         try dbStore.update(object: object)
+    }
+    
+    func update(id: String, query: RealmFilter<T>) throws where T: Storable {
+        try dbStore.update(T.self, id: id, query: query)
     }
     
     func save(object: T) throws where T: Storable {

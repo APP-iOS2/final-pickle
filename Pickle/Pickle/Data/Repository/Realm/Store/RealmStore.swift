@@ -74,6 +74,7 @@ final class RealmStore: DBStore {
         try realm.write {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             let value = realm.create(model, value: json) as! T
+            completion(value)
         }
     }
     

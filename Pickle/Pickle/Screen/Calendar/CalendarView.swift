@@ -52,19 +52,33 @@ struct CalendarView: View {
                  self.offset = gesture.translation
              }
              .onEnded { gesture in
-               if gesture.translation.width < -100 {
+               if gesture.translation.width < -50 {
                    
                    if weekToMonth {
-                       calendarModel.currentMonthIndex += 1
+                     
+                           calendarModel.currentMonthIndex += 1
+                       
+                       
                    } else {
-                       calendarModel.currentWeekIndex += 1
+                       withAnimation {
+                           calendarModel.currentWeekIndex += 1
+                           calendarModel.createNextWeek()
+                           
+                       }
                    }
                    
-               } else if gesture.translation.width > 100 {
+               } else if gesture.translation.width > 50 {
                    if weekToMonth {
-                       calendarModel.currentMonthIndex -= 1
+                   
+                           
+                           calendarModel.currentMonthIndex -= 1
+                       
                    } else {
-                       calendarModel.currentWeekIndex -= 1
+                       withAnimation {
+                           
+                           calendarModel.currentWeekIndex -= 1
+                           calendarModel.createPreviousWeek()
+                       }
                    }
                }
                  self.offset = CGSize()
@@ -92,6 +106,11 @@ struct CalendarView: View {
                            timeMissions: time,
                            behaviorMissions: mission)
         }
+        
+//        .onChange(of: offset) { newValue in
+//            calendarModel.currentDay = calendarModel.getCurrentMonth()
+//            calendarModel.currentWeek = calendarModel.
+//        }
     }
     
     // MARK: - Header 뷰
@@ -279,8 +298,10 @@ struct CalendarView: View {
                                 .onTapGesture {
                                     
                                     // MARK: - Updating Current Date
-                                    
-                                    calendarModel.currentDay = day.date
+                                    withAnimation {
+                                        calendarModel.currentDay = day.date
+                                    }
+                                        
                                     
                                 }
                             

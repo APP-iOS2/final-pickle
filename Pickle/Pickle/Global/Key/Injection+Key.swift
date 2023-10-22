@@ -21,7 +21,7 @@ extension InjectionKey {
 
 struct TodoRepoKey: InjectionKey {
     typealias Value = TodoRepositoryProtocol
-    static var type: DependencyType = .automatic
+    static var type: DependencyType = .singleton
 }
 
 struct DBStoreKey: InjectionKey {
@@ -31,12 +31,12 @@ struct DBStoreKey: InjectionKey {
 
 struct TimeRepoKey: InjectionKey {
     typealias Value = TimeRepositoryProtocol
-    static var type: DependencyType = .automatic
+    static var type: DependencyType = .singleton
 }
 
 struct BehaviorRepoKey: InjectionKey {
     typealias Value = BehaviorRepositoryProtocol
-    static var type: DependencyType = .automatic
+    static var type: DependencyType = .singleton
 }
 
 struct UserRepoKey: InjectionKey {

@@ -15,6 +15,25 @@ final class TodoStore: ObservableObject {
     
     @Published var todos: [Todo] = []
     
+    var readyTodos: [Todo] {
+        todos.filter { $0.status == .ready }
+    }
+    
+    var complteTodos: [Todo] {
+        todos.filter { $0.status == .complete }
+    }
+    
+    var giveUpTodos: [Todo] {
+        todos.filter { $0.status == .giveUp }
+    }
+    
+    var ongoingTodos: [Todo] {
+        todos.filter { $0.status == .ongoing }
+    }
+    
+    var doneTodos: [Todo] {
+        todos.filter { $0.status == .done }
+    }
     /// 완료한 todos
     @Published var complteTask: Int = 0
     

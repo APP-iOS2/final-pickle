@@ -13,7 +13,8 @@ extension View {
         title: String,
         alertContent: String,
         primaryButtonTitle: String,
-        primaryAction: @escaping () -> Void
+        primaryAction: @escaping () -> Void,
+        _ externalTapAction: (() -> Void)?  = nil
     ) -> some View {
         return modifier(
             FaildAlertModifier(
@@ -21,7 +22,8 @@ extension View {
                 title: title,
                 alertContent: alertContent,
                 primaryButtonTitle: primaryButtonTitle,
-                primaryAction: primaryAction
+                primaryAction: primaryAction,
+                externalAction: externalTapAction
             )
         )
     }
@@ -31,7 +33,8 @@ extension View {
         title: String,
         alertContent: String,
         primaryButtonTitle: String,
-        primaryAction: @escaping () -> Void
+        primaryAction: @escaping () -> Void,
+        _ externalTapAction: (() -> Void)? = nil
     ) -> some View {
         return modifier(
             FaildAlertModifier(
@@ -39,7 +42,8 @@ extension View {
                 title: title,
                 alertContent: alertContent,
                 primaryButtonTitle: primaryButtonTitle,
-                primaryAction: primaryAction
+                primaryAction: primaryAction,
+                externalAction: externalTapAction
             )
         )
     }
@@ -47,11 +51,13 @@ extension View {
 
 struct FaildAlertModifier: ViewModifier {
     
+    @Environment(\.dismiss) var dissmiss
     @Binding var isPresented: Bool
     let title: String
     let alertContent: String
     let primaryButtonTitle: String
     let primaryAction: () -> Void
+    let externalAction: (() -> Void)?
     
     func body(content: Content) -> some View {
         ZStack {
@@ -60,10 +66,15 @@ struct FaildAlertModifier: ViewModifier {
                 if isPresented {
                     Rectangle()
                         .fill(.black.opacity(0.5))
-                    //                        .blur(radius: isPresented ? 2 : 0)
+                                            .blur(radius: isPresented ? 2 : 0)
                         .ignoresSafeArea(.all)
                         .onTapGesture {
                             self.isPresented = false // 외부 영역 터치 시 내려감
+                            if let externalAction {
+                                externalAction()
+                            } else {
+                                dissmiss()
+                            }
                         }
                     
                     FaildAlert(
@@ -135,6 +146,7 @@ struct FaildAlert: View {
                                title: "",
                                alertContent: "",
                                primaryButtonTitle: "",
-                               primaryAction: { })
+                               primaryAction: { },
+                               externalAction: nil)
         )
 }

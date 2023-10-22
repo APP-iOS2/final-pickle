@@ -13,12 +13,15 @@ struct AddTodoView: View {
     @Binding var isShowingEditTodo: Bool
     @Binding var todo: Todo
     @State private var successDelete: Bool = false
+
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
             VStack {
                 RegisterView(willUpdateTodo: $todo,
+                             successDelete: $successDelete,
+                             isShowingEditTodo: $isShowingEditTodo,
                              isModify: true)
             }
             .toolbar {
@@ -40,13 +43,6 @@ struct AddTodoView: View {
                     }
                 }
             }
-            .successAlert(
-                isPresented: $successDelete,
-                title: "삭제 성공",
-                alertContent: "성공적으로 수정했습니다",
-                primaryButtonTitle: "뒤로가기",
-                primaryAction: { isShowingEditTodo.toggle() }
-            )
         }
     }
 }

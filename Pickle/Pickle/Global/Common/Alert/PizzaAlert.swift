@@ -14,6 +14,7 @@ extension View {
         price: String,
         descripation: String,
         image: String,
+        lock: Bool,
         puchaseButtonTitle: String,
         primaryButtonTitle: String,
         primaryAction: @escaping () -> Void,
@@ -25,6 +26,7 @@ extension View {
                                price: price,
                                descripation: descripation,
                                image: image,
+                               lock: lock,
                                puchaseButtonTitle: puchaseButtonTitle,
                                primaryButtonTitle: primaryButtonTitle,
                                primaryAction: primaryAction,
@@ -40,6 +42,7 @@ struct PizzaAlertModifier: ViewModifier {
     let price: String
     let descripation: String
     let image: String
+    let lock: Bool
     let puchaseButtonTitle: String
     let primaryButtonTitle: String
     let primaryAction: () -> Void
@@ -64,6 +67,7 @@ struct PizzaAlertModifier: ViewModifier {
                                price: price,
                                descripation: descripation,
                                image: image,
+                               lock: lock,
                                puchaseButtonTitle: puchaseButtonTitle,
                                primaryButtonTitle: primaryButtonTitle,
                                puchaseAction: primaryAction,
@@ -88,6 +92,7 @@ struct PizzaAlert: View {
     let price: String
     let descripation: String
     let image: String
+    let lock: Bool
     let puchaseButtonTitle: String
     let primaryButtonTitle: String
     let puchaseAction: () -> Void
@@ -125,10 +130,28 @@ struct PizzaAlert: View {
                     .font(.pizzaRegularSmallTitle)
             }
             
-            Image("\(image)")
-                .resizable()
-                .frame(width: CGFloat.screenWidth / 2,
-                       height: CGFloat.screenWidth / 2, alignment: .center)
+            ZStack {
+                if lock {
+                    Image(systemName: "lock.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(.white)
+                        .frame(width: CGFloat.screenWidth / 5,
+                               height: CGFloat.screenWidth / 5,
+                               alignment: .center)
+                        .zIndex(3)
+                }
+                
+                Image("\(image)")
+                    .resizable()
+                    .frame(width: CGFloat.screenWidth / 2,
+                           height: CGFloat.screenWidth / 2, alignment: .center)
+                    .clipShape( Circle() )
+                    .overlay {
+                        Circle()
+                            .fill(lock ? .black.opacity(0.4) : .clear )
+                    }
+            }
             
             Button {
                 withAnimation {
@@ -180,6 +203,7 @@ struct PizzaAlert: View {
                                      price: "안녕하세요",
                                      descripation: "안녕하세요",
                                      image: "potatoPizza",
+                                     lock: false,
                                      puchaseButtonTitle: "안녕하세요",
                                      primaryButtonTitle: "안녕하세요", 
                                      primaryAction: { },

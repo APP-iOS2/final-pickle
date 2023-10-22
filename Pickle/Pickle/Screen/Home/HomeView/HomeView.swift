@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+// TODO: 피자 8개를 채웠을때 애니메이션 팝업 OR 다른 액션 고려하기
+// TODO: HomeView 에서 현재 ready 상태만 보여주는 상태 -> 구분하기 다른 상태 고려 GiveUp, done(complte), ongoing
+        // complete과 done의 차이는 ?
+
+// TODO: HomeView TableView에서 자체 삭제 메소드 제공해야하는지 여부
+// TODO: TabView Dissmiss 등록뷰와 미션뷰에서 나올때 애니메이션 없이 onAppear일때 보여짐 -> animation 적용여부 결정
+
+// TODO: HomeView Pizza View 선택 할수 있게 구성하기
+    // 1-1. lock이 아니라면 -> Home에 있는 피자를 변경해야 함
+    // 1-2. lock일 경우에는 토스트 메시지를 보여줘야 하나?
+
 struct HomeView: View {
 
     init() {
@@ -15,6 +26,7 @@ struct HomeView: View {
     
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var pizzaStore: PizzaStore
     
     @State private var goalProgress: Double = 0.0
     @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
@@ -26,6 +38,10 @@ struct HomeView: View {
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     @State private var seletedTodo: Todo = Todo.sample
     @State private var seletedPizza: Pizza = Pizza.defaultPizza
+
+    typealias PizzaImage = String
+    @State private var currentPizzaImg: PizzaImage = "margherita"
+    @State private var updateSignal: Bool = false
     
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     
@@ -41,12 +57,12 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack {
-                makePizzaView()                 /* 피자 뷰 */
+                makePizzaView(pizza: currentPizzaImg)                 /* 피자 뷰 */
                 pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
                                                 
                                                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
-                                                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함.
-                if todoStore.todos.isEmpty {
+                                                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함. - ready 가 없을때로 변경 - 필터로 완료
+                if todoStore.readyTodos.isEmpty {
                     VStack(spacing: 16) {
                         Image("picklePizza")
                             .resizable()
@@ -74,16 +90,23 @@ struct HomeView: View {
         
         .sheetModifier(isPresented: $isPizzaSeleted,            /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
                        isPurchase: $isPizzaPuchasePresented,
-                       seletedPizza: $seletedPizza)
+                       seletedPizza: $seletedPizza,
+                       updateSignal: $updateSignal)
         
-        .showPizzaPurchaseAlert(seletedPizza,                  /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
-                                $isPizzaPuchasePresented) {    /* 두가지의 (액션)클로져를 받는다, */
-            Log.debug("인앱 결제 액션")                            /* 1. 구매 액션 */
-        } navAction: {                                         /* 2. 피자 완성하러 가기 액션 */
+        .showPizzaPurchaseAlert(seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+                                $isPizzaPuchasePresented) {     /* 두가지의 (액션)클로져를 받는다, */
+            Log.debug("인앱 결제 액션")                             /* 1. 구매 액션 */
+            // MARK: 잠금해제 액션 부터 해보자
+            userStore.unLockPizza(pizza: seletedPizza)
+            updateSignal.toggle()
+        } navAction: {                                          /* 2. 피자 완성하러 가기 액션 */
             Log.debug("피자 완성하러 가기 액션")
+            currentPizzaImg = seletedPizza.image    //MARK: Seleted Pizza 를 완성하러 가기 클릭하면 이미지 변신
+                                                                // MARK: 완성하러 가기 액션은 변경을 시켜야 하나? 일단 해봐 ->
+                                                                // TODO: Navigation To 완성액션으로
         }
         .onAppear { /* */
-            Log.debug("ContentView")
+            updateSignal.toggle()
             placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"  // placeHolder 표시할지 말지 분기처리
         }
         .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
@@ -96,9 +119,9 @@ struct HomeView: View {
 
 // MARK: HomeView Component , PizzaView, button, temp component, task complte label
 extension HomeView {
-    func makePizzaView() -> some View {
+    func makePizzaView(pizza name: String) -> some View {
         ZStack {
-            PizzaView(taskPercentage: taskPercentage, content: $placeHolderContent)
+            PizzaView(taskPercentage: taskPercentage, pizzaName: name, content: $placeHolderContent)
                 .frame(width: CGFloat.screenWidth / 2,
                        height: CGFloat.screenWidth / 2)
                 .padding()
@@ -128,8 +151,7 @@ extension HomeView {
     
     var todosTaskTableView: some View {
         // MARK: .ready 필터시 포기, 완료하면 시트 슈루룩 사라져버림
-//        ForEach(todoStore.todos.filter { $0.status == .ready }, id: \.id) { todo in
-        ForEach(todoStore.todos, id: \.id) { todo in
+        ForEach(todoStore.readyTodos, id: \.id) { todo in
             TodoCellView(todo: todo)
                 .padding(.horizontal)
                 .padding(.vertical, 2)
@@ -163,11 +185,13 @@ extension View {
     
     func sheetModifier(isPresented: Binding<Bool>,
                        isPurchase: Binding<Bool>,
-                       seletedPizza: Binding<Pizza>) -> some View {
+                       seletedPizza: Binding<Pizza>,
+                       updateSignal: Binding<Bool>) -> some View {
         
         modifier(HomeView.SheetModifier(isPresented: isPresented,
                                         isPizzaPuchasePresented: isPurchase,
-                                        seletedPizza: seletedPizza))
+                                        seletedPizza: seletedPizza,
+                                       updateSignal: updateSignal))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -186,6 +210,7 @@ extension View {
                                     price: "1,200원",
                                     descripation: "피자 2판을 완성하면 얻을수 있어요",
                                     image: "\(pizza.image)",
+                                    lock: pizza.lock,
                                     puchaseButtonTitle: "피자 구매하기",
                                     primaryButtonTitle: "피자 완성하러 가기",
                                     primaryAction: purchaseAction,
@@ -201,14 +226,19 @@ extension HomeView {
         
         @State private var pizzas: [Pizza] = []
         @Binding var seletedPizza: Pizza
+        @Binding var updateSignal: Bool // TODO: 피자 업데이트 신호,,,추후 변경
         
         @GestureState private var offset = CGSize.zero
         @EnvironmentObject var pizzaStore: PizzaStore
+        @EnvironmentObject var userStore: UserStore
+        func fetchPizza() async {
+            pizzas = await pizzaStore.fetch()
+            Log.debug("pizzas: \(pizzas.map(\.lock))")
+        }
         
         func body(content: Content) -> some View {
             
             content
-                .task { pizzas = await pizzaStore.fetch()}
                 .overlay {
                     if isPresented {
                         // For getting frame for image
@@ -230,6 +260,11 @@ extension HomeView {
                 .onChange(of: offset, perform: { offset in
                     Log.debug("offset: \(offset)")
                 })
+                .onChange(of: updateSignal) { _ in
+                    Task {
+                        await fetchPizza()
+                    }
+                }
                 .toolbar(isPresented ? .hidden : .visible, for: .tabBar)
         }
     }
@@ -263,7 +298,10 @@ private struct NavigationModifier: ViewModifier {
     var toolbarBuillder: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             NavigationLink {
-                RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: false) /* 등록할때는 willUpdateTodo 사용 x 임으로 샘플값 */
+                RegisterView(willUpdateTodo: .constant(Todo.sample),
+                             successDelete: .constant(false),
+                             isShowingEditTodo: .constant(false),
+                             isModify: false)
                     .backKeyModifier(visible: false)
             } label: {
                 Image(systemName: "plus.circle")
@@ -284,11 +322,25 @@ private struct NavigationModifier: ViewModifier {
     }
 }
 
-#Preview {
-    NavigationStack {
-        HomeView()
-            .environmentObject(TodoStore())
-            .environmentObject(PizzaStore())
-            .environmentObject(UserStore())
+struct HomeView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        NavigationStack {
+            let _ = PreviewsContainer.setUpDependency()
+            let todo = TodoStore()
+            let pizza = PizzaStore()
+            let user = UserStore()
+            let mission = MissionStore()
+            let _ = PreviewsContainer.dependencySetting(pizza: pizza,
+                                                    user: user,
+                                                    todo: todo,
+                                                    mission: mission)
+            HomeView()
+                .environmentObject(todo)
+                .environmentObject(pizza)
+                .environmentObject(user)
+                .environmentObject(mission)
+                .environmentObject(NotificationManager())
+        }
     }
 }

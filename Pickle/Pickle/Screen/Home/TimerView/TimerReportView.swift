@@ -119,11 +119,15 @@ struct TimerReportView: View {
             print("onAppearspendTime:\(todo.spendTime)")
             print("onAppearstatus:\(todo.status)")
         }
-        .task {
-            await todoStore.fetch()
-            print("fetchspendTime:\(todo.spendTime)")
-            print("fetchstatus:\(todo.status)")
-
+            // .task {
+            // FIXME: await todoStore.fetch() 여기서 페치 하게돠면 HomeView에서 Store에 있는 값을 업데이트 하면서 TimerView가 재생성 되고 -> isShowingReportSheet가 false 값으로 다시 초기화 되어 Sheet가 내려가게 됩니다
+            // print("fetchspendTime:\(todo.spendTime)")
+            // print("fetchstatus:\(todo.status)")
+            //} MARK: onDissappear로 변경 - 주석 확인하고 지워주세요
+        .onDisappear {
+            Task {
+                await todoStore.fetch()
+            }
         }
     }
     

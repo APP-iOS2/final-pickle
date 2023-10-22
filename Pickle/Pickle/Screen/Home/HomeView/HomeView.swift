@@ -15,6 +15,7 @@ struct HomeView: View {
     
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var pizzaStore: PizzaStore
     
     @State private var goalProgress: Double = 0.0
     @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
@@ -26,6 +27,10 @@ struct HomeView: View {
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     @State private var seletedTodo: Todo = Todo.sample
     @State private var seletedPizza: Pizza = Pizza.defaultPizza
+
+    typealias PizzaImage = String
+    @State private var currentPizzaImg: PizzaImage = "margherita"
+    @State private var updateSignal: Bool = false
     
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     
@@ -74,7 +79,8 @@ struct HomeView: View {
         
         .sheetModifier(isPresented: $isPizzaSeleted,            /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
                        isPurchase: $isPizzaPuchasePresented,
-                       seletedPizza: $seletedPizza)
+                       seletedPizza: $seletedPizza,
+                       updateSignal: $updateSignal)
         
         .showPizzaPurchaseAlert(seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
                                 $isPizzaPuchasePresented) {     /* 두가지의 (액션)클로져를 받는다, */
@@ -89,7 +95,7 @@ struct HomeView: View {
                                                                 // TODO: Navigation To 완성액션으로
         }
         .onAppear { /* */
-            Log.debug("ContentView")
+            updateSignal.toggle()
             placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"  // placeHolder 표시할지 말지 분기처리
         }
         .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
@@ -169,11 +175,13 @@ extension View {
     
     func sheetModifier(isPresented: Binding<Bool>,
                        isPurchase: Binding<Bool>,
-                       seletedPizza: Binding<Pizza>) -> some View {
+                       seletedPizza: Binding<Pizza>,
+                       updateSignal: Binding<Bool>) -> some View {
         
         modifier(HomeView.SheetModifier(isPresented: isPresented,
                                         isPizzaPuchasePresented: isPurchase,
-                                        seletedPizza: seletedPizza))
+                                        seletedPizza: seletedPizza,
+                                       updateSignal: updateSignal))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -192,6 +200,7 @@ extension View {
                                     price: "1,200원",
                                     descripation: "피자 2판을 완성하면 얻을수 있어요",
                                     image: "\(pizza.image)",
+                                    lock: pizza.lock,
                                     puchaseButtonTitle: "피자 구매하기",
                                     primaryButtonTitle: "피자 완성하러 가기",
                                     primaryAction: purchaseAction,
@@ -207,14 +216,19 @@ extension HomeView {
         
         @State private var pizzas: [Pizza] = []
         @Binding var seletedPizza: Pizza
+        @Binding var updateSignal: Bool // TODO: 피자 업데이트 신호,,,추후 변경
         
         @GestureState private var offset = CGSize.zero
         @EnvironmentObject var pizzaStore: PizzaStore
+        @EnvironmentObject var userStore: UserStore
+        func fetchPizza() async {
+            pizzas = await pizzaStore.fetch()
+            Log.debug("pizzas: \(pizzas.map(\.lock))")
+        }
         
         func body(content: Content) -> some View {
             
             content
-                .task { pizzas = await pizzaStore.fetch()}
                 .overlay {
                     if isPresented {
                         // For getting frame for image
@@ -236,6 +250,11 @@ extension HomeView {
                 .onChange(of: offset, perform: { offset in
                     Log.debug("offset: \(offset)")
                 })
+                .onChange(of: updateSignal) { _ in
+                    Task {
+                        await fetchPizza()
+                    }
+                }
                 .toolbar(isPresented ? .hidden : .visible, for: .tabBar)
         }
     }

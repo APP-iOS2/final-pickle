@@ -11,6 +11,9 @@ struct TaskRowView: View {
     
     var task: Todo
     
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+    
     var indicatorColor: Color {
         return task.startTime.isSameHour && task.status == .ready ? .pickle : .primary
         //        {
@@ -58,12 +61,15 @@ struct TaskRowView: View {
             //                        .fontWeight(.semibold)
             //                        .foregroundStyle(indicatorColor)
             //                }
-            
-            Label(task.startTime.format("HH:mm a"), systemImage: "clock")
+   
+            Label(task.startTime.format(timeFormat), systemImage: "clock")
                 .font(.caption)
                 .foregroundColor(indicatorColor)
                 .padding(.horizontal)
                 .hSpacing(.trailing)
+        }
+        .onAppear {
+            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
         

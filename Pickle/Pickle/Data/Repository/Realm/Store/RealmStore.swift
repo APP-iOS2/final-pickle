@@ -32,6 +32,10 @@ enum RFilter<Object: Storable> {
     case filter(RealmFilter<Object>)
 }
 
+typealias RObjectBase = ObjectBase
+typealias RObjectChange = ObjectChange
+typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
+typealias RNotificationToken = NotificationToken
 final class RealmStore: DBStore {
     
     private(set) var realmStore: Realm?

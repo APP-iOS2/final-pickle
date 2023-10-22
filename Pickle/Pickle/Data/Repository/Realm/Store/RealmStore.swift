@@ -8,34 +8,58 @@
 import SwiftUI
 import RealmSwift
 import Combine
+import Realm
 
+extension KeyPath {
+    var propertyAsString: String {
+        print("\(self)")
+        return "\(self)".components(separatedBy: ".").last ?? ""
+    }
+    var keyPath: String {
+           let me = String(describing: self)
+           let dropLeading =  "\\" + String(describing: Root.self) + "."
+           let keyPath = "\(me.dropFirst(dropLeading.count))"
+           return keyPath
+       }
+    
+    var stringValue: String {
+           NSExpression(forKeyPath: self).keyPath
+       }
+}
 
+typealias RealmFilter<Object> = (Query<Object>) -> Query<Bool>
+
+enum RFilter<Object: Storable> {
+    case filter(RealmFilter<Object>)
+}
+
+typealias RObjectBase = ObjectBase
+typealias RObjectChange = ObjectChange
+typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
+typealias RNotificationToken = NotificationToken
 final class RealmStore: DBStore {
     
-    private(set) var realmStore: Realm?
-    
-    init(name: String = "main.realm") {
-        let config = Realm.Configuration(fileURL: URL.inDocumentsFolder("\(name)"),
-                                         schemaVersion: 1)
-        let provider = RealmProvider(config: config)
-        
-        self.realmStore = provider.realm
+    enum RealmType {
+        case disk
+        case inmemory
     }
     
-    func create<T>(_ model: T.Type,
-                   data: Data) throws where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
-        }
-    
-        try realm.write {
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            let value = realm.create(model, value: json) as! T
+    private var realmStore: Realm? {
+        switch type {
+        case .disk:
+            return RealmProvider.defaultRealm
+        case .inmemory:
+            return RealmProvider.previewRealm
         }
     }
+    
+    private var type: RealmType
+    
+    init(type: RealmType = .disk) {
+        self.type = type
+    }
+    
+    static var previews: RealmStore = RealmStore(type: .inmemory)
     
     func create<T>(_ model: T.Type,
                    data: Data,
@@ -50,8 +74,8 @@ final class RealmStore: DBStore {
         try realm.write {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             let value = realm.create(model, value: json) as! T
+            completion(value)
         }
-        
     }
     
     func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T: Storable {
@@ -94,19 +118,58 @@ final class RealmStore: DBStore {
         }
     }
     
-    func delete(object: Storable) throws {
+    // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
+    func update<T: Storable>(_ model: T.Type,
+                             id: String,
+                             query: RealmFilter<T>) throws {
         guard
             let realm = realmStore,
-            let object = object as? Object
+            let model = model as? Object.Type,
+            let objectID = try? ObjectId(string: id)
         else {
             throw RealmError.notRealmObject
         }
         
         try realm.write {
-            realm.delete(object)
+//            guard let object = realm.object(ofType: model, forPrimaryKey: objectID) else { return }
+//            Log.debug("object Update Moel RealmFilter: \(object)")
+//            object.objectSchema.properties.forEach { propertyName in
+//                Log.debug(propertyName.name)
+//                Log.debug("value")
+//            }
+            // object.setValue(List<PizzaObject>(), forKey: "pizza")
+//            realm.add(object, update: .modified)
         }
     }
     
+    // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
+    func update<Root,Child>(_ model: Root.Type,
+                            root: Root,
+                            child: Child,
+                            property name: KeyPath<Root,Any>) throws where Root == Storable, Child == Storable {
+        guard
+            let realm = realmStore,
+            let type = model as? Object.Type,
+            let root = root as? Object,
+            let child = child as? Object,
+            let property = root.objectSchema.properties.filter({ $0.name == name.propertyAsString  }).first
+        else {
+            throw RealmError.notRealmObject
+        }
+        
+        try realm.write {
+            let list = root.dynamicList(property.name)
+        }
+    }
+    
+    func delete(object: Storable) throws {
+        return
+    }
+    
+    /// Delete Model 메타타입 과 id를 받아서 delete할 오브젝트를 골라 삭제한다.
+    /// - Parameters:
+    ///   - model: 삭제할 모델의 메타타입
+    ///   - id: Primary id
     func delete<T>(model: T.Type, id: String) throws {
         guard
             let realm = realmStore,
@@ -159,6 +222,23 @@ final class RealmStore: DBStore {
             objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
         }
         return objects.compactMap { $0 as? T }
+    }
+    
+    func notificationToken<T>(_ model: T.Type,
+                              id: String,
+                              keyPaths: [PartialKeyPath<T>],
+                              _ completion: @escaping ObjectCompletion<T>) throws -> NotificationToken where T: Storable, T: ObjectBase  {
+        guard
+            let realm = realmStore,
+            let model = model as? Object.Type,
+            let id =  try? ObjectId(string: id)
+        else {
+            Log.error("notification Token guard error")
+            throw RealmError.notRealmObject
+        }
+        let object = realm.object(ofType: model, forPrimaryKey: id)
+        guard let object else { throw RealmError.invalidObjectORPrimaryKey }
+        return object.observe(keyPaths: keyPaths, completion)
     }
     
     func fetch<T>(_ model: T.Type,

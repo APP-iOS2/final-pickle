@@ -13,4 +13,5 @@ enum RealmError: Error {
     case notRealmObject
     case deleteFailed
     case saveFailed
+    case invalidObjectORPrimaryKey
 }

@@ -23,6 +23,13 @@ protocol DBStore: Dependency {
     func update(object: Storable) throws
     func delete(object: Storable) throws
     
+    /// Update Realm Using filter
+    /// - Parameters:
+    ///   - model: <#model description#>
+    ///   - id: <#id description#>
+    ///   - query: <#query description#>
+    func update<T: Storable>(_ model: T.Type, id: String, query: RealmFilter<T>) throws
+    
     /// 특정 모델을 Delete 하는 함수 입니다.
     /// - Parameters:
     ///   - model: 삭제할 데이터의 타입
@@ -36,4 +43,10 @@ protocol DBStore: Dependency {
     func fetch<T>(_ model: T.Type,
                   predicate: NSPredicate?,
                   sorted: Sorted?) throws -> [T] where T: Storable
+    
+    func notificationToken<T>(_ model: T.Type,
+                              id: String,
+                              keyPaths: [PartialKeyPath<T>],
+                              _ completion: @escaping ObjectCompletion<T>) throws -> RNotificationToken where T: Storable, T: RObjectBase
+    
 }

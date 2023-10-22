@@ -61,6 +61,18 @@ final class UserStore: ObservableObject {
         }
     }
     
+    /// 피자를 언락 하기 위한 메서드
+    /// - Parameter pizza: 언락할 피자를 인자로 받는다
+    func unLockPizza(pizza: Pizza) {
+        self.user.unlockPizza(pizza: pizza)
+        do {
+            // try userRepository.updatePizza(model: model, specific: Date())
+            try userRepository.updateUser(model: user)
+        } catch {
+            Log.error("\(error)")
+        }
+    }
+    
     func deleteuserAll() {
         do {
             try userRepository.deleteAll()

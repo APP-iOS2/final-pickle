@@ -8,36 +8,7 @@
 import SwiftUI
 import RealmSwift
 import Combine
-//class UserVIewMOdel: ObservableObject {
-//    @Published
-//}
 
-//final class FireBaseStore: DBStore {
-//
-//    func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T : Storable {
-//        <#code#>
-//    }
-//
-//    func save(object: Storable) throws {
-//        <#code#>
-//    }
-//
-//    func update(object: Storable) throws {
-//        <#code#>
-//    }
-//
-//    func delete(object: Storable) throws {
-//        <#code#>
-//    }
-//
-//    func deleteAll<T>(_ model: T.Type) throws where T : Storable {
-//        <#code#>
-//    }
-//
-//    func fetch<T>(_ model: T.Type, predicate: NSPredicate?, sorted: Sorted?, complection: ([T]) -> Void) throws where T : Storable {
-//        <#code#>
-//    }
-//}
 
 final class RealmStore: DBStore {
     
@@ -234,38 +205,3 @@ extension Sorted {
     }
 }
 
-struct RealmProvider {
-    
-    let configuration: Realm.Configuration
-    
-    init(config: Realm.Configuration) {
-        configuration = config
-    }
-    
-    var _realm: Realm? {
-        return try? Realm(configuration: configuration)
-    }
-    
-    var realm: Realm? {
-        do {
-            return try Realm(configuration: configuration)
-        } catch {
-            print(error.localizedDescription)
-            return nil
-        }
-    }
-    
-    private static let defaultConfig = Realm.Configuration(schemaVersion: 1)
-    
-    private static let mainConfig = Realm.Configuration(
-        fileURL: URL.inDocumentsFolder("main.realm"),
-        schemaVersion: 1)
-    
-    public static var `default`: Realm? = {
-        return RealmProvider(config: RealmProvider.defaultConfig).realm
-    }()
-    
-    public static var main: Realm? = {
-        return RealmProvider(config: RealmProvider.mainConfig).realm
-    }()
-}

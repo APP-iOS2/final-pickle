@@ -52,7 +52,7 @@
 		960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */; };
 		961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296952AC16FBE009A9815 /* BackColorModifier.swift */; };
 		961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296972AC17120009A9815 /* TextFieldModifier.swift */; };
-		963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* Migrator.swift */; };
+		963AFF8F2AC3319D00835FD8 /* RealmMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */; };
 		963AFF922AC33A1800835FD8 /* TodoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF912AC33A1800835FD8 /* TodoObject.swift */; };
 		963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF932AC33EAF00835FD8 /* MissionObject.swift */; };
 		965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */; };
@@ -65,6 +65,7 @@
 		96635F652ADF9F380072F21E /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F642ADF9F380072F21E /* Status.swift */; };
 		96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */; };
 		96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
+		966950EC2AE11C6500676081 /* PreviewsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966950EB2AE11C6500676081 /* PreviewsContainer.swift */; };
 		96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
 		96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
@@ -92,6 +93,8 @@
 		96CF08EA2AD9098400648B59 /* Chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E42AD9098400648B59 /* Chab.otf */; };
 		96CF08EB2AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
 		96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
+		96FEE2AB2AE51CA200BC0CCD /* DatePickerUIkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */; };
+		96FEE2AE2AE5219E00BC0CCD /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */; };
 		A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
 		A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072B9472AE0460E001C3DAF /* TimerViewModel.swift */; };
 		A08EF5412AE265C900349A58 /* GiveupAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08EF5402AE265C900349A58 /* GiveupAlert.swift */; };
@@ -165,7 +168,7 @@
 		960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappableProtocol.swift; sourceTree = "<group>"; };
 		961296952AC16FBE009A9815 /* BackColorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackColorModifier.swift; sourceTree = "<group>"; };
 		961296972AC17120009A9815 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
-		963AFF8E2AC3319D00835FD8 /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
+		963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMigrator.swift; sourceTree = "<group>"; };
 		963AFF912AC33A1800835FD8 /* TodoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoObject.swift; sourceTree = "<group>"; };
 		963AFF932AC33EAF00835FD8 /* MissionObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionObject.swift; sourceTree = "<group>"; };
 		965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSelectedView.swift; sourceTree = "<group>"; };
@@ -179,6 +182,7 @@
 		96635F642ADF9F380072F21E /* Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorMission-extension.swift"; sourceTree = "<group>"; };
 		96635F692ADFA4A70072F21E /* KeyPathEditable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathEditable.swift; sourceTree = "<group>"; };
+		966950EB2AE11C6500676081 /* PreviewsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewsContainer.swift; sourceTree = "<group>"; };
 		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
 		96A1D4A62ACFE384003BC207 /* MissionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStore.swift; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 		96CF08E42AD9098400648B59 /* Chab.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chab.otf; sourceTree = "<group>"; };
 		96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Rg.otf"; sourceTree = "<group>"; };
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
+		96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerUIkit.swift; sourceTree = "<group>"; };
+		96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
 		A072B9472AE0460E001C3DAF /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		A08EF5402AE265C900349A58 /* GiveupAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiveupAlert.swift; sourceTree = "<group>"; };
@@ -373,6 +379,7 @@
 		2137D5AB2AC14EE800AFE225 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				96FEE2AC2AE5215A00BC0CCD /* Picker */,
 				965C9BE92ADB06250015ABBE /* Alert */,
 				965C9BE82ADB06110015ABBE /* Modifier */,
 			);
@@ -385,6 +392,7 @@
 				2137D5782AC1459C00AFE225 /* PickleApp.swift */,
 				2137D57A2AC1459C00AFE225 /* ContentView.swift */,
 				2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */,
+				966950EB2AE11C6500676081 /* PreviewsContainer.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -392,7 +400,7 @@
 		21FA26732AC29F7D00877122 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				963AFF8E2AC3319D00835FD8 /* Migrator.swift */,
+				963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -478,6 +486,7 @@
 			isa = PBXGroup;
 			children = (
 				96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */,
+				96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -638,6 +647,14 @@
 			path = font;
 			sourceTree = "<group>";
 		};
+		96FEE2AC2AE5215A00BC0CCD /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
 		B7908DBF2AE01A6B004C5221 /* PizzaSummary */ = {
 			isa = PBXGroup;
 			children = (
@@ -792,7 +809,7 @@
 				960C419A2ACE7AF9009A0093 /* Log.swift in Sources */,
 				960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */,
 				963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */,
-				963AFF8F2AC3319D00835FD8 /* Migrator.swift in Sources */,
+				963AFF8F2AC3319D00835FD8 /* RealmMigrator.swift in Sources */,
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
 				B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
@@ -842,6 +859,7 @@
 				2137D5792AC1459C00AFE225 /* PickleApp.swift in Sources */,
 				963AFF922AC33A1800835FD8 /* TodoObject.swift in Sources */,
 				96CE29C92ADED0CA0070EF92 /* Collection.swift in Sources */,
+				96FEE2AB2AE51CA200BC0CCD /* DatePickerUIkit.swift in Sources */,
 				96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */,
 				960C417F2ACD41CD009A0093 /* CornerButtonModifier.swift in Sources */,
 				A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */,
@@ -852,8 +870,10 @@
 				96CE29C32ADE63A40070EF92 /* PizzaObject.swift in Sources */,
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */,
+				966950EC2AE11C6500676081 /* PreviewsContainer.swift in Sources */,
 				21E7118F2AD53862002B8069 /* LocalNotification.swift in Sources */,
 				960C41942ACE4236009A0093 /* BehaviorMissionObject.swift in Sources */,
+				96FEE2AE2AE5219E00BC0CCD /* PickerView.swift in Sources */,
 				96A1E4B62AD53866001B2960 /* PersistentedError.swift in Sources */,
 				96A1D4A72ACFE384003BC207 /* MissionStore.swift in Sources */,
 				96CE29C52ADE66B50070EF92 /* PizzaRepository.swift in Sources */,

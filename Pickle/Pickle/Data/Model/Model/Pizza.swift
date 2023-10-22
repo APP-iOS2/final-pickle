@@ -11,7 +11,7 @@ struct Pizza: Identifiable {
     let id: String
     let name: String
     let image: String
-    let lock: Bool
+    var lock: Bool
     var createdAt: Date  // 피자 생성 날짜,시간
     
     init(id: String = UUID().uuidString, name: String, image: String, lock: Bool, createdAt: Date) {
@@ -20,6 +20,11 @@ struct Pizza: Identifiable {
         self.image = image
         self.lock = lock
         self.createdAt = createdAt
+    }
+    
+    /// 피자 잠금해제 메소드
+    mutating func lockToggle() {
+        self.lock.toggle()
     }
 }
 
@@ -34,38 +39,39 @@ extension Pizza {
     
     static let allCasePizza: [Pizza] = 
     [
+        pepperoni,
         cheese,
-        margherita,potato,
-        sweetPotato,
+        potato,
         baconPotato,
         hawaian,
-        pepperoni,
+        sweetPotato,
+        margherita
     ]
+    
+    static let pepperoni: Pizza = .init(name: "페퍼로니 피자",
+                                             image: "pepperoni",
+                                             lock: false,
+                                             createdAt: Date())
     
     static let cheese: Pizza = .init( name: "치즈 피자",
                                            image: "cheese",
                                            lock: true,
                                            createdAt: Date())
     
-    static let pepperoni: Pizza = .init(name: "페퍼로니 피자",
-                                             image: "pepperoni",
-                                             lock: true,
-                                             createdAt: Date())
-    
     static let potato: Pizza = .init(name: "포테이토 피자",
                                           image: "potato",
-                                          lock: false,
-                                          createdAt: Date())
-    
-    static let sweetPotato: Pizza = .init(name: "고구마 피자",
-                                          image: "sweetPotato",
-                                          lock: false,
+                                          lock: true,
                                           createdAt: Date())
     
     static let baconPotato: Pizza = .init( name: "베이컨 포테이토 피자",
                                                 image: "baconPotato",
                                                 lock: true,
                                                 createdAt: Date())
+    
+    static let sweetPotato: Pizza = .init(name: "고구마 피자",
+                                          image: "sweetPotato",
+                                          lock: true,
+                                          createdAt: Date())
     
     static let hawaian: Pizza = .init( name: "하와이안 피자",
                                             image: "hawaiian",

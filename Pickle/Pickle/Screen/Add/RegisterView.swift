@@ -8,11 +8,17 @@
 import SwiftUI
 import RealmSwift
 
-// 등록에서 시작시간, target 시간 설정하기
-// 시작시간에서 시작후 target 시간과 맞게 끝나면
-// spendtime = target시간 동일
-// target 넘어서 까지 하면
-// spendtime > target
+// TODO: onAppear Strat Time refresh 변경 - onAppear에서 수정 - 완료
+// TODO: 등록 5글자에서 1글자로 변경 - 완료
+// TODO: Delete 했을시 Alert 뒤로가기로 눌러야지만 뒤로가짐, - 완료
+// TODO: 검은 화면 클릭했을시 뒤로 사라지게 변경해야함 - 완료
+
+// TODO: Pizza Collection List -> User Data 안쪽으로 연결구조 realm 공식문서 살펴보기 - 좀있다하고
+// MARK: Ursert 로 강제 수정으로 처리 - 80%
+
+// TODO: 할일 설정 시간을 현재 시간 이후로만 설정할수 있게 변경 - 진행중 - 완료....
+// TODO: Alert 구조 refactoring - 추후 리팩토링
+// TODO: Alert TimerView의 알럿으로 통일하기 - 0%
 
 enum Const: CaseIterable {
     static let ALL: [[String]] = [WELCOME1, WELCOME2, WELCOME3, WELCOME4]
@@ -35,7 +41,8 @@ struct RegisterView: View {
     @EnvironmentObject var todoStore: TodoStore
     
     @Binding var willUpdateTodo: Todo
-    
+    @Binding var successDelete: Bool
+    @Binding var isShowingEditTodo: Bool
     var isModify: Bool
     
     @State(wrappedValue: "") private var content: String
@@ -44,14 +51,16 @@ struct RegisterView: View {
     @State private var showingWeekSheet: Bool = false
     
     @State private var startTimes = Date()
-    @State private var targetTimes: String = "10분"
+    @State private var targetTimes: String = "1분"
     @State private var seletedAlarm: String = "시간 선택"
     
+    // MARK: Alert State
     @State private var showSuccessAlert: Bool = false
     @State private var showFailedAlert: Bool = false
     @State private var showUpdateSuccessAlert: Bool = false
     @State private var showUpdateEqual: Bool = false
     
+    // MARK: 도도독 State, Task
     @State private var placeHolderText: String = ""
     @State private var tasks: Task<Void, Error>? {
         willSet {
@@ -59,11 +68,14 @@ struct RegisterView: View {
             self.tasks?.cancel()
         }
     }
+    
+    @State var dateFrom = Date()
+    
     private let alarmCount: [String] = ["한번", "두번", "3번"]
     private let targetTimeUnit: TimeUnit = .ten
     
     private var targetTimeUnitStrs: [String] {
-        (10...300)
+        (10...180)
             .filter { $0 % targetTimeUnit.value == 0 }
             .reduce(into: [String]()) { original, value in
                 original.append("\(value)분")
@@ -99,7 +111,7 @@ struct RegisterView: View {
     }
     
     private var isRightContent: Bool {
-        content.count >= 5
+        content.count >= 1
     }
     
     var body: some View {
@@ -136,13 +148,17 @@ struct RegisterView: View {
                 self.content = willUpdateTodo.content
                 self.targetTimes = targetToTimeString(willUpdateTodo.targetTime)
                 self.startTimes = willUpdateTodo.startTime
+            } else {
+                self.startTimes = Date()  // 시간 onAppear일때 수정
             }
             updateTextField(Const.ALL.randomElement()!)
         }
         .differentTypeAlerts(showFailedAlert: $showFailedAlert,
                              showUpdateEqual: $showUpdateEqual,
                              showUpdateSuccessAlert: $showUpdateSuccessAlert,
-                             showSuccessAlert: $showSuccessAlert)
+                             showSuccessAlert: $showSuccessAlert,
+                             successDelete: $successDelete,
+                             isShowingEditTodo: $isShowingEditTodo)
     }
     
     private func targetToTimeString(_ time: TimeInterval) -> String {
@@ -263,6 +279,7 @@ struct RegisterView: View {
         .sheet(isPresented: show) {
             VStack {
                 datePickerGenerator(binding: binding, show: show)
+                    .presentationDetents([.fraction(0.4)])
             }
         }
         .onTapGesture {
@@ -330,11 +347,15 @@ extension View {
     func differentTypeAlerts(showFailedAlert: Binding<Bool>,
                              showUpdateEqual: Binding<Bool>,
                              showUpdateSuccessAlert: Binding<Bool>,
-                             showSuccessAlert: Binding<Bool>) -> some View {
+                             showSuccessAlert: Binding<Bool>,
+                             successDelete: Binding<Bool>,
+                             isShowingEditTodo: Binding<Bool>) -> some View {
         modifier(RegisterView.DifferentTypeAlerts(showFailedAlert: showFailedAlert,
                                                   showUpdateEqual: showUpdateEqual,
                                                   showUpdateSuccessAlert: showUpdateSuccessAlert,
-                                                  showSuccessAlert: showSuccessAlert))
+                                                  showSuccessAlert: showSuccessAlert,
+                                                  successDelete: successDelete,
+                                                  isShowingEditTodo: isShowingEditTodo))
     }
 }
 
@@ -347,22 +368,26 @@ extension RegisterView {
         @Binding var showUpdateEqual: Bool
         @Binding var showUpdateSuccessAlert: Bool
         @Binding var showSuccessAlert: Bool
+        @Binding var successDelete: Bool
+        @Binding var isShowingEditTodo: Bool
         
         func body(content: Content) -> some View {
             content
                 .failedAlert(
                     isPresented: $showFailedAlert,
                     title: "실패",
-                    alertContent: "5글자 이상 입력해주세요",
+                    alertContent: "1글자 이상 입력해주세요",
                     primaryButtonTitle: "확인",
-                    primaryAction: { /* 알럿 확인 버튼 액션 */  }
+                    primaryAction: { /* 알럿 확인 버튼 액션 */  },
+                    {}
                 )
                 .failedAlert(
                     isPresented: $showUpdateEqual,
                     title: "실패",
                     alertContent: "같은 내용입니다.",
                     primaryButtonTitle: "확인",
-                    primaryAction: {   }
+                    primaryAction: {   },
+                    {}
                 )
                 .successAlert(
                     isPresented: $showUpdateSuccessAlert,
@@ -377,6 +402,14 @@ extension RegisterView {
                     alertContent: "성공적으로 할일을 등록했습니다",
                     primaryButtonTitle: "뒤로가기",
                     primaryAction: { dissmiss() }
+                )
+                .successAlert(   // Success Delete Alert
+                    isPresented: $successDelete,
+                    title: "삭제 성공",
+                    alertContent: "성공적으로 수정했습니다",
+                    primaryButtonTitle: "뒤로가기",
+                    primaryAction: { isShowingEditTodo.toggle() },
+                    { isShowingEditTodo.toggle() }
                 )
         }
     }
@@ -396,33 +429,51 @@ extension RegisterView {
     }
 }
 
+
+extension Formatter {
+    static let time: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = .init(identifier: "ko_kr")
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }()
+}
+
 // MARK: Register PickerView extension
 extension RegisterView {
     
+    var timeConstraint: ClosedRange<Date> {
+        let value = startTimes.format("yyyy-MM-dd-HH-mm")
+        
+        let dates = value.split(separator: "-").map { Int(String($0))! }
+        let start: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),
+                                                   year: dates[safe: 0],
+                                                   month: dates[safe: 1],
+                                                   day: dates[safe: 2],
+                                                   hour: dates[safe: 3],
+                                                   minute: dates[safe: 4])
+        let end: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),
+                                                 year: dates[safe: 0],
+                                                 month: dates[safe: 1],
+                                                 day: dates[safe: 2],
+                                                 hour: 23,
+                                                 minute: 59)
+        return PickerView.constraint(start: start,
+                                     end: end)
+    }
+    
     private func datePickerGenerator(binding: Binding<Date>, show: Binding<Bool>) -> some View {
-        VStack {
-            DatePicker("시간 선택", selection: binding,
-                       displayedComponents: .hourAndMinute)
-            .datePickerStyle(WheelDatePickerStyle())
-            .presentationDetents([.fraction(0.4)])
-            .labelsHidden()
-            
-            Spacer()
-            
-            Button {
-                show.wrappedValue.toggle()
-            } label: {
-                Text("확인")
-                    .tint(Color.textGray)
-            }
-            .padding(.vertical, 10)
-        }
+        PickerView(isTimeMissionSettingModalPresented: show,
+                   changedWakeupTime: binding,
+                   title: "오늘 할일 시간",
+                   action: { show.wrappedValue.toggle() },
+                   closedRange: timeConstraint)
     }
     
     private func targetTimePickerViewGenerator(binding: Binding<String>, show: Binding<Bool>) -> some View {
         VStack {
             Picker("단위시간", selection: $targetTimes) {
-                let times = targetTimeUnitStrs
+                let times = ["1분"] + targetTimeUnitStrs    // TODO: 테스트용 1분 추가 추후 삭제
                 ForEach(times.indices, id: \.self) {
                     Text("\(times[$0])").tag(times[$0])
                 }
@@ -442,6 +493,9 @@ extension RegisterView {
 }
 
 #Preview {
-    RegisterView(willUpdateTodo: .constant(Todo.sample), isModify: true)
+    RegisterView(willUpdateTodo: .constant(Todo.sample),
+                 successDelete: .constant(false),
+                 isShowingEditTodo: .constant(false),
+                 isModify: true)
         .environmentObject(TodoStore())
 }

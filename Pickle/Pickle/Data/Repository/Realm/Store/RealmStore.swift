@@ -38,14 +38,6 @@ typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
 typealias RNotificationToken = NotificationToken
 final class RealmStore: DBStore {
     
-    private(set) var realmStore: Realm?
-    
-    init(name: String = "main.realm") {
-        let config = Realm.Configuration(fileURL: URL.inDocumentsFolder("\(name)"),
-                                         schemaVersion: 1)
-        let provider = RealmProvider(config: config)
-        
-        self.realmStore = provider.realm
     }
     
     func create<T>(_ model: T.Type,
@@ -55,13 +47,26 @@ final class RealmStore: DBStore {
             let model = model as? Object.Type
         else {
             throw RealmError.notRealmObject
+    private var realmStore: Realm? {
+        switch type {
+        case .disk:
+            return RealmProvider.defaultRealm
+        case .inmemory:
+            return RealmProvider.previewRealm
         }
+    }
     
         try realm.write {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             let value = realm.create(model, value: json) as! T
         }
+    private var type: RealmType
+    
+    init(type: RealmType = .disk) {
+        self.type = type
     }
+    
+    static var previews: RealmStore = RealmStore(type: .inmemory)
     
     func create<T>(_ model: T.Type,
                    data: Data,

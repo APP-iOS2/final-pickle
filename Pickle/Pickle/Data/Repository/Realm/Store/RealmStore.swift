@@ -44,13 +44,6 @@ final class RealmStore: DBStore {
         case inmemory
     }
     
-    func create<T>(_ model: T.Type,
-                   data: Data) throws where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
     private var realmStore: Realm? {
         switch type {
         case .disk:
@@ -60,10 +53,6 @@ final class RealmStore: DBStore {
         }
     }
     
-        try realm.write {
-            let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            let value = realm.create(model, value: json) as! T
-        }
     private var type: RealmType
     
     init(type: RealmType = .disk) {
@@ -86,7 +75,6 @@ final class RealmStore: DBStore {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             let value = realm.create(model, value: json) as! T
         }
-        
     }
     
     func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T: Storable {
@@ -129,19 +117,23 @@ final class RealmStore: DBStore {
         }
     }
     
-    func delete(object: Storable) throws {
         guard
             let realm = realmStore,
-            let object = object as? Object
         else {
             throw RealmError.notRealmObject
         }
         
         try realm.write {
-            realm.delete(object)
         }
     }
     
+    func delete(object: Storable) throws {
+        return
+    }
+    /// Delete Model 메타타입 과 id를 받아서 delete할 오브젝트를 골라 삭제한다.
+    /// - Parameters:
+    ///   - model: 삭제할 모델의 메타타입
+    ///   - id: Primary id
     func delete<T>(model: T.Type, id: String) throws {
         guard
             let realm = realmStore,

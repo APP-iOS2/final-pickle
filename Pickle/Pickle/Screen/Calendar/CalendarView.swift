@@ -298,9 +298,9 @@ struct CalendarView: View {
                                 .onTapGesture {
                                     
                                     // MARK: - Updating Current Date
-                                    withAnimation {
+                               
                                         calendarModel.currentDay = day.date
-                                    }
+                            
                                         
                                     
                                 }

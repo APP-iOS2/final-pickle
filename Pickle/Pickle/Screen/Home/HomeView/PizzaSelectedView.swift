@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+// TODO: 인앱 puchase Mock으로 구현
+// TODO: Deep Link 구현
+    // 1. 피자 완성하러가기 -> 홈으로? 아니면 어디로
+    // 2. 구매하러 가기
+// TODO: Alert에 Unlock (lock.fill) 표시하기 - 완료
+    // 1. 잠금상태 일때와, 비잠금상태 구분 - 콘텐츠의 내용을 구분해야 하나?
+    // 1-1. 잠금,비잠금 상태 구분해서 action을 다르게 주기
+    //
+// TODO: Image Cache 현재 PizzaSeleted의 이미지 메모리량을 많이 잡아먹는 상태
+
 struct PizzaSelectedView: View {
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
@@ -28,11 +38,11 @@ struct PizzaSelectedView: View {
             LazyVGrid(columns: columns) {
                 ForEach(pizzas.indices, id: \.self) { index in
                     PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potato))
-                    .frame(width: CGFloat.screenWidth / 3 - 40)
-                    .padding(.horizontal, 10)
-                    .onTapGesture {
-                        seletedPizza = pizzas[safe: index] ?? .defaultPizza
-                        isPizzaPuchasePresented.toggle()
+                        .frame(width: CGFloat.screenWidth / 3 - 40)
+                        .padding(.horizontal, 10)
+                        .onTapGesture {
+                            seletedPizza = pizzas[safe: index] ?? .defaultPizza
+                            isPizzaPuchasePresented.toggle()
                     }
                 }
             }
@@ -51,6 +61,8 @@ struct PizzaItemView: View {
             ZStack {
                 if pizza.lock {
                     Image(systemName: "lock.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                         .foregroundStyle(.white)
                         .frame(width: 30, height: 30, alignment: .center)
                         .zIndex(2)
@@ -79,7 +91,13 @@ struct PizzaItemView: View {
 
 #Preview {
     PizzaSelectedView(columns: Array(repeating: .init(.flexible()), count: 3),
-                      pizzas: .constant( [Pizza(name: "고구마", image: "baconPotato", lock: false, createdAt: Date())]),
-                      seletedPizza: .constant(Pizza(name: "고구마", image: "baconPotato", lock: false, createdAt: Date())),
+                      pizzas: .constant( [Pizza(name: "고구마", 
+                                                image: "baconPotato",
+                                                lock: false,
+                                                createdAt: Date())]),
+                      seletedPizza: .constant(Pizza(name: "고구마", 
+                                                    image: "baconPotato",
+                                                    lock: false,
+                                                    createdAt: Date())),
                       isPizzaPuchasePresented: .constant(false))
 }

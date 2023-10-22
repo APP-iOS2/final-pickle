@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import WebKit
 
 enum SchemeType: Int, Identifiable, CaseIterable {
     var id: Self { self }
@@ -38,6 +39,11 @@ struct SettingView: View {
     
     @State private var isShowingMoveToSettingAlert: Bool = false
     @State private var isShowingEmailAlert: Bool = false
+    
+    @State private var isShowingSafari: Bool = false
+    private var appInformationWebViewSite =  "https://kai-swift.notion.site/kai-swift/5fcad0683ca24853ac1ed5b7de8c88f4"
+    
+  
     
     var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
     
@@ -122,8 +128,9 @@ struct SettingView: View {
                     }
                 }
                 
-                NavigationLink {
+               Button {
                     // MARK: 앱 정보
+                    isShowingSafari = true
                 } label: {
                     HStack {
                         Image(systemName: "info.circle")
@@ -162,6 +169,9 @@ struct SettingView: View {
                 await notificationManager.getCurrentSetting()
             }
         }
+        .sheet(isPresented: $isShowingSafari, content: {
+            WKWebViewPractice(url: appInformationWebViewSite)
+        })
         .alert("설정 앱으로 이동하여 알림 권한을 변경합니다.", isPresented: $isShowingMoveToSettingAlert) {
             Button {
                 dismiss()
@@ -189,6 +199,29 @@ struct SettingView: View {
         print("이메일 복사됨")
     }
 }
+
+struct WKWebViewPractice: UIViewRepresentable {
+    var url: String
+    
+    func makeUIView(context: Context) -> WKWebView {
+        guard let url = URL(string: url) else {
+            return WKWebView()
+        }
+        let webView = WKWebView()
+
+        webView.load(URLRequest(url: url))
+        
+        return webView
+    }
+    
+    func updateUIView(_ webView: WKWebView, context: UIViewRepresentableContext<WKWebViewPractice>) {
+        guard let url = URL(string: url) else { return }
+        
+        webView.load(URLRequest(url: url))
+    }
+}
+
+
 
 struct SettingView_Previews: PreviewProvider {
     static var previews: some View {

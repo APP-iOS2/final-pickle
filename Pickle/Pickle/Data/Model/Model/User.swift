@@ -33,5 +33,3 @@ extension User {
                                          pizzas: Pizza.allCasePizza,
                                          createdAt: Date())
 }
-
-

@@ -12,8 +12,6 @@ struct PizzaSummaryView: View {
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
     
-    @State private var pizzaCollection: [Pizza] = Pizza.allCasePizza
-    
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var myTotalPizza: Int {
@@ -52,8 +50,6 @@ struct PizzaSummaryView: View {
             }
             
         }
-        
-        
         .navigationTitle("통계")
         
     }
@@ -114,8 +110,8 @@ struct PizzaSummaryView: View {
             Text("피자 컬렉션")
             LazyVGrid(columns: columns) {
                 
-                ForEach(pizzaCollection.indices, id: \.self) { index in
-                    PizzaItemView(pizza: $pizzaCollection[safe: index] ?? .constant(.potato))
+                ForEach(userStore.user.pizzas.indices) { pizza in
+                    PizzaItemView(pizza: $userStore.user.pizzas[pizza] )
                         .frame(width: CGFloat.screenWidth / 3 - 40)
                         .padding(.horizontal, 10)
                     //                       .onTapGesture {
@@ -125,8 +121,6 @@ struct PizzaSummaryView: View {
                 }
             }
         }
-        
-        
     }
     
     func convertSecondsToTime(timeInSecond: Double) -> String {

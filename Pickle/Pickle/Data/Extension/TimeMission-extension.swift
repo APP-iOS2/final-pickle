@@ -15,13 +15,15 @@ extension TimeMission {
             return TimeMissionObject(title: self.title,
                                      status: .init(rawValue: self.status.value) ?? .ready,
                                      date: self.date,
-                                     wakeupTime: self.wakeupTime)
+                                     wakeupTime: self.wakeupTime,
+                                     changeWakeupTime: self.changeWakeupTime)
         } else {
             return TimeMissionObject(id: self.id,
                                      title: self.title,
                                      status: .init(rawValue: self.status.value) ?? .ready,
                                      date: self.date,
-                                     wakeupTime: self.wakeupTime)
+                                     wakeupTime: self.wakeupTime,
+                                     changeWakeupTime: self.changeWakeupTime)
         }
     }
     

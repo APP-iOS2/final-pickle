@@ -54,8 +54,11 @@ final class PizzaRepository: BaseRepository<PizzaObject>, PizzaRepositoryProtoco
     func delete(pizza: Pizza) throws {
         let object = pizza.mapToPersistenceObject()
         do {
-            try super.delete(object: object, id: object.id.stringValue)
+//            let fitler: RFilter = .filter({value in value == object.name })
+
+//            try super.delete(object: object, id: object.id.stringValue)
         } catch {
+            Log.error("\(error)")
             throw PersistentedError.deleteFailed
         }
     }
@@ -64,6 +67,7 @@ final class PizzaRepository: BaseRepository<PizzaObject>, PizzaRepositoryProtoco
         do {
             try super.deleteAll(PizzaObject.self)
         } catch {
+            Log.error("\(error)")
             throw PersistentedError.deleteAllFailed
         }
     }
@@ -73,6 +77,7 @@ final class PizzaRepository: BaseRepository<PizzaObject>, PizzaRepositoryProtoco
         do {
             try super.update(object: object)
         } catch {
+            Log.error("\(error)")
             throw PersistentedError.updateFaild
         }
     }

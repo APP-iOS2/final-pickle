@@ -42,38 +42,18 @@ class CalendarViewModel: ObservableObject {
         currentWeek.removeAll()
         let calendar = Calendar.autoupdatingCurrent
         let startOfDate = calendar.startOfDay(for: date)
+        
         let weekForDate = calendar.dateInterval(of: .weekOfMonth, for: startOfDate)
 
-//        
-//        let week = week.dateInterval(of: .weekOfMonth, for: date)
-//        
         guard let firstWeekDay = weekForDate?.start else {
             return
         }
-        (1...7).forEach { day in
+        (0...6).forEach { day in
             if let weekday = calendar.date(byAdding: .day, value: day, to: firstWeekDay) {
                 currentWeek.append(weekday)
             }
         }
     }
-    
-    // MARK: - Filter Today Tasks
-//    func filterTodayTasks(task: TodoStore) {
-//    
-//        let calendar  = Calendar.current
-////        let filtered : [Todo]
-//        if task.todos.isEmpty {
-//            self.filteredTasks?.append(Todo.sample)
-//        } else {
-//            let filtered = task.todos.filter { calendar.isDate($0.startTime, inSameDayAs: self.currentDay)
-//            }
-//            self.filteredTasks = filtered.sorted(by: { $0.startTime < $1.startTime })
-//        }
-////        let filtered = storedTasks.filter {
-////            calendar.isDate($0.creationDate, inSameDayAs: self.currentDay)
-////        }
-//        
-//    }
     
     func extractDate(date: Date, format: String) -> String {
         let formatter = DateFormatter()
@@ -112,7 +92,6 @@ class CalendarViewModel: ObservableObject {
             return resultDay
             
         }
-        print(resultMonth)
 
         let firstWeekDay = calendar.component(.weekday, from: resultMonth.first?.date ?? Date())
                 
@@ -150,7 +129,7 @@ class CalendarViewModel: ObservableObject {
         let startOfLastDate = calendar.startOfDay(for: currentDay)
         
         let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate)
-//        print(nextDate!)
+
         return fetchCurrentWeek(date: nextDate!)
         
     }

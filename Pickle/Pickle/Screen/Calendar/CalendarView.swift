@@ -20,6 +20,7 @@ struct CalendarView: View {
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
     @State var todayPieceOfPizza: Int = 0
+    @State private var offset: CGSize = CGSize()
 //    var indicatorColor: Color {
 //        return task.startTime.isSameHour ? .pickle : .primary
 //        {
@@ -34,9 +35,10 @@ struct CalendarView: View {
         
         VStack(alignment: .leading) {
             headerView()
+                .padding(.top, 15)
+                .padding(.bottom, 8)
             currentPizzaSummaryView()
                 .padding(.horizontal)
-
             ScrollView(.vertical) {
                 VStack {
                     taskView()
@@ -44,6 +46,44 @@ struct CalendarView: View {
             }
             .scrollIndicators(.hidden)
         }
+        .gesture(
+           DragGesture()
+             .onChanged { gesture in
+                 self.offset = gesture.translation
+             }
+             .onEnded { gesture in
+               if gesture.translation.width < -50 {
+                   
+                   if weekToMonth {
+                     
+                           calendarModel.currentMonthIndex += 1
+                       
+                       
+                   } else {
+                       withAnimation {
+                           calendarModel.currentWeekIndex += 1
+                           calendarModel.createNextWeek()
+                           
+                       }
+                   }
+                   
+               } else if gesture.translation.width > 50 {
+                   if weekToMonth {
+                   
+                           
+                           calendarModel.currentMonthIndex -= 1
+                       
+                   } else {
+                       withAnimation {
+                           
+                           calendarModel.currentWeekIndex -= 1
+                           calendarModel.createPreviousWeek()
+                       }
+                   }
+               }
+                 self.offset = CGSize()
+             }
+         )
         .task {
             await todoStore.fetch()
             
@@ -66,6 +106,11 @@ struct CalendarView: View {
                            timeMissions: time,
                            behaviorMissions: mission)
         }
+        
+//        .onChange(of: offset) { newValue in
+//            calendarModel.currentDay = calendarModel.getCurrentMonth()
+//            calendarModel.currentWeek = calendarModel.
+//        }
     }
     
     // MARK: - Header 뷰
@@ -124,7 +169,7 @@ struct CalendarView: View {
                     })
                     
                     Button(action: {
-                        print("주간")
+                    
                         weekToMonth.toggle()
                         calendarModel.resetForTodayButton()
                         
@@ -185,9 +230,7 @@ struct CalendarView: View {
                         }
                         .overlay(RoundedRectangle(cornerRadius: 20.0)
                         .stroke(Color.secondary, lineWidth: 1))
-                        
- 
-                
+                    
                 }
                 .hCenter()
                 .contentShape(.rect)
@@ -198,6 +241,8 @@ struct CalendarView: View {
                         calendarModel.currentDay = day
                     }
                 }
+
+             
                 
             }
             
@@ -253,8 +298,10 @@ struct CalendarView: View {
                                 .onTapGesture {
                                     
                                     // MARK: - Updating Current Date
-                                    
-                                    calendarModel.currentDay = day.date
+                                    withAnimation {
+                                        calendarModel.currentDay = day.date
+                                    }
+                                        
                                     
                                 }
                             
@@ -346,10 +393,21 @@ struct CalendarView: View {
         let firstStepBehaviorMission =  behaviorMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
         }
         
-        let tempBehaviorMissionTasks = firstStepBehaviorMission.filter { $0.status == .done || $0.status1 == .done || $0.status2 == .done
+        let tempBehaviorMissionTask0 = firstStepBehaviorMission.filter { $0.status == .done
+            
         }
-    
-        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + tempBehaviorMissionTasks.count
+        
+        let tempBehaviorMissionTask1 = firstStepBehaviorMission.filter {  $0.status1 == .done
+            
+        }
+        
+        let tempBehaviorMissionTask2 = firstStepBehaviorMission.filter {  $0.status2 == .done
+            
+        }
+        let totalBehaviorMissions = tempBehaviorMissionTask0 +  tempBehaviorMissionTask1 + tempBehaviorMissionTask2
+        
+        
+        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + totalBehaviorMissions.count
         
         todayPieceOfPizza = finalPizzaCount
     }

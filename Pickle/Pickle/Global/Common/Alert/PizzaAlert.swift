@@ -186,7 +186,7 @@ struct PizzaAlert: View {
         .frame(width: CGFloat.screenWidth - 40)
         .background(
             RoundedRectangle(cornerRadius: 30)
-                .stroke(.black.opacity(0.5))
+                .stroke(.white.opacity(0.5))
                 .background(
                     RoundedRectangle(cornerRadius: 30)
                         .fill(.primary)

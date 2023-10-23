@@ -106,7 +106,7 @@ struct PizzaAlert: View {
                         Text(title)
                             .font(.title)
                             .bold()
-                            .foregroundColor(.red.opacity(0.5))
+                            .foregroundColor(.primary)
                             .frame(maxWidth: .infinity, alignment: .center)
                         
                         Button(action: {

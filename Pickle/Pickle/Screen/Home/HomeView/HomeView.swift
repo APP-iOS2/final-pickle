@@ -199,7 +199,7 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
-            tempButton
+//            tempButton
             
             Text("\(pizzaTaskSlice)")
                 .font(.chab)
@@ -278,11 +278,11 @@ extension View {
                                 navAction: @escaping () -> Void) -> some View {
         modifier(PizzaAlertModifier(isPresented: isPizzaPuchasePresented,
                                     title: "\(pizza.name)",
-                                    price: "1,200원",
+                                    price: "",
                                     descripation: "피자 2판을 완성하면 얻을수 있어요",
                                     image: "\(pizza.image)",
                                     lock: pizza.lock,
-                                    puchaseButtonTitle: "피자 구매하기",
+                                    puchaseButtonTitle: "피자 구매하기 (₩1,200)",
                                     primaryButtonTitle: "피자 완성하러 가기",
                                     primaryAction: purchaseAction,
                                     pizzaMakeNavAction: navAction))

@@ -10,8 +10,11 @@ import UIKit
 
 class MySceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.scheduleAppRefresh()
-        appDelegate.scheduleProcessingTaskIfNeeded()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.scheduleAppRefresh()
+            appDelegate.scheduleProcessingTaskIfNeeded()
+        } else {
+            print("AppDelegate를 찾을 수 없습니다.")
+        }
     }
 }

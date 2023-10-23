@@ -15,13 +15,17 @@ struct TimeMissionSettingView: View {
     var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
     
-    @State private var changedWakeupTime: Date = Date()
-    
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Button {
+                    missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                                   title: timeMission.title,
+                                                                   status: timeMission.status,
+                                                                   date: timeMission.date,
+                                                                   wakeupTime: timeMission.wakeupTime,
+                                                                   changeWakeupTime: timeMission.wakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("취소")
@@ -35,25 +39,12 @@ struct TimeMissionSettingView: View {
                 Spacer()
                 
                 Button {
-                    timeMission.wakeupTime = changedWakeupTime
-                    
-                    //TODO: 이렇게 하면.... ready아닐때 설정한건 다음에도 울리지 않음
-                    if timeMission.status == .ready {
-                        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: changedWakeupTime)
-                        notificationManager.scheduleNotification(
-                            localNotification: LocalNotification(identifier: UUID().uuidString,
-                                                                 title: "기상 미션 알림",
-                                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요.",
-                                                                 dateComponents: dateComponent,
-                                                                 repeats: false,
-                                                                 type: .calendar)
-                        )
-                    }
                     missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                                    title: timeMission.title,
                                                                    status: timeMission.status,
                                                                    date: timeMission.date,
-                                                                   wakeupTime: changedWakeupTime)))
+                                                                   wakeupTime: timeMission.wakeupTime,
+                                                                   changeWakeupTime: timeMission.changeWakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")
@@ -66,7 +57,7 @@ struct TimeMissionSettingView: View {
             
             Divider()
             
-            DatePicker("시간 선택", selection: $changedWakeupTime,
+            DatePicker("시간 선택", selection: $timeMission.changeWakeupTime,
                        displayedComponents: .hourAndMinute)
             .datePickerStyle(WheelDatePickerStyle())
             .labelsHidden()

@@ -29,7 +29,9 @@ struct HomeView: View {
     @EnvironmentObject var pizzaStore: PizzaStore
     
     @State private var goalProgress: Double = 0.0
-    @State private var pizzaText: String = "첫 피자를 만들어볼까요?"
+    @State private var animatedText = ""
+    @State private var currentIndex = 0
+    let fullText = "할일을 완료하여 피자를 모아보아요"
     
     @State private var isShowingEditTodo: Bool = false
     @State private var isPizzaSeleted: Bool = false
@@ -69,7 +71,7 @@ struct HomeView: View {
                             .scaledToFit()
                             .frame(width: .screenWidth - 200)
                         
-                        Text("할일을 추가해 주세요!!")
+                        Text("오늘 할일을 추가해 주세요!")
                             .frame(maxWidth: .infinity)
                             .font(.pizzaRegularSmallTitle)
 //                            .padding(.top, 30)
@@ -136,15 +138,19 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
-            tempButton
+//            tempButton
             
             Text("\(pizzaTaskSlice)")
                 .font(.chab)
                 .foregroundStyle(Color.pickle)
             
-            Text(pizzaText)
+            Text(animatedText)
                 .font(.pizzaHeadline)
+                .onAppear {
+                    startTyping()
+                }
                 .padding(.vertical, 8)
+                .padding(.bottom, 20)
         }
         .padding(.horizontal)
     }
@@ -276,6 +282,17 @@ extension HomeView {
             content.fullScreenCover(isPresented: $isPresented) {
                 AddTodoView(isShowingEditTodo: $isPresented,
                             todo: $seletedTodo)
+            }
+        }
+    }
+    
+    private func startTyping() {
+        if currentIndex < fullText.count {
+            let index = fullText.index(fullText.startIndex, offsetBy: currentIndex)
+            animatedText.append(fullText[index])
+            currentIndex += 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                startTyping()
             }
         }
     }

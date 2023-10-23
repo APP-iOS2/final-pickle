@@ -32,7 +32,8 @@ extension TimeMission {
                     title: object.title,
                     status: .init(rawValue: object.status.rawValue) ?? .ready,
                     date: object.date,
-                    wakeupTime: object.wakeupTime)
+                    wakeupTime: object.wakeupTime,
+                    changeWakeupTime: object.changeWakeupTime)
     }
 }
 
@@ -42,7 +43,7 @@ extension TimeMission {
                     title: self.title,
                     status: status,
                     date: self.date,
-                    wakeupTime: self.wakeupTime)
+                    wakeupTime: self.wakeupTime,
+                    changeWakeupTime: self.changeWakeupTime)
     }
 }
-

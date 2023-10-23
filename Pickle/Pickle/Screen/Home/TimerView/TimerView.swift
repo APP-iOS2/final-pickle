@@ -13,6 +13,7 @@ struct TimerView: View {
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var timerVM: TimerViewModel
+    @EnvironmentObject var notificationManager: NotificationManager
     
     var todo: Todo
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -129,8 +130,6 @@ struct TimerView: View {
         
     }
     
-    // TODO: 한시간 안넘어가면 분, 초 만 보여주기
-    // 초 -> HH:MM:SS로 보여주기
     func convertSecondsToTime(timeInSecond: TimeInterval) -> String {
         let hours: Int = Int(timeInSecond / 3600)
         let minutes: Int = Int(timeInSecond - Double(hours) * 3600) / 60
@@ -171,6 +170,21 @@ struct TimerView: View {
     
     func turnMode() {
         timerVM.isDecresing = false
+        Task {
+            try? await notificationManager.requestNotiAuthorization()
+            if notificationManager.isGranted {
+                notificationManager.scheduleNotification(
+                    localNotification: LocalNotification(identifier: UUID().uuidString,
+                                                         title: "현실도 피자",
+                                                         body: "목표시간이 완료됐어요!",
+                                                         timeInterval: 1,
+                                                         repeats: false,
+                                                         type: .time)
+                )
+            } else {
+                notificationManager.isAlertOccurred = true
+            }
+        }
     }
     
     func progress() -> CGFloat {
@@ -205,7 +219,7 @@ extension TimerView {
                         .padding(.horizontal, 10)
                     
                     // TODO: RegisterView처럼 랜덤으로 바꿔주기
-                    Text("🍕 굽는 중")
+                    Text("🍕가 구워지고 있어요")
                         .font(.pizzaBody)
                         .foregroundColor(.secondary)
                 }
@@ -372,6 +386,7 @@ struct TimerView_Previews: PreviewProvider {
             .environmentObject(TodoStore())
             .environmentObject(TimerViewModel())
             .environmentObject(UserStore())
+            .environmentObject(NotificationManager())
         }
     }
 }

@@ -33,8 +33,8 @@ extension Pizza: Equatable {}
 
 extension Pizza {
     
-    static let defaultPizza: Pizza = .init(name: "Guest",
-                                           image: "potato",
+    static let defaultPizza: Pizza = .init(name: "마르게리타 피자",
+                                           image: "margherita",
                                            lock: false,
                                            createdAt: Date())
     
@@ -83,7 +83,7 @@ extension Pizza {
                                             lock: true,
                                             createdAt: Date())
     
-    static let margherita: Pizza = .init(name: "마르게리타",
+    static let margherita: Pizza = .init(name: "마르게리타 피자",
                                          image: "margherita",
                                          lock: true,
                                          createdAt: Date())

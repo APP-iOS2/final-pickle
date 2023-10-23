@@ -85,7 +85,7 @@ struct RewardAlert: View {
                 .frame(width: CGFloat.screenWidth * 0.5)
             
             Text(title)
-                .font(.title)
+                .font(.pizzaRegularTitle)
                 .bold()
                 .foregroundColor(.black)
             

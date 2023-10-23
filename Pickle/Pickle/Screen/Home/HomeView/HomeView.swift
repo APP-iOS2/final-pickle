@@ -71,12 +71,13 @@ struct HomeView: View {
     @State private var animatedText = ""
     
     @State private var currentIndex = 0
-    let fullText = "할일을 완료하여 피자를 모아보아요"
+    let fullText = "할일을 완료하고 피자를 모아보아요"
     
     @State private var tabBarvisibility: Visibility = .visible
     @State private var isShowingEditTodo: Bool = false
     @State private var isPizzaSeleted: Bool = false
     @State private var isPizzaPuchasePresented: Bool = false
+    @State private var showCompleteAlert: Bool = false
     
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     @State private var seletedTodo: Todo = Todo.sample
@@ -157,7 +158,16 @@ struct HomeView: View {
         .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
                   perform: { slice in
             placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
+            
+            if slice % 8 == 0 {
+                showCompleteAlert = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.showCompleteAlert = false
+                }
+            }
         })
+        .completePizzaAlert(isPresented: $showCompleteAlert, pizzaName: currentPizzaImg, title: "축하합니다", contents: seletedPizza.name)
+        
         .onChange(of: seletedPizza,
                   perform: { pizza in
             if pizza.lock { 
@@ -189,7 +199,7 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
-            //            tempButton
+            tempButton
             
             Text("\(pizzaTaskSlice)")
                 .font(.chab)

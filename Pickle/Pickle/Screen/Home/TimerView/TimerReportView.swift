@@ -10,8 +10,10 @@ import SwiftUI
 struct TimerReportView: View {
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var timerVM: TimerViewModel
+    
     
     @Binding var isShowingReportSheet: Bool
     @Binding var isShowingTimerView: Bool
@@ -60,6 +62,7 @@ struct TimerReportView: View {
                     .padding(.horizontal, 5)
                     .padding()
                 }
+                .modeBackground()
                 .clipShape(RoundedRectangle(cornerRadius: 12)) // clip corners
                 .background(
                     RoundedRectangle(cornerRadius: 12) // stroke border
@@ -85,6 +88,7 @@ struct TimerReportView: View {
                     .padding(.horizontal, 5)
                     .padding()
                 }
+                .modeBackground()
                 .clipShape(RoundedRectangle(cornerRadius: 12)) // clip corners
                 .background(
                     RoundedRectangle(cornerRadius: 12) // stroke border
@@ -107,7 +111,7 @@ struct TimerReportView: View {
                     .padding(.vertical, 8)
                     .frame(width: .screenWidth * 0.2)
                     .foregroundColor(.primary)
-                    .colorInvert()
+//                    .colorInvert()
             })
             .buttonStyle(.borderedProminent)
             .tint(.pickle)
@@ -141,7 +145,7 @@ struct TimerReportView_Previews: PreviewProvider {
                                    startTime: Date(),
                                    targetTime: 60,
                                    spendTime: 5400,
-                                   status: .ready))
+                                   status: .giveUp))
         .environmentObject(TodoStore())
         
     }

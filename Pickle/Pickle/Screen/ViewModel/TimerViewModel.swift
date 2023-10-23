@@ -12,11 +12,17 @@ class TimerViewModel: ObservableObject {
     @Published var timeRemaining: TimeInterval = 0
     @Published var timeExtra: TimeInterval = 0
     @Published var spendTime: TimeInterval = 0
+    @Published var isDecresing: Bool = true // 목표시간 줄어드는거 관련 변수
     
     @Published var backgroundTimeStemp: Date = Date()
     @Published var fromBackground: Bool = false
     
-    @Published var isDecresing: Bool = true // 목표시간 줄어드는거 관련 변수
+    @Published var todo: Todo = Todo(id: "",
+                                     content: "",
+                                     startTime: Date(),
+                                     targetTime: 0.0,
+                                     spendTime: 0.0,
+                                     status: .ready)
     
     private let wiseSayingArray: [String] = [
         "게으름은 즐겁지만 괴로운 상태다. \n 우리는 행복해지기 위해서 무엇인가 하고 있어야 한다 \n -마하마트 간디-",
@@ -25,11 +31,46 @@ class TimerViewModel: ObservableObject {
     ]
     @Published var wiseSaying: String = ""
     
+    func fetchTodo(todo: Todo) {
+        self.todo = Todo(id: todo.id,
+                         content: todo.content,
+                         startTime: todo.startTime,
+                         targetTime: todo.targetTime,
+                         spendTime: todo.spendTime,
+                         status: todo.status)
+        print("fetchTodo:\(todo)")
+    }
+    
+    func updateStart() {
+        self.todo = Todo(id: todo.id,
+                        content: todo.content,
+                        startTime: Date(),
+                        targetTime: todo.targetTime,
+                        spendTime: 0,
+                        status: .ongoing)
+    }
+    
+    func updateTodo(spendTime: TimeInterval, status: TodoStatus) {
+        self.todo = Todo(id: todo.id,
+                        content: todo.content,
+                        startTime: todo.startTime,
+                        targetTime: todo.targetTime,
+                        spendTime: spendTime,
+                        status: status)
+        print("updateTodo:\(todo)")
+    }
+
     func timerVMreset() {
         self.timeRemaining = 0
         self.timeExtra = 0
         self.spendTime = 0
         self.isDecresing = true
+        self.todo = Todo(id: "",
+                             content: "",
+                             startTime: Date(),
+                             targetTime: 0.0,
+                             spendTime: 0.0,
+                             status: .ready)
     }
     
     func makeRandomSaying() -> String {

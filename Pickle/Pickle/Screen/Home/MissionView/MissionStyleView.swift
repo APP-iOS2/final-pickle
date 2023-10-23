@@ -93,6 +93,9 @@ struct TimeMissionStyleView: View {
     @EnvironmentObject var userStore: UserStore
     @Binding var timeMission: TimeMission
     
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+    
     @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
     
@@ -119,7 +122,7 @@ struct TimeMissionStyleView: View {
                     isTimeMissionSettingModalPresented.toggle()
                 }, label: {
                     HStack {
-                        Text("\(timeMission.changeWakeupTime.format("HH:mm"))")
+                        Text("\(timeMission.changeWakeupTime.format(timeFormat))")
                             .font(.pizzaTitle2)
                         
                         Image(systemName: "chevron.up.chevron.down")

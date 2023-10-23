@@ -53,11 +53,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.ddudios.realpizza.refresh_badge")
-        let oneday = TimeInterval(24 * 60 * 60)
         
         do {
             try BGTaskScheduler.shared.submit(request)
-            
             
         } catch {
             print("\(Date()): Could not schedule app refresh: \(error)")
@@ -75,8 +73,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         } catch {
             print("\(Date()): Could not schedule processing task: \(error)")
         }
+        //        let oneday = TimeInterval(24 * 60 * 60)
         
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
+        guard missionStore.timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") else { return }
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.ddudios.realpizza.refresh_process", using: nil) { task in
             self.handleProcessingTask(task: task as! BGProcessingTask)
@@ -85,7 +84,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     func updateRealmDataTomorrow() {
-        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
         let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: missionStore.timeMissions[0].changeWakeupTime)
         
         notificationManager.scheduleNotification(

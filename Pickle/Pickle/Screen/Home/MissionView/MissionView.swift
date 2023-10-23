@@ -10,6 +10,10 @@ import SwiftUI
 struct MissionView: View {
     @EnvironmentObject var missionStore: MissionStore
     var healthKitStore: HealthKitStore = HealthKitStore()
+    
+    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+    
     @State private var showsAlert: Bool = false
     
     @State private var timeMissions: [TimeMission] = [
@@ -35,6 +39,8 @@ struct MissionView: View {
             }
         }
         .onAppear {
+            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
+            
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions

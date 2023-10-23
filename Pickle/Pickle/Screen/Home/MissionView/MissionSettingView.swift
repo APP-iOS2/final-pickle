@@ -15,13 +15,17 @@ struct TimeMissionSettingView: View {
     var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
     
-//    @State private var changeWakeupTime: Date = Date()
-    
     var body: some View {
         VStack {
             Spacer()
             HStack {
                 Button {
+                    missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+                                                                   title: timeMission.title,
+                                                                   status: timeMission.status,
+                                                                   date: timeMission.date,
+                                                                   wakeupTime: timeMission.wakeupTime,
+                                                                   changeWakeupTime: timeMission.wakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("취소")
@@ -35,24 +39,10 @@ struct TimeMissionSettingView: View {
                 Spacer()
                 
                 Button {
-//                    timeMission.wakeupTime = changedWakeupTime
-//
-//                    if timeMission.status == .ready {
-//                        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: changedWakeupTime)
-//                        notificationManager.scheduleNotification(
-//                            localNotification: LocalNotification(identifier: UUID().uuidString,
-//                                                                 title: "기상 미션 알림",
-//                                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요.",
-//                                                                 dateComponents: dateComponent,
-//                                                                 repeats: false,
-//                                                                 type: .calendar)
-//                        )
-//                    }
                     missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                                    title: timeMission.title,
                                                                    status: timeMission.status,
                                                                    date: timeMission.date,
-//                                                                   wakeupTime: changedWakeupTime
                                                                    wakeupTime: timeMission.wakeupTime,
                                                                    changeWakeupTime: timeMission.changeWakeupTime)))
                     isTimeMissionSettingModalPresented.toggle()
@@ -67,22 +57,10 @@ struct TimeMissionSettingView: View {
             
             Divider()
             
-            //$changeWakeupTime
             DatePicker("시간 선택", selection: $timeMission.changeWakeupTime,
                        displayedComponents: .hourAndMinute)
             .datePickerStyle(WheelDatePickerStyle())
             .labelsHidden()
-            
-            //                                                                   wakeupTime: changedWakeupTime
-            .onChange(of: timeMission.changeWakeupTime) { newTime in
-                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                               title: timeMission.title,
-                                                               status: timeMission.status,
-                                                               date: timeMission.date,
-                                                               wakeupTime: timeMission.wakeupTime,
-                                                               changeWakeupTime: newTime)))
-                print(newTime)
-            }
         }
         .padding()
     }

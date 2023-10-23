@@ -10,6 +10,7 @@ import RealmSwift
 
 // TODO: onAppear Strat Time refresh 변경 - onAppear에서 수정 - 완료
 // TODO: 등록 5글자에서 1글자로 변경 - 완료
+// TODO: 20글자로 추가
 // TODO: Delete 했을시 Alert 뒤로가기로 눌러야지만 뒤로가짐, - 완료
 // TODO: 검은 화면 클릭했을시 뒤로 사라지게 변경해야함 - 완료
 
@@ -17,8 +18,8 @@ import RealmSwift
 // MARK: Ursert 로 강제 수정으로 처리 - 80%
 
 // TODO: 할일 설정 시간을 현재 시간 이후로만 설정할수 있게 변경 - 진행중 - 완료....
-// TODO: Alert 구조 refactoring - 추후 리팩토링
-// TODO: Alert TimerView의 알럿으로 통일하기 - 0%
+// TODO: Alert 구조 refactoring - 추후 리팩토링 진행중
+// TODO: Alert TimerView의 알럿으로 통일하기 - 100%  완료
 
 enum Const: CaseIterable {
     static let ALL: [[String]] = [WELCOME1, WELCOME2, WELCOME3, WELCOME4]
@@ -114,6 +115,7 @@ struct RegisterView: View {
         content.count >= 1
     }
     
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
@@ -183,10 +185,8 @@ struct RegisterView: View {
             }
         } else {
             if isModify { showUpdateEqual.toggle(); return }
-            
             let flag = isRightContent
             let todo = computedTodo
-            
             if flag { todoStore.add(todo: todo); showSuccessAlert.toggle() }
             else { showFailedAlert.toggle() }
         }
@@ -445,16 +445,6 @@ extension RegisterView {
             }
         }
     }
-}
-
-
-extension Formatter {
-    static let time: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = .init(identifier: "ko_kr")
-        formatter.dateFormat = "HH:mm"
-        return formatter
-    }()
 }
 
 // MARK: Register PickerView extension

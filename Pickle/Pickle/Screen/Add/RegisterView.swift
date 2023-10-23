@@ -151,14 +151,22 @@ struct RegisterView: View {
             } else {
                 self.startTimes = Date()  // 시간 onAppear일때 수정
             }
+            
             updateTextField(Const.ALL.randomElement()!)
         }
+        .onChange(of: showSuccessAlert, perform: { if !$0 { resetContents() } })
         .differentTypeAlerts(showFailedAlert: $showFailedAlert,
                              showUpdateEqual: $showUpdateEqual,
                              showUpdateSuccessAlert: $showUpdateSuccessAlert,
                              showSuccessAlert: $showSuccessAlert,
                              successDelete: $successDelete,
                              isShowingEditTodo: $isShowingEditTodo)
+    }
+    
+    private func resetContents() {
+        self.content = ""
+        self.startTimes = Date()
+        self.targetTimes = "1분"
     }
     
     private func targetToTimeString(_ time: TimeInterval) -> String {
@@ -451,7 +459,7 @@ extension Formatter {
 extension RegisterView {
     
     var timeConstraint: ClosedRange<Date> {
-        let value = startTimes.format("yyyy-MM-dd-HH-mm")
+        let value = Date().format("yyyy-MM-dd-HH-mm")
         
         let dates = value.split(separator: "-").map { Int(String($0))! }
         let start: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),

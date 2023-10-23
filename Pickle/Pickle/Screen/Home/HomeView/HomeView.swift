@@ -161,7 +161,7 @@ struct HomeView: View {
             
             if slice % 8 == 0 {
                 showCompleteAlert = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
                     self.showCompleteAlert = false
                 }
             }

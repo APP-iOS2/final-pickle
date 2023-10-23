@@ -49,7 +49,7 @@ struct PickerView: View {
                 DatePickerUIKit(selection: $changedWakeupTime,
                                 in: closedRange,
                                 minuteInterval: 1)
-                .border(.black, width: 3)
+//                .border(.black, width: 3)
             } else {
                 DatePicker("시간 선택", selection: $changedWakeupTime,
                            displayedComponents: .hourAndMinute)

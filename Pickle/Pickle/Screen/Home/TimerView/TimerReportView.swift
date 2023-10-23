@@ -14,7 +14,6 @@ struct TimerReportView: View {
     @EnvironmentObject var timerVM: TimerViewModel
     
     @Binding var isShowingReportSheet: Bool
-    @Binding var isComplete: Bool
     @Binding var isShowingTimerView: Bool
     
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
@@ -24,7 +23,7 @@ struct TimerReportView: View {
     
     var body: some View {
         VStack {
-            if (todo.status == .done) {
+            if todo.status == .done {
                 Text("대단해요! 피자 한 조각을 얻었어요!!🍕")
                     .font(.pizzaBody)
                     .padding()
@@ -33,7 +32,7 @@ struct TimerReportView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: .screenWidth * 0.65)
-            } else if (todo.status == .giveUp) {
+            } else if todo.status == .giveUp {
                 Text("다음에는 피자 조각을 얻어봐요")
                     .font(.pizzaBody)
                     .padding()
@@ -97,6 +96,7 @@ struct TimerReportView: View {
             }
             
             Button(action: {
+                timerVM.timerVMreset()
                 isShowingTimerView = false
                 isShowingReportSheet = false
                 dismiss()
@@ -114,16 +114,10 @@ struct TimerReportView: View {
             .padding(.bottom, .screenWidth * 0.1)
         }
         .onAppear {
-            isComplete = true
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
             print("onAppearspendTime:\(todo.spendTime)")
             print("onAppearstatus:\(todo.status)")
         }
-            // .task {
-            // FIXME: await todoStore.fetch() 여기서 페치 하게돠면 HomeView에서 Store에 있는 값을 업데이트 하면서 TimerView가 재생성 되고 -> isShowingReportSheet가 false 값으로 다시 초기화 되어 Sheet가 내려가게 됩니다
-            // print("fetchspendTime:\(todo.spendTime)")
-            // print("fetchstatus:\(todo.status)")
-            //} MARK: onDissappear로 변경 - 주석 확인하고 지워주세요
         .onDisappear {
             Task {
                 await todoStore.fetch()
@@ -141,7 +135,6 @@ struct TimerReportView: View {
 struct TimerReportView_Previews: PreviewProvider {
     static var previews: some View {
         TimerReportView(isShowingReportSheet: .constant(false),
-                        isComplete: .constant(false),
                         isShowingTimerView: .constant(false),
                         todo: Todo(id: UUID().uuidString,
                                    content: "이력서 작성하기",

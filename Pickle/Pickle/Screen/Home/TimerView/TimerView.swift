@@ -25,7 +25,6 @@ struct TimerView: View {
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
     @State private var isShowGiveupAlert: Bool = false
-    //    @State private var isDecresing: Bool = true // 목표시간 줄어드는
     @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
     @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
@@ -63,11 +62,14 @@ struct TimerView: View {
         .onAppear {
             startTodo()
             timerVM.makeRandomSaying()
+            timerVM.fetchTodo(todo: todo)
             print("\(timerVM.wiseSaying)")
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $isShowingReportSheet) {
-            TimerReportView(isShowingReportSheet: $isShowingReportSheet, isComplete: $isComplete, isShowingTimerView: $isShowingTimerView, todo: todo)
+            TimerReportView(isShowingReportSheet: $isShowingReportSheet,
+                            isShowingTimerView: $isShowingTimerView, 
+                            todo: timerVM.todo)
                 .interactiveDismissDisabled()
         }
         .showGiveupAlert(isPresented: $showingAlert,
@@ -94,9 +96,10 @@ struct TimerView: View {
                         spendTime: 0,
                         status: .ongoing)
         todoStore.update(todo: todo)
+        timerVM.updateStart()
         self.realStartTime = Date()
     }
-    // 포기시 없데이트, status giveup으로
+    // 포기시 업데이트, status giveup으로
     func updateGiveup(spendTime: TimeInterval) {
         let todo = Todo(id: todo.id,
                         content: todo.content,
@@ -105,7 +108,7 @@ struct TimerView: View {
                         spendTime: spendTime,
                         status: .giveUp)
         todoStore.update(todo: todo)
-        timerVM.timerVMreset()
+        timerVM.updateTodo(spendTime: spendTime, status: .giveUp)
         isShowingReportSheet = true
     }
     // 완료 + 피자겟챠
@@ -117,7 +120,7 @@ struct TimerView: View {
                         spendTime: spendTime,
                         status: .done)
         todoStore.update(todo: todo)
-        timerVM.timerVMreset()
+        timerVM.updateTodo(spendTime: spendTime, status: .done)
         do {
             try userStore.addPizzaSlice(slice: 1)
         } catch {
@@ -308,7 +311,6 @@ extension TimerView {
             Button(action: {
                 isComplete = true
                 isGiveupSign = true
-//                    isShowGiveupAlert = true // 포기 alert띄우기
                 showingAlert = true
             }, label: {
                 Text("포기")

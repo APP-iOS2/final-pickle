@@ -194,17 +194,19 @@ struct RegisterView: View {
     
     @ViewBuilder
     private var todoTitleInputField: some View {
-        VStack {
-            Text(isModify ? "수정하기" : "할일 추가")
+        VStack(spacing: 0) {
+            Text(isModify ? "수정하기" : "오늘 할일 추가")
                 .font(Font.pizzaTitle2)
                 .bold()
             
             TextField("\(placeHolderText)", text: $content)
-                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .font(Font.pizzaBody)
                 .makeTextField {
                     print("\(content)")
                 }
-                .padding()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 16)
         }
     }
     

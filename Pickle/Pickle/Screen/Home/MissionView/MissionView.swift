@@ -50,7 +50,9 @@ struct MissionView: View {
             if timeMissions.isEmpty { return }
             if behaviorMissions.isEmpty { return }
             
-            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
+            /// 시나리오용
+            /// 다음날 기다리지 않음
+//            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
                 missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                                title: timeMissions[0].title,
                                                                status: .ready,
@@ -63,7 +65,7 @@ struct MissionView: View {
                                                                        status1: .ready,
                                                                        status2: .ready,
                                                                        date: Date())))
-            }
+//            }
         }
         .refreshable {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()

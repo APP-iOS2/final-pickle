@@ -16,7 +16,7 @@ final class TodoStore: ObservableObject {
     @Published var todos: [Todo] = []
     
     var readyTodos: [Todo] {
-        todos.filter { $0.status == .ready }
+        todos.filter { $0.status == .ready && $0.startTime.isToday }
     }
     
     var complteTodos: [Todo] {

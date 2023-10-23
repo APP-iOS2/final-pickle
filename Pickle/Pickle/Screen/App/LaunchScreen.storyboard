@@ -8,11 +8,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="NanumSquareNeoOTF-Bd.otf">
-            <string>NanumSquareNeo-cBd</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -35,12 +30,6 @@
                                     <constraint firstAttribute="height" constant="180" id="W25-vn-0da"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현실도 피자" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xo0-ue-3NS">
-                                <rect key="frame" x="146.66666666666666" y="523.33333333333337" width="100" height="22.666666666666629"/>
-                                <fontDescription key="fontDescription" name="NanumSquareNeo-cBd" family="NanumSquare Neo OTF" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="LaunchScreenBackground"/>
@@ -50,9 +39,6 @@
                             <constraint firstItem="IY0-yx-LCP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="I30-nj-KWz"/>
                             <constraint firstItem="obG-Y5-kRd" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" symbolic="YES" id="SfN-ll-jLj"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
-                            <constraint firstItem="Xo0-ue-3NS" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="dDN-Tb-brJ"/>
-                            <constraint firstItem="Xo0-ue-3NS" firstAttribute="firstBaseline" secondItem="IY0-yx-LCP" secondAttribute="baseline" constant="24.333333333333332" symbolType="layoutAnchor" id="mZ6-rE-EvR"/>
-                            <constraint firstItem="Xo0-ue-3NS" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="zgx-Ur-frG"/>
                         </constraints>
                     </view>
                 </viewController>

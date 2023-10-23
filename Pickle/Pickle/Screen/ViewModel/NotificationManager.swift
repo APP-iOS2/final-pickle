@@ -97,7 +97,9 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             guard let dateComponents = localNotification.dateComponents else { return }
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeats)
             let request = UNNotificationRequest(identifier: localNotification.identifier, content: content, trigger: trigger)
+            print("노티피케이션MANAGer 안의 등록시 \(localNotification.identifier)")
             notificationCenter.add(request)
+            
         // 몇 초 후 알림
         case .time:
             guard let timeInterval = localNotification.timeInterval else { return }
@@ -106,12 +108,24 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
             notificationCenter.add(request)
         }
     }
-    
+
     func removeAllNotifications() {
         notificationCenter.removeAllDeliveredNotifications()        // 전달된 노티피케이션 제거
-        notificationCenter.removeAllPendingNotificationRequests()   // 보류중인 노티피케이션 제거
+        notificationCenter.removeAllPendingNotificationRequests()
+        // 보류중인 노티피케이션 제거
     }
         
+    
+    
+    func removeSpecificNotification(id:[String]) {
+        notificationCenter.removeDeliveredNotifications(withIdentifiers: id)
+        
+        print("노티피케이션MANAGer 안에서 삭제시 \(id)")
+  
+        
+        
+    }
+    
     // 설정 앱으로 이동
     func openSettings() {
         if let bundle = Bundle.main.bundleIdentifier,

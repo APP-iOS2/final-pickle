@@ -47,8 +47,8 @@ struct TimeMissionSettingView: View {
                     
                     notificationManager.scheduleNotification(
                         localNotification: LocalNotification(identifier: UUID().uuidString,
-                                                             title: "기상 미션 알림",
-                                                             body: "기상 미션을 완료하고 피자조각을 획득하세요.",
+                                                             title: "현실도 피자",
+                                                             body: "기상 미션을 완료하고 피자조각을 획득하세요",
                                                              dateComponents: dateComponent,
                                                              repeats: false,
                                                              type: .calendar)

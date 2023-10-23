@@ -10,6 +10,7 @@ import RealmSwift
 
 // TODO: onAppear Strat Time refresh 변경 - onAppear에서 수정 - 완료
 // TODO: 등록 5글자에서 1글자로 변경 - 완료
+// TODO: 20글자로 추가
 // TODO: Delete 했을시 Alert 뒤로가기로 눌러야지만 뒤로가짐, - 완료
 // TODO: 검은 화면 클릭했을시 뒤로 사라지게 변경해야함 - 완료
 
@@ -17,8 +18,8 @@ import RealmSwift
 // MARK: Ursert 로 강제 수정으로 처리 - 80%
 
 // TODO: 할일 설정 시간을 현재 시간 이후로만 설정할수 있게 변경 - 진행중 - 완료....
-// TODO: Alert 구조 refactoring - 추후 리팩토링
-// TODO: Alert TimerView의 알럿으로 통일하기 - 0%
+// TODO: Alert 구조 refactoring - 추후 리팩토링 진행중
+// TODO: Alert TimerView의 알럿으로 통일하기 - 100%  완료
 
 enum Const: CaseIterable {
     static let ALL: [[String]] = [WELCOME1, WELCOME2, WELCOME3, WELCOME4]
@@ -114,6 +115,7 @@ struct RegisterView: View {
         content.count >= 1
     }
     
+    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
@@ -151,14 +153,22 @@ struct RegisterView: View {
             } else {
                 self.startTimes = Date()  // 시간 onAppear일때 수정
             }
+            
             updateTextField(Const.ALL.randomElement()!)
         }
+        .onChange(of: showSuccessAlert, perform: { if !$0 { resetContents() } })
         .differentTypeAlerts(showFailedAlert: $showFailedAlert,
                              showUpdateEqual: $showUpdateEqual,
                              showUpdateSuccessAlert: $showUpdateSuccessAlert,
                              showSuccessAlert: $showSuccessAlert,
                              successDelete: $successDelete,
                              isShowingEditTodo: $isShowingEditTodo)
+    }
+    
+    private func resetContents() {
+        self.content = ""
+        self.startTimes = Date()
+        self.targetTimes = "1분"
     }
     
     private func targetToTimeString(_ time: TimeInterval) -> String {
@@ -175,10 +185,8 @@ struct RegisterView: View {
             }
         } else {
             if isModify { showUpdateEqual.toggle(); return }
-            
             let flag = isRightContent
             let todo = computedTodo
-            
             if flag { todoStore.add(todo: todo); showSuccessAlert.toggle() }
             else { showFailedAlert.toggle() }
         }
@@ -186,17 +194,19 @@ struct RegisterView: View {
     
     @ViewBuilder
     private var todoTitleInputField: some View {
-        VStack {
-            Text(isModify ? "수정하기" : "할일 추가")
+        VStack(spacing: 0) {
+            Text(isModify ? "수정하기" : "오늘 할일 추가")
                 .font(Font.pizzaTitle2)
                 .bold()
             
             TextField("\(placeHolderText)", text: $content)
-                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .font(Font.pizzaBody)
                 .makeTextField {
                     print("\(content)")
                 }
-                .padding()
+                .padding(.horizontal, 12)
+                .padding(.vertical, 16)
         }
     }
     
@@ -378,38 +388,46 @@ extension RegisterView {
                     title: "실패",
                     alertContent: "1글자 이상 입력해주세요",
                     primaryButtonTitle: "확인",
+                    secondaryButtonTitle: "",
                     primaryAction: { /* 알럿 확인 버튼 액션 */  },
-                    {}
+                    secondaryAction: { }
                 )
                 .failedAlert(
                     isPresented: $showUpdateEqual,
                     title: "실패",
                     alertContent: "같은 내용입니다.",
                     primaryButtonTitle: "확인",
+                    secondaryButtonTitle: "뒤로가기",
                     primaryAction: {   },
-                    {}
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(
                     isPresented: $showUpdateSuccessAlert,
                     title: "수정 성공",
                     alertContent: "성공적으로 수정했습니다",
-                    primaryButtonTitle: "뒤로가기",
-                    primaryAction: { dissmiss() }
+                    primaryButtonTitle: "수정하기",
+                    secondaryButtonTitle: "뒤로가기",
+                    primaryAction: {   },
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(
                     isPresented: $showSuccessAlert,
                     title: "저장 성공",
                     alertContent: "성공적으로 할일을 등록했습니다",
-                    primaryButtonTitle: "뒤로가기",
-                    primaryAction: { dissmiss() }
+                    primaryButtonTitle: "계속 추가하기",
+                    secondaryButtonTitle: "뒤로가기",
+                    primaryAction: {   },
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(   // Success Delete Alert
                     isPresented: $successDelete,
                     title: "삭제 성공",
                     alertContent: "성공적으로 수정했습니다",
                     primaryButtonTitle: "뒤로가기",
+                    secondaryButtonTitle: "",
                     primaryAction: { isShowingEditTodo.toggle() },
-                    { isShowingEditTodo.toggle() }
+                    secondaryAction: { isShowingEditTodo.toggle() },
+                    {  }
                 )
         }
     }
@@ -429,21 +447,11 @@ extension RegisterView {
     }
 }
 
-
-extension Formatter {
-    static let time: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = .init(identifier: "ko_kr")
-        formatter.dateFormat = "HH:mm"
-        return formatter
-    }()
-}
-
 // MARK: Register PickerView extension
 extension RegisterView {
     
     var timeConstraint: ClosedRange<Date> {
-        let value = startTimes.format("yyyy-MM-dd-HH-mm")
+        let value = Date().format("yyyy-MM-dd-HH-mm")
         
         let dates = value.split(separator: "-").map { Int(String($0))! }
         let start: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),

@@ -7,26 +7,38 @@
 
 import SwiftUI
  
-struct MyTextFieldStyle: TextFieldStyle {
-    func _body(configuration: TextField<Self._Label>) -> some View {
-        configuration
-            .tint(Color(.black).opacity(0.4))
-    }
-}
-
 struct TextFieldModifier: ViewModifier {
     
     let completion: () -> Void
     
+    @Environment(\.colorScheme) var scheme
+    
+    private var filteredColor: Color {
+        switch scheme {
+        case .dark:
+            return .secondary
+        case .light:
+            return .lightGray
+        @unknown default:
+            fatalError()
+        }
+    }
+    
     init(completion: @escaping () -> Void) {
         self.completion = completion
     }
-    
+
     func body(content: Content) -> some View {
         content
             .padding(.vertical, 16)
-            .background(RoundedRectangle(cornerRadius: 5).fill(Color.lightGray))
-            .textFieldStyle(MyTextFieldStyle())
+            .padding(.horizontal, 16)
+            .background(filteredColor)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(
+                RoundedRectangle(cornerRadius: 12) // storke
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+            )
+            .tint(Color(.black).opacity(0.4))
             .onSubmit {
                 completion()
             }

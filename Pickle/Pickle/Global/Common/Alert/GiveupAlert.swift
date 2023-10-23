@@ -76,6 +76,8 @@ struct GiveupAlertModifier: ViewModifier {
     }
 }
 
+typealias RegisterAlert = GiveupAlert
+
 struct GiveupAlert: View {
     
     @Binding var isPresented: Bool
@@ -101,24 +103,27 @@ struct GiveupAlert: View {
                 .padding(.bottom, 10)
                 
                 HStack {
-                    
-                    Button {
-                        secondaryAction()
-                        isPresented = false
-                    } label: {
-                        Text(secondaryButton)
-                            .foregroundColor(.textGray)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 5)
+                    if !secondaryButton.isEmpty {
+                        Button {
+                            secondaryAction()
+                            isPresented = false
+                        } label: {
+                            Text(secondaryButton)
+                                .foregroundColor(.textGray)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 5)
+                        }
+                        .padding(.horizontal, 10)
                     }
-                    .padding(.horizontal, 10)
                     
                     Button {
                         primaryAction(primaryparameter)
                         isPresented = false
                     } label: {
-                        Text(primaryButtonTitle)                            
+                        Text(primaryButtonTitle)
                             .foregroundColor(.pepperoniRed)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 5)
                     }
@@ -133,7 +138,7 @@ struct GiveupAlert: View {
         .frame(width: .screenWidth * 0.85, height: .screenWidth * 0.5)
         .background(
             RoundedRectangle(cornerRadius: 30)
-                .stroke(.clear)                
+                .stroke(.primary)                
                 .background(
                     RoundedRectangle(cornerRadius: 30)
                         .fill(.primary)

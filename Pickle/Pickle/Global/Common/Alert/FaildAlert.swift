@@ -13,7 +13,9 @@ extension View {
         title: String,
         alertContent: String,
         primaryButtonTitle: String,
+        secondaryButtonTitle: String,
         primaryAction: @escaping () -> Void,
+        secondaryAction: (() -> Void)? = nil,
         _ externalTapAction: (() -> Void)?  = nil
     ) -> some View {
         return modifier(
@@ -22,7 +24,9 @@ extension View {
                 title: title,
                 alertContent: alertContent,
                 primaryButtonTitle: primaryButtonTitle,
+                secondaryButtonTitle: secondaryButtonTitle,
                 primaryAction: primaryAction,
+                secondaryAction: secondaryAction,
                 externalAction: externalTapAction
             )
         )
@@ -33,7 +37,9 @@ extension View {
         title: String,
         alertContent: String,
         primaryButtonTitle: String,
+        secondaryButtonTitle: String,
         primaryAction: @escaping () -> Void,
+        secondaryAction: (() -> Void)? = nil,
         _ externalTapAction: (() -> Void)? = nil
     ) -> some View {
         return modifier(
@@ -42,7 +48,9 @@ extension View {
                 title: title,
                 alertContent: alertContent,
                 primaryButtonTitle: primaryButtonTitle,
+                secondaryButtonTitle: secondaryButtonTitle,
                 primaryAction: primaryAction,
+                secondaryAction: secondaryAction,
                 externalAction: externalTapAction
             )
         )
@@ -56,7 +64,9 @@ struct FaildAlertModifier: ViewModifier {
     let title: String
     let alertContent: String
     let primaryButtonTitle: String
+    let secondaryButtonTitle: String
     let primaryAction: () -> Void
+    let secondaryAction: (() -> Void)?
     let externalAction: (() -> Void)?
     
     func body(content: Content) -> some View {
@@ -76,15 +86,16 @@ struct FaildAlertModifier: ViewModifier {
                                 dissmiss()
                             }
                         }
-                    
-                    FaildAlert(
-                        isPresented: self.$isPresented,
-                        title: self.title,
-                        content: alertContent,
-                        primaryButtonTitle: self.primaryButtonTitle,
-                        primaryAction: self.primaryAction
-                    )
+                    RegisterAlert(isPresented: $isPresented,
+                                  title: title,
+                                  contents: alertContent,
+                                  primaryButtonTitle: primaryButtonTitle,
+                                  primaryAction: { _ in primaryAction() },
+                                  primaryparameter: 0,
+                                  secondaryButton: secondaryButtonTitle,
+                                  secondaryAction: secondaryAction ?? { dissmiss() })
                     .transition(.move(edge: .bottom).combined(with: .opacity))
+                    
                 }
             }
             .animation(
@@ -114,6 +125,7 @@ struct FaildAlert: View {
             
             Text("\(content)")
                 .font(.pizzaBody)
+                .foregroundStyle(.primary)
             
             Button {
                 primaryAction()
@@ -121,6 +133,7 @@ struct FaildAlert: View {
             } label: {
                 Text(primaryButtonTitle)
                     .font(.title3)
+                    .foregroundStyle(.primary)
                     .bold()
                     .padding(.vertical, 8)
                     .frame(maxWidth: .infinity)
@@ -131,10 +144,10 @@ struct FaildAlert: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 18)
         .frame(width: 300)
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .fill(.white)
-                )
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .fill(.white)
+        )
         
     }
 }
@@ -146,7 +159,9 @@ struct FaildAlert: View {
                                title: "",
                                alertContent: "",
                                primaryButtonTitle: "",
+                               secondaryButtonTitle: "", 
                                primaryAction: { },
+                               secondaryAction: nil,
                                externalAction: nil)
         )
 }

@@ -29,6 +29,7 @@ struct Pizza: Identifiable {
 }
 
 extension Pizza: Codable { }
+extension Pizza: Equatable {}
 
 extension Pizza {
     
@@ -47,6 +48,10 @@ extension Pizza {
         sweetPotato,
         margherita
     ]
+    
+    static func filtered(_ name: String) -> Pizza {
+        allCasePizza.filter { $0.name == name}.first!
+    }
     
     static let pepperoni: Pizza = .init(name: "페퍼로니 피자",
                                              image: "pepperoni",

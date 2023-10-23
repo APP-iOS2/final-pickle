@@ -10,10 +10,10 @@ import Foundation
 protocol TodoRepositoryProtocol: Dependency {
     func fetchTodo(sorted: Sorted, _ completion: @escaping ([Todo]) -> Void)
     func create(_ completion: @escaping (TodoObject) -> Void)
-    func saveTodo(todo: Todo) throws
+    func saveTodo(todo: Todo) throws -> TodoObject
     func deleteTodo(model: Todo)
     func deleteAll()
-    func updateTodo(todo: Todo)
+    func updateTodo(todo: Todo) -> TodoObject
 }
 
 
@@ -37,12 +37,12 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
     }
     
-    func saveTodo(todo: Todo) throws {
-        Log.debug("todoValue : \(todo)")
+    func saveTodo(todo: Todo) throws -> TodoObject {
         let object = todo.mapToPersistenceObject()
         
         do {
             try super.save(object: object)
+            return object
         } catch {
             Log.error("error \(error)")
             throw RealmError.saveFailed
@@ -67,12 +67,14 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
     }
     
-    func updateTodo(todo: Todo) {
+    func updateTodo(todo: Todo) -> TodoObject {
         let object = todo.mapToPersistenceObject()
         do {
             try super.update(object: object)
+            return object
         } catch {
             Log.error("error: \(error)")
+            assert(false)
         }
     }
 }

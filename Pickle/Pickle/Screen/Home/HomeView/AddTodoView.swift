@@ -10,6 +10,7 @@ import SwiftUI
 struct AddTodoView: View {
     
     @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var notificationManager: NotificationManager
     @Binding var isShowingEditTodo: Bool
     @Binding var todo: Todo
     @State private var successDelete: Bool = false
@@ -36,6 +37,10 @@ struct AddTodoView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         todoStore.delete(todo: todo)
+                        
+                        //4번 할일이 삭제 되었을 경우, 해당 등록된 알림도 삭제해야함. 해당 할일의 아이디 넣어줘야함
+                        notificationManager.removeSpecificNotification(id: [todo.id])
+                        
                         successDelete.toggle()
                     } label: {
                         Text("삭제")

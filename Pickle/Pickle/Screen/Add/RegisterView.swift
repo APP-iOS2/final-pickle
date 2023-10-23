@@ -40,6 +40,7 @@ struct RegisterView: View {
     }
     
     @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var notificationManager: NotificationManager
     
     @Binding var willUpdateTodo: Todo
     @Binding var successDelete: Bool
@@ -179,15 +180,23 @@ struct RegisterView: View {
     private func todoAddUpdateAction() {
         if isModify && notEqualContent {
             Task {
-                todoStore.update(todo: computedTodo)
+                let updatedTodo = todoStore.update(todo: computedTodo)
                 _ = await todoStore.fetch()
+                todoStore.fixNotification(computedTodo: updatedTodo,
+                                          notificationManager: notificationManager)
                 showUpdateSuccessAlert.toggle()
             }
         } else {
             if isModify { showUpdateEqual.toggle(); return }
             let flag = isRightContent
             let todo = computedTodo
-            if flag { todoStore.add(todo: todo); showSuccessAlert.toggle() }
+            
+            if flag {
+                let addedTodo = todoStore.add(todo: todo)
+                todoStore.notificationAdding(todo: addedTodo,
+                                             notificationManager: notificationManager)
+                showSuccessAlert.toggle()
+            }
             else { showFailedAlert.toggle() }
         }
     }
@@ -505,5 +514,5 @@ extension RegisterView {
                  successDelete: .constant(false),
                  isShowingEditTodo: .constant(false),
                  isModify: true)
-        .environmentObject(TodoStore())
+    .environmentObject(TodoStore())
 }

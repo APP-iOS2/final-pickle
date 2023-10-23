@@ -34,6 +34,7 @@ extension TimeMission {
                     date: object.date,
                     wakeupTime: object.wakeupTime,
                     changeWakeupTime: object.changeWakeupTime)
+
     }
 }
 

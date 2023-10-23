@@ -33,7 +33,6 @@ struct BackgroundModifier: ViewModifier {
     }
 }
 
-
 enum Theme {
     static func colorMode(_ scheme: ColorScheme) -> Color {
         let lightColor = Color.white

@@ -111,7 +111,7 @@ struct PizzaSummaryView: View {
             LazyVGrid(columns: columns) {
                 
                 ForEach(userStore.user.pizzas.indices) { pizza in
-                    PizzaItemView(pizza: $userStore.user.pizzas[pizza] )
+                    PizzaItemView(pizza: $userStore.user.pizzas[pizza],  currentPizza: .constant(.defaultPizza) )
                         .frame(width: CGFloat.screenWidth / 3 - 40)
                         .padding(.horizontal, 10)
                     //                       .onTapGesture {

@@ -23,6 +23,7 @@ struct PizzaSelectedView: View {
     
     @Binding var pizzas: [Pizza]
     @Binding var seletedPizza: Pizza
+    @Binding var currentPizza: Pizza
     @Binding var isPizzaPuchasePresented: Bool
     
     var body: some View {
@@ -37,12 +38,17 @@ struct PizzaSelectedView: View {
             
             LazyVGrid(columns: columns) {
                 ForEach(pizzas.indices, id: \.self) { index in
-                    PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potato))
+                    PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potato),
+                                  currentPizza: $currentPizza)
                         .frame(width: CGFloat.screenWidth / 3 - 40)
                         .padding(.horizontal, 10)
                         .onTapGesture {
+                            var seleted = seletedPizza
                             seletedPizza = pizzas[safe: index] ?? .defaultPizza
-                            isPizzaPuchasePresented.toggle()
+                            if seletedPizza == seleted,
+                               seletedPizza.lock {
+                                isPizzaPuchasePresented.toggle()
+                            }
                     }
                 }
             }
@@ -55,6 +61,16 @@ struct PizzaSelectedView: View {
 struct PizzaItemView: View {
     
     @Binding var pizza: Pizza
+    @Binding var currentPizza: Pizza
+    
+    var selectedTrigger: Bool {
+        if currentPizza.name == pizza.name,
+           !currentPizza.lock {
+            return true
+        } else {
+            return false
+        }
+    }
     
     var body: some View {
         VStack {
@@ -76,6 +92,10 @@ struct PizzaItemView: View {
                     .overlay {
                         Circle()
                             .fill(pizza.lock ? .black.opacity(0.4) : .clear )
+                        if selectedTrigger {
+                            Circle()
+                                .stroke(Color.pickle, lineWidth: 3)
+                        }
                     }
             }
             .frame(width: CGFloat.screenWidth / 3 - 40,
@@ -83,6 +103,8 @@ struct PizzaItemView: View {
             
             Text("\(pizza.name)")
                 .font(.pizzaDescription)
+                .foregroundStyle(selectedTrigger ? Color.pickle : .primary)
+                .tint(selectedTrigger ? .pickle : .primary)
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
         }
@@ -98,6 +120,7 @@ struct PizzaItemView: View {
                       seletedPizza: .constant(Pizza(name: "고구마", 
                                                     image: "baconPotato",
                                                     lock: false,
-                                                    createdAt: Date())),
+                                                    createdAt: Date())), 
+                      currentPizza: .constant(.baconPotato),
                       isPizzaPuchasePresented: .constant(false))
 }

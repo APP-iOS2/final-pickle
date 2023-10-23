@@ -119,11 +119,6 @@ class NotificationManager: NSObject, ObservableObject, UNUserNotificationCenterD
     
     func removeSpecificNotification(id:[String]) {
         notificationCenter.removeDeliveredNotifications(withIdentifiers: id)
-        
-        print("노티피케이션MANAGer 안에서 삭제시 \(id)")
-  
-        
-        
     }
     
     // 설정 앱으로 이동

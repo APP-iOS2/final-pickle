@@ -11,21 +11,29 @@ struct NavigationBar: ViewModifier {
     @Environment(\.dismiss) var dismiss
     
     let title: String
-    let visible: Bool
+    @Binding var tabBarvisibility: Visibility
     
     func body(content: Content) -> some View {
         content
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        dismiss()
+                        withAnimation {
+                            dismiss()
+                            tabBarvisibility = .visible
+                        }
                     } label: {
                         Image(systemName: "chevron.left")
                     }
                     .foregroundColor(.primary)
                 }
             }
-            .toolbar(visible ? .visible : .hidden, for: .tabBar)
+            .onAppear {
+                withAnimation {
+                    tabBarvisibility = .hidden
+                }
+            }
+            .toolbar(tabBarvisibility, for: .tabBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(title)
             .navigationBarBackButtonHidden()

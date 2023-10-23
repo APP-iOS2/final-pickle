@@ -9,17 +9,17 @@ import SwiftUI
 
 // TODO: 피자 8개를 채웠을때 애니메이션 팝업 OR 다른 액션 고려하기
 // TODO: HomeView 에서 현재 ready 상태만 보여주는 상태 -> 구분하기 다른 상태 고려 GiveUp, done(complte), ongoing
-        // complete과 done의 차이는 ?
+// complete과 done의 차이는 ?
 
 // TODO: HomeView TableView에서 자체 삭제 메소드 제공해야하는지 여부
 // TODO: TabView Dissmiss 등록뷰와 미션뷰에서 나올때 애니메이션 없이 onAppear일때 보여짐 -> animation 적용여부 결정
 
 // TODO: HomeView Pizza View 선택 할수 있게 구성하기
-    // 1-1. lock이 아니라면 -> Home에 있는 피자를 변경해야 함
-    // 1-2. lock일 경우에는 토스트 메시지를 보여줘야 하나?
+// 1-1. lock이 아니라면 -> Home에 있는 피자를 변경해야 함
+// 1-2. lock일 경우에는 토스트 메시지를 보여줘야 하나?
 
 struct HomeView: View {
-
+    
     init() {
         navigationAppearenceSetting()
     }
@@ -30,6 +30,7 @@ struct HomeView: View {
     
     @State private var goalProgress: Double = 0.0
     @State private var animatedText = ""
+    
     @State private var currentIndex = 0
     let fullText = "할일을 완료하여 피자를 모아보아요"
     
@@ -40,7 +41,7 @@ struct HomeView: View {
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     @State private var seletedTodo: Todo = Todo.sample
     @State private var seletedPizza: Pizza = Pizza.defaultPizza
-
+    
     typealias PizzaImage = String
     @State private var currentPizzaImg: PizzaImage = "margherita"
     @State private var updateSignal: Bool = false
@@ -61,9 +62,9 @@ struct HomeView: View {
             VStack {
                 makePizzaView(pizza: currentPizzaImg)                 /* 피자 뷰 */
                 pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
-                                                
-                                                // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
-                                                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함. - ready 가 없을때로 변경 - 필터로 완료
+                
+                // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
+                // TODO: 현재 할일 목록이 없을때 나타낼 플레이스 홀더 내용이 필요함. - ready 가 없을때로 변경 - 필터로 완료
                 if todoStore.readyTodos.isEmpty {
                     VStack(spacing: 16) {
                         Image("picklePizza")
@@ -74,21 +75,21 @@ struct HomeView: View {
                         Text("오늘 할일을 추가해 주세요!")
                             .frame(maxWidth: .infinity)
                             .font(.pizzaRegularSmallTitle)
-//                            .padding(.top, 30)
+                        //                            .padding(.top, 30)
                     }
                     .padding(.bottom)
                 } else {
                     todosTaskTableView          // 할일 목록 테이블 뷰
                 }
             }.padding(.vertical, 20)
-                
+            
         }
         .navigationSetting()                                    /* 뷰 네비게이션 셋팅 custom modifier */
-                                                                /* leading - (MissionView), trailing - (RegisterView) */
+        /* leading - (MissionView), trailing - (RegisterView) */
         
         .fullScreenCover(isPresented: $isShowingEditTodo,       /* fullScreen cover // TODO: AddTodoView( 할일 수정뷰 - 추후 네이밍 변경) */
                          seletedTodo: $seletedTodo)             /* $isShowingEditTodo - 당연히 시트 띄우는 binding값 */
-                                                                /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
+        /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
         
         .sheetModifier(isPresented: $isPizzaSeleted,            /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
                        isPurchase: $isPizzaPuchasePresented,
@@ -104,8 +105,8 @@ struct HomeView: View {
         } navAction: {                                          /* 2. 피자 완성하러 가기 액션 */
             Log.debug("피자 완성하러 가기 액션")
             currentPizzaImg = seletedPizza.image    //MARK: Seleted Pizza 를 완성하러 가기 클릭하면 이미지 변신
-                                                                // MARK: 완성하러 가기 액션은 변경을 시켜야 하나? 일단 해봐 ->
-                                                                // TODO: Navigation To 완성액션으로
+            // MARK: 완성하러 가기 액션은 변경을 시켜야 하나? 일단 해봐 ->
+            // TODO: Navigation To 완성액션으로
         }
         .onAppear { /* */
             updateSignal.toggle()
@@ -138,7 +139,7 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
-//            tempButton
+            //            tempButton
             
             Text("\(pizzaTaskSlice)")
                 .font(.chab)
@@ -147,6 +148,8 @@ extension HomeView {
             Text(animatedText)
                 .font(.pizzaHeadline)
                 .onAppear {
+                    currentIndex = 0
+                    animatedText = ""
                     startTyping()
                 }
                 .padding(.vertical, 8)
@@ -197,7 +200,7 @@ extension View {
         modifier(HomeView.SheetModifier(isPresented: isPresented,
                                         isPizzaPuchasePresented: isPurchase,
                                         seletedPizza: seletedPizza,
-                                       updateSignal: updateSignal))
+                                        updateSignal: updateSignal))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -291,7 +294,7 @@ extension HomeView {
             let index = fullText.index(fullText.startIndex, offsetBy: currentIndex)
             animatedText.append(fullText[index])
             currentIndex += 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
                 startTyping()
             }
         }
@@ -319,7 +322,7 @@ private struct NavigationModifier: ViewModifier {
                              successDelete: .constant(false),
                              isShowingEditTodo: .constant(false),
                              isModify: false)
-                    .backKeyModifier(visible: false)
+                .backKeyModifier(visible: false)
             } label: {
                 Image(systemName: "plus.circle")
                     .foregroundStyle(Color.pickle)
@@ -349,9 +352,9 @@ struct HomeView_Previews: PreviewProvider {
             let user = UserStore()
             let mission = MissionStore()
             let _ = PreviewsContainer.dependencySetting(pizza: pizza,
-                                                    user: user,
-                                                    todo: todo,
-                                                    mission: mission)
+                                                        user: user,
+                                                        todo: todo,
+                                                        mission: mission)
             HomeView()
                 .environmentObject(todo)
                 .environmentObject(pizza)

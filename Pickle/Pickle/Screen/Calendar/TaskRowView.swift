@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TaskRowView: View {
     
+    @State private var isShowingReportSheet: Bool = false
+    
     var task: Todo
     
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
@@ -38,6 +40,29 @@ struct TaskRowView: View {
     
     var body: some View {
         
+        if task.status == .done || task.status == .giveUp {
+            Button(action: {
+                isShowingReportSheet = true
+            }, label: {
+                taskRowView
+            })
+            .foregroundColor(.primary)
+        } else {
+            taskRowView
+        }
+        
+    }
+    @ViewBuilder
+    private var taskContent: some View {
+        Text(task.content)
+            .font(.pizzaStoreSmall)
+            .foregroundStyle(.primary)
+            .fontWeight(.regular)
+        
+    }
+    
+    @ViewBuilder
+    private var taskRowView: some View {
         HStack(alignment: .center, spacing: 5) {
             taskSymbol
                 .foregroundStyle(Color.pickle)
@@ -47,12 +72,8 @@ struct TaskRowView: View {
             //    .background(.white, in: .circle)
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(task.content)
-                    .font(.pizzaStoreSmall)
-                    .foregroundStyle(.primary)
-                    .fontWeight(.regular)
+                taskContent
                 //.strikethrough(task.status == .giveUp, pattern: .solid, color: .black)
-                
             }
             
             //                if task.startTime.isSameHour {
@@ -61,7 +82,7 @@ struct TaskRowView: View {
             //                        .fontWeight(.semibold)
             //                        .foregroundStyle(indicatorColor)
             //                }
-   
+            
             Label(task.startTime.format(timeFormat), systemImage: "clock")
                 .font(.caption)
                 .foregroundColor(indicatorColor)
@@ -72,8 +93,14 @@ struct TaskRowView: View {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
+        .sheet(isPresented: $isShowingReportSheet) {
+            TimerReportView(isShowingReportSheet: $isShowingReportSheet,
+                            isShowingTimerView: .constant(false),
+                            todo: task)
+        }
         
     }
+    
 }
 
 #Preview {

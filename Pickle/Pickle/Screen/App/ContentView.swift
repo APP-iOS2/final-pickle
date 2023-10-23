@@ -46,6 +46,16 @@ struct ContentView: View {
                     .environment(\.symbolVariants, .fill)
             }.tag(1)
             
+            
+            NavigationStack {
+               PizzaSummaryView()
+            }
+            .tabItem {
+                Label("통계", systemImage: "list.clipboard.fill")
+                    .environment(\.symbolVariants, .fill)
+            }
+            .tag(2)
+            
             NavigationStack {
                 SettingView()
             }
@@ -53,16 +63,8 @@ struct ContentView: View {
                 Label("설정", systemImage: "gearshape")
                     .environment(\.symbolVariants, .fill)
             }
-            .tag(2)
-            
-            NavigationStack {
-               PizzaSummaryView()
-            }
-            .tabItem {
-                Label("통계", systemImage: "pencil")
-                    .environment(\.symbolVariants, .fill)
-            }
             .tag(3)
+        
         }
         .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
         .onAppear {

@@ -7,6 +7,24 @@
 
 import Foundation
 
+extension CurrentPizza: MappableProtocol {
+    typealias PersistenceType = CurrentPizzaObject
+    
+    func mapToPersistenceObject() -> CurrentPizzaObject {
+        CurrentPizzaObject(currentPizzaCount: self.currentPizzaCount,
+                           currentPizzaSlice: self.currentPizzaSlice,
+                           pizza: self.pizza.name,
+                           createdAt: self.createdAt)
+    }
+    
+    static func mapFromPersistenceObject(_ object: CurrentPizzaObject) -> CurrentPizza {
+        CurrentPizza(currentPizzaCount: object.currentPizzaCount,
+                     currentPizzaSlice: object.currentPizzaSlice,
+                     pizza: Pizza.filtered(object.pizza),
+                     createdAt: object.createdAt)
+    }
+    
+}
 extension User: MappableProtocol {
     typealias PersistenceType = UserObject
     
@@ -19,6 +37,7 @@ extension User: MappableProtocol {
                               currentPizzaCount: self.currentPizzaCount,
                               currentPizzaSlice: self.currentPizzaSlice,
                               pizzaList: value,
+                              currentPizzaList: [],
                               createdAt: self.createdAt)
         } else {
             return UserObject(id: self.id,
@@ -26,6 +45,7 @@ extension User: MappableProtocol {
                               currentPizzaCount: self.currentPizzaCount,
                               currentPizzaSlice: self.currentPizzaSlice,
                               pizzaList: value,
+                              currentPizzaList: [],
                               createdAt: self.createdAt)
         }
     }
@@ -35,7 +55,8 @@ extension User: MappableProtocol {
              nickName: object.nickName,
              currentPizzaCount: object.currentPizzaCount,
              currentPizzaSlice: object.currentPizzaSlice,
-             pizzas: object.pizza.map { Pizza.mapFromPersistenceObject($0) },
+             pizzas: object.pizza.map { Pizza.mapFromPersistenceObject($0) }, 
+             currentPizzas: object.currentPizzaList.map { CurrentPizza.mapFromPersistenceObject($0) },
              createdAt: object.createdAt)
     }
 }
@@ -73,6 +94,7 @@ extension User: Equatable {
              nickName: self.nickName,
              currentPizzaCount: self.currentPizzaSlice,
              currentPizzaSlice: self.currentPizzaSlice,
+             currentPizzas: self.currentPizzas, 
              createdAt: self.createdAt)
     }
     

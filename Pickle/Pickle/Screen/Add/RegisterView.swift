@@ -378,38 +378,46 @@ extension RegisterView {
                     title: "실패",
                     alertContent: "1글자 이상 입력해주세요",
                     primaryButtonTitle: "확인",
+                    secondaryButtonTitle: "",
                     primaryAction: { /* 알럿 확인 버튼 액션 */  },
-                    {}
+                    secondaryAction: { }
                 )
                 .failedAlert(
                     isPresented: $showUpdateEqual,
                     title: "실패",
                     alertContent: "같은 내용입니다.",
                     primaryButtonTitle: "확인",
+                    secondaryButtonTitle: "뒤로가기",
                     primaryAction: {   },
-                    {}
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(
                     isPresented: $showUpdateSuccessAlert,
                     title: "수정 성공",
                     alertContent: "성공적으로 수정했습니다",
-                    primaryButtonTitle: "뒤로가기",
-                    primaryAction: { dissmiss() }
+                    primaryButtonTitle: "수정하기",
+                    secondaryButtonTitle: "뒤로가기",
+                    primaryAction: {   },
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(
                     isPresented: $showSuccessAlert,
                     title: "저장 성공",
                     alertContent: "성공적으로 할일을 등록했습니다",
-                    primaryButtonTitle: "뒤로가기",
-                    primaryAction: { dissmiss() }
+                    primaryButtonTitle: "계속 추가하기",
+                    secondaryButtonTitle: "뒤로가기",
+                    primaryAction: {   },
+                    secondaryAction: { dissmiss() }
                 )
                 .successAlert(   // Success Delete Alert
                     isPresented: $successDelete,
                     title: "삭제 성공",
                     alertContent: "성공적으로 수정했습니다",
                     primaryButtonTitle: "뒤로가기",
+                    secondaryButtonTitle: "",
                     primaryAction: { isShowingEditTodo.toggle() },
-                    { isShowingEditTodo.toggle() }
+                    secondaryAction: { isShowingEditTodo.toggle() },
+                    {  }
                 )
         }
     }

@@ -21,12 +21,14 @@ class RealmMigrator {
     
     // MARK: 마이그레이션 DOCUMENT 문서화 하기
     func updateSchema() {
-        let config = Realm.Configuration(fileURL: URL.inDocumentsFolder("main.realm"), schemaVersion: 3) { migration, oldSchemaVersion in
+        let config = Realm.Configuration(fileURL: URL.inDocumentsFolder("main.realm"), 
+                                         schemaVersion: 3, migrationBlock: { migration, oldSchemaVersion in
             print("migration: \(migration)")
             print("oldSchemaVersion : \(oldSchemaVersion)")
+            
             if oldSchemaVersion < 2 { migrationFromV1ToV2(migration: migration) }
             if oldSchemaVersion < 3 { migrationFromV2ToV3(migration: migration) }
-        }
+        }, deleteRealmIfMigrationNeeded: true)
         
         func migrationFromV1ToV2(migration: Migration) {
             migration.enumerateObjects(ofType: UserObject.className()) { oldObject, newObject in

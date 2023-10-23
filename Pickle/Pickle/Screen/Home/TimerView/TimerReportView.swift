@@ -13,6 +13,7 @@ struct TimerReportView: View {
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var timerVM: TimerViewModel
+    @EnvironmentObject var userStore: UserStore
     
     
     @Binding var isShowingReportSheet: Bool
@@ -100,6 +101,13 @@ struct TimerReportView: View {
             }
             
             Button(action: {
+                if todo.status == .done{
+                    do {
+                        try userStore.addPizzaSlice(slice: 1)
+                    } catch {
+                        Log.error("❌피자 조각 추가 실패❌")
+                    }
+                }
                 timerVM.timerVMreset()
                 isShowingTimerView = false
                 isShowingReportSheet = false
@@ -146,6 +154,7 @@ struct TimerReportView_Previews: PreviewProvider {
                                    spendTime: 5400,
                                    status: .giveUp))
         .environmentObject(TodoStore())
+        .environmentObject(UserStore())
         
     }
 }

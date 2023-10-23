@@ -105,6 +105,7 @@
 		B0CB77662AE57FB70022491A /* MySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB77652AE57FB70022491A /* MySceneDelegate.swift */; };
 		B0CB776C2AE679DA0022491A /* CompleteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB776B2AE679DA0022491A /* CompleteAlert.swift */; };
 		B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
+		B77A29A82AE6955200BB8838 /* PizzaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */; };
 		B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */; };
 		B7C1D0A52AD62EB9000420A9 /* MonthlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */; };
 		B7C341AD2AC167F800744EB7 /* CalendarSampleTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */; };
@@ -224,6 +225,7 @@
 		B0CB77652AE57FB70022491A /* MySceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySceneDelegate.swift; sourceTree = "<group>"; };
 		B0CB776B2AE679DA0022491A /* CompleteAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteAlert.swift; sourceTree = "<group>"; };
 		B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaCollectionView.swift; sourceTree = "<group>"; };
 		B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSummaryView.swift; sourceTree = "<group>"; };
 		B7C1D0A42AD62EB9000420A9 /* MonthlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyView.swift; sourceTree = "<group>"; };
 		B7C341AC2AC167F800744EB7 /* CalendarSampleTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSampleTask.swift; sourceTree = "<group>"; };
@@ -665,6 +667,7 @@
 			isa = PBXGroup;
 			children = (
 				B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */,
+				B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */,
 			);
 			path = PizzaSummary;
 			sourceTree = "<group>";
@@ -852,6 +855,7 @@
 				A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */,
 				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
 				96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */,
+				B77A29A82AE6955200BB8838 /* PizzaCollectionView.swift in Sources */,
 				965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */,
 				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,

@@ -141,7 +141,9 @@ struct SettingView: View {
                             .padding(.trailing)
                         
                         Text("앱 정보")
+                            .foregroundColor(.primary)
                     }
+                    
                 }
                 
                 HStack {

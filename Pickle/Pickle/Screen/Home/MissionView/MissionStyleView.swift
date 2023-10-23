@@ -428,6 +428,8 @@ struct BehaviorMissionStyleView: View {
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
         TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
+            .environmentObject(MissionStore())
+            .environmentObject(UserStore())
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "",
                                                                             title: "",
                                                                             status: .ready,
@@ -436,7 +438,10 @@ struct MissionStyle_Previews: PreviewProvider {
                                                                             date: Date())),
                                  showsAlert: .constant(false),
                                  healthKitStore: HealthKitStore())
+        .environmentObject(MissionStore())
+        .environmentObject(UserStore())
         MissionView()
             .environmentObject(MissionStore())
+            .environmentObject(UserStore())
     }
 }

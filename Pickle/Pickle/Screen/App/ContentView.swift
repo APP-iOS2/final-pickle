@@ -14,7 +14,6 @@ struct ContentView: View {
     @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var missionStore: MissionStore
-    
     private var healthKitStore: HealthKitStore = HealthKitStore()
     
     var selectedScheme: ColorScheme? {

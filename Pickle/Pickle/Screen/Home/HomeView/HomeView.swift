@@ -166,7 +166,7 @@ struct HomeView: View {
                 }
             }
         })
-        .completePizzaAlert(isPresented: $showCompleteAlert, pizzaName: currentPizzaImg, title: "축하합니다", contents: seletedPizza.name)
+        .completePizzaAlert(isPresented: $showCompleteAlert, pizzaName: seletedPizza.image, title: "축하합니다", contents: seletedPizza.name)
         
         .onChange(of: seletedPizza,
                   perform: { pizza in

@@ -1,3 +1,4 @@
+
 //
 //  TimerView.swift
 //  Pickle
@@ -65,11 +66,12 @@ struct TimerView: View {
             timerVM.makeRandomSaying()
             timerVM.fetchTodo(todo: todo)
             print("\(timerVM.wiseSaying)")
+            print("\(timerVM.timeRemaining)")
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet,
-                            isShowingTimerView: $isShowingTimerView, 
+                            isShowingTimerView: $isShowingTimerView,
                             todo: timerVM.todo)
                 .interactiveDismissDisabled()
         }
@@ -242,7 +244,7 @@ extension TimerView {
                 .rotationEffect(.degrees(-90))
             
             if isStart {
-                if timerVM.timeRemaining != 0 {
+                if timerVM.timeRemaining > 0 {
                     Text(String(format: "%g", timerVM.timeRemaining))
                         .foregroundColor(.pickle)
                         .font(.pizzaTimerNum)
@@ -265,9 +267,11 @@ extension TimerView {
                         .foregroundColor(.pickle)
                         .font(.pizzaTimerNum)
                         .onReceive(timer) { _ in
-                            if !isComplete {
+                            if !isComplete || timerVM.isPuase {
                                 timerVM.timeRemaining -= 1
+                                print("TimerView_timerRemaing:\(timerVM.timeRemaining)")
                                 timerVM.spendTime += 1
+                                print("TimerView_SpendTime:\(timerVM.spendTime)")
                                 
                                 if timerVM.spendTime > completeLimit {
                                     isDisabled = false
@@ -284,7 +288,7 @@ extension TimerView {
                             .foregroundColor(.pickle)
                             .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
-                                if !isStart && !isComplete {
+                                if (!isStart && !isComplete) || timerVM.isPuase {
                                     timerVM.timeExtra += 1
                                     timerVM.spendTime += 1
                                 }
@@ -390,3 +394,4 @@ struct TimerView_Previews: PreviewProvider {
         }
     }
 }
+

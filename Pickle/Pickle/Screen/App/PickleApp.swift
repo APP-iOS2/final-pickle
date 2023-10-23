@@ -150,9 +150,19 @@ struct PickleApp: App {
         if newScene == .background {
             print("BACKGROUD")
             
+            timerVM.isPuase = true
             timerVM.backgroundTimeStemp = Date()
             print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
             timerVM.fromBackground = true
+            
+            print("BACKGROUD_timeRemaining:\(timerVM.timeRemaining)")
+            
+            timerVM.backgroundTimeRemain = timerVM.timeRemaining
+            print("BACKGROUD_timeRemain:\(timerVM.backgroundTimeRemain)")
+            timerVM.backgroundSpendTime = timerVM.spendTime
+            
+            timerVM.backgroundTimeExtra = timerVM.timeExtra
+            
         }
         if newScene == .active {
             print("ACTIVE")
@@ -167,11 +177,17 @@ struct PickleApp: App {
                 print("currentTime:\(currentTime) / Date(): \(Date())")
                 
                 var diff = currentTime.timeIntervalSince(timerVM.backgroundTimeStemp)
-                print("diff: \(TimeInterval(diff))")
+                print("ActiveDiff: \(TimeInterval(diff))")
+                timerVM.timeRemaining = timerVM.backgroundTimeRemain
+                print("ActiveTimeRemaining: \(timerVM.timeRemaining)")
                 
-                print("timeRemaining: \(timerVM.timeRemaining)")
-                
+                timerVM.spendTime = timerVM.backgroundSpendTime
+                print("ActiveSpendTime: \(timerVM.spendTime)")
+            
                 timerVM.spendTime += diff
+                print("afterCalc:SpendTime\(timerVM.spendTime)")
+                
+                timerVM.timeExtra = timerVM.backgroundTimeExtra
                 
                 if timerVM.timeRemaining > 0 {
                     if timerVM.timeRemaining > diff {
@@ -184,7 +200,11 @@ struct PickleApp: App {
                 } else {
                     timerVM.timeExtra += diff
                 }
+                print("afterCalcTimeRemaining:\(timerVM.timeRemaining)")
+                
                 timerVM.fromBackground = false
+                timerVM.isPuase = false
+               
             }
         }
     }

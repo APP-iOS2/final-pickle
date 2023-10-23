@@ -69,12 +69,13 @@ final class TodoStore: ObservableObject {
         }
     }
     
-    func add(todo: Todo) {
+    func add(todo: Todo) -> Todo {
         do {
-            try repository.saveTodo(todo: todo)
-            todos.append(todo)
+            let object = try repository.saveTodo(todo: todo)
+            return Todo.mapFromPersistenceObject(object)
         } catch {
             Log.error("failed")
+            assert(false)
         }
     }
     
@@ -88,9 +89,10 @@ final class TodoStore: ObservableObject {
     func deleteAll(todo: Todo) {
         repository.deleteAll()
     }
-
-    func update(todo: Todo) {
-        repository.updateTodo(todo: todo)
+    
+    func update(todo: Todo) -> Todo {
+        let object = repository.updateTodo(todo: todo)
+        return Todo.mapFromPersistenceObject(object)
     }
     
     func updateStatus(status: TodoStatus) {
@@ -102,5 +104,41 @@ final class TodoStore: ObservableObject {
         repository.create { value in
             Log.debug(value)
         }
+    }
+    
+    func fixNotification(computedTodo: Todo,
+                         notificationManager: NotificationManager) {
+        //할일의 시작시간 -3분에 알람을 알려줄 시간 변수
+        let fixedNotificationTime = Calendar.current.dateComponents([.hour, .minute], from: computedTodo.startTime.adding(minutes: -3))
+        Log.error("computedTodo.id: \(computedTodo.id)")
+        // 2번 만약 처음 등록한 할일의 시작시간과 수정한 할일의 시작시간이 다를 경우, 처음 등록된 Notificatio Identifier을 찾아서 삭제하는 메서드
+        notificationManager.removeSpecificNotification(id: [computedTodo.id]) // <- 처음 할일에 id를 넣어줘야, 그걸 찾아서 삭제함
+        
+        // 3번 수정된 할일 등록시 Notification Identifier에 computedTodo.id 넣어놓음, id 수정해야함
+        
+        let fixednotification = LocalNotification(identifier: computedTodo.id,
+                                                  title: "현실도 피자",
+                                                  body: "\(computedTodo.content) 시작 3분전이에요",
+                                                  dateComponents: fixedNotificationTime,
+                                                  repeats: false,
+                                                  type: .calendar)
+        // notification 변수를 넣어줌으로써 알림 등록, 4번은 AddTodoView에 있음( 할일을 삭제시 해당 등록된 알람도 제거)
+        notificationManager.scheduleNotification(localNotification: fixednotification)
+    }
+    
+    func notificationAdding(todo: Todo,
+                            notificationManager: NotificationManager) {
+        // 할일의 시작시간 -3분에 알람을 알려줄 시간 변수
+        let startNotificationTime = Calendar.current.dateComponents([.hour, .minute], from: todo.startTime.adding(minutes: -3))
+        Log.error("todo.id: \(todo.id)")
+        // 1번 처음 할일 등록시 Notification Identifier에 todo.id 넣어놓음, id 수정해야함
+        let notification = LocalNotification(identifier: todo.id,
+                                             title: "현실도 피자",
+                                             body: "\(todo.content) 시작 3분전이에요",
+                                             dateComponents: startNotificationTime,
+                                             repeats: false,
+                                             type: .calendar)
+        // notification 변수를 넣어줌으로써 알림 등록
+        notificationManager.scheduleNotification(localNotification: notification)
     }
 }

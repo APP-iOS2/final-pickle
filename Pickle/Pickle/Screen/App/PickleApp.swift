@@ -115,6 +115,7 @@ struct PickleApp: App {
     @StateObject private var pizzaStore = PizzaStore()
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var timerVM = TimerViewModel()
+    @StateObject private var healthKitStore: HealthKitStore = HealthKitStore()
     @Environment(\.scenePhase) var scenePhase
     @State private var debugDelete: Bool = true
     
@@ -139,6 +140,7 @@ struct PickleApp: App {
                 .environmentObject(notificationManager)
                 .environmentObject(pizzaStore)
                 .environmentObject(timerVM)
+                .environmentObject(healthKitStore)
                 .onChange(of: scenePhase) { newScene in
                     backgroundEvent(newScene: newScene)
                 }

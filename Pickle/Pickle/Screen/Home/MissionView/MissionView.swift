@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MissionView: View {
     @EnvironmentObject var missionStore: MissionStore
-    var healthKitStore: HealthKitStore = HealthKitStore()
+    @EnvironmentObject var healthKitStore: HealthKitStore
     
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
     @AppStorage("timeFormat") var timeFormat: String = "HH:mm"

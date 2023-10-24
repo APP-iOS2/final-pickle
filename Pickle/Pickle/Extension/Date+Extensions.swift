@@ -52,75 +52,18 @@ extension Date {
         return formatter.date(from: str)!
     }
     
-    // MARK: - Fetching Week Based on given Date
-//    func fetchWeek(_ date: Date = .init()) -> [WeekDay] {
-//        let calendar = Calendar.autoupdatingCurrent
-//        let startOfDate = calendar.startOfDay(for: date)
-//        
-//        var week: [WeekDay] = []
-//        let weekForDate = calendar.dateInterval(of: .weekOfMonth, for: startOfDate)
-//        guard let startOfWeek = weekForDate?.start else {
-//            return []
-//        }
-//        
-//        // MARK: - iterating to get the Full Week
-//        (0..<7).forEach { index in
-//            if let weekDay = calendar.date(byAdding: .day, value: index, to: startOfWeek) {
-//                week.append(.init(date: weekDay))
-//            }
-//        }
-//        
-//        return week
-//    }
     
+    // MARK: - CalenderViewModel -> 월 달력 Month Fetch를 위한 함수
     func fetchMonth() -> [Date] {
         let calendar = Calendar.autoupdatingCurrent
-        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
-        var range = calendar.range(of: .day, in: .month, for: startDate)!
+        guard let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self)) else { return [] }
+        guard let range = calendar.range(of: .day, in: .month, for: startDate) else { return [] }
 
         return range.compactMap { day -> Date in
-            return calendar.date(byAdding: .day, value: day - 1, to: startDate)!
+            
+            guard let month = calendar.date(byAdding: .day, value: day - 1, to: startDate) else { return Date() }
+            return month
         }
-        
     }
     
-//    func fetchWeek() -> [Date] {
-//        let calendar = Calendar.autoupdatingCurrent
-//        let startDate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.year, .month], from: self))!
-//        
-//        //let ddate = calendar.date(from: Calendar.autoupdatingCurrent.dateComponents([.], from: <#T##Date#>))
-//        var range = calendar.range(of: .day, in: .weekOfMonth, for: startDate)!
-//        range.removeLast()
-//        return range.compactMap { day -> Date in
-//            return calendar.date(byAdding: .day, value: day == 1 ? 0 : day, to: startDate)!
-//        }
-//        
-//    }
-//    
-//    // MARK: - Creating Next Week, based on the Last Current Week's Date
-//    func createNextWeek() -> [WeekDay] {
-//        let calendar = Calendar.autoupdatingCurrent
-//        let startOfLastDate = calendar.startOfDay(for: self)
-//        
-//        guard let nextDate = calendar.date(byAdding: .day, value: 1, to: startOfLastDate) else {
-//            return []
-//        }
-//        
-//        return fetchWeek(nextDate)
-//        
-//    }
-//    
-//    // MARK: - Creating Previous Week, based on the First Current Week's Date
-//    func createPreviousWeek() -> [WeekDay] {
-//        
-//        let calendar = Calendar.autoupdatingCurrent
-//        let startOfFirstDate = calendar.startOfDay(for: self)
-//        
-//        guard let previousDate = calendar.date(byAdding: .day, value: -1, to: startOfFirstDate) else {
-//            return []
-//        }
-//        
-//        return fetchWeek(previousDate)
-//        
-//    }
 }

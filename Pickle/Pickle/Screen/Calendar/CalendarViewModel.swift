@@ -25,14 +25,13 @@ class CalendarViewModel: ObservableObject {
     @Published var currentWeekIndex: Int = 0
     
     // MARK: -초기화
-    
     init() {
         fetchCurrentWeek(date: currentDay)
     }
     
     // MARK: Fetching Week Based on given Date
     
-    func fetchCurrentWeek(date: Date = Date()) {
+    func fetchCurrentWeek(date: Date) {
         currentWeek.removeAll()
         let calendar = Calendar.autoupdatingCurrent
         let startOfDate = calendar.startOfDay(for: date)
@@ -54,7 +53,7 @@ class CalendarViewModel: ObservableObject {
         
         let calendar = Calendar.autoupdatingCurrent
         
-        guard let currentMonth =  calendar.date(byAdding: .month, value: self.currentMonthIndex, to: Date()) else { return Date() }
+        guard let currentMonth =  calendar.date(byAdding: .month, value: currentMonthIndex, to: Date()) else { return Date() }
         
         return currentMonth
     }
@@ -100,10 +99,9 @@ class CalendarViewModel: ObservableObject {
         currentWeek.removeAll()
         let calendar = Calendar.autoupdatingCurrent
         let startOfLastDate = calendar.startOfDay(for: currentDay)
+        guard let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate) else { return }
         
-        let nextDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfLastDate)
-        
-        return fetchCurrentWeek(date: nextDate!)
+        return fetchCurrentWeek(date: nextDate)
         
     }
     
@@ -112,10 +110,9 @@ class CalendarViewModel: ObservableObject {
         currentWeek.removeAll()
         let calendar = Calendar.autoupdatingCurrent
         let startOfFirstDate = calendar.startOfDay(for: currentDay)
+        guard let previousDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfFirstDate) else { return }
         
-        let previousDate = calendar.date(byAdding: .day, value: 7 * currentWeekIndex, to: startOfFirstDate)
-        
-        return fetchCurrentWeek(date: previousDate!)
+        return fetchCurrentWeek(date: previousDate)
         
     }
     
@@ -123,6 +120,6 @@ class CalendarViewModel: ObservableObject {
         currentMonthIndex = 0
         currentWeekIndex = 0
         currentDay = Date()
-        fetchCurrentWeek(date: Date())
+        fetchCurrentWeek(date: currentDay)
     }
 }

@@ -40,6 +40,7 @@ struct MissionView: View {
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
+            healthKitStore.fetchStepCount()
             
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
@@ -64,11 +65,13 @@ struct MissionView: View {
             }
         }
         .refreshable {
+            healthKitStore.fetchStepCount()
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
         }
         .onDisappear {
+            healthKitStore.fetchStepCount()
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                            title: timeMissions[0].title,
                                                            status: timeMissions[0].status,

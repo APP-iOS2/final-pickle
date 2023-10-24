@@ -21,8 +21,7 @@ struct TimerView: View {
     
     @State private var realStartTime: Date = Date() // 실제 시작 시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
-    // TODO: 30초 -> 5분으로 변경하기
-    @State private var completeLimit: TimeInterval = 10 // 5분 이후
+    @State private var completeLimit: TimeInterval = 60 * 5 // 5분 이후
     
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
@@ -124,12 +123,7 @@ struct TimerView: View {
                         status: .done)
         todoStore.update(todo: todo)
         timerVM.updateTodo(spendTime: spendTime, status: .done)
-//        do {
-//            try userStore.addPizzaSlice(slice: 1)
-//        } catch {
-//            Log.error("❌피자 조각 추가 실패❌")
-//        }
-        
+
     }
     
     func convertSecondsToTime(timeInSecond: TimeInterval) -> String {
@@ -220,7 +214,6 @@ extension TimerView {
                         .lineLimit(1)
                         .padding(.horizontal, 10)
                     
-                    // TODO: RegisterView처럼 랜덤으로 바꿔주기
                     Text("🍕가 구워지고 있어요")
                         .font(.pizzaBody)
                         .foregroundColor(.secondary)

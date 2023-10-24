@@ -14,6 +14,7 @@ struct TimeMissionSettingView: View {
     
     var title: String
     @Binding var isTimeMissionSettingModalPresented: Bool
+    @Binding var showSuccessAlert: Bool
     
     var body: some View {
         VStack {
@@ -45,12 +46,14 @@ struct TimeMissionSettingView: View {
                                                                    date: timeMission.date,
                                                                    wakeupTime: timeMission.wakeupTime,
                                                                    changeWakeupTime: timeMission.changeWakeupTime)))
+                    showSuccessAlert.toggle()
                     isTimeMissionSettingModalPresented.toggle()
                 } label: {
                     Text("저장")
                         .font(.pizzaBody)
                         .foregroundColor(.pickle)
                 }
+                
             }
             .padding(.vertical, 10)
             .padding(.horizontal, 20)
@@ -70,6 +73,6 @@ struct MissionSettingView_Previews: PreviewProvider {
     static var previews: some View {
         TimeMissionSettingView(timeMission: .constant(TimeMission(id: "")),
                                title: "기상 미션",
-                               isTimeMissionSettingModalPresented: .constant(true))
+                               isTimeMissionSettingModalPresented: .constant(true), showSuccessAlert: .constant(false))
     }
 }

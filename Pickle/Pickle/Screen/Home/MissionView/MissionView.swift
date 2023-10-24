@@ -44,15 +44,11 @@ struct MissionView: View {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
-            print("onApear: \(timeMissions[0].wakeupTime)")
-            print("onApear: \(timeMissions[0].changeWakeupTime)")
             
             if timeMissions.isEmpty { return }
             if behaviorMissions.isEmpty { return }
             
-            /// 시나리오용
-            /// 다음날 기다리지 않음
-//            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
+            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
                 missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
                                                                title: timeMissions[0].title,
                                                                status: .ready,
@@ -65,14 +61,12 @@ struct MissionView: View {
                                                                        status1: .ready,
                                                                        status2: .ready,
                                                                        date: Date())))
-//            }
+            }
         }
         .refreshable {
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
-            print("refreshable: \(timeMissions[0].wakeupTime)")
-            print("refreshable: \(timeMissions[0].changeWakeupTime)")
         }
         .onDisappear {
             missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
@@ -87,9 +81,6 @@ struct MissionView: View {
                                                                    status1: behaviorMissions[0].status1,
                                                                    status2: behaviorMissions[0].status2,
                                                                    date: behaviorMissions[0].date)))
-            print("onDisappear: \(timeMissions[0].wakeupTime)")
-            print("onDisappear: \(timeMissions[0].changeWakeupTime)")
-
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)

@@ -22,6 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.ddudios.realpizza.refresh_badge", using: nil) { task in
             self.handleAppRefresh(task: task as! BGAppRefreshTask)
         }
+        
         // Processing Task
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.ddudios.realpizza.refresh_process", using: nil) { task in
             self.handleProcessingTask(task: task as! BGProcessingTask) // 타입 캐스팅 유의 (BG'Processing'Task)
@@ -56,7 +57,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         do {
             try BGTaskScheduler.shared.submit(request)
-            
         } catch {
             print("\(Date()): Could not schedule app refresh: \(error)")
         }
@@ -73,7 +73,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         } catch {
             print("\(Date()): Could not schedule processing task: \(error)")
         }
-        //        let oneday = TimeInterval(24 * 60 * 60)
         
         guard missionStore.timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") else { return }
         

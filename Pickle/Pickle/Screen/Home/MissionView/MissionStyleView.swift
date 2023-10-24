@@ -147,7 +147,6 @@ struct TimeMissionStyleView: View {
                                                                date: timeMission.date,
                                                                wakeupTime: timeMission.wakeupTime,
                                                                changeWakeupTime: timeMission.changeWakeupTime)))
-                
                 withAnimation {
                     do {
                         try userStore.addPizzaSlice(slice: 1)
@@ -293,7 +292,6 @@ struct BehaviorMissionStyleView: View {
                                                                                status1: behaviorMission.status1,
                                                                                status2: behaviorMission.status2,
                                                                                date: behaviorMission.date)))
-                        
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)

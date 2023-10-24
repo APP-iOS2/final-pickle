@@ -39,21 +39,6 @@ struct TimeMissionSettingView: View {
                 Spacer()
                 
                 Button {
-                    /// 시나리오용
-                    /// 기상 시간 설정 변경시 그 시간에 알림 셋팅
-                    timeMission.wakeupTime = timeMission.changeWakeupTime
-                    
-                    let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: timeMission.wakeupTime)
-                    
-                    notificationManager.scheduleNotification(
-                        localNotification: LocalNotification(identifier: UUID().uuidString,
-                                                             title: "현실도 피자",
-                                                             body: "기상 미션을 완료하고 피자조각을 획득하세요",
-                                                             dateComponents: dateComponent,
-                                                             repeats: false,
-                                                             type: .calendar)
-                    )
-                    
                     missionStore.update(mission: .time(TimeMission(id: timeMission.id,
                                                                    title: timeMission.title,
                                                                    status: timeMission.status,

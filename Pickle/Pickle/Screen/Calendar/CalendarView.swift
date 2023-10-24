@@ -17,7 +17,6 @@ struct CalendarView: View {
     
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
-    @State private var currentWeekIndex: Int = 1
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
@@ -38,45 +37,8 @@ struct CalendarView: View {
                     taskView()
                 }
             }
-            
             .scrollIndicators(.hidden)
         }
-        .gesture(
-            DragGesture()
-                .onChanged { gesture in
-                    self.offset = gesture.translation
-                }
-                .onEnded { gesture in
-                    if gesture.translation.width < -50 {
-                        
-                        if weekToMonth {
-                            
-                            calendarModel.currentMonthIndex += 1
-                            
-                        } else {
-                            withAnimation {
-                                calendarModel.currentWeekIndex += 1
-                                calendarModel.createNextWeek()
-                                
-                            }
-                        }
-                        
-                    } else if gesture.translation.width > 50 {
-                        if weekToMonth {
-                            
-                            calendarModel.currentMonthIndex -= 1
-                            
-                        } else {
-                            withAnimation {
-                                
-                                calendarModel.currentWeekIndex -= 1
-                                calendarModel.createPreviousWeek()
-                            }
-                        }
-                    }
-                    self.offset = CGSize()
-                }
-        )
         .task {
             await todoStore.fetch()
             
@@ -99,6 +61,7 @@ struct CalendarView: View {
                             timeMissions: time,
                             behaviorMissions: mission)
         }
+        
     }
     
     // MARK: - Header 뷰
@@ -127,7 +90,6 @@ struct CalendarView: View {
                     Button(action: {
                         if weekToMonth {
                             calendarModel.currentMonthIndex -= 1
-                            
                         } else {
                             calendarModel.currentWeekIndex -= 1
                             calendarModel.createPreviousWeek()
@@ -189,7 +151,7 @@ struct CalendarView: View {
     @ViewBuilder
     func weekView(_ week: [Date]) -> some View {
         HStack(spacing: 0) {
-            ForEach(week, id:\.self) { day in
+            ForEach(week, id: \.self) { day in
                 VStack(spacing: 8) {
                     Text(day.format("E"))
                         .font(.callout)
@@ -227,11 +189,38 @@ struct CalendarView: View {
                     // MARK: - Updating Current Date
                     withAnimation(.snappy) {
                         calendarModel.currentDay = day
+                        calendarModel.currentWeekIndex = 0
                     }
                 }
             }
             
         }
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    self.offset = gesture.translation
+                }
+                .onEnded { gesture in
+                    
+                    if gesture.translation.width < -50 {
+                        
+                        withAnimation {
+                            calendarModel.currentWeekIndex += 1
+                            calendarModel.createNextWeek()
+                            
+                        }
+                        
+                    } else if gesture.translation.width > 50 {
+                        
+                        withAnimation {
+                            
+                            calendarModel.currentWeekIndex -= 1
+                            calendarModel.createPreviousWeek()
+                        }
+                    }
+                    self.offset = CGSize()
+                }
+        )
     }
     
     // MARK: - Montly View
@@ -295,6 +284,24 @@ struct CalendarView: View {
                 calendarModel.currentDay = calendarModel.getCurrentMonth()
             }
         }
+        .gesture(
+            DragGesture()
+                .onChanged { gesture in
+                    self.offset = gesture.translation
+                }
+                .onEnded { gesture in
+                    if gesture.translation.width < -50 {
+                        
+                        calendarModel.currentMonthIndex += 1
+                        
+                    } else if gesture.translation.width > 50 {
+                        
+                        calendarModel.currentMonthIndex -= 1
+                        
+                    }
+                    self.offset = CGSize()
+                }
+        )
         
     }
     

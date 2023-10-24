@@ -1,4 +1,7 @@
-<img src="https://github.com/ddudios/test/assets/128062019/3655ed66-5dbf-4fc7-b4a3-4f94c16dc635" width="100%" height="100%"/>
+<img src="https://github.com/ddudios/test/assets/128062019/43bf1a2b-6c2a-4ff6-94ca-a5df43642323" width="100%" height="100%"/>
+
+> 할 일을 미루는 사람들에게 목표 실행의 동기부여를 제공하는 앱<br/>
+> 할 일을 완료하면 피자를 보상으로 제공하여 목표 실행의 지속성을 부여
 
 <br/>
 
@@ -130,10 +133,9 @@
 |:---:|:---:|:---:|
 |`알림 권한 설명`|`알림 권한 설정`|`알림 권한 설정 이동`|
 
-<br/>
+<br/><br/>
 
-
-## 🔀 아키텍처
+## 아키텍처
 <img src="https://github.com/ddudios/test/assets/128062019/8bd8c0da-b98c-4e54-b87e-c4c11c0e9a3f" width="100%" height="100%"/>
 <img src="https://github.com/ddudios/test/assets/128062019/4d1b2f47-9d53-45b8-9b08-6c39dbf1f588" width="100%" height="100%"/>  
 
@@ -188,7 +190,7 @@
 
 <br/>
 
-## 🍕 참여자
+## 참여자
 | 김형준 | 박형환 | 여성은 | 장수지 | 최소정 |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="https://github.com/ddudios/test/assets/128062019/3a86da2d-096d-4810-bb93-e2918658fad4" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/958e6283-d84b-446d-8b61-b97c0a047d6c" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b5dafef8-8ad3-4c96-bfff-7093b20b89b0" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b27469cb-326d-401a-aab2-439d8c0683c0" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/82d8f3bd-167e-48db-9a39-54d7b5ba5227" width="100%"/> |

@@ -1,5 +1,4 @@
-<img src="https://github.com/ddudios/test/assets/128062019/c2edaa24-90c8-4426-88ad-239eaab042a3" width="100%" height="100%"/>
-<br/><br/>
+<img src="https://github.com/ddudios/test/assets/128062019/fbf80ba9-2f61-44be-b7a7-754726194065" width="100%" height="100%"/>
 
 # 🔀 아키텍처
 <img src="https://github.com/ddudios/test/assets/128062019/8bd8c0da-b98c-4e54-b87e-c4c11c0e9a3f" width="100%" height="100%"/>

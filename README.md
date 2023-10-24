@@ -56,7 +56,7 @@
 # 🍕 참여자
 | 김형준 | 박형환 | 여성은 | 장수지 | 최소정 |
 |:---:|:---:|:---:|:---:|:---:|
-| <img src="https://github.com/ddudios/test/assets/128062019/3a86da2d-096d-4810-bb93-e2918658fad4" width="95%" height="95%"/> | <img src="https://github.com/ddudios/test/assets/128062019/958e6283-d84b-446d-8b61-b97c0a047d6c" width="80%" height="80%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b5dafef8-8ad3-4c96-bfff-7093b20b89b0" width="80%" height="80%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b27469cb-326d-401a-aab2-439d8c0683c0" width="100%" height="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/82d8f3bd-167e-48db-9a39-54d7b5ba5227" width="88%" height="88%"/> |
+| <img src="https://github.com/ddudios/test/assets/128062019/3a86da2d-096d-4810-bb93-e2918658fad4" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/958e6283-d84b-446d-8b61-b97c0a047d6c" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b5dafef8-8ad3-4c96-bfff-7093b20b89b0" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/b27469cb-326d-401a-aab2-439d8c0683c0" width="100%"/> | <img src="https://github.com/ddudios/test/assets/128062019/82d8f3bd-167e-48db-9a39-54d7b5ba5227" width="100%"/> |
 | [@KaiKimiOS](https://github.com/KaiKimiOS) | [@stomHwan](https://github.com/hyeonghwan) | [@YeoSungeun](https://github.com/YeoSungeun) | [@ddudios](https://github.com/ddudios) | [@ahshotchoo](https://github.com/karmanx) |
 
 <br/>

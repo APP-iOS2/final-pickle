@@ -428,15 +428,15 @@ extension RegisterView {
                     primaryAction: {   },
                     secondaryAction: { dissmiss() }
                 )
-                .successAlert(   // Success Delete Alert
+                // Success Delete Alert
+                .successAlert(
                     isPresented: $successDelete,
                     title: "삭제 성공",
-                    alertContent: "성공적으로 수정했습니다",
+                    alertContent: "성공적으로 삭제했습니다",
                     primaryButtonTitle: "뒤로가기",
                     secondaryButtonTitle: "",
                     primaryAction: { isShowingEditTodo.toggle() },
-                    secondaryAction: { isShowingEditTodo.toggle() },
-                    {  }
+                    secondaryAction: {}
                 )
         }
     }

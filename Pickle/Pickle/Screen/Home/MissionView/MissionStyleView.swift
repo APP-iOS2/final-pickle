@@ -98,6 +98,7 @@ struct TimeMissionStyleView: View {
     
     @State private var isTimeMissionSettingModalPresented = false
     @Binding var showsAlert: Bool
+    @Binding var showSuccessAlert: Bool
     
     var buttonSwitch: Bool {
         switch timeMission.status {
@@ -132,7 +133,7 @@ struct TimeMissionStyleView: View {
                 .sheet(isPresented: $isTimeMissionSettingModalPresented) {
                     TimeMissionSettingView(timeMission: $timeMission,
                                            title: timeMission.title,
-                                           isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented)
+                                           isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented, showSuccessAlert: $showSuccessAlert)
                     .presentationDetents([.fraction(0.4)])
                 }
             }
@@ -425,7 +426,7 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false))
+        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false), showSuccessAlert: .constant(false))
             .environmentObject(MissionStore())
             .environmentObject(UserStore())
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "",

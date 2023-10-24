@@ -15,6 +15,7 @@ struct MissionView: View {
     @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
     
     @State private var showsAlert: Bool = false
+    @State private var showSuccessAlert: Bool = false
     
     @State private var timeMissions: [TimeMission] = [
         TimeMission(id: UUID().uuidString, title: "기상 미션", status: .done, date: Date(), wakeupTime: Date())
@@ -27,7 +28,7 @@ struct MissionView: View {
         ScrollView {
             VStack {
                 ForEach(timeMissions.indices, id: \.self) { index in
-                    TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert)
+                    TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
                 }
                 
                 ForEach(timeMissions.indices, id: \.self) { index in
@@ -93,6 +94,16 @@ struct MissionView: View {
             point: 1,
             primaryButtonTitle: "확인",
             primaryAction: {}
+        )
+        .successAlert(
+            isPresented: $showSuccessAlert,
+            title: "수정 성공",
+            alertContent: "수정한 기상 미션은 내일부터 적용됩니다",
+            primaryButtonTitle: "확인",
+            secondaryButtonTitle: "",
+            primaryAction: { showSuccessAlert.toggle() },
+            secondaryAction: {  },
+            {}
         )
     }
 }

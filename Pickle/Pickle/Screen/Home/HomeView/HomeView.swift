@@ -117,6 +117,7 @@ struct HomeView: View {
                         Text("오늘 할일을 추가해 주세요!")
                             .frame(maxWidth: .infinity)
                             .font(.pizzaRegularSmallTitle)
+                            .accessibilityLabel("오늘 할일을 추가해 주세요")
                     }
                     .padding(.bottom)
                 } else {

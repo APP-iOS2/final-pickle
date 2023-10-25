@@ -3,6 +3,7 @@
 > 할 일을 미루는 사람들에게 목표 실행의 동기부여를 제공하는 앱<br/>
 > 할 일을 완료하면 피자를 보상으로 제공하여 목표 실행의 지속성을 부여
 
+[발표자료](https://www.icloud.com/keynote/05beSy5FLpsUuexsZzKj2JO6g)
 <br/>
 
 ## 앱 주요 기능 및 화면  

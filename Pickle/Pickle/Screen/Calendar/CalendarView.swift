@@ -21,6 +21,15 @@ struct CalendarView: View {
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
     @State var todayPieceOfPizza: Int = 0
+    @State var pizzaSummarySheet: Bool = false
+    @State var todayCompletedTasks: Int = 0
+    @State var wakeUpMission: Int = 0
+    @State var walkMission: Int = 0
+    
+    var underlineBool: Bool {
+        
+        todayPieceOfPizza != 0 ? false : true
+    }
     
     var body: some View {
         
@@ -34,7 +43,9 @@ struct CalendarView: View {
             
             ScrollView(.vertical) {
                 VStack {
-                    taskView()
+                    
+                    taskView(tasks: filteredTasks ?? [])
+                    
                 }
             }
             .scrollIndicators(.hidden)
@@ -43,14 +54,14 @@ struct CalendarView: View {
             await todoStore.fetch()
             
         }
-        .onAppear(perform: {
+        .onAppear {
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
             
             todayPizzaCount(todayTasks: filteredTasks ?? [],
                             timeMissions: missionStore.timeMissions,
                             behaviorMissions: missionStore.behaviorMissions)
-        })
+        }
         
         .onChange(of: calendarModel.currentDay) { newValue in
             
@@ -61,7 +72,12 @@ struct CalendarView: View {
                             timeMissions: time,
                             behaviorMissions: mission)
         }
-        
+        .sheet(isPresented: $pizzaSummarySheet) {
+            pizzaSheetView()
+                .padding()
+            Spacer()
+                .presentationDetents([.height(300), .large])
+        }
     }
     
     // MARK: - Header 뷰
@@ -70,7 +86,7 @@ struct CalendarView: View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 
-                Text(calendarModel.currentDay.format("YYYY년 MM월 dd일"))
+                Text(calendarModel.currentDay.format("YYYY년 MM월 d일"))
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
@@ -158,10 +174,11 @@ struct CalendarView: View {
                         .fontWeight(.medium)
                         .foregroundColor(.primary)
                     
-                    Text(day.format("dd"))
+                    Text(day.format("d"))
                         .font(.callout)
                         .fontWeight(.semibold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
+                        .underline(underlineBool, color: .orange)
                         .frame(width: 30, height: 30)
                         .background {
                             if isSameDate(day, date2: calendarModel.currentDay) {
@@ -190,6 +207,7 @@ struct CalendarView: View {
                     withAnimation(.snappy) {
                         calendarModel.currentDay = day
                         calendarModel.currentWeekIndex = 0
+                        
                     }
                 }
             }
@@ -249,6 +267,7 @@ struct CalendarView: View {
                         if day.day != -1 {
                             Text("\(day.day)")
                                 .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
+                                .underline(isSameDate(day.date, date2: calendarModel.currentDay) && underlineBool, color: .orange)
                                 .font(.callout)
                                 .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
@@ -306,11 +325,11 @@ struct CalendarView: View {
     }
     
     // MARK: - TaskView
-    func taskView() -> some View {
+    func taskView(tasks: [Todo]) -> some View {
         
         VStack(alignment: .leading, spacing: 35) {
             
-            ForEach(filteredTasks ?? []) { task in
+            ForEach(tasks) { task in
                 TaskRowView(task: task)
             }
         }
@@ -320,6 +339,7 @@ struct CalendarView: View {
     func currentPizzaSummaryView() -> some View {
         
         VStack(alignment: .leading) {
+            
             HStack {
                 Text("오늘 구운 피자")
                 Spacer()
@@ -334,6 +354,65 @@ struct CalendarView: View {
             .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color.secondary, lineWidth: 1))
         }
+        .onTapGesture {
+            pizzaSummarySheet.toggle()
+            print("\(pizzaSummarySheet)")
+        }
+    }
+    
+    func pizzaSheetView() -> some View {
+        ScrollView {
+            VStack(alignment: .center, spacing: 25) {
+
+                
+//                Text("오늘 구운 피자 🍕")
+//                    .font(.nanumBd)
+                HStack {
+//                    Spacer()
+                    Text("\(calendarModel.currentDay.format("MM월 d일"))" + " 피자 🍕")
+                        .font(.nanumBd)
+//                        .font(.pizzaBoldButtonTitle)
+                }
+                
+                Divider()
+                HStack {
+                    Text("☀️")
+                    Text("기상 미션 완료")
+                    Spacer()
+                    Text("x" + " \(wakeUpMission)")
+                }
+                .font(.nanumRg)
+                
+                HStack {
+                    Text("🏃")
+                    Text("걷기 미션 완료")
+                    Spacer()
+                    Text("x" + " \(walkMission)")
+                }
+                .font(.nanumRg)
+                
+                HStack {
+                    Text("✅")
+                    Text("오늘 할일 완료")
+                    Spacer()
+                    Text("x" + "\(todayCompletedTasks)")
+                }
+                .font(.nanumRg)
+                
+                Divider()
+                HStack {
+                    Text("Total Pizza")
+                    Spacer()
+                    Text("\(todayPieceOfPizza)" + " 조각")
+                }
+                .font(.nanumBd)
+                Divider()
+                Spacer()
+                
+            }
+            .padding()
+        }
+        
     }
     
     // MARK: - Filter Today Tasks
@@ -364,14 +443,14 @@ struct CalendarView: View {
                          behaviorMissions: [BehaviorMission]) {
         let calendar  = Calendar.current
         
-        let tempTotalTodayTasks = todayTasks.filter { $0.status == .complete || $0.status == .done
-        }
+        todayCompletedTasks = todayTasks.filter { $0.status == .done
+        }.count
         
         let firstStepTimeMission =  timeMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
         }
         
-        let tempTimeMissionTasks = firstStepTimeMission.filter { $0.status == .done
-        }
+        wakeUpMission = firstStepTimeMission.filter { $0.status == .done
+        }.count
         
         let firstStepBehaviorMission =  behaviorMissions.filter { calendar.isDate($0.date, inSameDayAs: calendarModel.currentDay)
         }
@@ -387,9 +466,9 @@ struct CalendarView: View {
         let tempBehaviorMissionTask2 = firstStepBehaviorMission.filter {  $0.status2 == .done
             
         }
-        let totalBehaviorMissions = tempBehaviorMissionTask0 +  tempBehaviorMissionTask1 + tempBehaviorMissionTask2
+        walkMission = tempBehaviorMissionTask0.count +  tempBehaviorMissionTask1.count + tempBehaviorMissionTask2.count
         
-        let finalPizzaCount = tempTotalTodayTasks.count + tempTimeMissionTasks.count + totalBehaviorMissions.count
+        let finalPizzaCount = todayCompletedTasks + wakeUpMission + walkMission
         
         todayPieceOfPizza = finalPizzaCount
     }

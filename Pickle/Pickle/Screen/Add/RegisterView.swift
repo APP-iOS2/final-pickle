@@ -178,21 +178,24 @@ struct RegisterView: View {
     }
     
     private func todoAddUpdateAction() {
-        if isModify && notEqualContent {
+        if isModify && notEqualContent { //여기가 할일 추가 된건데 할일 추가 수정하면
             Task {
                 let updatedTodo = todoStore.update(todo: computedTodo)
                 _ = await todoStore.fetch()
+                    //.fixnotification 여기가 알람 설정된거 수정하는거
                 todoStore.fixNotification(computedTodo: updatedTodo,
                                           notificationManager: notificationManager)
                 showUpdateSuccessAlert.toggle()
             }
-        } else {
+        } else { // 여기가 할일 처음 추가할때
             if isModify { showUpdateEqual.toggle(); return }
             let flag = isRightContent
             let todo = computedTodo
             
             if flag {
                 let addedTodo = todoStore.add(todo: todo)
+                
+                //처음 알람 설정하는곳  -> 디테일은 TODO에서 확인하기~
                 todoStore.notificationAdding(todo: addedTodo,
                                              notificationManager: notificationManager)
                 showSuccessAlert.toggle()

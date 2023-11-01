@@ -30,12 +30,12 @@ extension Todo: Equatable {
 }
 
 extension Todo {
-    static var sample: Todo = .init(id: "",
-                                    content: "Sample",
+    static var sample: Todo = .init(id: UUID().uuidString,
+                                    content: "오늘 할일을 추가해주세요",
                                     startTime: Date(),
                                     targetTime: 0,
                                     spendTime: 10,
-                                    status: .ready)
+                                    status: .done)
 }
 let sampleTodoList: [Todo] = [
     Todo(id: UUID().uuidString,

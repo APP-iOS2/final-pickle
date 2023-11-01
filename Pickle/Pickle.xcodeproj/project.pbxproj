@@ -107,6 +107,7 @@
 		B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
 		B77A29A82AE6955200BB8838 /* PizzaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */; };
 		B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */; };
+		B79356E32AF2771300EF55EB /* TaskRowForSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79356E22AF2771300EF55EB /* TaskRowForSheetView.swift */; };
 		B7C341AF2AC1684400744EB7 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
 		B7C341B52AC2CA7400744EB7 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */; };
 /* End PBXBuildFile section */
@@ -224,6 +225,7 @@
 		B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaCollectionView.swift; sourceTree = "<group>"; };
 		B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSummaryView.swift; sourceTree = "<group>"; };
+		B79356E22AF2771300EF55EB /* TaskRowForSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowForSheetView.swift; sourceTree = "<group>"; };
 		B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Date+Extensions.swift"; path = "Pickle/Extension/Date+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -334,6 +336,7 @@
 			children = (
 				2137D5922AC1478C00AFE225 /* CalendarView.swift */,
 				B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */,
+				B79356E22AF2771300EF55EB /* TaskRowForSheetView.swift */,
 				B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */,
 			);
 			path = Calendar;
@@ -819,6 +822,7 @@
 				2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */,
 				96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */,
 				96635F652ADF9F380072F21E /* Status.swift in Sources */,
+				B79356E32AF2771300EF55EB /* TaskRowForSheetView.swift in Sources */,
 				96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */,
 				96635F5E2ADF9EEF0072F21E /* TimeMission-extension.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,

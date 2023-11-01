@@ -108,10 +108,11 @@ struct TimerReportView: View {
                         Log.error("❌피자 조각 추가 실패❌")
                     }
                 }
+  
+                
                 timerVM.timerVMreset()
-                isShowingTimerView = false
-                isShowingReportSheet = false
                 dismiss()
+                
             }, label: {
                 Text("확인")
                     .font(.pizzaBody)

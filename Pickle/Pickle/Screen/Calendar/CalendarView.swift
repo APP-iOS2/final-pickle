@@ -395,7 +395,7 @@ struct CalendarView: View {
                     Text("✅")
                     Text("오늘 할일 완료")
                     Spacer()
-                    Text("x" + " 0")
+                    Text("x" + "\(todayCompletedTasks)")
                 }
                 .font(.nanumRg)
                 

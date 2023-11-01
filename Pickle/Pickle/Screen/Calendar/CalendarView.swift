@@ -399,8 +399,6 @@ struct CalendarView: View {
                 }
                 .font(.nanumRg)
                 
-//                TaskRowForSheetView(tasks: filteredTasks?.filter { $0.status == .done } ?? [] )
-                
                 Divider()
                 HStack {
                     Text("Total Pizza")
@@ -410,11 +408,6 @@ struct CalendarView: View {
                 .font(.nanumBd)
                 Divider()
                 Spacer()
-//                HStack {
-//                    Text("THANK YOU")
-//                        .font(.pizzaBoldTitle)
-//                        .foregroundStyle(Color.pickle)
-//                }
                 
             }
             .padding()

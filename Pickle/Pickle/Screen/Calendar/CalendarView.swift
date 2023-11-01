@@ -21,6 +21,12 @@ struct CalendarView: View {
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
     @State var todayPieceOfPizza: Int = 0
+    @State var pizzaSummarySheet: Bool = false
+    
+    var underlineBool: Bool {
+        
+        todayPieceOfPizza != 0 ? true : false
+    }
     
     var body: some View {
         
@@ -43,14 +49,14 @@ struct CalendarView: View {
             await todoStore.fetch()
             
         }
-        .onAppear(perform: {
+        .onAppear {
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
             
             todayPizzaCount(todayTasks: filteredTasks ?? [],
                             timeMissions: missionStore.timeMissions,
                             behaviorMissions: missionStore.behaviorMissions)
-        })
+        }
         
         .onChange(of: calendarModel.currentDay) { newValue in
             
@@ -61,7 +67,10 @@ struct CalendarView: View {
                             timeMissions: time,
                             behaviorMissions: mission)
         }
-        
+        .sheet(isPresented: $pizzaSummarySheet) {
+            pizzaSheetView()
+                .presentationDetents([.height(350),.medium])
+        }
     }
     
     // MARK: - Header 뷰
@@ -162,6 +171,7 @@ struct CalendarView: View {
                         .font(.callout)
                         .fontWeight(.semibold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
+                        .underline(isSameDate(day, date2: calendarModel.currentDay) && underlineBool, color: .orange)
                         .frame(width: 30, height: 30)
                         .background {
                             if isSameDate(day, date2: calendarModel.currentDay) {
@@ -249,6 +259,7 @@ struct CalendarView: View {
                         if day.day != -1 {
                             Text("\(day.day)")
                                 .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
+                                .underline(isSameDate(day.date, date2: calendarModel.currentDay) && underlineBool, color: .orange)
                                 .font(.callout)
                                 .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
@@ -334,6 +345,21 @@ struct CalendarView: View {
             .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color.secondary, lineWidth: 1))
         }
+        .onTapGesture {
+            pizzaSummarySheet.toggle()
+            print("\(pizzaSummarySheet)")
+        }
+    }
+    
+    func pizzaSheetView() -> some View {
+        
+        VStack {
+            Text("미션")
+            Text("미션2")
+            Text("미션3")
+        
+        }
+        .background(Color.secondary)
     }
     
     // MARK: - Filter Today Tasks

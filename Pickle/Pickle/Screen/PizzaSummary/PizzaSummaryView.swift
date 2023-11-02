@@ -9,10 +9,10 @@ import SwiftUI
 
 struct PizzaSummaryView: View {
     
-    @EnvironmentObject var todoStore: TodoStore
-    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject private var todoStore: TodoStore
+    @EnvironmentObject private var userStore: UserStore
     
-    var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
+    private var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
     var myTotalPizza: Int {
         return userStore.pizzaCount * 8 + Int(userStore.pizzaSlice)
@@ -21,6 +21,7 @@ struct PizzaSummaryView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
+                
                 VStack(alignment: .leading) {
                     
                     HStack(spacing: 15) {
@@ -51,7 +52,6 @@ struct PizzaSummaryView: View {
             
         }
         .navigationTitle("통계")
-        
     }
     
     // MARK: - 나의 피자
@@ -68,14 +68,13 @@ struct PizzaSummaryView: View {
         
     }
     
-    // MARK: - 나의 피자 조각, 8조각 완성하면 0으로 초기화 되어버림
+    // MARK: - 나의 피자 조각
     func myPieceOfPizzaView() -> some View {
         HStack {
             VStack(alignment: .center, spacing: 8) {
                 Text("구운 피자 조각")
                     .lineLimit(1)
                 Text("\(myTotalPizza) 조각")
-                
                     .foregroundStyle(Color.pickle)
                 
             }
@@ -86,19 +85,14 @@ struct PizzaSummaryView: View {
     func myTotalSpendTimeForPizzaView() -> some View {
         
         HStack {
-            
             VStack(alignment: .center, spacing: 8) {
                 
                 Text("피자 구운 시간")
-                
-                let tempResult = todoStore.todos.map { $0.spendTime }.reduce(0) { $0 + $1}
+                let tempResult = todoStore.todos.map { $0.spendTime }.reduce(0) { $0 + $1 }
                 let finalSpendTime = convertSecondsToTime(timeInSecond: tempResult)
-                
                 Text("\(finalSpendTime)")
                     .foregroundStyle(Color.pickle)
-                
             }
-            
         }
     }
     
@@ -106,10 +100,8 @@ struct PizzaSummaryView: View {
     func myPizzaCollectionView() -> some View {
         
         VStack {
-            
             Text("피자 컬렉션")
             LazyVGrid(columns: columns) {
-                
                 ForEach(userStore.user.pizzas.indices) { pizza in
                     PizzaCollectionView(pizza: $userStore.user.pizzas[pizza],  currentPizza: .constant(.defaultPizza) )
                         .frame(width: CGFloat.screenWidth / 3 - 40)

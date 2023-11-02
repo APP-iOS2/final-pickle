@@ -49,8 +49,6 @@ struct PizzaCollectionView: View {
             
             Text("\(pizza.name)")
                 .font(.pizzaDescription)
-//                .foregroundStyle(selectedTrigger ? Color.pickle : .primary)
-//                .tint(selectedTrigger ? .pickle : .primary)
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
         }

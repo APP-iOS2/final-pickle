@@ -10,22 +10,15 @@ import SwiftUI
 struct TaskRowView: View {
     
     @State private var isShowingReportSheet: Bool = false
+    @AppStorage("is24HourClock") private var is24HourClock: Bool = true
+    @AppStorage("timeFormat") private var timeFormat: String = "HH:mm"
     
     var task: Todo
-    
-    @AppStorage("is24HourClock") var is24HourClock: Bool = true
-    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
-    
     var indicatorColor: Color {
         return task.startTime.isSameHour && task.status == .ready ? .pickle : .primary
-        //        {
-        //            return .green
-        //        }
-        //        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
     }
     
     var taskSymbol: Image {
-        
         switch task.status {
         case .ready:
             return Image(systemName: "circle.dotted")
@@ -41,17 +34,17 @@ struct TaskRowView: View {
     var body: some View {
         
         if task.status == .done || task.status == .giveUp {
-            Button(action: {
+
+            Button {
                 isShowingReportSheet = true
-            }, label: {
+            } label: {
                 taskRowView
-            })
+            }
             .foregroundColor(.primary)
-        } else {
-            taskRowView
-        }
-        
+            
+        } else { taskRowView }
     }
+    
     @ViewBuilder
     private var taskContent: some View {
         Text(task.content)
@@ -68,20 +61,10 @@ struct TaskRowView: View {
                 .foregroundStyle(Color.pickle)
                 .frame(width: 15, height: 15)
                 .padding(4)
-            //                    .background(.white)
-            //    .background(.white, in: .circle)
             
             VStack(alignment: .leading, spacing: 8) {
                 taskContent
-                //.strikethrough(task.status == .giveUp, pattern: .solid, color: .black)
             }
-            
-            //                if task.startTime.isSameHour {
-            //                    Text("이제 할일")
-            //                        .font(.pizzaCaption)
-            //                        .fontWeight(.semibold)
-            //                        .foregroundStyle(indicatorColor)
-            //                }
             
             Label(task.startTime.format(timeFormat), systemImage: "clock")
                 .font(.caption)

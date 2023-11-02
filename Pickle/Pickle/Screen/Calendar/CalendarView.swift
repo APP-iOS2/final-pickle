@@ -9,22 +9,21 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @EnvironmentObject var todoStore: TodoStore
-    @EnvironmentObject var missionStore: MissionStore
-    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject private var todoStore: TodoStore
+    @EnvironmentObject private var missionStore: MissionStore
+    @EnvironmentObject private var userStore: UserStore
     
-    @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
+    @StateObject private var calendarModel: CalendarViewModel = CalendarViewModel()
     
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
-    @State private var createWeek: Bool = false
-    @State private var weekToMonth: Bool = false
+    @State private var weekToMonth: Bool = true
     @State private var offset: CGSize = CGSize()
-    @State var todayPieceOfPizza: Int = 0
-    @State var pizzaSummarySheet: Bool = false
-    @State var todayCompletedTasks: Int = 0
-    @State var wakeUpMission: Int = 0
-    @State var walkMission: Int = 0
+    @State private var todayPieceOfPizza: Int = 0
+    @State private var pizzaSummarySheet: Bool = false
+    @State private var todayCompletedTasks: Int = 0
+    @State private var wakeUpMission: Int = 0
+    @State private var walkMission: Int = 0
     
     var underlineBool: Bool {
         
@@ -32,23 +31,34 @@ struct CalendarView: View {
     }
     
     var body: some View {
-        
-        VStack(alignment: .leading) {
-            headerView()
-                .padding(.top, 15)
-                .padding(.bottom, 8)
-            
-            currentPizzaSummaryView()
-                .padding(.horizontal)
-            
-            ScrollView(.vertical) {
-                VStack {
+        GeometryReader { geometry in
+//            VStack(alignment: .leading) {
+//                headerView()
+//                    .padding(.top, 15)
+//                    .padding(.bottom, 8)
+//                
+//                currentPizzaSummaryView()
+                
+                ScrollView(.vertical) {
                     
-                    taskView(tasks: filteredTasks ?? [])
+                    VStack(alignment: .leading) {
+                    headerView()
+                        .padding(.top, 15)
+                        .padding(.bottom, 8)
                     
+                    currentPizzaSummaryView()
+                        
+                        taskView(tasks: filteredTasks ?? [])
+                        
+                    }
+//                    .frame(height: geometry.size.height)
                 }
-            }
-            .scrollIndicators(.hidden)
+                .scrollIndicators(.hidden)
+                .frame(width: geometry.size.width)
+                
+
+//            }
+            
         }
         .task {
             await todoStore.fetch()
@@ -76,7 +86,7 @@ struct CalendarView: View {
             pizzaSheetView()
                 .padding()
             Spacer()
-                .presentationDetents([.height(300), .large])
+                .presentationDetents([.height(300)])
         }
     }
     
@@ -86,7 +96,7 @@ struct CalendarView: View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 
-                Text(calendarModel.currentDay.format("YYYY년 MM월 d일"))
+                Text(calendarModel.currentDay.format("YYYY년 M월 d일"))
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
@@ -260,7 +270,7 @@ struct CalendarView: View {
             
             HStack {
                 let colums = Array(repeating: GridItem(.flexible()), count: 7)
-                LazyVGrid(columns: colums, spacing: 15) {
+                LazyVGrid(columns: colums, spacing: 10) {
                     
                     ForEach(dates, id: \.self) { day in
                         
@@ -284,12 +294,11 @@ struct CalendarView: View {
                                             .fill(Color.mainRed)
                                             .frame(width: 5, height: 5)
                                             .vSpacing(.bottom)
-                                            .offset(y: -35)
+                                            .offset(y: -33)
                                     }
                                     
                                 }
-                                .onTapGesture {                                    // MARK: - Updating Current Date
-                                    
+                                .onTapGesture {
                                     calendarModel.currentDay = day.date
                                 }
                             
@@ -353,25 +362,22 @@ struct CalendarView: View {
             .padding([.horizontal, .vertical])
             .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color.secondary, lineWidth: 1))
+            .onTapGesture {
+                pizzaSummarySheet.toggle()
+                print("\(pizzaSummarySheet)")
+            }
+            
         }
-        .onTapGesture {
-            pizzaSummarySheet.toggle()
-            print("\(pizzaSummarySheet)")
-        }
+        .padding(.horizontal)
     }
     
     func pizzaSheetView() -> some View {
         ScrollView {
             VStack(alignment: .center, spacing: 25) {
-
-                
-//                Text("오늘 구운 피자 🍕")
-//                    .font(.nanumBd)
+  
                 HStack {
-//                    Spacer()
-                    Text("\(calendarModel.currentDay.format("MM월 d일"))" + " 피자 🍕")
+                    Text("\(calendarModel.currentDay.format("M월 d일"))" + " 피자 🍕")
                         .font(.nanumBd)
-//                        .font(.pizzaBoldButtonTitle)
                 }
                 
                 Divider()
@@ -404,6 +410,7 @@ struct CalendarView: View {
                     Text("Total Pizza")
                     Spacer()
                     Text("\(todayPieceOfPizza)" + " 조각")
+                        .foregroundStyle(Color.pickle)
                 }
                 .font(.nanumBd)
                 Divider()

@@ -17,7 +17,7 @@ struct CalendarView: View {
     
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
-    @State private var weekToMonth: Bool = true
+    @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
     @State private var todayPieceOfPizza: Int = 0
     @State private var pizzaSummarySheet: Bool = false
@@ -56,7 +56,6 @@ struct CalendarView: View {
                 .scrollIndicators(.hidden)
                 .frame(width: geometry.size.width)
                 
-
 //            }
             
         }
@@ -158,31 +157,37 @@ struct CalendarView: View {
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                 }
-                if weekToMonth {
-                    
-                    monthlyView()
-                    
-                } else {
-                    
-                    weekView(calendarModel.currentWeek)
-                        .padding(.bottom, 5)
-                }
+                weekHeaderView()
+
+                if weekToMonth { monthlyView() } else { weekView(calendarModel.currentWeek) }
             }
             .hLeading()
         }
         .padding(.horizontal)
     }
     
+    func weekHeaderView() -> some View {
+        
+        HStack {
+            let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+            ForEach(days, id: \.self) { day in
+                Text(day)
+                    .frame(maxWidth: .infinity)
+                    .font(.callout)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+                
+            }
+        }
+        
+    }
+    
     // MARK: - Week View
     @ViewBuilder
     func weekView(_ week: [Date]) -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 8) {
             ForEach(week, id: \.self) { day in
                 VStack(spacing: 8) {
-                    Text(day.format("E"))
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
                     
                     Text(day.format("d"))
                         .font(.callout)
@@ -202,7 +207,7 @@ struct CalendarView: View {
                                     .fill(Color.mainRed)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
-                                    .offset(y: -60)
+                                    .offset(y: -63)
                             }
                         }
                         .overlay(RoundedRectangle(cornerRadius: 20.0)
@@ -253,21 +258,9 @@ struct CalendarView: View {
     
     // MARK: - Montly View
     func monthlyView() -> some View {
-        let days: [String] = ["일", "월", "화", "수", "목", "금", "토", ]
-        let dates = calendarModel.extractMonth()
-        return VStack {
-            
-            HStack {
-                ForEach(days, id: \.self) { day in
-                    Text(day)
-                        .frame(maxWidth: .infinity)
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
-                    
-                }
-            }
-            
+      
+        VStack {
+            let dates = calendarModel.extractMonth()
             HStack {
                 let colums = Array(repeating: GridItem(.flexible()), count: 7)
                 LazyVGrid(columns: colums, spacing: 10) {

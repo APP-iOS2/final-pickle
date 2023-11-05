@@ -8,9 +8,7 @@
 import SwiftUI
 
 class CalendarViewModel: ObservableObject {
-    
-    // MARK: - filtering today tasks
-    @Published var filteredTasks: [Todo]?
+
     // MARK: - Current Week Days
     @Published var currentWeek: [Date] = []
     

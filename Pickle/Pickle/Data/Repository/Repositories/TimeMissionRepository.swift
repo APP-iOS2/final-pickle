@@ -13,11 +13,14 @@ protocol MissionRepositoryProtocol: Dependency, AnyObject {
     
     func fetch(sorted: Sorted) -> [DTO]
     func fetch(sorted: Sorted) async -> [DTO]  // do not use this method
-    func create(_ completion: @escaping (Persited) -> Void)
     func save<T>(model: T) where T: Mission
     func update(model: DTO)
     func delete(model: DTO)
     func deleteAll()
+    
+    func notification(id: String,
+                      keyPaths: [PartialKeyPath<Persited>],
+                      _ completion: @escaping (DTO) -> Void) throws -> RNotificationToken
 }
 
 protocol TimeRepositoryProtocol: MissionRepositoryProtocol where DTO == TimeMission, Persited == TimeMissionObject { }
@@ -57,14 +60,6 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
         }
     }
     
-    func create(_ completion: @escaping (TimeMissionObject) -> Void) {
-        do {
-            try super.create(TimeMissionObject.self, completion: completion)
-        } catch {
-            Log.error("error occur : \(error)")
-        }
-    }
-    
     func save(model: TimeMission) {
         let persistent = model.mapToPersistenceObject()
         do {
@@ -98,5 +93,30 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
         } catch {
             Log.error("error occur: \(error)")
         }
+    }
+    
+    func notification(id: String,
+                      keyPaths: [PartialKeyPath<TimeMissionObject>],
+                      _ completion: @escaping (TimeMission) -> Void)
+    throws -> RNotificationToken {
+        
+        let objectCompletion: ObjectCompletion<TimeMissionObject> = {
+            change in
+            switch change {
+            case .change(let object, let properties):
+                // Log.error(object)
+                Log.error("timeMIssion Properties : \(properties)")
+                let timeMission = TimeMission.mapFromPersistenceObject(object)
+                completion(timeMission)
+            case .error(let error):
+                 Log.error("error Occur : \(error)")
+            default:
+                break
+            }
+        }
+        return try super.dbStore.notificationToken(TimeMissionObject.self,
+                                            id: id,
+                                            keyPaths: keyPaths,
+                                            objectCompletion)
     }
 }

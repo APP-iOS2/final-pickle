@@ -12,6 +12,11 @@ struct DependencyContainer {
     private static var factories: [String: () -> Any] = [:]
     private static var cache: [String: Any] = [:]
     
+    static func removeCache() {
+        factories = [:]
+        cache = [:]
+    }
+    
     // MARK: Old version
     static func register<Dependency>(type: Dependency.Type,
                                      _ factory: @autoclosure @escaping () -> Dependency) {
@@ -47,9 +52,7 @@ struct DependencyContainer {
                 return service
             }
             assert(false, "fattalError singleton Occur")
-        case .automatic:
-            fallthrough
-        case .new:
+        case .new, .automatic:
             if let dependency = factories[serviceName]?() as? Dependency {
                 return dependency
             }

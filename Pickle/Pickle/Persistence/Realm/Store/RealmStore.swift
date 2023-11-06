@@ -10,33 +10,17 @@ import RealmSwift
 import Combine
 import Realm
 
-extension KeyPath {
-    var propertyAsString: String {
-        print("\(self)")
-        return "\(self)".components(separatedBy: ".").last ?? ""
-    }
-    var keyPath: String {
-           let me = String(describing: self)
-           let dropLeading =  "\\" + String(describing: Root.self) + "."
-           let keyPath = "\(me.dropFirst(dropLeading.count))"
-           return keyPath
-       }
-    
-    var stringValue: String {
-           NSExpression(forKeyPath: self).keyPath
-       }
-}
 
-typealias RealmFilter<Object> = (Query<Object>) -> Query<Bool>
-
-enum RFilter<Object: Storable> {
-    case filter(RealmFilter<Object>)
-}
+// TODO: 트러블 슈팅 정리......
+typealias RealmFilter<T: Storable> = (Query<T>) -> Query<Bool>
 
 typealias RObjectBase = ObjectBase
-typealias RObjectChange = ObjectChange
+//typealias RObjectChange = ObjectChange
 typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
 typealias RNotificationToken = NotificationToken
+typealias RObject = RealmSwiftObject
+
+
 final class RealmStore: DBStore {
     
     enum RealmType {
@@ -44,7 +28,7 @@ final class RealmStore: DBStore {
         case inmemory
     }
     
-    private var realmStore: Realm? {
+    var realmStore: Realm! {
         switch type {
         case .disk:
             return RealmProvider.defaultRealm
@@ -64,106 +48,59 @@ final class RealmStore: DBStore {
     func create<T>(_ model: T.Type,
                    data: Data,
                    completion: @escaping (T) -> Void) throws where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
-        }
+        
+        let realm = realmStore!
         
         try realm.write {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            let value = realm.create(model, value: json) as! T
+            let value = realm.create(model, value: json)
             completion(value)
         }
     }
     
-    func create<T>(_ model: T.Type, completion: @escaping (T) -> Void) throws where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
-        }
+    func create<T>(_ model: T.Type,
+                   item: T,
+                   completion: @escaping (T) -> Void) throws where T: Storable {
         
+        let realm = realmStore!
         try realm.write {
-            let type = realm.create(model, value: []) as! T
+            let type = realm.create(model, value: item)
             completion(type)
         }
     }
     
     func save(object: Storable) throws {
-        guard
-            let realm = realmStore,
-            let object = object as? Object
-        else {
-            throw RealmError.notRealmObject
-        }
         
+        let realm = realmStore!
         try realm.write {
             realm.add(object)
         }
     }
     
     func update(object: Storable) throws {
-        guard
-            let realm = realmStore,
-            let object = object as? Object
-        else {
-            throw RealmError.notRealmObject
-        }
-        
+        let realm = realmStore!
         try realm.write {
             realm.add(object, update: .modified)
         }
     }
     
     // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
-    func update<T: Storable>(_ model: T.Type,
-                             id: String,
-                             query: RealmFilter<T>) throws {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type,
-            let objectID = try? ObjectId(string: id)
-        else {
-            throw RealmError.notRealmObject
+    func update<T>(_ model: T.Type,
+                   item: T,
+                   query: ((Query<T>) -> Query<Bool>)?) throws -> T where T: Storable, T: RObject {
+        let realm = realmStore!
+        return try realm.write {
+            if let query {
+                let results = realm.objects(model).where(query)
+                if results.count == 1 {
+                    return realm.create(model, value: item, update: .modified)
+                } else {
+                    throw RealmError.updateMustOneValue
+                }
+            } else {
+                return realm.create(model, value: item, update: .modified)
+            }
         }
-        
-        try realm.write {
-//            guard let object = realm.object(ofType: model, forPrimaryKey: objectID) else { return }
-//            Log.debug("object Update Moel RealmFilter: \(object)")
-//            object.objectSchema.properties.forEach { propertyName in
-//                Log.debug(propertyName.name)
-//                Log.debug("value")
-//            }
-            // object.setValue(List<PizzaObject>(), forKey: "pizza")
-//            realm.add(object, update: .modified)
-        }
-    }
-    
-    // TODO: Udpate - Ursert로 할지 KVC 로 할지,,, 어떻게 해야하누
-    func update<Root,Child>(_ model: Root.Type,
-                            root: Root,
-                            child: Child,
-                            property name: KeyPath<Root,Any>) throws where Root == Storable, Child == Storable {
-        guard
-            let realm = realmStore,
-            let type = model as? Object.Type,
-            let root = root as? Object,
-            let child = child as? Object,
-            let property = root.objectSchema.properties.filter({ $0.name == name.propertyAsString  }).first
-        else {
-            throw RealmError.notRealmObject
-        }
-        
-        try realm.write {
-            let list = root.dynamicList(property.name)
-        }
-    }
-    
-    func delete(object: Storable) throws {
-        return
     }
     
     /// Delete Model 메타타입 과 id를 받아서 delete할 오브젝트를 골라 삭제한다.
@@ -189,8 +126,7 @@ final class RealmStore: DBStore {
     
     func deleteAll<T>(_ model: T.Type) throws where T: Storable {
         guard
-            let realm = realmStore,
-            let model = model as? Object.Type
+            let realm = realmStore
         else {
             throw RealmError.notRealmObject
         }
@@ -205,12 +141,7 @@ final class RealmStore: DBStore {
     func fetch<T>(_ model: T.Type,
                   predicate: NSPredicate?,
                   sorted: Sorted?) throws -> [T] where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
-        }
+        let realm = realmStore!
         
         var objects = realm.objects(model)
         
@@ -221,19 +152,19 @@ final class RealmStore: DBStore {
         if let sorted {
             objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
         }
-        return objects.compactMap { $0 as? T }
+        return objects.compactMap { $0 as T }
     }
     
     func notificationToken<T>(_ model: T.Type,
                               id: String,
                               keyPaths: [PartialKeyPath<T>],
-                              _ completion: @escaping ObjectCompletion<T>) throws -> NotificationToken where T: Storable, T: ObjectBase  {
+                              _ completion: @escaping ObjectCompletion<T>) throws 
+    -> NotificationToken where T: Storable, T: ObjectBase
+    {
         guard
             let realm = realmStore,
-            let model = model as? Object.Type,
             let id =  try? ObjectId(string: id)
         else {
-            Log.error("notification Token guard error")
             throw RealmError.notRealmObject
         }
         let object = realm.object(ofType: model, forPrimaryKey: id)
@@ -242,26 +173,29 @@ final class RealmStore: DBStore {
     }
     
     func fetch<T>(_ model: T.Type,
-                  predicate: NSPredicate?,
-                  sorted: Sorted?,
-                  complection: ([T]) -> Void) throws where T: Storable {
-        guard
-            let realm = realmStore,
-            let model = model as? Object.Type
-        else {
-            throw RealmError.notRealmObject
-        }
-        
-        var objects = realm.objects(model)
-        
-        if let predicate = predicate {
-            objects = objects.filter(predicate)
-        }
-        
+                  filtered: RealmFilter<T>,
+                  sorted: Sorted?) throws -> [T] where T: Storable, T: RObject {
+        let realm = realmStore!
+        var objects = realm.objects(model).where(filtered)
         if let sorted {
             objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
         }
-        complection(objects.compactMap { $0 as? T })
+        return objects.map { $0 }
+    }
+    
+    func fetch<T>(_ model: T.Type,
+                  predicate: NSPredicate?,
+                  sorted: Sorted?,
+                  complection: ([T]) -> Void) throws where T: Storable {
+        let realm = realmStore!
+        var objects = realm.objects(model)
+        if let predicate = predicate {
+            objects = objects.filter(predicate)
+        }
+        if let sorted {
+            objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
+        }
+        complection(objects.compactMap { $0 as T })
     }
 }
 

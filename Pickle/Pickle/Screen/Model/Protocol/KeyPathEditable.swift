@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum KeyPathError: Error {
     case unableToCast(String)
 }

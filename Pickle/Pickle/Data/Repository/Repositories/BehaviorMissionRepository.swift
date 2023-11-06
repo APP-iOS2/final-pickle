@@ -30,9 +30,10 @@ final class BehaviorMissionRepository: BaseRepository<BehaviorMissionObject>, Be
         }
     }
     
-    func create(_ completion: @escaping (BehaviorMissionObject) -> Void) {
+    func create(item: BehaviorMission ,_ completion: @escaping (BehaviorMissionObject) -> Void) {
+        let object = item.mapToPersistenceObject()
         do {
-            try super.create(BehaviorMissionObject.self, completion: completion)
+            try super.create(BehaviorMissionObject.self, item: object ,completion: completion)
         } catch {
             Log.error("error occur : \(error)")
         }
@@ -72,5 +73,28 @@ final class BehaviorMissionRepository: BaseRepository<BehaviorMissionObject>, Be
         } catch {
             Log.error("error occur: \(error)")
         }
+    }
+    
+    func notification(id: String,
+                      keyPaths: [PartialKeyPath<BehaviorMissionObject>],
+                      _ completion: @escaping (BehaviorMission) -> Void)
+    throws -> RNotificationToken {
+        
+        let objectCompletion: ObjectCompletion<BehaviorMissionObject> = { change in
+            switch change {
+            case .change(let object, let properties):
+                let behavior = BehaviorMission.mapFromPersistenceObject(object)
+                completion(behavior)
+            case .error(let error):
+                Log.error("error Occur : \(error)")
+            default:
+                break
+            }
+        }
+        
+        return try super.dbStore.notificationToken(BehaviorMissionObject.self,
+                                                   id: id,
+                                                   keyPaths: keyPaths,
+                                                   objectCompletion)
     }
 }

@@ -60,3 +60,6 @@ struct BehaviorMission: Mission, Identifiable {
         self.date = date
     }
 }
+
+extension BehaviorMission: Equatable { }
+extension TimeMission: Equatable { }

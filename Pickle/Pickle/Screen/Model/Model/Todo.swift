@@ -30,13 +30,16 @@ extension Todo: Hashable {
 }
 
 extension Todo {
-    static var sample: Todo = .init(id: "",
-                                    content: "Sample",
-                                    startTime: Date(),
-                                    targetTime: 0,
-                                    spendTime: 10,
-                                    status: .ready)
+    static var sample: Todo {
+        .init(id: "",
+              content: "Sample",
+              startTime: Date(),
+              targetTime: 0,
+              spendTime: 10,
+              status: .ready)
+    }
 }
+
 let sampleTodoList: [Todo] = [
     Todo(id: UUID().uuidString,
          content: "이력서 작성하기",
@@ -49,11 +52,11 @@ let sampleTodoList: [Todo] = [
          startTime: Date(),
          targetTime: 1800,
          spendTime: 1800,
-         status: .ready),
+         status: .ongoing),
     Todo(id: UUID().uuidString,
          content: "Readme 작성하기",
          startTime: Date(),
          targetTime: 5400,
          spendTime: 3600,
-         status: .ready),
+         status: .complete),
 ]

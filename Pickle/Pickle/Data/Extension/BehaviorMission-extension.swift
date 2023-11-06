@@ -11,7 +11,7 @@ extension BehaviorMission {
     typealias PersistenceType = BehaviorMissionObject
     
     func mapToPersistenceObject() -> BehaviorMissionObject {
-        if let _ = UUID(uuidString: self.id) {
+        if UUID(uuidString: self.id) != nil {
             return BehaviorMissionObject(title: self.title,
                                          status: .init(rawValue: self.status.value) ?? .ready,
                                          status1: .init(rawValue: self.status1.value) ?? .ready,

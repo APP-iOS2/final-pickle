@@ -14,4 +14,5 @@ enum RealmError: Error {
     case deleteFailed
     case saveFailed
     case invalidObjectORPrimaryKey
+    case updateMustOneValue // 필터를 통해서 1개 이상의 value가 나왔을때
 }

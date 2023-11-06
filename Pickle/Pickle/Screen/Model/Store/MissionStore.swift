@@ -7,29 +7,30 @@
 
 import SwiftUI
 
-//                              UserRepository                                            CoreData
-// TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
-// MissionStore               MissionRepository                                           FireStore
-
+// TODO: Mission Notification Observer 달기
 @MainActor
 final class MissionStore: ObservableObject {
     
     @Published var timeMissions: [TimeMission] = []
     @Published var behaviorMissions: [BehaviorMission] = []
     
+    private var timeMissionToken: RNotificationToken?
+    private var behaviorMissionToken: RNotificationToken?
+    
     @Injected(TimeRepoKey.self) var timeMissionRepository: any TimeRepositoryProtocol
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
     
-    // MARK: 1안 그냥 되는대로 하다가 나중에 생각한다. 너무 처음부터 빡세게 생각하는것 같다.
-    // MARK: 2안 enum으로 그냥 한다.
-    // MARK: 3안 mediator ?
-    // MARK: 4안 command를 딕셔너리로 ?
-    // MARK: 5안 store(viewModel)를 쪼갠다
+    init() {
+        self.missionSetting()
+    }
+    
     func fetch() -> ([TimeMission], [BehaviorMission]) {
         let _timeMissions = timeMissionRepository.fetch(sorted: Sorted.missionAscending)
         let _behaviorMissions = behaviorMissionRepository.fetch(sorted: Sorted.missionAscending)
-        // self.timeMissions = _timeMissions
-        // self.behaviorMissions = _behaviorMissions
+         
+        self.timeMissions = _timeMissions
+        self.behaviorMissions = _behaviorMissions
+        
         return (_timeMissions, _behaviorMissions)
     }
     
@@ -55,9 +56,11 @@ final class MissionStore: ObservableObject {
     /// - Parameter todo: todo Struct
     func deleteAll(mission: MissionType) {
         switch mission {
-        case .time(_):
+        case .time(let value):
+            Log.debug(value)
             timeMissionRepository.deleteAll()
-        case .behavior(_):
+        case .behavior(let value):
+            Log.debug(value)
             behaviorMissionRepository.deleteAll()
         }
     }
@@ -71,13 +74,55 @@ final class MissionStore: ObservableObject {
         }
     }
     
-    /// 빈 모델 생성
-    func create(mission: MissionType) {
-        switch mission {
-        case .time(_):
-            timeMissionRepository.create { _ in }
-        case .behavior(_):
-            behaviorMissionRepository.create { _ in }
+    func observe(mission: MissionType) {
+        let timeMissionKeypaths = TimeMissionObject.allKeyPath()
+        let behaviorMissionKeypaths = BehaviorMissionObject.allKeyPath()
+        do {
+            switch mission {
+            case .time(let timeMission):
+                timeMissionToken 
+                =
+                try timeMissionRepository
+                    .notification(id: timeMission.id,
+                                  keyPaths: timeMissionKeypaths) { [weak self] tiemMission in
+                        self?.updateTimeMission(tiemMission)
+                }
+            case .behavior(let behaviorMission):
+                behaviorMissionToken
+                =
+                try behaviorMissionRepository
+                    .notification(id: behaviorMission.id,
+                                  keyPaths: behaviorMissionKeypaths) { [weak self] behaviorMission in
+                        self?.updateBehaviorMission(behaviorMission)
+                }
+            }
+        } catch {
+            assert(false)
+        }
+    }
+    
+    private func updateTimeMission(_ timeMission: TimeMission) {
+        timeMissions = timeMissions.map { mission in
+            return mission.id == timeMission.id ? timeMission : mission
+        }
+    }
+    
+    private func updateBehaviorMission(_ behaviorMission: BehaviorMission) {
+        behaviorMissions = behaviorMissions.map { mission in
+            return mission.id == behaviorMission.id ? behaviorMission : mission
+        }
+    }
+    
+    private func missionSetting() {
+        let (t, b) = self.fetch()
+        if !t.isEmpty && !b.isEmpty { return }
+        if t.isEmpty {
+            let time = TimeMission(title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
+            self.add(mission: .time(time))
+        }
+        if b.isEmpty {
+            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, status1: .ready, status2: .ready, date: Date())
+            self.add(mission: .behavior(behavior))
         }
     }
 }

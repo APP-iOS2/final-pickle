@@ -56,3 +56,11 @@ class TimeMissionObject: Object, MissionObject, Identifiable {
         "id"
     }
 }
+
+extension TimeMissionObject {
+    static func allKeyPath() -> [PartialKeyPath<TimeMissionObject>] {
+        [\.changeWakeupTime,
+          \.wakeupTime,
+          \.status]
+    }
+}

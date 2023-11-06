@@ -13,6 +13,8 @@ final class UserStore: ObservableObject {
     
     @Published var user: User = User.defaultUser
     
+    var token: RNotificationToken?
+    
     var pizzaSlice: Double {
         Double(user.currentPizzaSlice)
     }
@@ -25,10 +27,35 @@ final class UserStore: ObservableObject {
     func fetchUser() throws {
         do {
             self.user = try userRepository.fetchUser()
-            Log.debug("user : \(user)")
+            self.token?.invalidate()
+            observeUser()
         } catch {
             Log.error("failed : \(error)")
             throw error
+        }
+    }
+    
+    deinit {
+        self.token?.invalidate()
+    }
+    
+    @MainActor
+    private func observeUser() {
+        self.token = userRepository.observeUser(id: self.user.id,
+                                           keyPaths: [\.currentPizzaSlice])
+        { change in
+            switch change {
+            case .change(let userObject, let propertys):
+                // Observe User Object
+                Log.debug("propertys: \(propertys)")
+                Log.error("userObject.currentPizzaCount :\(userObject.currentPizzaCount)")
+                Log.error("userObject.currentSlice :\(userObject.currentPizzaSlice)")
+                let user = User.mapFromPersistenceObject(userObject)
+                self.user = user
+                return
+            default:
+                break
+            }
         }
     }
     
@@ -46,7 +73,7 @@ final class UserStore: ObservableObject {
         let user = self.user.addPizzaSliceValidation(count: count)
         do {
             try userRepository.updateUser(model: user)
-            self.user = user
+            // self.user = user
         } catch {
             assert(false)
         }

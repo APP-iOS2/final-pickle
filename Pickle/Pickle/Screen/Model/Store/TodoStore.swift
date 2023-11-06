@@ -7,9 +7,8 @@
 
 import SwiftUI
 import Combine
-//                              UserRepository                                            CoreData
-// TodoStore --->-protocol-<-- TodoRepository ---상속---> BaseRepository --->protocol <--- RealmStore (입출력)
-// MissionStore               MissionRepository                                           FireStore
+
+
 @MainActor
 final class TodoStore: ObservableObject {
     
@@ -18,22 +17,7 @@ final class TodoStore: ObservableObject {
     var readyTodos: [Todo] {
         todos.filter { $0.status == .ready && $0.startTime.isToday }
     }
-    
-    var complteTodos: [Todo] {
-        todos.filter { $0.status == .complete }
-    }
-    
-    var giveUpTodos: [Todo] {
-        todos.filter { $0.status == .giveUp }
-    }
-    
-    var ongoingTodos: [Todo] {
-        todos.filter { $0.status == .ongoing }
-    }
-    
-    var doneTodos: [Todo] {
-        todos.filter { $0.status == .done }
-    }
+
     /// 완료한 todos
     @Published var complteTask: Int = 0
     
@@ -41,7 +25,7 @@ final class TodoStore: ObservableObject {
     @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
     
     func getSeletedTodo(id: String) -> Todo {
-        if let todo = self.todos.filter { $0.id == id }.first {
+        if let todo = self.todos.filter({ $0.id == id }).first {
             return todo
         } else {
             assert(false, "getSeleted Todo Failed")
@@ -50,7 +34,7 @@ final class TodoStore: ObservableObject {
     
     @discardableResult
     func fetch() async -> [Todo] {
-        await withCheckedContinuation { continuation in
+        return await withCheckedContinuation { continuation in
             repository.fetchTodo(sorted: Sorted(key: "startTime", ascending: true)) { value in
                 self.todos = value
                 continuation.resume(with: .success(value))
@@ -59,13 +43,8 @@ final class TodoStore: ObservableObject {
     }
     
     func add(todo: Todo) -> Todo {
-        do {
-            let object = try repository.saveTodo(todo: todo)
-            return Todo.mapFromPersistenceObject(object)
-        } catch {
-            Log.error("failed")
-            assert(false)
-        }
+        let object = repository.saveTodo(todo: todo)
+        return Todo.mapFromPersistenceObject(object)
     }
     
     func delete(todo: Todo) {                               // TODO: Delete가 실패 했을때 처리 해야함
@@ -84,22 +63,11 @@ final class TodoStore: ObservableObject {
         return Todo.mapFromPersistenceObject(object)
     }
     
-    func updateStatus(status: TodoStatus) {
-        
-    }
-    
-    /// 빈 모델 생성
-    func create() {
-        repository.create { value in
-            Log.debug(value)
-        }
-    }
     
     func fixNotification(computedTodo: Todo,
                          notificationManager: NotificationManager) {
         //할일의 시작시간 -3분에 알람을 알려줄 시간 변수
         let fixedNotificationTime = Calendar.current.dateComponents([.hour, .minute], from: computedTodo.startTime.adding(minutes: -3))
-        Log.error("computedTodo.id: \(computedTodo.id)")
         // 2번 만약 처음 등록한 할일의 시작시간과 수정한 할일의 시작시간이 다를 경우, 처음 등록된 Notificatio Identifier을 찾아서 삭제하는 메서드
         notificationManager.removeSpecificNotification(id: [computedTodo.id]) // <- 처음 할일에 id를 넣어줘야, 그걸 찾아서 삭제함
         

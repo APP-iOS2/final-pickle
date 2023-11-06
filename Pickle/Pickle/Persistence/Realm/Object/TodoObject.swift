@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import Combine
 
 class TodoObject: Object, Identifiable {
     
@@ -60,10 +61,12 @@ enum TodoStatusPersisted: String, PersistableEnum {
 }
 
 extension TodoObject {
-    static let todo: TodoObject = .init(value: ["id": ObjectId.generate(),
-                                                "content": "안녕하세요",
-                                                "startTime": Date(),
-                                                "targetTime": 1000,
-                                                "spendTime": Date(),
-                                                "status": TodoStatus(rawValue: "ongoing")!.rawValue])
+    static var todo: TodoObject {
+        .init(value: ["id": ObjectId.generate(),
+                      "content": "안녕하세요",
+                      "startTime": Date(),
+                      "targetTime": 1000,
+                      "spendTime": 0,
+                      "status": TodoStatus(rawValue: "ongoing")!.rawValue])
+    }
 }

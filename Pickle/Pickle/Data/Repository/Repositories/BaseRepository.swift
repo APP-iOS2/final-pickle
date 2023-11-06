@@ -10,17 +10,6 @@ import RealmSwift
 
 class BaseRepository<T> {
     
-    // MARK: Before
-    //    private var dbStore: DBStore
-    //    required init(dbStore: DBStore) {
-    //        self.dbStore = dbStore
-    //    }
-    
-    //    required init(dbStore: DBStore = FireBaseStore()) {
-    //        self.dbStore = dbStore
-    //    }
-    
-    // MARK: After
     @Injected(DBStoreKey.self) var dbStore: DBStore
     
     func fetch(_ model: T.Type,
@@ -39,7 +28,6 @@ class BaseRepository<T> {
                predicate: NSPredicate?,
                sorted: Sorted,
                completion: ([T]) -> Void) where T: Storable {
-        Log.debug("dbStore: \(dbStore)")
         do {
             try dbStore.fetch(model,
                               predicate: predicate,
@@ -54,13 +42,6 @@ class BaseRepository<T> {
         try dbStore.deleteAll(model)
     }
     
-//    func delete(object: T) throws where T: Storable {
-//        try dbStore.delete(object: object)
-//    }
-    func delete(object: T) throws where T: Storable {
-        try dbStore.delete(object: object)
-    }
-    
     func delete(object: T, id: String) throws where T: Storable {
         try dbStore.delete(model: T.self, id: id)
     }
@@ -69,17 +50,14 @@ class BaseRepository<T> {
         try dbStore.update(object: object)
     }
     
-    func update(id: String, query: RealmFilter<T>) throws where T: Storable {
-        try dbStore.update(T.self, id: id, query: query)
-    }
-    
     func save(object: T) throws where T: Storable {
         try dbStore.save(object: object)
     }
     
     func create(_ model: T.Type,
+                item: T,
                 completion: @escaping (T) -> Void) throws where T: Storable {
-        try dbStore.create(model, completion: completion)
+        try dbStore.create(model, item: item, completion: completion)
     }
     
     func create(_ model: T.Type,

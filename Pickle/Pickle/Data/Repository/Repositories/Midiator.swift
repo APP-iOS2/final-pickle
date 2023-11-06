@@ -7,12 +7,6 @@
 
 import Foundation
 
-
-//protocol MissionRepositoryProtocol: Dependency {
-//    associatedtype DTO: Mission
-//    associatedtype Persited: MissionObject
-//
-//}
 enum Adpater {
     static weak var repository: (any MissionRepositoryProtocol)?
     static var type: MissionRepositoryType = .none
@@ -54,9 +48,10 @@ struct MissionMediator {
     }
     
     func create<T: Persisted>(type: MissionType, _ completion: @escaping (T) -> Void) {
-        A.repository?.create { value in
-            Log.debug("create: \(value)")
-        }
+        // TODO: 추후 수정
+//        A.repository?.create(item: .init()) { value in
+//            Log.debug("create: \(value)")
+//        }
     }
     
     func add(type: MissionType, value: some Mission) {
@@ -67,13 +62,6 @@ struct MissionMediator {
     func delete<T: DTO>(type: MissionType, value: T) where T: MappableProtocol {
         setRepository(mission: type)
         if let repo = A.repository {
-//            repo.delete(model: value)
         }
     }
-    //    func fetch(sorted: Sorted) async -> [DTO]
-    //    func create(_ completion: @escaping (Persited) -> Void)
-    //    func save(model: DTO)
-    //    func delete(model: DTO)
-    //    func deleteAll()
-    //    func update(model: DTO)
 }

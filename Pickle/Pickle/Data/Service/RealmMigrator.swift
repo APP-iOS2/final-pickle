@@ -63,14 +63,6 @@ struct RealmProvider {
         configuration = config
     }
     
-    var _realm: Realm? {
-        return try? Realm(configuration: configuration)
-    }
-    
-    static var defaultRealm: Realm {
-        try! Realm()
-    }
-    
     var realm: Realm? {
         do {
             return try Realm(configuration: configuration)
@@ -80,23 +72,23 @@ struct RealmProvider {
         }
     }
     
-    private static let defaultConfig = Realm.Configuration(schemaVersion: 1)
+    static var defaultRealm: Realm {
+        try! Realm()
+    }
+    
+    static func actorRealm(actor: RealmActor, type: RealmStore.RealmType) async throws -> Realm {
+        switch type {
+        case .disk:
+            return try await Realm(actor: actor)
+        case .inmemory:
+            return try await Realm(configuration: .init(inMemoryIdentifier: "test.actor.realm"),
+                                   actor: actor)
+        }
+    }
     
     static var previewRealm: Realm {
         let identifier = "preview.realm"
         let config = Realm.Configuration(inMemoryIdentifier: identifier)
         return RealmProvider(config: config).realm!
     }
-           
-    private static let mainConfig = Realm.Configuration(
-        fileURL: URL.inDocumentsFolder("main.realm"),
-        schemaVersion: 1)
-    
-    static var `default`: Realm? = {
-        return RealmProvider(config: RealmProvider.defaultConfig).realm
-    }()
-    
-    static var main: Realm? = {
-        return RealmProvider(config: RealmProvider.mainConfig).realm
-    }()
 }

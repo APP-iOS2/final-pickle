@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import Combine
 
 protocol TodoRepositoryProtocol: Dependency {
     func fetchTodo(sorted: Sorted, _ completion: @escaping ([Todo]) -> Void)
-    func create(_ completion: @escaping (TodoObject) -> Void)
-    func saveTodo(todo: Todo) throws -> TodoObject
+    func create(item: Todo, _ completion: @escaping (TodoObject) -> Void)
+    func saveTodo(todo: Todo) -> TodoObject
     func deleteTodo(model: Todo)
     func deleteAll()
     func updateTodo(todo: Todo) -> TodoObject
+    
+    func fetcthFuture<T: Storable>(model: T.Type) -> Future<[T], Error>
 }
 
 
@@ -29,15 +32,16 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
     }
     
-    func create(_ completion: @escaping (TodoObject) -> Void) {
+    func create(item: Todo, _ completion: @escaping (TodoObject) -> Void) {
+        let object = item.mapToPersistenceObject()
         do {
-            try super.create(TodoObject.self) { completion($0) }
+            try super.create(TodoObject.self, item: object) { completion($0) }
         } catch {
             Log.error("error: \(error)")
         }
     }
     
-    func saveTodo(todo: Todo) throws -> TodoObject {
+    func saveTodo(todo: Todo) -> TodoObject {
         let object = todo.mapToPersistenceObject()
         
         do {
@@ -45,7 +49,7 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
             return object
         } catch {
             Log.error("error \(error)")
-            throw RealmError.saveFailed
+            assert(false)
         }
     }
     
@@ -75,6 +79,19 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         } catch {
             Log.error("error: \(error)")
             assert(false)
+        }
+    }
+    
+    func fetcthFuture<T: Storable>(model: T.Type) -> Future<[T], Error> {
+        Future<[T], Error> { promise in
+            DispatchQueue(label: "Custom Queue").async {
+                do {
+                    let value = try super.dbStore.fetch(model, predicate: nil, sorted: nil)
+                    promise(.success(value))
+                } catch {
+                    promise(.failure(error))
+                }
+            }
         }
     }
 }

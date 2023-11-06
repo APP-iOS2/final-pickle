@@ -43,7 +43,7 @@ struct PizzaSelectedView: View {
                         .frame(width: CGFloat.screenWidth / 3 - 40)
                         .padding(.horizontal, 10)
                         .onTapGesture {
-                            var seleted = seletedPizza
+                            let seleted = seletedPizza
                             seletedPizza = pizzas[safe: index] ?? .defaultPizza
                             if seletedPizza == seleted,
                                seletedPizza.lock {

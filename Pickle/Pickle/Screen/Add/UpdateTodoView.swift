@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddTodoView: View {
+struct UpdateTodoView: View {
     
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var notificationManager: NotificationManager
@@ -55,7 +55,7 @@ struct AddTodoView: View {
 struct AddTodoView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            AddTodoView(isShowingEditTodo: .constant(true),
+            UpdateTodoView(isShowingEditTodo: .constant(true),
                         todo: .constant(Todo.sample))
             .environmentObject(TodoStore())
         }

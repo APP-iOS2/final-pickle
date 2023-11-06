@@ -14,7 +14,7 @@
 		2137D5802AC1459D00AFE225 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */; };
 		2137D5882AC1460F00AFE225 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2137D5872AC1460F00AFE225 /* .swiftlint.yml */; };
 		2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5892AC1473C00AFE225 /* HomeView.swift */; };
-		2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D58C2AC1475800AFE225 /* AddTodoView.swift */; };
+		2137D58D2AC1475800AFE225 /* UpdateTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */; };
 		2137D58F2AC1476000AFE225 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D58E2AC1476000AFE225 /* TimerView.swift */; };
 		2137D5912AC1476700AFE225 /* MissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5902AC1476700AFE225 /* MissionView.swift */; };
 		2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5922AC1478C00AFE225 /* CalendarView.swift */; };
@@ -143,7 +143,7 @@
 		2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2137D5872AC1460F00AFE225 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		2137D5892AC1473C00AFE225 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		2137D58C2AC1475800AFE225 /* AddTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoView.swift; sourceTree = "<group>"; };
+		2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTodoView.swift; sourceTree = "<group>"; };
 		2137D58E2AC1476000AFE225 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		2137D5902AC1476700AFE225 /* MissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionView.swift; sourceTree = "<group>"; };
 		2137D5922AC1478C00AFE225 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -495,7 +495,7 @@
 		960C41972ACE7A08009A0093 /* Add */ = {
 			isa = PBXGroup;
 			children = (
-				2137D58C2AC1475800AFE225 /* AddTodoView.swift */,
+				2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */,
 				96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */,
 				96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */,
 			);
@@ -949,7 +949,7 @@
 				96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */,
 				2137D5A82AC14C7A00AFE225 /* Font.swift in Sources */,
 				A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */,
-				2137D58D2AC1475800AFE225 /* AddTodoView.swift in Sources */,
+				2137D58D2AC1475800AFE225 /* UpdateTodoView.swift in Sources */,
 				96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */,
 				B77A29A82AE6955200BB8838 /* PizzaCollectionView.swift in Sources */,
 				965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */,

@@ -315,7 +315,7 @@ extension HomeView {
         @Binding var seletedTodo: Todo
         func body(content: Content) -> some View {
             content.fullScreenCover(isPresented: $isPresented) {
-                AddTodoView(isShowingEditTodo: $isPresented,
+                UpdateTodoView(isShowingEditTodo: $isPresented,
                             todo: $seletedTodo)
             }
         }

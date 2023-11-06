@@ -49,7 +49,6 @@ struct PickerView: View {
                 DatePickerUIKit(selection: $changedWakeupTime,
                                 in: closedRange,
                                 minuteInterval: 1)
-//                .border(.black, width: 3)
             } else {
                 DatePicker("시간 선택", selection: $changedWakeupTime,
                            displayedComponents: .hourAndMinute)
@@ -71,7 +70,6 @@ extension PickerView {
         let endTime = calendar.date(from: end)!
         
         let range = startTime...endTime
-        Log.debug("range : \(range)")
         return range
     }
 }

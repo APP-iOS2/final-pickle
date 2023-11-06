@@ -7,56 +7,6 @@
 
 import SwiftUI
 
-// TODO: onAppear Strat Time refresh 변경 - onAppear에서 수정 - 완료
-// TODO: 등록 5글자에서 1글자로 변경 - 완료
-// TODO: Delete 했을시 Alert 뒤로가기로 눌러야지만 뒤로가짐, - 완료
-// TODO: 검은 화면 클릭했을시 뒤로 사라지게 변경해야함 - 완료
-// TODO: HomeView TableView에서 자체 삭제 메소드 제공해야하는지 여부 - 없어도 될거 같음
-
-
-// TODO: TabView Dissmiss 등록뷰와 미션뷰에서 나올때 애니메이션 없이 onAppear일때 보여짐 -> animation 적용여부 결정 - 그냥하면되고
-// TODO: 피자 8개를 채웠을때 애니메이션 팝업 OR 다른 액션 고려하기 -> Alert, (Toast) - (수지님이 했던거 가져다 붙이기)
-
-// 1 -> 백그라운드에서 실행 꼼수 써야댐
-// 2 -> 백그라운드에서 -> Suspend -> 시간계산 + 상태 -> (일주일) 어떻게 할줄 몰름
-
-// TODO: HomeView 에서 현재 ready 상태만 보여주는 상태 -> 구분하기 다른 상태 고려 GiveUp, done(complte), ongoing
-        // 달력에서 다 보여줘서 괜찮... ongoing -> 같이 보여 주기 - 0%
-        // complete과 done의 차이는 ?
-// TODO: Custom Alert
-// TODO: 할일 추가하기 다크모드 - 0 %
-
-
-// TODO: HomeView Pizza View 선택 할수 있게 구성하기
-    // 1-1. lock이 아니라면 -> Home에 있는 피자를 변경해야 함 - 완료
-    // 1-2. lock일 경우에는 토스트 메시지를 보여줘야 하나? - 지금 알럿으로 완료
-    // 2. 선택 중일때는 초록색 으로 선택 중인 피자 보여줘야댐 - 90% // 앱 초기화면에 피자 선택 셋팅해야됨 - default로 페퍼로니로 셋팅
-    // 3.
-
-// TODO: Pizza Collection List -> User Data 안쪽으로 연결구조 realm 공식문서 살펴보기 - 좀있다하고 -> 하긴했음
-// MARK: data CRUD Ursert 로 강제 수정으로 처리 - 80%
-
-
-// TODO: 할일 설정 시간을 현재 시간 이후로만 설정할수 있게 변경 - 진행중 - 완료....
-// TODO: Alert 구조 refactoring - 추후 리팩토링
-// TODO: Alert TimerView의 알럿으로 통일하기 - 0%
-
-// TODO: 인앱 puchase Mock으로 구현
-// TODO: Deep Link 구현
-    // 1. 피자 완성하러가기 -> 홈으로? 아니면 어디로
-    // 2. 구매하러 가기
-// TODO: Alert에 Unlock (lock.fill) 표시하기 - 완료
-    // 1. 잠금상태 일때와, 비잠금상태 구분 - 콘텐츠의 내용을 구분해야 하나?
-    // 1-1. 잠금,비잠금 상태 구분해서 action을 다르게 주기
-    //
-// TODO: Image Cache 현재 PizzaSeleted의 이미지 메모리량 (적당히 많이) 잡아먹는 상태 100 MB?
-
-// TODO: User Interactor 적용 해보기
-    // 1. 현재 뷰 OR Store(ViewModel) 에서 Bussiness로직이 강하게 결합되어있음
-    // 2. Interactor를 사용하여 도메인 로직 분리 필요해 보임 - 논의 해보기
-    // 3. 상속 여부 현재 BaseRepository를 사용하여 상속 관계를 형성하여 메소드 자동생성 편의성이 올라가긴했음
-    //  3-1 DownSide고려하여 Repository 추상화 결정해야함
-
 struct HomeView: View {
     
     init() {
@@ -74,6 +24,11 @@ struct HomeView: View {
     let fullText = "할일을 완료하고 피자를 모아보아요"
     
     @State private var tabBarvisibility: Visibility = .visible
+    
+    
+    @State private var routingState: Routing = .none
+    
+    @State private var alertType: AlertType?
     @State private var isShowingEditTodo: Bool = false
     @State private var isPizzaSeleted: Bool = false
     @State private var isPizzaPuchasePresented: Bool = false
@@ -125,18 +80,14 @@ struct HomeView: View {
             }.padding(.vertical, 20)
         }
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
-                                                                  /* leading - (MissionView), trailing - (RegisterView) */
-        
-        .fullScreenCover(isPresented: $isShowingEditTodo,         /* fullScreen cover */
-                         seletedTodo: $seletedTodo)               /* $isShowingEditTodo - 당연히 시트 띄우는 binding값 */
-                                                                  /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
-        
-        .sheetModifier(isPresented: $isPizzaSeleted,               /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
+                                                                /* leading - (MissionView), trailing - (RegisterView) */
+
+        .sheetModifier(isPizzaSeleted: $isPizzaSeleted,         /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
                        isPurchase: $isPizzaPuchasePresented,
                        seletedPizza: $seletedPizza,
                        currentPizza: $currentPizza,
-                       updateSignal: $updateSignal)
-        
+                       updateSignal: $updateSignal,
+                       alertType: $alertType)
         .showPizzaPurchaseAlert(seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
                                 $isPizzaPuchasePresented) {     /* 두가지의 (액션)클로져를 받는다, */
             Log.debug("인앱 결제 액션")                             /* 1. 구매 액션 */
@@ -167,15 +118,21 @@ struct HomeView: View {
             }
         })
         .completePizzaAlert(isPresented: $showCompleteAlert, pizzaName: seletedPizza.image, title: "축하합니다", contents: seletedPizza.name)
-        
         .onChange(of: seletedPizza,
                   perform: { pizza in
             if pizza.lock { 
                 isPizzaPuchasePresented.toggle()
-            }
-            else { /*currentPizzaImg = pizza.image*/
+            } else { /*currentPizzaImg = pizza.image*/
                 currentPizza = pizza
             }
+        })
+        .navigationDestination(for: Todo.self, destination: { todo in
+            // AddTodoView(isShowingEditTodo: .constant(false), todo: .constant(todo))
+            RegisterView(willUpdateTodo: .constant(Todo.sample),
+                         successDelete: .constant(false),
+                         isShowingEditTodo: .constant(false),
+                         isModify: false)
+            .backKeyModifier(tabBarvisibility: $tabBarvisibility)
         })
     }
 }
@@ -199,7 +156,7 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
-//            tempButton
+            tempButton
             
             Text("\(pizzaTaskSlice)")
                 .font(.chab)
@@ -229,6 +186,9 @@ extension HomeView {
                     isShowingEditTodo.toggle()
                 }
         }
+        .fullScreenCover(isPresented: $isShowingEditTodo,         /* fullScreen cover */
+                         seletedTodo: $seletedTodo)               /* $isShowingEditTodo - 당연히 시트 띄우는 binding값 */
+                                                                  /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
     }
     
     private var tempButton: some View {
@@ -252,17 +212,19 @@ extension View {
         modifier(NavigationModifier(tabBarvisibility: tabBarvisibility))
     }
     
-    func sheetModifier(isPresented: Binding<Bool>,
+    func sheetModifier(isPizzaSeleted: Binding<Bool>,
                        isPurchase: Binding<Bool>,
                        seletedPizza: Binding<Pizza>,
                        currentPizza: Binding<Pizza>,
-                       updateSignal: Binding<Bool>) -> some View {
+                       updateSignal: Binding<Bool>,
+                       alertType: Binding<AlertType?>) -> some View {
         
-        modifier(HomeView.SheetModifier(isPresented: isPresented,
-                                         isPizzaPuchasePresented: isPurchase,
+        modifier(HomeView.SheetModifier(isPizzaSelected: isPizzaSeleted,
+                                        isPizzaPuchasePresented: isPurchase,
                                         seletedPizza: seletedPizza,
                                         currentPizza: currentPizza,
-                                       updateSignal: updateSignal))
+                                        updateSignal: updateSignal,
+                                        alertType: alertType))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -292,13 +254,15 @@ extension View {
 extension HomeView {
     
     struct SheetModifier: ViewModifier {
-        @Binding var isPresented: Bool
-         @Binding var isPizzaPuchasePresented: Bool
+        @Binding var isPizzaSelected: Bool
+        @Binding var isPizzaPuchasePresented: Bool
         
         @State private var pizzas: [Pizza] = []
         @Binding var seletedPizza: Pizza
         @Binding var currentPizza: Pizza
         @Binding var updateSignal: Bool // TODO: 피자 업데이트 신호,,,추후 변경
+        
+        @Binding var alertType: AlertType?
         
         @GestureState private var offset = CGSize.zero
         @EnvironmentObject var pizzaStore: PizzaStore
@@ -313,7 +277,7 @@ extension HomeView {
             
             content
                 .overlay {
-                    if isPresented {
+                    if isPizzaSelected {
                         // For getting frame for image
                         GeometryReader { proxy in
                             let frame = proxy.frame(in: .global)
@@ -323,7 +287,7 @@ extension HomeView {
                         }
                         .ignoresSafeArea()
                         
-                        CustomSheetView(isPresented: $isPresented) {
+                        CustomSheetView(isPresented: $isPizzaSelected) {
                             PizzaSelectedView(pizzas: $pizzas,
                                               seletedPizza: $seletedPizza,
                                               currentPizza: $currentPizza,
@@ -339,7 +303,10 @@ extension HomeView {
                         await fetchPizza()
                     }
                 }
-                .toolbar(isPresented ? .hidden : .visible, for: .tabBar)
+            //   .onPreferenceChange(Key.self) { value in
+            //       currentPizza = value
+            //   }
+                .toolbar(isPizzaSelected ? .hidden : .visible, for: .tabBar)
         }
     }
     
@@ -348,7 +315,7 @@ extension HomeView {
         @Binding var seletedTodo: Todo
         func body(content: Content) -> some View {
             content.fullScreenCover(isPresented: $isPresented) {
-                AddTodoView(isShowingEditTodo: $isPresented,
+                UpdateTodoView(isShowingEditTodo: $isPresented,
                             todo: $seletedTodo)
             }
         }
@@ -368,7 +335,6 @@ extension HomeView {
 
 private struct NavigationModifier: ViewModifier {
     
-//    @State private var tabBarVisibility: Visibility =
     @Binding var tabBarvisibility: Visibility
         
     func body(content: Content) -> some View {
@@ -429,4 +395,61 @@ struct HomeView_Previews: PreviewProvider {
                 .environmentObject(NotificationManager())
         }
     }
+}
+
+
+
+// MARK: 배경색을 투명하게 만들어주는 modifier - .clearModalBackground()
+struct ClearBackgroundView: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        let view = UIView()
+        DispatchQueue.main.async {
+            view.superview?.superview?.backgroundColor = .clear
+        }
+        return view
+    }
+    func updateUIView(_ uiView: UIViewType, context: Context) { }
+}
+
+struct ClearBackgroundViewModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationBackground(.clear)
+        } else {
+            content
+                .background(ClearBackgroundView())
+        }
+    }
+}
+
+extension View {
+    func clearModalBackground()->some View {
+        self.modifier(ClearBackgroundViewModifier())
+    }
+}
+
+
+extension HomeView {
+    enum Routing: Identifiable {
+        var id: Self {
+            return self
+        }
+        case isShowingEditTodo
+        case isPizzaSeleted
+        case isPizzaPuchasePresented
+        case showCompleteAlert
+        case none
+    }
+}
+enum AlertType: Identifiable {
+    var id: Self {
+        return self
+    }
+    case isShowingEditTodo
+    case isPizzaSeleted
+    case isPizzaPuchasePresented
+    case showCompleteAlert
+    case none
 }

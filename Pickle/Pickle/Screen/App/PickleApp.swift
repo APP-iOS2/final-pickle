@@ -15,6 +15,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         
+        if ProcessInfo.processInfo.isRunningTests { return true }
+        
+        
         PickleApp.setUpDependency()
         let _ = RealmMigrator()
         
@@ -95,6 +98,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         )
     }
     
+    
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -106,9 +110,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-@main
+
 struct PickleApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     @StateObject private var todoStore = TodoStore()
     @StateObject private var missionStore = MissionStore()
     @StateObject private var userStore = UserStore()
@@ -116,34 +121,37 @@ struct PickleApp: App {
     @StateObject private var notificationManager = NotificationManager()
     @StateObject private var timerVM = TimerViewModel()
     @StateObject private var healthKitStore: HealthKitStore = HealthKitStore()
+    
     @Environment(\.scenePhase) var scenePhase
     @State private var debugDelete: Bool = true
     
     // Launch Screen Delay
     init() {
         Thread.sleep(forTimeInterval: 2)
+        if debugDelete {
+            let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
+            let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
+        }
     }
     
     var body: some Scene {
         WindowGroup {
-            if debugDelete {
-                let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
-                let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
-                //                let _ = dummyDelete()
+            if ProcessInfo.processInfo.isRunningTests {
+                Text("value ")
+            } else {
+                ContentView()
+                    .onAppear { Log.error("contentVIew onAppear"); debugDelete.toggle() }    // 내부의 contentView onApper 보다 늦게 실행됨 Debug Delete
+                    .environmentObject(todoStore)
+                    .environmentObject(missionStore)
+                    .environmentObject(userStore)
+                    .environmentObject(notificationManager)
+                    .environmentObject(pizzaStore)
+                    .environmentObject(timerVM)
+                    .environmentObject(healthKitStore)
+                    .onChange(of: scenePhase) { newScene in
+                        backgroundEvent(newScene: newScene)
+                    }
             }
-            
-            ContentView()
-                .onAppear { Log.error("contentVIew onAppear"); debugDelete.toggle() }    // 내부의 contentView onApper 보다 늦게 실행됨 Debug Delete
-                .environmentObject(todoStore)
-                .environmentObject(missionStore)
-                .environmentObject(userStore)
-                .environmentObject(notificationManager)
-                .environmentObject(pizzaStore)
-                .environmentObject(timerVM)
-                .environmentObject(healthKitStore)
-                .onChange(of: scenePhase) { newScene in
-                    backgroundEvent(newScene: newScene)
-                }
         }
     }
     
@@ -214,12 +222,10 @@ struct PickleApp: App {
 extension PickleApp {
     /// 테스트용
     func dummyDelete() {
-        Log.debug("dummy Delete called")
         userStore.deleteuserAll()
         missionStore.deleteAll(mission: .time(.init()))
         missionStore.deleteAll(mission: .behavior(.init()))
         pizzaStore.deleteAll()
-        Log.debug("dummy Delete end")
     }
     
     static func setUpDependency() {

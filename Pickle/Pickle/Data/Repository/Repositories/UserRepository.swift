@@ -81,7 +81,6 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
         }
     }
     
-    
     /// Realm FilterTest
     /// - Parameters:
     ///   - model: userModel

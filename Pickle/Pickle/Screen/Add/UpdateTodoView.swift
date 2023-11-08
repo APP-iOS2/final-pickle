@@ -52,7 +52,7 @@ struct UpdateTodoView: View {
     }
 }
 
-struct AddTodoView_Previews: PreviewProvider {
+struct UpdateTodoView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             UpdateTodoView(isShowingEditTodo: .constant(true),

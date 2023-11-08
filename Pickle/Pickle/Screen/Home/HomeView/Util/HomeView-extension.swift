@@ -7,19 +7,15 @@
 
 import SwiftUI
 
-
 extension HomeView {
-    
-    struct SheetModifier: ViewModifier {        
-        @Binding var selection: PizzaSelectedView.Selection
-        /*@Binding var updateSignal: Bool*/ // TODO: 피자 업데이트 신호,,,추후 변경
-        
+    struct SheetModifier: ViewModifier {
         @GestureState private var offset = CGSize.zero
         @EnvironmentObject var pizzaStore: PizzaStore
         @EnvironmentObject var userStore: UserStore
         
+        @Binding var selection: PizzaSelectedView.Selection
+        
         func body(content: Content) -> some View {
-            
             content
                 .overlay {
                     if selection.isPizzaSelected {
@@ -34,7 +30,7 @@ extension HomeView {
                         
                         CustomSheetView(isPresented: $selection.isPizzaSelected) {
                             PizzaSelectedView(selection: $selection)
-                        }.transition(.move(edge: .bottom).combined(with: .opacity))
+                        }.transition(.move(edge: .bottom)/*.combined(with: .opacity)*/)
                     }
                 }
                 .toolbar(selection.isPizzaSelected ? .hidden : .visible, for: .tabBar)
@@ -47,7 +43,7 @@ extension HomeView {
         func body(content: Content) -> some View {
             content.fullScreenCover(isPresented: $isPresented) {
                 UpdateTodoView(isShowingEditTodo: $isPresented,
-                            todo: $seletedTodo)
+                               todo: $seletedTodo)
             }
         }
     }

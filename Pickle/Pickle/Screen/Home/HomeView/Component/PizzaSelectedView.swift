@@ -17,27 +17,6 @@ import SwiftUI
     //
 // TODO: Image Cache 현재 PizzaSeleted의 이미지 메모리량을 많이 잡아먹는 상태
 
-struct PizzaPuchasePresentKey: PreferenceKey {
-    static var defaultValue: Bool = false
-    static func reduce(value: inout Bool, nextValue: () -> Bool) {
-        value = nextValue()
-    }
-}
-
-struct CurrentPizzaKey: PreferenceKey {
-    static var defaultValue: Pizza = .defaultPizza
-    static func reduce(value: inout Pizza, nextValue: () -> Pizza) {
-        value = nextValue()
-    }
-}
-
-struct SeletedPizzaKey: PreferenceKey {
-    static var defaultValue: Pizza = .defaultPizza
-    static func reduce(value: inout Pizza, nextValue: () -> Pizza) {
-        value = nextValue()
-    }
-}
-
 struct PizzaSelectedView: View {
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)

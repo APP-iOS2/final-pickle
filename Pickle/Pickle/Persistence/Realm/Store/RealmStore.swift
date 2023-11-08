@@ -159,8 +159,7 @@ final class RealmStore: DBStore {
                               id: String,
                               keyPaths: [PartialKeyPath<T>],
                               _ completion: @escaping ObjectCompletion<T>) throws 
-    -> NotificationToken where T: Storable, T: ObjectBase
-    {
+    -> NotificationToken where T: Storable, T: ObjectBase {
         guard
             let realm = realmStore,
             let id =  try? ObjectId(string: id)
@@ -219,3 +218,20 @@ extension Sorted {
     }
 }
 
+//  let objects = realm.objects(PizzaObject.self)
+//  pizzaTOken = objects.observe(keyPaths: [\.lock], { pizzaob in
+//      switch pizzaob {
+//      case .update(let pizza,
+//                   deletions: let deletions,
+//                   insertions: let insertions,
+//                   modifications: let modifications):
+//          Log.debug("pizza collectionType: \(pizza)")
+//          Log.debug("pizza deletions: \(deletions)")
+//          Log.debug("pizza insertions: \(insertions)")
+//          Log.debug("pizza modifications: \(modifications)")
+//      case .error(let error):
+//          Log.error("notification error \(error)")
+//      case .initial(let results):
+//          Log.debug("let initial lizer notification Token \(results)")
+//      }
+//  })

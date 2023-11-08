@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 // MARK: HomeView Modifier
 extension View {
     
@@ -19,13 +18,6 @@ extension View {
     func navigationSetting(tabBarvisibility: Binding<Visibility>) -> some View {
         modifier(NavigationModifier(tabBarvisibility: tabBarvisibility))
     }
-    
-//    func mutilpleModifier(selection: Binding<PizzaSelectedView.Selection>,
-//                          isPresented: Binding<Bool>,
-//                          seletedTodo item: Binding<Todo>,
-//                          value: PZAContent) {
-//        modifier(<#T##modifier: T##T#>)
-//    }
     
     func sheetModifier(selection: Binding<PizzaSelectedView.Selection>) -> some View {
         

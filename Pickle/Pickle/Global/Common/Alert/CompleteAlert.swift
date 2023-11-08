@@ -7,19 +7,23 @@
 
 import SwiftUI
 
+struct CompleteMessage {
+    let isPresented: Binding<Bool>
+    let pizzaName: String
+    let title: String
+    let contents: String
+}
+
 extension View {
     func completePizzaAlert(
-        isPresented: Binding<Bool>,
-        pizzaName: String,
-        title: String,
-        contents: String
+        message: CompleteMessage
     ) -> some View {
         return modifier(
             CompleteAlertModifier(
-                isPresented: isPresented,
-                pizzaName: pizzaName,
-                title: title,
-                contents: contents
+                isPresented: message.isPresented,
+                pizzaName: message.pizzaName,
+                title: message.title,
+                contents: message.contents
             )
         )
     }

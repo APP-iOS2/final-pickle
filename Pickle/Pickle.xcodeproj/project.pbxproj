@@ -70,6 +70,11 @@
 		965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */; };
 		9661107C2AF800AD008A80DE /* Realm+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107B2AF800AD008A80DE /* Realm+Combine.swift */; };
 		9661107E2AF8E92B008A80DE /* RealmStore+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107D2AF8E92B008A80DE /* RealmStore+Combine.swift */; };
+		966110802AF907EE008A80DE /* ClearBackgroundViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107F2AF907EE008A80DE /* ClearBackgroundViewModifier.swift */; };
+		966110852AFA7E15008A80DE /* View-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110842AFA7E15008A80DE /* View-extension.swift */; };
+		966110872AFA7E42008A80DE /* HomeView-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110862AFA7E42008A80DE /* HomeView-extension.swift */; };
+		966110892AFA7EA2008A80DE /* NavigationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110882AFA7EA2008A80DE /* NavigationModifier.swift */; };
+		9661108B2AFA84CA008A80DE /* PreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661108A2AFA84CA008A80DE /* PreferenceKey.swift */; };
 		96635F5C2ADF9EE60072F21E /* Todo-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5B2ADF9EE60072F21E /* Todo-extension.swift */; };
 		96635F5E2ADF9EEF0072F21E /* TimeMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */; };
 		96635F602ADF9EF50072F21E /* User-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5F2ADF9EF50072F21E /* User-extension.swift */; };
@@ -200,6 +205,11 @@
 		965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaAlert.swift; sourceTree = "<group>"; };
 		9661107B2AF800AD008A80DE /* Realm+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Combine.swift"; sourceTree = "<group>"; };
 		9661107D2AF8E92B008A80DE /* RealmStore+Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmStore+Combine.swift"; sourceTree = "<group>"; };
+		9661107F2AF907EE008A80DE /* ClearBackgroundViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearBackgroundViewModifier.swift; sourceTree = "<group>"; };
+		966110842AFA7E15008A80DE /* View-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View-extension.swift"; sourceTree = "<group>"; };
+		966110862AFA7E42008A80DE /* HomeView-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView-extension.swift"; sourceTree = "<group>"; };
+		966110882AFA7EA2008A80DE /* NavigationModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModifier.swift; sourceTree = "<group>"; };
+		9661108A2AFA84CA008A80DE /* PreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceKey.swift; sourceTree = "<group>"; };
 		96635F5B2ADF9EE60072F21E /* Todo-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo-extension.swift"; sourceTree = "<group>"; };
 		96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeMission-extension.swift"; sourceTree = "<group>"; };
 		96635F5F2ADF9EF50072F21E /* User-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User-extension.swift"; sourceTree = "<group>"; };
@@ -581,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */,
+				9661107F2AF907EE008A80DE /* ClearBackgroundViewModifier.swift */,
 				961296952AC16FBE009A9815 /* BackColorModifier.swift */,
 				96943B252ADFFDED0026D54F /* BackgroundModifier.swift */,
 				961296972AC17120009A9815 /* TextFieldModifier.swift */,
@@ -600,6 +611,37 @@
 				B0CB776B2AE679DA0022491A /* CompleteAlert.swift */,
 			);
 			path = Alert;
+			sourceTree = "<group>";
+		};
+		966110812AFA7DD6008A80DE /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
+				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
+				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
+				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
+				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		966110822AFA7DE4008A80DE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2137D5892AC1473C00AFE225 /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		966110832AFA7DF1008A80DE /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				9661108A2AFA84CA008A80DE /* PreferenceKey.swift */,
+				966110842AFA7E15008A80DE /* View-extension.swift */,
+				966110862AFA7E42008A80DE /* HomeView-extension.swift */,
+				966110882AFA7EA2008A80DE /* NavigationModifier.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 		96635F5A2ADF9ECF0072F21E /* Extension */ = {
@@ -717,12 +759,9 @@
 		96C872CA2AE0BDA2007BD155 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
-				2137D5892AC1473C00AFE225 /* HomeView.swift */,
-				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
-				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
-				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
-				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
-				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
+				966110822AFA7DE4008A80DE /* View */,
+				966110832AFA7DF1008A80DE /* Util */,
+				966110812AFA7DD6008A80DE /* Component */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -914,6 +953,8 @@
 				960C419A2ACE7AF9009A0093 /* Log.swift in Sources */,
 				960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */,
 				963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */,
+				966110852AFA7E15008A80DE /* View-extension.swift in Sources */,
+				966110872AFA7E42008A80DE /* HomeView-extension.swift in Sources */,
 				963AFF8F2AC3319D00835FD8 /* RealmMigrator.swift in Sources */,
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
@@ -927,6 +968,7 @@
 				96635F652ADF9F380072F21E /* Status.swift in Sources */,
 				96A1E4AF2AD527B4001B2960 /* UserObject.swift in Sources */,
 				96635F5E2ADF9EEF0072F21E /* TimeMission-extension.swift in Sources */,
+				966110802AF907EE008A80DE /* ClearBackgroundViewModifier.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
@@ -935,6 +977,7 @@
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
 				960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */,
+				9661108B2AFA84CA008A80DE /* PreferenceKey.swift in Sources */,
 				9661107C2AF800AD008A80DE /* Realm+Combine.swift in Sources */,
 				961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */,
 				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
@@ -953,6 +996,7 @@
 				96A1E4B12AD52919001B2960 /* UserStore.swift in Sources */,
 				B77A29A82AE6955200BB8838 /* PizzaCollectionView.swift in Sources */,
 				965C9B9A2ADA866E0015ABBE /* PizzaSelectedView.swift in Sources */,
+				966110892AFA7EA2008A80DE /* NavigationModifier.swift in Sources */,
 				960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */,
 				B0C158DC2AC1759D003B00E6 /* MissionSettingView.swift in Sources */,
 				A08EF5412AE265C900349A58 /* GiveupAlert.swift in Sources */,

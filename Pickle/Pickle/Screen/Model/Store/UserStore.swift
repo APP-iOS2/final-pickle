@@ -40,18 +40,18 @@ final class UserStore: ObservableObject {
     }
     
     @MainActor
-    private func observeUser() {
+    private func observeUser() {   
         self.token = userRepository.observeUser(id: self.user.id,
-                                           keyPaths: [\.currentPizzaSlice])
-        { change in
+                                                keyPaths: [\.currentPizzaSlice, \.pizza]) {
+            change in
             switch change {
             case .change(let userObject, let propertys):
-                // Observe User Object
-                Log.debug("propertys: \(propertys)")
-                Log.error("userObject.currentPizzaCount :\(userObject.currentPizzaCount)")
-                Log.error("userObject.currentSlice :\(userObject.currentPizzaSlice)")
                 let user = User.mapFromPersistenceObject(userObject)
-                self.user = user
+                if self.user == user {
+                    Log.error("self.user == user")
+                } else {
+                    Log.error("self.user != user")
+                }
                 return
             default:
                 break
@@ -93,7 +93,6 @@ final class UserStore: ObservableObject {
     func unLockPizza(pizza: Pizza) {
         self.user.unlockPizza(pizza: pizza)
         do {
-            // try userRepository.updatePizza(model: model, specific: Date())
             try userRepository.updateUser(model: user)
         } catch {
             Log.error("\(error)")

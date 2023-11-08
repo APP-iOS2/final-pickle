@@ -35,6 +35,13 @@ extension View {
     }
 }
 
+struct PZAContent {
+    let pizza: Pizza
+    let isPizzaPuchasePresented: Binding<Bool>
+    let purchaseAction: () -> Void
+    let navAction: (() -> Void)?
+}
+
 struct PizzaAlertModifier: ViewModifier {
     
     @Binding var isPresented: Bool
@@ -46,7 +53,7 @@ struct PizzaAlertModifier: ViewModifier {
     let puchaseButtonTitle: String
     let primaryButtonTitle: String
     let primaryAction: () -> Void
-    let pizzaMakeNavAction: () -> Void
+    let pizzaMakeNavAction: (() -> Void)?
     
     func body(content: Content) -> some View {
         ZStack {
@@ -71,7 +78,7 @@ struct PizzaAlertModifier: ViewModifier {
                                puchaseButtonTitle: puchaseButtonTitle,
                                primaryButtonTitle: primaryButtonTitle,
                                puchaseAction: primaryAction,
-                               pizzaMakeNavAction: pizzaMakeNavAction)
+                               pizzaMakeNavAction: pizzaMakeNavAction ?? { } )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }

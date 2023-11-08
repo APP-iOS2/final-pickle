@@ -21,10 +21,15 @@ struct PizzaSelectedView: View {
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
-    @Binding var pizzas: [Pizza]
-    @Binding var seletedPizza: Pizza
-    @Binding var currentPizza: Pizza
-    @Binding var isPizzaPuchasePresented: Bool
+    @State private var isPizzaPuchasePresent: Bool = false
+    @Binding var selection: Selection
+    
+    struct Selection {
+        var pizzas: [Pizza] = []
+        var seletedPizza: Pizza = .defaultPizza
+        var currentPizza: Pizza = .defaultPizza
+        var isPizzaSelected: Bool = false
+    }
     
     var body: some View {
         VStack {    // ScrollView 
@@ -37,24 +42,30 @@ struct PizzaSelectedView: View {
                 .padding(.top, 10)
             
             LazyVGrid(columns: columns) {
-                ForEach(pizzas.indices, id: \.self) { index in
-                    PizzaItemView(pizza: $pizzas[safe: index] ?? .constant(.potato),
-                                  currentPizza: $currentPizza)
-                        .frame(width: CGFloat.screenWidth / 3 - 40)
-                        .padding(.horizontal, 10)
-                        .onTapGesture {
-                            let seleted = seletedPizza
-                            seletedPizza = pizzas[safe: index] ?? .defaultPizza
-                            if seletedPizza == seleted,
-                               seletedPizza.lock {
-                                isPizzaPuchasePresented.toggle()
-                            }
+                ForEach(selection.pizzas.indices, id: \.self) { index in
+                    PizzaItemView(pizza: $selection.pizzas[safe: index] ?? .constant(.potato),
+                                  currentPizza: $selection.currentPizza)
+                    .frame(width: CGFloat.screenWidth / 3 - 40)
+                    .padding(.horizontal, 10)
+                    .onTapGesture {
+                        selectionLogic(index: index)
                     }
+                    .preference(key: PizzaPuchasePresentKey.self,
+                                value: isPizzaPuchasePresent)
                 }
             }
             Spacer()
         }
         .modeBackground()  // MARK: safe Area 까지 확장되는 이슈 [] 해겨
+    }
+    
+    private func selectionLogic(index: Int) {
+        
+        selection.seletedPizza = selection.pizzas[safe: index] ?? .defaultPizza
+        
+        if selection.seletedPizza.lock {
+            isPizzaPuchasePresent.toggle()
+        }
     }
 }
 
@@ -112,15 +123,16 @@ struct PizzaItemView: View {
 }
 
 #Preview {
-    PizzaSelectedView(columns: Array(repeating: .init(.flexible()), count: 3),
-                      pizzas: .constant( [Pizza(name: "고구마", 
-                                                image: "baconPotato",
-                                                lock: false,
-                                                createdAt: Date())]),
-                      seletedPizza: .constant(Pizza(name: "고구마", 
-                                                    image: "baconPotato",
-                                                    lock: false,
-                                                    createdAt: Date())), 
-                      currentPizza: .constant(.baconPotato),
-                      isPizzaPuchasePresented: .constant(false))
+    Text("daf")
+//    PizzaSelectedView(columns: Array(repeating: .init(.flexible()), count: 3),
+//                      pizzas: .constant( [Pizza(name: "고구마", 
+//                                                image: "baconPotato",
+//                                                lock: false,
+//                                                createdAt: Date())]),
+//                      seletedPizza: .constant(Pizza(name: "고구마", 
+//                                                    image: "baconPotato",
+//                                                    lock: false,
+//                                                    createdAt: Date())), 
+//                      currentPizza: .constant(.baconPotato)
+//    )
 }

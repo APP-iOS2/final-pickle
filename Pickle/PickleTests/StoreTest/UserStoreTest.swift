@@ -117,6 +117,26 @@ final class UserStoreTest: XCTestCase {
         XCTAssertEqual(sut.user.currentPizzaSlice, 0)
     }
     
+    /// 특정 피자만 unlock 하는 update 테스트
+    /// 1. 유저 추가
+    /// 2. unlockPizza 메소드 호출
+    /// 3. fetch 호출이 아닌 observe 하고 있는 notifiction으로 업데이트
+    /// 4. 결과 확인
+    func test_update_observeTest() async throws {
+        // Given
+        try await addingAndFetchUser()
+        let potato = sut.user.pizzas.filter { $0.image == "potato" }.first!
+        XCTAssertEqual(potato.lock, true)
+        
+        // When
+        sut.unLockPizza(pizza: potato)
+        await waitTask(for: 1)
+        
+        // Then
+        let potatoPizzas = sut.user.pizzas.filter { $0.image == "potato" }.first!
+        XCTAssertEqual(potatoPizzas.lock, false)
+    }
+    
     /// Default User 추가후 fetch해오는 함수
     private func addingAndFetchUser() async throws {
         let user = User.defaultUser

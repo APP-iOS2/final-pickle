@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+struct PizzaSelectionSheetKey: PreferenceKey {
+    static var defaultValue: Bool = false
+    
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        defaultValue = nextValue()
+    }
+}
+
 struct HomeView: View {
     
     init() {
@@ -25,23 +33,21 @@ struct HomeView: View {
     
     @State private var tabBarvisibility: Visibility = .visible
     
-    
     @State private var routingState: Routing = .none
     
-    @State private var alertType: AlertType?
     @State private var isShowingEditTodo: Bool = false
-    @State private var isPizzaSeleted: Bool = false
     @State private var isPizzaPuchasePresented: Bool = false
     @State private var showCompleteAlert: Bool = false
+    @State private var selection: PizzaSelectedView.Selection = .init(pizzas: [],
+                                                                      seletedPizza: .defaultPizza,
+                                                                      currentPizza: .defaultPizza,
+                                                                      isPizzaSelected: false)
     
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
-    @State private var seletedTodo: Todo = Todo.sample
-    @State private var seletedPizza: Pizza = Pizza.defaultPizza
     
+    @State private var seletedTodo: Todo = Todo.sample
+
     typealias PizzaImage = String
-    @State private var currentPizzaImg: PizzaImage = "margherita"
-    @State private var currentPizza: Pizza = .defaultPizza
-    @State private var updateSignal: Bool = false       // Pizza Image Update Signal
     
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     
@@ -57,7 +63,7 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack {
-                makePizzaView(pizza: currentPizza)                 /* 피자 뷰 */
+                makePizzaView(pizza: selection.currentPizza)                 /* 피자 뷰 */
                 pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
                 
                 // MARK: 편집 일단 풀시트로 올라오게 했는데 네비게이션 링크로 바꿔도 됨
@@ -81,51 +87,28 @@ struct HomeView: View {
         }
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
                                                                 /* leading - (MissionView), trailing - (RegisterView) */
-
-        .sheetModifier(isPizzaSeleted: $isPizzaSeleted,         /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
-                       isPurchase: $isPizzaPuchasePresented,
-                       seletedPizza: $seletedPizza,
-                       currentPizza: $currentPizza,
-                       updateSignal: $updateSignal,
-                       alertType: $alertType)
-        .showPizzaPurchaseAlert(seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+        .completePizzaAlert(isPresented: $showCompleteAlert,
+                            pizzaName: selection.seletedPizza.image,
+                            title: "축하합니다", contents: selection.seletedPizza.name)
+        .sheetModifier(selection: $selection)                   /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
+        .showPizzaPurchaseAlert(selection.seletedPizza,         /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
                                 $isPizzaPuchasePresented) {     /* 두가지의 (액션)클로져를 받는다, */
             Log.debug("인앱 결제 액션")                             /* 1. 구매 액션 */
             // MARK: 잠금해제 액션 부터 해보자
-            userStore.unLockPizza(pizza: seletedPizza)
-            updateSignal.toggle()
-        } navAction: {                                          /* 2. 피자 완성하러 가기 액션 */
-            Log.debug("피자 완성하러 가기 액션")
-            currentPizzaImg = seletedPizza.image    // MARK: Seleted Pizza 를 완성하러 가기 클릭하면 이미지 변신
-                                                    // MARK: 완성하러 가기 액션은 변경을 시켜야 하나? 일단 해봐 ->
-                                                    // TODO: Navigation To 완성액션으로
-
+            userStore.unLockPizza(pizza: selection.seletedPizza)
+        }
+        .onPreferenceChange(PizzaPuchasePresentKey.self) { bool in
+            isPizzaPuchasePresented = bool
         }
         .onAppear { /* */
-            updateSignal.toggle()
+            /*updateSignal.toggle()*/
+            selection.pizzas = userStore.user.pizzas
             placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"  // placeHolder 표시할지 말지 분기처리
         }
+        
+        .onChange(of: selection.seletedPizza) { pizzaLockAction(pizza: $0) }
         .task { await todoStore.fetch() }                       // MARK: Persistent 저장소에서 Todo 데이터 가져오기
-        .onChange(of: userStore.user.currentPizzaSlice,         // MARK: 현재 피자조각 의 개수가 변할때 마다 호출되는 modifier
-                  perform: { slice in
-            placeHolderContent = slice == 0 ? "?" : ""          // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
-            
-            if slice % 8 == 0 {
-                showCompleteAlert = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    self.showCompleteAlert = false
-                }
-            }
-        })
-        .completePizzaAlert(isPresented: $showCompleteAlert, pizzaName: seletedPizza.image, title: "축하합니다", contents: seletedPizza.name)
-        .onChange(of: seletedPizza,
-                  perform: { pizza in
-            if pizza.lock { 
-                isPizzaPuchasePresented.toggle()
-            } else { /*currentPizzaImg = pizza.image*/
-                currentPizza = pizza
-            }
-        })
+        .onReceive(userStore.$user) { updateValue(user: $0) }
         .navigationDestination(for: Todo.self, destination: { todo in
             // AddTodoView(isShowingEditTodo: .constant(false), todo: .constant(todo))
             RegisterView(willUpdateTodo: .constant(Todo.sample),
@@ -134,6 +117,26 @@ struct HomeView: View {
                          isModify: false)
             .backKeyModifier(tabBarvisibility: $tabBarvisibility)
         })
+    }
+    
+    private func pizzaLockAction(pizza: Pizza) {
+        if pizza.lock {
+            isPizzaPuchasePresented.toggle()
+        } else { /*currentPizzaImg = pizza.image*/
+            selection.currentPizza = pizza
+        }
+    }
+    
+    private func updateValue(user: User) {
+        placeHolderContent = user.currentPizzaSlice == 0 ? "?" : ""
+        // 0일때는 place Holder content, 조각이 한개라도 존재하면 빈문자열
+        
+        if user.currentPizzaSlice % 8 == 0 {
+            showCompleteAlert = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+                self.showCompleteAlert = false
+            }
+        }
     }
 }
 
@@ -147,7 +150,8 @@ extension HomeView {
                 .padding()
                 .onTapGesture {
                     withAnimation {
-                        isPizzaSeleted.toggle()
+                        /*isPizzaSelected.toggle()*/
+                        selection.isPizzaSelected.toggle()
                     }
                 }
         }
@@ -208,23 +212,26 @@ extension HomeView {
 
 // MARK: HomeView Modifier
 extension View {
+    
+    @ViewBuilder
+    func routing(routing: Binding<HomeView.Routing>) -> some View {
+        
+    }
+    
     func navigationSetting(tabBarvisibility: Binding<Visibility>) -> some View {
         modifier(NavigationModifier(tabBarvisibility: tabBarvisibility))
     }
     
-    func sheetModifier(isPizzaSeleted: Binding<Bool>,
-                       isPurchase: Binding<Bool>,
-                       seletedPizza: Binding<Pizza>,
-                       currentPizza: Binding<Pizza>,
-                       updateSignal: Binding<Bool>,
-                       alertType: Binding<AlertType?>) -> some View {
+    func mutilpleModifier(selection: Binding<PizzaSelectedView.Selection>,
+                          isPresented: Binding<Bool>,
+                          seletedTodo item: Binding<Todo>,
+                          value: PZAContent) {
+        modifier(<#T##modifier: T##T#>)
+    }
+    
+    func sheetModifier(selection: Binding<PizzaSelectedView.Selection>) -> some View {
         
-        modifier(HomeView.SheetModifier(isPizzaSelected: isPizzaSeleted,
-                                        isPizzaPuchasePresented: isPurchase,
-                                        seletedPizza: seletedPizza,
-                                        currentPizza: currentPizza,
-                                        updateSignal: updateSignal,
-                                        alertType: alertType))
+        modifier(HomeView.SheetModifier(selection: selection))
     }
     
     func fullScreenCover(isPresented: Binding<Bool>,
@@ -237,7 +244,7 @@ extension View {
     func showPizzaPurchaseAlert(_ pizza: Pizza,
                                 _ isPizzaPuchasePresented: Binding<Bool>,
                                 _ purchaseAction: @escaping () -> Void,
-                                navAction: @escaping () -> Void) -> some View {
+                                _ navAction: (() -> Void)? = nil) -> some View {
         modifier(PizzaAlertModifier(isPresented: isPizzaPuchasePresented,
                                     title: "\(pizza.name)",
                                     price: "",
@@ -254,15 +261,10 @@ extension View {
 extension HomeView {
     
     struct SheetModifier: ViewModifier {
-        @Binding var isPizzaSelected: Bool
-        @Binding var isPizzaPuchasePresented: Bool
-        
         @State private var pizzas: [Pizza] = []
-        @Binding var seletedPizza: Pizza
-        @Binding var currentPizza: Pizza
-        @Binding var updateSignal: Bool // TODO: 피자 업데이트 신호,,,추후 변경
-        
-        @Binding var alertType: AlertType?
+                
+        @Binding var selection: PizzaSelectedView.Selection
+        /*@Binding var updateSignal: Bool*/ // TODO: 피자 업데이트 신호,,,추후 변경
         
         @GestureState private var offset = CGSize.zero
         @EnvironmentObject var pizzaStore: PizzaStore
@@ -277,7 +279,7 @@ extension HomeView {
             
             content
                 .overlay {
-                    if isPizzaSelected {
+                    if selection.isPizzaSelected {
                         // For getting frame for image
                         GeometryReader { proxy in
                             let frame = proxy.frame(in: .global)
@@ -287,26 +289,12 @@ extension HomeView {
                         }
                         .ignoresSafeArea()
                         
-                        CustomSheetView(isPresented: $isPizzaSelected) {
-                            PizzaSelectedView(pizzas: $pizzas,
-                                              seletedPizza: $seletedPizza,
-                                              currentPizza: $currentPizza,
-                                              isPizzaPuchasePresented: $isPizzaPuchasePresented)
+                        CustomSheetView(isPresented: $selection.isPizzaSelected) {
+                            PizzaSelectedView(selection: $selection)
                         }.transition(.move(edge: .bottom).combined(with: .opacity))
                     }
                 }
-                .onChange(of: offset, perform: { offset in
-                    Log.debug("offset: \(offset)")
-                })
-                .onChange(of: updateSignal) { _ in
-                    Task {
-                        await fetchPizza()
-                    }
-                }
-            //   .onPreferenceChange(Key.self) { value in
-            //       currentPizza = value
-            //   }
-                .toolbar(isPizzaSelected ? .hidden : .visible, for: .tabBar)
+                .toolbar(selection.isPizzaSelected ? .hidden : .visible, for: .tabBar)
         }
     }
     
@@ -398,39 +386,6 @@ struct HomeView_Previews: PreviewProvider {
 }
 
 
-
-// MARK: 배경색을 투명하게 만들어주는 modifier - .clearModalBackground()
-struct ClearBackgroundView: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let view = UIView()
-        DispatchQueue.main.async {
-            view.superview?.superview?.backgroundColor = .clear
-        }
-        return view
-    }
-    func updateUIView(_ uiView: UIViewType, context: Context) { }
-}
-
-struct ClearBackgroundViewModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        if #available(iOS 16.4, *) {
-            content
-                .presentationBackground(.clear)
-        } else {
-            content
-                .background(ClearBackgroundView())
-        }
-    }
-}
-
-extension View {
-    func clearModalBackground()->some View {
-        self.modifier(ClearBackgroundViewModifier())
-    }
-}
-
-
 extension HomeView {
     enum Routing: Identifiable {
         var id: Self {
@@ -453,3 +408,18 @@ enum AlertType: Identifiable {
     case showCompleteAlert
     case none
 }
+
+
+//
+//extension EnvironmentValues {
+//    var pizzaSeleted: Bool {
+//        get { self[Bool.self] }
+//        set { self[Bool.self] = newValue }
+//    }
+//
+//}
+
+
+//onReceive User : User(id: "6548af6741e16193d2b38866", nickName: "Guest", currentPizzaCount: 2, currentPizzaSlice: 6, pizzas: [Pickle.Pizza(id: "23F68A94-1CB2-48D2-AD99-C4A0CD50C9FE", name: "페퍼로니 피자", image: "pepperoni", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "51178CA9-30A4-463D-B5BA-74D77697BC8B", name: "치즈 피자", image: "cheese", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "E0F8995A-C3CD-49ED-AA06-4D64F86EB699", name: "포테이토 피자", image: "potato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "58B24BBE-FBC1-4A09-B12D-FCB43F39C45C", name: "베이컨 포테이토 피자", image: "baconPotato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "B412295E-21C1-4DEE-B424-5F9A5656C131", name: "하와이안 피자", image: "hawaiian", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "48C6E204-0732-4695-A731-B4E62625D35F", name: "고구마 피자", image: "sweetPotato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "B21FB3CC-0F5F-4E98-BD38-860CE2EC5427", name: "마르게리타 피자", image: "margherita", lock: false, createdAt: 2023-11-06 09:18:30 +0000)], currentPizzas: [], createdAt: 2023-11-06 09:18:30 +0000)
+//
+//onReceive User : User(id: "6548af6741e16193d2b38866", nickName: "Guest", currentPizzaCount: 2, currentPizzaSlice: 6, pizzas: [Pickle.Pizza(id: "F6E88F55-C997-46C0-AE61-73FCFFB79F60", name: "페퍼로니 피자", image: "pepperoni", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "40740DF3-3418-42E7-8758-2632D85CD37D", name: "치즈 피자", image: "cheese", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "A4516E6E-1281-473D-985C-9F35A06D0CA2", name: "포테이토 피자", image: "potato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "5A976839-E3A1-46B7-875E-07C435EE4AB7", name: "베이컨 포테이토 피자", image: "baconPotato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "A2693762-0F2D-4B4B-A5F6-949692D9D55F", name: "하와이안 피자", image: "hawaiian", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "75230584-0732-4548-B5E2-705E6248BB8A", name: "고구마 피자", image: "sweetPotato", lock: false, createdAt: 2023-11-06 09:18:30 +0000), Pickle.Pizza(id: "C5E572FB-AFA9-478B-A7E8-F6B033184FAA", name: "마르게리타 피자", image: "margherita", lock: false, createdAt: 2023-11-06 09:18:30 +0000)], currentPizzas: [], createdAt: 2023-11-06 09:18:30 +0000)

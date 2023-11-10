@@ -115,14 +115,13 @@ struct PickleApp: App {
     @StateObject private var missionStore = MissionStore()
     @StateObject private var userStore = UserStore()
     @StateObject private var pizzaStore = PizzaStore()
-    @StateObject private var notificationManager = NotificationManager()
-    @StateObject private var timerVM = TimerViewModel()
     @StateObject private var healthKitStore: HealthKitStore = HealthKitStore()
     
-    @Environment(\.scenePhase) var scenePhase
-    @State private var debugDelete: Bool = true
+    @StateObject private var navigationStore = NavigationStore(mediator: NotiMediator.shared)
+    @StateObject private var notificationManager = NotificationManager(mediator: NotiMediator.shared)
     
-    // Launch Screen Delay
+    @StateObject private var timerVM = TimerViewModel()
+    
     init() {
         Thread.sleep(forTimeInterval: 2)
         if debugDelete {
@@ -130,6 +129,9 @@ struct PickleApp: App {
             let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
         }
     }
+    
+    @Environment(\.scenePhase) var scenePhase
+    @State private var debugDelete: Bool = true
     
     var body: some Scene {
         WindowGroup {
@@ -145,6 +147,7 @@ struct PickleApp: App {
                     .environmentObject(pizzaStore)
                     .environmentObject(timerVM)
                     .environmentObject(healthKitStore)
+                    .environmentObject(navigationStore)
                     .onChange(of: scenePhase) { newScene in
                         backgroundEvent(newScene: newScene)
                     }

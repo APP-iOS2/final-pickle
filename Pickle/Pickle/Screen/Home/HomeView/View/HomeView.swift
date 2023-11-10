@@ -20,6 +20,9 @@ struct HomeView: View {
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var pizzaStore: PizzaStore
+    @EnvironmentObject var navigationStore: NavigationStore
+    
+    @Environment(\.scrollEnable) var scrollEnable
     
     @State private var animatedText = ""
     @State private var currentIndex = 0
@@ -55,6 +58,46 @@ struct HomeView: View {
                 routing(stack: route)
             }
     }
+    
+    private func routing(stack route: HomeView.Routing) -> some View {
+        if route == .pushMission {
+            return AnyView(
+                MissionView()
+                .backKeyModifier(tabBarvisibility: $tabBarvisibility)
+            )
+        } else if route == .pushRegisterTodo {
+            return AnyView(
+                RegisterView(willUpdateTodo: .constant(Todo.sample),
+                             successDelete: .constant(false),
+                             isShowingEditTodo: .constant(false),
+                             isModify: false)
+                .backKeyModifier(tabBarvisibility: $tabBarvisibility)
+            )
+        } else {
+            return AnyView(EmptyView())
+        }
+    }
+    
+    private func routing(route: HomeView.Routing) {
+        Log.debug("route: \(route)")
+        switch route {
+        case .isPizzaSeleted(let flag):
+            withAnimation {
+                pizzaSelection.isPizzaSelected = flag
+            }
+        
+        case .isShowingEditTodo(let flag, let todo):
+            self.editSelection = TodoSelection.init(isShowing: flag, seleted: todo)
+        
+        case .showCompleteAlert(let flag):
+            self.showCompleteAlert = flag
+            
+        case .isShowingTimerView(let todo):
+            self.timerSelection = .init(selectedTodo: todo,
+                                        isShowingTimer: !timerSelection.isShowingTimer)
+        default:
+            break
+        }
     }
     
     private func updateValue(user: User) {
@@ -113,18 +156,26 @@ extension HomeView {
     }
     
     var content: some View {
-        ScrollView {
-            VStack {
-                makePizzaView(pizza: selection.currentPizza)                 /* 피자 뷰 */
-                
-                pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
-                
-                if todoStore.readyTodos.isEmpty {
-                    todayTodoEmptyView
-                } else {
-                    todosTaskTableView          // 할일 목록 테이블 뷰
-                }
-            }.padding(.vertical, 20)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack {
+                    // TODO: ISSUE -
+                    EmptyView()
+                        .id(ScrollAnchor.home)
+                    
+                    makePizzaView(pizza: pizzaSelection.currentPizza)                 /* 피자 뷰 */
+                    
+                    pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
+                    
+                    if todoStore.readyTodos.isEmpty {
+                        todayTodoEmptyView
+                    } else {
+                        todosTaskTableView          // 할일 목록 테이블 뷰
+                    }
+                }.padding(.vertical, 20)
+            }.onChange(of: scrollEnable.root.wrappedValue) { enable in
+                if enable { withAnimation { proxy.scrollTo(ScrollAnchor.home) } }
+            }
         }
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
                                                                 /* leading - (MissionView), trailing - (RegisterView) */

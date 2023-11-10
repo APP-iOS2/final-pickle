@@ -7,6 +7,30 @@
 
 import SwiftUI
 
+struct ScrollContainer: EnvironmentKey {
+    
+    static var defaultValue: Binding<ScrollEnableKey> = .constant(.init())
+}
+
+struct ScrollEnableKey {
+    var root: Bool = false
+    var setting: Bool = false
+    var calendar: Bool = false
+}
+
+extension EnvironmentValues {
+    var scrollEnable: Binding<ScrollEnableKey> {
+        get { self[ScrollContainer.self] }
+        set { self[ScrollContainer.self] = newValue }
+    }
+}
+
+extension View {
+    func scrollEnableInject(_ container: Binding<ScrollEnableKey>) -> some View {
+        self.environment(\.scrollEnable, container)
+    }
+}
+
 struct ContentView: View {
     @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
     @AppStorage("systemTheme") private var systemTheme: Int = SchemeType.allCases.first!.rawValue
@@ -15,6 +39,11 @@ struct ContentView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var healthKitStore: HealthKitStore
+    @EnvironmentObject var navigationStore: NavigationStore
+    
+    @State private var rootScrollEnable: Bool = false
+    @State private var rootScrollEnableKey = ScrollEnableKey(root: false,
+                                                             calendar: false)
     
     var selectedScheme: ColorScheme? {
         guard let theme = SchemeType(rawValue: systemTheme) else { return nil }
@@ -28,59 +57,56 @@ struct ContentView: View {
         }
     }
     
-    @State private var path: NavigationPath = NavigationPath()
-    
     var body: some View {
-        TabView {
-            NavigationStack(path: $path) {
-                HomeView()
+        ScrollViewReader { proxy in
+            TabView(selection: navigationStore.createTabViewBinding(proxy: proxy,
+                                                                    key: $rootScrollEnableKey)) {
+                NavigationStack(path: $navigationStore.homeNav) {
+                    HomeView()
+                }.tabItem {
+                    Label("홈", systemImage: "house")
+                        .environment(\.symbolVariants, .fill)
+                }.tag(TabItem.home)
+                
+                NavigationStack(path: $navigationStore.calendarNav) {
+                    CalendarView()
+                        
+                }.tabItem {
+                    Label("달력", systemImage: "calendar")
+                        .environment(\.symbolVariants, .fill)
+                }.tag(TabItem.calendar)
+                
+                NavigationStack {
+                   PizzaSummaryView()
+                }.tabItem {
+                    Label("통계", systemImage: "list.clipboard.fill")
+                        .environment(\.symbolVariants, .fill)
+                }.tag(TabItem.statistics)
+                
+                NavigationStack(path: $navigationStore.settingNav) {
+                    SettingView()
+                }
+                .tabItem {
+                    Label("설정", systemImage: "gearshape")
+                        .environment(\.symbolVariants, .fill)
+                }.tag(TabItem.setting)
             }
-            .tabItem {
-                Label("홈", systemImage: "house")
-                    .environment(\.symbolVariants, .fill)
-            }.tag(0)
-            
-            NavigationStack {
-                CalendarView()
-            }
-            .tabItem {
-                Label("달력", systemImage: "calendar")
-                    .environment(\.symbolVariants, .fill)
-            }.tag(1)
-            
-            NavigationStack {
-               PizzaSummaryView()
-            }
-            .tabItem {
-                Label("통계", systemImage: "list.clipboard.fill")
-                    .environment(\.symbolVariants, .fill)
-            }
-            .tag(2)
-            
-            NavigationStack {
-                SettingView()
-            }
-            .tabItem {
-                Label("설정", systemImage: "gearshape")
-                    .environment(\.symbolVariants, .fill)
-            }
-            .tag(3)
-        
-        }
-        .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
-        .onAppear {
-            userSetting()        // UserSetting
-            healthKitStore.requestAuthorization { success in
-                if success {
-                    healthKitStore.fetchStepCount()
+            .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
+            .onAppear {
+                userSetting()        // UserSetting
+                healthKitStore.requestAuthorization { success in
+                    if success {
+                        healthKitStore.fetchStepCount()
+                    }
                 }
             }
+            .fullScreenCover(isPresented: $isOnboardingViewActive) {
+                SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)
+            }
+            .tint(.pickle)
+            .preferredColorScheme(selectedScheme)
         }
-        .fullScreenCover(isPresented: $isOnboardingViewActive) {
-            SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)
-        }
-        .tint(.pickle)
-        .preferredColorScheme(selectedScheme)
+        .scrollEnableInject($rootScrollEnableKey)
     }
 }
 
@@ -103,7 +129,6 @@ extension ContentView {
     func userSetting() {
         do {
             try userStore.fetchUser()
-            let user = userStore.user
         } catch {
             // MARK: Add User Action
             errorHandler(error)
@@ -125,6 +150,9 @@ extension ContentView {
 
 #Preview {
     ContentView()
-        .environmentObject(TodoStore())
+        .environmentObject(HealthKitStore())
         .environmentObject(MissionStore())
+        .environmentObject(NavigationStore(mediator: NotiMediator()))
+        .environmentObject(UserStore())
+        .environmentObject(PizzaStore())
 }

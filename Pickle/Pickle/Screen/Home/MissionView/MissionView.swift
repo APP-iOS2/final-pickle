@@ -28,13 +28,15 @@ struct MissionView: View {
         ScrollView {
             VStack {
                 ForEach(timeMissions.indices, id: \.self) { index in
-                    TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
+                    if let mission = timeMissions[safe: index] {
+                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
+                    }
                 }
                 
-                ForEach(timeMissions.indices, id: \.self) { index in
-                    BehaviorMissionStyleView(behaviorMission: $behaviorMissions[index],
-                                             showsAlert: $showsAlert,
-                                             healthKitStore: healthKitStore)
+                ForEach(behaviorMissions.indices, id: \.self) { index in
+                    if let mission = behaviorMissions[safe: index] {
+                        BehaviorMissionStyleView(behaviorMission: $behaviorMissions[index], showsAlert: $showsAlert, healthKitStore: healthKitStore)
+                    }
                 }
                 Spacer()
             }
@@ -47,22 +49,26 @@ struct MissionView: View {
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
             
-            if timeMissions.isEmpty { return }
-            if behaviorMissions.isEmpty { return }
-            
-            if timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
-                missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
-                                                               title: timeMissions[0].title,
+            //TODO: 내일 기상 미션 알림 확인하기 -> 백그라운드에서 wakeupTime에 changeWakeupTime이 적용됐는지
+            // 적용됐으면 알림은 울렸는지 오후 1:00
+            print(timeMissions.first?.date) // Optional(2023-11-10 11:19:32 +0000)
+            print(timeMissions.first?.wakeupTime) // Optional(2023-11-10 11:19:32 +0000)
+            print(timeMissions.first?.changeWakeupTime) // Optional(2023-11-10 04:00:32 +0000)
+            if let firstTimeMission = timeMissions.first, firstTimeMission.date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
+                missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
+                                                               title: firstTimeMission.title,
                                                                status: .ready,
                                                                date: Date(),
-                                                               wakeupTime: timeMissions[0].changeWakeupTime,
-                                                               changeWakeupTime: timeMissions[0].changeWakeupTime)))
-                missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
-                                                                       title: behaviorMissions[0].title,
-                                                                       status: .ready,
-                                                                       status1: .ready,
-                                                                       status2: .ready,
-                                                                       date: Date())))
+                                                               wakeupTime: firstTimeMission.changeWakeupTime,
+                                                               changeWakeupTime: firstTimeMission.changeWakeupTime)))
+                if let firstBehaviorMission = behaviorMissions.first {
+                    missionStore.update(mission: .behavior(BehaviorMission(id: firstBehaviorMission.id,
+                                                                           title: firstBehaviorMission.title,
+                                                                           status: .ready,
+                                                                           status1: .ready,
+                                                                           status2: .ready,
+                                                                           date: Date())))
+                }
             }
         }
         .refreshable {
@@ -73,18 +79,22 @@ struct MissionView: View {
         }
         .onDisappear {
             healthKitStore.fetchStepCount()
-            missionStore.update(mission: .time(TimeMission(id: timeMissions[0].id,
-                                                           title: timeMissions[0].title,
-                                                           status: timeMissions[0].status,
-                                                           date: timeMissions[0].date,
-                                                           wakeupTime: timeMissions[0].wakeupTime,
-                                                           changeWakeupTime: timeMissions[0].changeWakeupTime)))
-            missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMissions[0].id,
-                                                                   title: behaviorMissions[0].title,
-                                                                   status: behaviorMissions[0].status,
-                                                                   status1: behaviorMissions[0].status1,
-                                                                   status2: behaviorMissions[0].status2,
-                                                                   date: behaviorMissions[0].date)))
+            if let firstTimeMission = timeMissions.first {
+                missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
+                                                               title: firstTimeMission.title,
+                                                               status: firstTimeMission.status,
+                                                               date: firstTimeMission.date,
+                                                               wakeupTime: firstTimeMission.wakeupTime,
+                                                               changeWakeupTime: firstTimeMission.changeWakeupTime)))
+            }
+            if let firstBehaviorMission = behaviorMissions.first {
+                missionStore.update(mission: .behavior(BehaviorMission(id: firstBehaviorMission.id,
+                                                                       title: firstBehaviorMission.title,
+                                                                       status: firstBehaviorMission.status,
+                                                                       status1: firstBehaviorMission.status1,
+                                                                       status2: firstBehaviorMission.status2,
+                                                                       date: firstBehaviorMission.date)))
+            }
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)
@@ -102,7 +112,7 @@ struct MissionView: View {
             primaryButtonTitle: "확인",
             secondaryButtonTitle: "",
             primaryAction: { showSuccessAlert.toggle() },
-            secondaryAction: {  },
+            secondaryAction: {},
             {}
         )
     }

@@ -10,11 +10,6 @@ import SwiftUI
 // MARK: HomeView Modifier
 extension View {
     
-    @ViewBuilder
-    func routing(routing: Binding<HomeView.Routing>) -> some View {
-        
-    }
-    
     func navigationSetting(tabBarvisibility: Binding<Visibility>) -> some View {
         modifier(NavigationModifier(tabBarvisibility: tabBarvisibility))
     }
@@ -24,11 +19,13 @@ extension View {
         modifier(HomeView.SheetModifier(selection: selection))
     }
     
-    func fullScreenCover(isPresented: Binding<Bool>,
-                         seletedTodo item: Binding<Todo>) -> some View {
+    func fullScreenCover(edit selection: Binding<UpdateTodoView.Selection>) -> some View {
         
-        modifier(HomeView.FullScreenCoverModifier(isPresented: isPresented,
-                                                  seletedTodo: item))
+        modifier(HomeView.FullScreenCoverModifier(selection: selection))
+    }
+    
+    func fullScreenCover(timer selection: Binding<TodoCellView.Selection>) -> some View {
+        modifier(HomeView.TimerViewModifier(selection: selection))
     }
     
     func showPizzaPurchaseAlert(_ pizza: Pizza,

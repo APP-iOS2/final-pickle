@@ -9,14 +9,18 @@ import SwiftUI
 
 struct TodoCellView: View {
     
-    @Environment(\.colorScheme) var colorScheme
-    
     @AppStorage("is24HourClock") var is24HourClock: Bool = true
     @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
     
+    @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var navigationStore: NavigationStore
+    
     var todo: Todo
     
-    @State var isShowingTimerView: Bool = false
+    struct Selection {
+        var selectedTodo: Todo = Todo.sample
+        var isShowingTimer: Bool = false
+    }
         
     var body: some View {
         ZStack {
@@ -33,7 +37,7 @@ struct TodoCellView: View {
                 Spacer()
                 
                 Button {
-                    isShowingTimerView = true
+                    navigationStore.pushHomeView(home: .isShowingTimerView(todo))
                 } label: {
                     ZStack {
                         Rectangle()
@@ -57,9 +61,6 @@ struct TodoCellView: View {
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
-        }
-        .fullScreenCover(isPresented: $isShowingTimerView) {
-            TimerView(todo: todo, isShowingTimerView: $isShowingTimerView)
         }
     }
     

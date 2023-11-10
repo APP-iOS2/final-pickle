@@ -7,17 +7,10 @@
 
 import SwiftUI
 
-struct PizzaSelectionSheetKey: PreferenceKey {
-    static var defaultValue: Bool = false
-    
-    static func reduce(value: inout Bool, nextValue: () -> Bool) {
-        defaultValue = nextValue()
-    }
-}
-
 struct HomeView: View {
-    
     typealias PizzaSelection = PizzaSelectedView.Selection
+    typealias TodoSelection = UpdateTodoView.Selection
+    typealias TimerSelection = TodoCellView.Selection
     typealias PizzaImage = String
     
     init() {
@@ -34,36 +27,34 @@ struct HomeView: View {
     
     @State private var tabBarvisibility: Visibility = .visible
     
-    @State private var routingState: Routing = .none
-    
-    @State private var isShowingEditTodo: Bool = false
-    @State private var isPizzaPuchasePresent: Bool = false
     @State private var showCompleteAlert: Bool = false
     
-    @State private var selection: PizzaSelection = .init(pizzas: [],
-                                                         seletedPizza: .defaultPizza,
-                                                         currentPizza: .defaultPizza,
-                                                         isPizzaSelected: false)
+    @State private var pizzaSelection: PizzaSelection = .init()
+    @State private var editSelection: TodoSelection = .init()
+    @State private var timerSelection: TimerSelection = .init()
     
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
-    @State private var seletedTodo: Todo = Todo.sample
-    
-    @State private var goalProgress: Double = 0.0
     private let goalTotal: Double = 8                   // 피자 완성 카운트
-    private var taskPercentage: Double {
-        Double(userStore.user.currentPizzaSlice) / goalTotal
-    }
-    private var pizzaTaskSlice: String {
-        /// Pizza  ex) 1 / 8 - 유저의 완료한 피자조각 갯수....
-        "\(Int(userStore.user.currentPizzaSlice)) / \(Int(goalTotal))"
-    }
     
     var body: some View {
         content
-            .onPreferenceChange(PizzaPuchasePresentKey.self) { bool in isPizzaPuchasePresent = bool }
-            .task { await todoStore.fetch() }  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
-            .onReceive(userStore.$user) { updateValue(user: $0) }
-            .onChange(of: selection.seletedPizza) { pizzaPuchaseORSelectedAction(pizza: $0) }
+            .task { 
+                await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+            }
+            .onReceive(userStore.$user) {
+                updateValue(user: $0)
+            }
+            .onChange(of: pizzaSelection.seletedPizza) {
+                pizzaPuchaseORSelectedAction(pizza: $0)
+            }
+            .onReceive(navigationStore.$homeSheet) { sheet in 
+                routing(route: sheet)
+            }
+            
+            .navigationDestination(for: HomeView.Routing.self) { route in
+                routing(stack: route)
+            }
+    }
     }
     
     private func updateValue(user: User) {
@@ -72,32 +63,31 @@ struct HomeView: View {
     }
     
     private func assginAction(user: User) {
-        Log.debug("onAppear Action")
-        selection.pizzas = userStore.user.pizzas
+        pizzaSelection.pizzas = userStore.user.pizzas
         placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"
     }
     
     private func pizza_8_successAction(user: User) {
         if user.currentPizzaSlice % 8 == 0 {
-            showCompleteAlert = true
+            navigationStore.pushHomeView(home: .showCompleteAlert(true))
             DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                self.showCompleteAlert = false
+                navigationStore.dismiss(home: .showCompleteAlert(false))
             }
         }
     }
     
     private func pizzaPuchaseORSelectedAction(pizza: Pizza) {
         if pizza.lock {
-            isPizzaPuchasePresent.toggle()
+            /*selection.toggle()*/
         } else {
-            selection.currentPizza = pizza
+            pizzaSelection.currentPizza = pizza
         }
     }
     
     private func unLockPizzaAction() {
         Log.debug("Unlock Pizza Action")
-        userStore.unLockPizza(pizza: selection.seletedPizza)
-        self.selection.pizzas = self.userStore.user.pizzas
+        userStore.unLockPizza(pizza: pizzaSelection.seletedPizza)
+        self.pizzaSelection.pizzas = self.userStore.user.pizzas
     }
     
     private func startTyping() {
@@ -117,9 +107,9 @@ extension HomeView {
     
     var completeMessage: CompleteMessage {
         .init(isPresented: $showCompleteAlert,
-              pizzaName: selection.seletedPizza.image,
+              pizzaName: pizzaSelection.seletedPizza.image,
               title: "축하합니다",
-              contents: selection.seletedPizza.name)
+              contents: pizzaSelection.seletedPizza.name)
     }
     
     var content: some View {
@@ -136,39 +126,46 @@ extension HomeView {
                 }
             }.padding(.vertical, 20)
         }
-        .navigationDestination(for: Todo.self, destination: { todo in
-            RegisterView(willUpdateTodo: .constant(Todo.sample),
-                         successDelete: .constant(false),
-                         isShowingEditTodo: .constant(false),
-                         isModify: false)
-            .backKeyModifier(tabBarvisibility: $tabBarvisibility)
-        })
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
                                                                 /* leading - (MissionView), trailing - (RegisterView) */
-        
         .completePizzaAlert(message: completeMessage)
         
-        .sheetModifier(selection: $selection)                   /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
+        .sheetModifier(selection: $pizzaSelection)              /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
         
-        .showPizzaPurchaseAlert(selection.seletedPizza,         /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
-                                $isPizzaPuchasePresent) {       /* 두가지의 (액션)클로져를 받는다, */
-            Log.debug("인앱 결제 액션")                             /* 1. 구매 액션 */
+        .fullScreenCover(edit: $editSelection)                  /* 풀스크린 Todo 수정뷰 모달 */
+        .fullScreenCover(timer: $timerSelection)                /* 풀스크린  Timer 뷰  모달 */
+        
+        .showPizzaPurchaseAlert(pizzaSelection.seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+                                $pizzaSelection.isPizzaPuchasePresent) {       /* 두가지의 (액션)클로져를 받는다, */
+            Log.debug("인앱 결제 액션")                                            /* 1. 구매 액션 */
             unLockPizzaAction()
         }
+        
+    }
+    
+    private var taskPercentage: Double {
+        Double(userStore.user.currentPizzaSlice) / goalTotal
+    }
+    private var pizzaTaskSlice: String {
+        /// Pizza  ex) 1 / 8 - 유저의 완료한 피자조각 갯수....
+        "\(Int(userStore.user.currentPizzaSlice)) / \(Int(goalTotal))"
     }
     
     func makePizzaView(pizza: Pizza) -> some View {
         ZStack {
-            PizzaView(taskPercentage: taskPercentage, currentPizza: pizza, content: $placeHolderContent)
-                .frame(width: CGFloat.screenWidth / 2,
-                       height: CGFloat.screenWidth / 2)
-                .padding()
-                .onTapGesture {
-                    withAnimation {
-                        /*isPizzaSelected.toggle()*/
-                        selection.isPizzaSelected.toggle()
-                    }
+            PizzaView(
+                taskPercentage: taskPercentage,
+                currentPizza: pizza,
+                content: $placeHolderContent
+            )
+            .frame(width: CGFloat.screenWidth / 2,
+                   height: CGFloat.screenWidth / 2)
+            .padding()
+            .onTapGesture {
+                withAnimation {
+                    navigationStore.pushHomeView(home: .isPizzaSeleted(true))
                 }
+            }
         }
     }
     
@@ -201,13 +198,9 @@ extension HomeView {
                 .padding(.horizontal)
                 .padding(.vertical, 2)
                 .onTapGesture {
-                    seletedTodo = todo
-                    isShowingEditTodo.toggle()
+                    navigationStore.pushHomeView(home: .isShowingEditTodo(true, todo))
                 }
         }
-        .fullScreenCover(isPresented: $isShowingEditTodo,         /* fullScreen cover */
-                         seletedTodo: $seletedTodo)               /* $isShowingEditTodo - 당연히 시트 띄우는 binding값 */
-                                                                  /* $seletedTodo - todosTaskTableView 에서 선택된 Todo 값 */
     }
     
     private var tempButton: some View {
@@ -257,30 +250,7 @@ struct HomeView_Previews: PreviewProvider {
                 .environmentObject(pizza)
                 .environmentObject(user)
                 .environmentObject(mission)
-                .environmentObject(NotificationManager())
+                .environmentObject(NotificationManager(mediator: NotiMediator()))
         }
     }
-}
-
-extension HomeView {
-    enum Routing: Identifiable {
-        var id: Self {
-            return self
-        }
-        case isShowingEditTodo
-        case isPizzaSeleted
-        case isPizzaPuchasePresented
-        case showCompleteAlert
-        case none
-    }
-}
-enum AlertType: Identifiable {
-    var id: Self {
-        return self
-    }
-    case isShowingEditTodo
-    case isPizzaSeleted
-    case isPizzaPuchasePresented
-    case showCompleteAlert
-    case none
 }

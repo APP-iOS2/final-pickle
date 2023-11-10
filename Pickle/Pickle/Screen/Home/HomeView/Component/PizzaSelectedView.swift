@@ -21,6 +21,7 @@ struct PizzaSelectedView: View {
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
     
+    @EnvironmentObject var navigationStore: NavigationStore
     @State private var isPizzaPuchasePresent: Bool = false
     @Binding var selection: Selection
     
@@ -29,6 +30,7 @@ struct PizzaSelectedView: View {
         var seletedPizza: Pizza = .defaultPizza
         var currentPizza: Pizza = .defaultPizza
         var isPizzaSelected: Bool = false
+        var isPizzaPuchasePresent: Bool = false
     }
     
     var body: some View {
@@ -50,8 +52,6 @@ struct PizzaSelectedView: View {
                     .onTapGesture {
                         selectionLogic(index: index)
                     }
-                    .preference(key: PizzaPuchasePresentKey.self,
-                                value: isPizzaPuchasePresent)
                 }
             }
             Spacer()
@@ -64,7 +64,7 @@ struct PizzaSelectedView: View {
         selection.seletedPizza = selection.pizzas[safe: index] ?? .defaultPizza
         
         if selection.seletedPizza.lock {
-            isPizzaPuchasePresent.toggle()
+            selection.isPizzaPuchasePresent.toggle()
         }
     }
 }

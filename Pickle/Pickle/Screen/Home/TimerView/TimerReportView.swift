@@ -15,7 +15,6 @@ struct TimerReportView: View {
     @EnvironmentObject var timerVM: TimerViewModel
     @EnvironmentObject var userStore: UserStore
     
-    
     @Binding var isShowingReportSheet: Bool
     @Binding var isShowingTimerView: Bool
     
@@ -112,6 +111,7 @@ struct TimerReportView: View {
                 
                 timerVM.timerVMreset()
                 dismiss()
+                isShowingTimerView.toggle()
                 
             }, label: {
                 Text("확인")

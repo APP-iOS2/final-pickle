@@ -52,7 +52,6 @@ extension Date {
         return formatter.date(from: str)!
     }
     
-    
     // MARK: - CalenderViewModel -> 월 달력 Month Fetch를 위한 함수
     func fetchMonth() -> [Date] {
         let calendar = Calendar.autoupdatingCurrent

@@ -10,6 +10,7 @@ import SwiftUI
 struct NavigationModifier: ViewModifier {
     
     @Binding var tabBarvisibility: Visibility
+    @EnvironmentObject var navigationStore: NavigationStore
         
     func body(content: Content) -> some View {
         content
@@ -23,27 +24,20 @@ struct NavigationModifier: ViewModifier {
     @ToolbarContentBuilder
     var toolbarBuillder: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            NavigationLink {
-                RegisterView(willUpdateTodo: .constant(Todo.sample),
-                             successDelete: .constant(false),
-                             isShowingEditTodo: .constant(false),
-                             isModify: false)
-                .backKeyModifier(tabBarvisibility: $tabBarvisibility)
-            } label: {
-                Image(systemName: "plus.circle")
-                    .foregroundStyle(Color.pickle)
-            }
+            Image(systemName: "plus.circle")
+                .foregroundStyle(Color.pickle)
+                .onTapGesture {
+                    navigationStore.pushHomeView(home: .pushRegisterTodo)
+                }
         }
         ToolbarItem(placement: .navigationBarLeading) {
-            NavigationLink {
-                MissionView()
-                    .backKeyModifier(tabBarvisibility: $tabBarvisibility)
-            } label: {
-                Image("mission")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 24)
-            }
+            Image("mission")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24)
+                .onTapGesture {
+                    navigationStore.pushHomeView(home: .pushMission)
+                }
         }
     }
 }

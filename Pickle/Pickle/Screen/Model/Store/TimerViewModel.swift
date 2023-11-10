@@ -28,7 +28,6 @@ class TimerViewModel: ObservableObject {
                                      targetTime: 0.0,
                                      spendTime: 0.0,
                                      status: .ready)
-
     
     private let wiseSayingArray: [String] = [
         "게으름은 즐겁지만 괴로운 상태다. \n 우리는 행복해지기 위해서 무엇인가 하고 있어야 한다 \n -마하마트 간디-",
@@ -84,4 +83,3 @@ class TimerViewModel: ObservableObject {
         return wiseSaying
     }
 }
-

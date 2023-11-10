@@ -10,7 +10,7 @@ import Foundation
 typealias TodoStatus = Status
 typealias MissionStatus = Status
 
-enum Status: String {
+enum Status: String, Codable {
     // 진행전 진행중 완료 포기
     case ready
     case ongoing

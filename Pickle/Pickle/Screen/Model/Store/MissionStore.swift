@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 final class MissionStore: ObservableObject {
     
-    @Published var timeMissions: [TimeMission] = []
+    @Published var timeMissions: [TimeMission] = [] // 보라색에
     @Published var behaviorMissions: [BehaviorMission] = []
     
     private var timeMissionToken: RNotificationToken?
@@ -80,20 +80,25 @@ final class MissionStore: ObservableObject {
         do {
             switch mission {
             case .time(let timeMission):
-                timeMissionToken 
-                =
-                try timeMissionRepository
-                    .notification(id: timeMission.id,
-                                  keyPaths: timeMissionKeypaths) { [weak self] tiemMission in
-                        self?.updateTimeMission(tiemMission)
+                let value = try timeMissionRepository.notification(id: timeMission.id,
+                                                                   keyPaths: timeMissionKeypaths)
+                { [weak self] tiemMission in
+                    Task.detached {
+                            await MainActor.run {
+                                self?.updateTimeMission(timeMission)
+                            }
+                        }
                 }
             case .behavior(let behaviorMission):
                 behaviorMissionToken
-                =
-                try behaviorMissionRepository
-                    .notification(id: behaviorMission.id,
-                                  keyPaths: behaviorMissionKeypaths) { [weak self] behaviorMission in
-                        self?.updateBehaviorMission(behaviorMission)
+                = try behaviorMissionRepository.notification(id: behaviorMission.id,
+                                                             keyPaths: behaviorMissionKeypaths)
+                { [weak self] behaviorMission in
+                    Task.detached {
+                        await MainActor.run {
+                            self?.updateBehaviorMission(behaviorMission)
+                        }
+                    }
                 }
             }
         } catch {

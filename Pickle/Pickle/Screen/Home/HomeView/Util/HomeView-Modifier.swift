@@ -28,9 +28,9 @@ extension HomeView {
                         }
                         .ignoresSafeArea()
                         
-                        CustomSheetView(isPresented: $selection.isPizzaSelected) {
+                        CustomSheetView {
                             PizzaSelectedView(selection: $selection)
-                        }.transition(.move(edge: .bottom)/*.combined(with: .opacity)*/)
+                        }.transition(.move(edge: .bottom).combined(with: .opacity))
                     }
                 }
                 .toolbar(selection.isPizzaSelected ? .hidden : .visible, for: .tabBar)
@@ -38,13 +38,24 @@ extension HomeView {
     }
     
     struct FullScreenCoverModifier: ViewModifier {
-        @Binding var isPresented: Bool
-        @Binding var seletedTodo: Todo
+        @Binding var selection: UpdateTodoView.Selection
         func body(content: Content) -> some View {
-            content.fullScreenCover(isPresented: $isPresented) {
-                UpdateTodoView(isShowingEditTodo: $isPresented,
-                               todo: $seletedTodo)
+            content
+                .fullScreenCover(isPresented: $selection.isShowing) {
+                UpdateTodoView(selection: $selection)
             }
+        }
+    }
+    
+    struct TimerViewModifier: ViewModifier {
+        @Binding var selection: TodoCellView.Selection
+        
+        func body(content: Content) -> some View {
+            content
+                .fullScreenCover(isPresented: $selection.isShowingTimer) {
+                    TimerView(todo: selection.selectedTodo,
+                              isShowingTimerView: $selection.isShowingTimer)
+                }
         }
     }
 }

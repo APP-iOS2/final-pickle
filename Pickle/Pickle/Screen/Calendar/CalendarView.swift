@@ -12,6 +12,8 @@ struct CalendarView: View {
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var navigationStore: NavigationStore
+    @Environment(\.scrollEnable) var scrollEnable: Binding<ScrollEnableKey>
     
     @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
     
@@ -20,11 +22,12 @@ struct CalendarView: View {
     @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
-    @State var todayPieceOfPizza: Int = 0
-    @State var pizzaSummarySheet: Bool = false
-    @State var todayCompletedTasks: Int = 0
-    @State var wakeUpMission: Int = 0
-    @State var walkMission: Int = 0
+    
+    @State private var todayPieceOfPizza: Int = 0
+    @State private var pizzaSummarySheet: Bool = false
+    @State private var todayCompletedTasks: Int = 0
+    @State private var wakeUpMission: Int = 0
+    @State private var walkMission: Int = 0
     
     var underlineBool: Bool {
         
@@ -32,7 +35,6 @@ struct CalendarView: View {
     }
     
     var body: some View {
-        
         VStack(alignment: .leading) {
             headerView()
                 .padding(.top, 15)
@@ -41,20 +43,25 @@ struct CalendarView: View {
             currentPizzaSummaryView()
                 .padding(.horizontal)
             
-            ScrollView(.vertical) {
-                VStack {
-                    
-                    taskView(tasks: filteredTasks ?? [])
-                    
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 35) {
+                        EmptyView()
+                            .id(ScrollAnchor.calendar)
+                        taskView(tasks: filteredTasks ?? [])
+                    }.padding([.vertical, .leading], 15)
+                }
+                .onChange(of: scrollEnable.calendar.wrappedValue) { value in
+                    if value { withAnimation { proxy.scrollTo(ScrollAnchor.calendar) } }
                 }
             }
             .scrollIndicators(.hidden)
         }
         .task {
             await todoStore.fetch()
-            
         }
         .onAppear {
+            Log.debug("CalendarView onAppear")
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
             
@@ -63,8 +70,7 @@ struct CalendarView: View {
                             behaviorMissions: missionStore.behaviorMissions)
         }
         
-        .onChange(of: calendarModel.currentDay) { newValue in
-            
+        .onChange(of: calendarModel.currentDay) { _ in
             filterTodayTasks(todo: todoStore.todos)
             let time = missionStore.fetch().0
             let mission = missionStore.fetch().1
@@ -326,14 +332,9 @@ struct CalendarView: View {
     
     // MARK: - TaskView
     func taskView(tasks: [Todo]) -> some View {
-        
-        VStack(alignment: .leading, spacing: 35) {
-            
-            ForEach(tasks) { task in
-                TaskRowView(task: task)
-            }
+        ForEach(tasks) { task in
+            TaskRowView(task: task)
         }
-        .padding([.vertical, .leading], 15)
     }
     
     func currentPizzaSummaryView() -> some View {

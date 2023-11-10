@@ -17,7 +17,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         if ProcessInfo.processInfo.isRunningTests { return true }
         
-        
         PickleApp.setUpDependency()
         let _ = RealmMigrator()
         
@@ -98,7 +97,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         )
     }
     
-    
     func application(_ application: UIApplication,
                      configurationForConnecting connectingSceneSession: UISceneSession,
                      options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -109,7 +107,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         return sceneConfiguration
     }
 }
-
 
 struct PickleApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

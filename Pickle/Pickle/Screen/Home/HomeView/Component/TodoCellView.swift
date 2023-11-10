@@ -21,7 +21,6 @@ struct TodoCellView: View {
     var body: some View {
         ZStack {
             HStack {
-
                 VStack(alignment: .leading, spacing: 4) {
                     Text(todo.content)
                         .font(.pizzaBody)

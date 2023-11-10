@@ -116,7 +116,6 @@ struct RegisterView: View {
         content.count >= 1
     }
     
-    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {

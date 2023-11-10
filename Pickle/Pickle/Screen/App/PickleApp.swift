@@ -93,7 +93,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                                                  title: "현실도 피자",
                                                  body: "기상 미션을 완료하고 피자조각을 획득하세요!",
                                                  dateComponents: dateComponent,
-                                                 repeats: false,
+                                                 repeats: true,
                                                  type: .calendar)
         )
     }

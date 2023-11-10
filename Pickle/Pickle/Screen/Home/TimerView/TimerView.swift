@@ -25,10 +25,12 @@ struct TimerView: View {
     
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용
-    @State private var isShowGiveupAlert: Bool = false
+    
     @State private var isStart: Bool = true // 3,2,1,시작 보여줄지 아닐지
-    @State private var isShowingReportSheet: Bool = false
     @State private var isComplete: Bool = false // '완료'버튼 누를때 시간 멈추기 확인용
+    
+    @State private var isShowingReportSheet: Bool = false
+    @State private var isShowGiveupAlert: Bool = false
     @State private var showingAlert: Bool = false
     
     @Binding var isShowingTimerView: Bool
@@ -383,8 +385,7 @@ struct TimerView_Previews: PreviewProvider {
             .environmentObject(TodoStore())
             .environmentObject(TimerViewModel())
             .environmentObject(UserStore())
-            .environmentObject(NotificationManager())
+            .environmentObject(NotificationManager(mediator: NotiMediator()))
         }
     }
 }
-

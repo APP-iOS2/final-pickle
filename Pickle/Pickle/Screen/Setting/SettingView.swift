@@ -44,7 +44,6 @@ struct SettingView: View {
     private var appInformationWebViewSite =  "https://kai-swift.notion.site/kai-swift/5fcad0683ca24853ac1ed5b7de8c88f4"
     
   
-    
     var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
     
     var selectedScheme: ColorScheme? {
@@ -229,7 +228,7 @@ struct SettingView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             SettingView()
-                .environmentObject(NotificationManager())
+                .environmentObject(NotificationManager(mediator: NotiMediator()))
         }
     }
 }

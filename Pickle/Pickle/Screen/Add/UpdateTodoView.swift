@@ -9,26 +9,28 @@ import SwiftUI
 
 struct UpdateTodoView: View {
     
+    struct Selection {
+        var isShowing: Bool = false
+        var seleted: Todo = Todo.sample
+    }
+    
+    @EnvironmentObject var navigationStore: NavigationStore
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var notificationManager: NotificationManager
-    @Binding var isShowingEditTodo: Bool
-    @Binding var todo: Todo
+    
+    @Binding var selection: Selection
     @State private var successDelete: Bool = false
-
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
-            VStack {
-                RegisterView(willUpdateTodo: $todo,
-                             successDelete: $successDelete,
-                             isShowingEditTodo: $isShowingEditTodo,
-                             isModify: true)
-            }
+            RegisterView(willUpdateTodo: $selection.seleted,
+                         successDelete: $successDelete,
+                         isShowingEditTodo: $selection.isShowing,
+                         isModify: true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        isShowingEditTodo.toggle()
+                        navigationStore.dismiss(home: .isShowingEditTodo(false, selection.seleted))
                     } label: {
                         Text("닫기")
                             .tint(.primary)
@@ -36,10 +38,8 @@ struct UpdateTodoView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        todoStore.delete(todo: todo)
-                        
-                        //4번 할일이 삭제 되었을 경우, 해당 등록된 알림도 삭제해야함. 해당 할일의 아이디 넣어줘야함
-                        notificationManager.removeSpecificNotification(id: [todo.id])
+                        notificationManager.removeSpecificNotification(id: [selection.seleted.id])
+                        todoStore.delete(todo: selection.seleted)
                         
                         successDelete.toggle()
                     } label: {
@@ -52,11 +52,10 @@ struct UpdateTodoView: View {
     }
 }
 
-struct AddTodoView_Previews: PreviewProvider {
+struct UpdateTodoView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            UpdateTodoView(isShowingEditTodo: .constant(true),
-                        todo: .constant(Todo.sample))
+            UpdateTodoView(selection: .constant(.init()))
             .environmentObject(TodoStore())
         }
     }

@@ -31,6 +31,7 @@ enum DragInfo {
 struct CustomSheetView<Content: View>: View {
     
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var navigationStore: NavigationStore
     
     // Gesture properties
     @State private var offset: CGFloat = 0
@@ -40,7 +41,6 @@ struct CustomSheetView<Content: View>: View {
     @GestureState private var dragInfo = DragInfo.inactive
     @State private var yVelocity: Double = 0.0
     @State private var previousDragValue: DragGesture.Value?
-    @Binding var isPresented: Bool
     
     @ViewBuilder let content: () -> Content
     
@@ -48,8 +48,8 @@ struct CustomSheetView<Content: View>: View {
     private let defaultMidHeight: CGFloat = CGFloat.screenHeight / 2 - 80
     private let defaultTopHeight: CGFloat = 0
 
-    init(isPresented: Binding<Bool>, content: @escaping () -> Content) {
-        self._isPresented = isPresented
+    init( content: @escaping () -> Content) {
+        
         self.content = content
     }
     
@@ -67,7 +67,7 @@ struct CustomSheetView<Content: View>: View {
     var body: some View {
         ZStack {
             // For getting height for drag gesture
-            GeometryReader { proxy -> AnyView in
+            GeometryReader { _ -> AnyView in
                 // let height = proxy.frame(in: .global).height
                 let yOffset_height: CGFloat = defaultMidHeight
                 return AnyView(
@@ -119,7 +119,7 @@ struct CustomSheetView<Content: View>: View {
                                         // 바텀
                                         if offset > 120 {
                                             withAnimation {
-                                                isPresented.toggle()
+                                                navigationStore.dismiss(home: .isPizzaSeleted(false))
                                             }
                                         }
                                         offset = 0

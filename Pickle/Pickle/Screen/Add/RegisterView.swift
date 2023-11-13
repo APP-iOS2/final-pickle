@@ -116,7 +116,6 @@ struct RegisterView: View {
         content.count >= 1
     }
     
-    
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
@@ -183,8 +182,8 @@ struct RegisterView: View {
                 let updatedTodo = todoStore.update(todo: computedTodo)
                 _ = await todoStore.fetch()
                     //.fixnotification 여기가 알람 설정된거 수정하는거
-                todoStore.fixNotification(computedTodo: updatedTodo,
-                                          notificationManager: notificationManager)
+                todoStore.fixNotification(todo: updatedTodo,
+                                          noti: notificationManager)
                 showUpdateSuccessAlert.toggle()
             }
         } else { // 여기가 할일 처음 추가할때
@@ -197,7 +196,7 @@ struct RegisterView: View {
                 
                 //처음 알람 설정하는곳  -> 디테일은 TODO에서 확인하기~
                 todoStore.notificationAdding(todo: addedTodo,
-                                             notificationManager: notificationManager)
+                                             noti: notificationManager)
                 showSuccessAlert.toggle()
             }
             else { showFailedAlert.toggle() }
@@ -434,11 +433,14 @@ extension RegisterView {
                 // Success Delete Alert
                 .successAlert(
                     isPresented: $successDelete,
-                    title: "삭제 성공",
-                    alertContent: "성공적으로 삭제했습니다",
-                    primaryButtonTitle: "뒤로가기",
-                    secondaryButtonTitle: "",
-                    primaryAction: { isShowingEditTodo.toggle() },
+                    title: "삭제",
+                    alertContent: "삭제 하시겠습니까?",
+                    primaryButtonTitle: "취소하기",
+                    secondaryButtonTitle: "삭제하기",
+                    primaryAction: {
+                        isShowingEditTodo.toggle()
+                        //4번 할일이 삭제 되었을 경우, 해당 등록된 알림도 삭제해야함. 해당 할일의 아이디 넣어줘야함
+                    },
                     secondaryAction: {}
                 )
         }

@@ -9,9 +9,13 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @EnvironmentObject private var todoStore: TodoStore
-    @EnvironmentObject private var missionStore: MissionStore
-    @EnvironmentObject private var userStore: UserStore
+
+    @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var missionStore: MissionStore
+    @EnvironmentObject var userStore: UserStore
+    @EnvironmentObject var navigationStore: NavigationStore
+    @Environment(\.scrollEnable) var scrollEnable: Binding<ScrollEnableKey>
+
     
     @StateObject private var calendarModel: CalendarViewModel = CalendarViewModel()
     
@@ -19,6 +23,8 @@ struct CalendarView: View {
     @State private var filteredTodayMission: [TimeMission]?
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
+
+
     @State private var todayPieceOfPizza: Int = 0
     @State private var pizzaSummarySheet: Bool = false
     @State private var todayCompletedTasks: Int = 0
@@ -31,6 +37,7 @@ struct CalendarView: View {
     }
     
     var body: some View {
+
         GeometryReader { geometry in
 //            VStack(alignment: .leading) {
 //                headerView()
@@ -52,6 +59,7 @@ struct CalendarView: View {
                         
                     }
 //                    .frame(height: geometry.size.height)
+
                 }
                 .scrollIndicators(.hidden)
                 .frame(width: geometry.size.width)
@@ -61,9 +69,9 @@ struct CalendarView: View {
         }
         .task {
             await todoStore.fetch()
-            
         }
         .onAppear {
+            Log.debug("CalendarView onAppear")
             calendarModel.resetForTodayButton()
             filterTodayTasks(todo: todoStore.todos)
             
@@ -72,8 +80,7 @@ struct CalendarView: View {
                             behaviorMissions: missionStore.behaviorMissions)
         }
         
-        .onChange(of: calendarModel.currentDay) { newValue in
-            
+        .onChange(of: calendarModel.currentDay) { _ in
             filterTodayTasks(todo: todoStore.todos)
             let time = missionStore.fetch().0
             let mission = missionStore.fetch().1
@@ -328,14 +335,9 @@ struct CalendarView: View {
     
     // MARK: - TaskView
     func taskView(tasks: [Todo]) -> some View {
-        
-        VStack(alignment: .leading, spacing: 35) {
-            
-            ForEach(tasks) { task in
-                TaskRowView(task: task)
-            }
+        ForEach(tasks) { task in
+            TaskRowView(task: task)
         }
-        .padding([.vertical, .leading], 15)
     }
     
     func currentPizzaSummaryView() -> some View {

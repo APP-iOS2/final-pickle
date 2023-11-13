@@ -121,5 +121,5 @@ struct SettingNotiicationView: View {
 
 #Preview {
     SettingNotiicationView(isShowingOnboarding: .constant(true))
-        .environmentObject(NotificationManager())
+        .environmentObject(NotificationManager(mediator: NotiMediator()))
 }

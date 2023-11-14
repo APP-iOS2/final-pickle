@@ -80,21 +80,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.ddudios.realpizza.refresh_process", using: nil) { task in
             self.handleProcessingTask(task: task as! BGProcessingTask)
-            self.updateRealmDataTomorrow()
         }
-    }
-    
-    func updateRealmDataTomorrow() {
-        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: missionStore.timeMissions[0].changeWakeupTime)
-        
-        notificationManager.scheduleNotification(
-            localNotification: LocalNotification(identifier: UUID().uuidString,
-                                                 title: "현실도 피자",
-                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요!",
-                                                 dateComponents: dateComponent,
-                                                 repeats: true,
-                                                 type: .calendar)
-        )
     }
     
     func application(_ application: UIApplication,

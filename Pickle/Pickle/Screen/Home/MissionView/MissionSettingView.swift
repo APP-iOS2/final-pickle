@@ -46,8 +46,10 @@ struct TimeMissionSettingView: View {
                                                                    date: timeMission.date,
                                                                    wakeupTime: timeMission.wakeupTime,
                                                                    changeWakeupTime: timeMission.changeWakeupTime)))
+                    updateAlarm()
                     showSuccessAlert.toggle()
                     isTimeMissionSettingModalPresented.toggle()
+                    
                 } label: {
                     Text("저장")
                         .font(.pizzaBody)
@@ -66,6 +68,19 @@ struct TimeMissionSettingView: View {
             .labelsHidden()
         }
         .padding()
+    }
+    
+    func updateAlarm() {
+        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: timeMission.changeWakeupTime)
+        
+        notificationManager.scheduleNotification(
+            localNotification: LocalNotification(identifier: UUID().uuidString,
+                                                 title: "현실도 피자",
+                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요!",
+                                                 dateComponents: dateComponent,
+                                                 repeats: true,
+                                                 type: .calendar)
+        )
     }
 }
 

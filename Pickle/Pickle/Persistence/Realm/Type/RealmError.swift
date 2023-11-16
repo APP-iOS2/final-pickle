@@ -8,6 +8,7 @@
 import Foundation
 
 enum RealmError: Error {
+    case realmError
     case notRealmObject
     case deleteFailed
     case saveFailed

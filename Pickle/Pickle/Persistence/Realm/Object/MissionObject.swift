@@ -15,14 +15,15 @@ protocol MissionObject {
 }
 
 class TimeMissionObject: Object, MissionObject, Identifiable {
-    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted(primaryKey: true) var id: String
     @Persisted var title: String
     @Persisted var status: TodoStatusPersisted
     @Persisted var date: Date
     @Persisted var wakeupTime: Date       // 기상 목표 시간
     @Persisted var changeWakeupTime: Date // 기상시간 - 변경 정보 저장
     
-    convenience init(title: String,
+    convenience init(id: String,
+                     title: String,
                      status: TodoStatusPersisted,
                      date: Date,
                      wakeupTime: Date,
@@ -34,22 +35,6 @@ class TimeMissionObject: Object, MissionObject, Identifiable {
         self.date = date
         self.wakeupTime = wakeupTime
         self.changeWakeupTime = changeWakeupTime
-    }
-    
-    convenience init(id: String,
-                     title: String,
-                     status: TodoStatusPersisted,
-                     date: Date,
-                     wakeupTime: Date,
-                     changeWakeupTime: Date) {
-        
-        self.init(title: title,
-                  status: status,
-                  date: date,
-                  wakeupTime: wakeupTime,
-                  changeWakeupTime: changeWakeupTime)
-        
-        self.id = try! ObjectId(string: id)
     }
     
     override class func primaryKey() -> String? {

@@ -10,7 +10,6 @@ import RealmSwift
 import Combine
 import Realm
 
-
 // TODO: 트러블 슈팅 정리......
 typealias RealmFilter<T: Storable> = (Query<T>) -> Query<Bool>
 
@@ -19,7 +18,6 @@ typealias RObjectBase = ObjectBase
 typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
 typealias RNotificationToken = NotificationToken
 typealias RObject = RealmSwiftObject
-
 
 final class RealmStore: DBStore {
     

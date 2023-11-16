@@ -7,7 +7,6 @@
 
 import Foundation
 import RealmSwift
-
 // TODO: User Interactor 적용 해보기
     // 1. 현재 뷰 OR Store(ViewModel) 에서 Bussiness로직이 강하게 결합되어있음
     // 2. Interactor를 사용하여 도메인 로직 분리 필요해 보임 - 논의 해보기

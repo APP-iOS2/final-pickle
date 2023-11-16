@@ -21,7 +21,6 @@ final class MissionStore: ObservableObject {
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
     
     init() {
-        self.missionSetting()
     }
     
     func fetch() -> ([TimeMission], [BehaviorMission]) {
@@ -118,7 +117,7 @@ final class MissionStore: ObservableObject {
         }
     }
     
-    private func missionSetting() {
+    func missionSetting() {
         let (t, b) = self.fetch()
         if !t.isEmpty && !b.isEmpty { return }
         if t.isEmpty {

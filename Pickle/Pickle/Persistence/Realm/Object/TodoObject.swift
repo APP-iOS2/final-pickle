@@ -11,14 +11,15 @@ import Combine
 
 class TodoObject: Object, Identifiable {
     
-    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted(primaryKey: true) var id: String
     @Persisted var content: String
     @Persisted var startTime: Date
     @Persisted var targetTime: TimeInterval
     @Persisted var spendTime: TimeInterval
     @Persisted var status: TodoStatusPersisted
     
-    convenience init(content: String,
+    convenience init(id: String,
+                     content: String,
                      startTime: Date,
                      targetTime: TimeInterval,
                      spendTime: TimeInterval,
@@ -30,23 +31,8 @@ class TodoObject: Object, Identifiable {
         self.spendTime = spendTime
         self.status = status
     }
-    
-    convenience init(id: String,
-                     content: String,
-                     startTime: Date,
-                     targetTime: TimeInterval,
-                     spendTime: TimeInterval,
-                     status: TodoStatusPersisted) {
-        self.init(content: content,
-                  startTime: startTime,
-                  targetTime: targetTime,
-                  spendTime: spendTime,
-                  status: status)
         
-        self.id = try! ObjectId(string: id)
-    }
-    
-    class override func primaryKey() -> String? {
+    override class func primaryKey() -> String? {
         "id"
     }
 }
@@ -62,7 +48,7 @@ enum TodoStatusPersisted: String, PersistableEnum {
 
 extension TodoObject {
     static var todo: TodoObject {
-        .init(value: ["id": ObjectId.generate(),
+        .init(value: ["id": UUID().uuidString,
                       "content": "안녕하세요",
                       "startTime": Date(),
                       "targetTime": 1000,

@@ -81,7 +81,7 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
     func delete(model: TimeMission) {
         let persistent = model.mapToPersistenceObject()
         do {
-            try super.delete(object: persistent, id: persistent.id.stringValue)
+            try super.delete(object: persistent, id: persistent.id)
         } catch {
             Log.error("error: occur: \(error)")
         }

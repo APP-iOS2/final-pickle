@@ -22,7 +22,6 @@ struct PizzaSummaryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    
                     HStack(spacing: 15) {
                         myPizzaView()
                             .modifier(PizzaSummaryModifier())
@@ -40,11 +39,8 @@ struct PizzaSummaryView: View {
                     myPizzaCollectionView()
                         .modifier(PizzaSummaryModifier())
                         .padding(.horizontal)
-                    
                 }
-                
             }
-            
             .task {
                 await todoStore.fetch()
             }
@@ -109,12 +105,12 @@ struct PizzaSummaryView: View {
             
             Text("피자 컬렉션")
             LazyVGrid(columns: columns) {
-                
-                ForEach(userStore.user.pizzas.indices) { pizza in
-                    PizzaCollectionView(pizza: $userStore.user.pizzas[pizza],  currentPizza: .constant(.defaultPizza) )
-                        .frame(width: CGFloat.screenWidth / 3 - 40)
-                        .padding(.horizontal, 10)
-                }
+                // TODO: 변경 필요
+                // ForEach(userStore.user.pizzas.indices) { pizza in
+                //     PizzaCollectionView(pizza: $userStore.user.pizzas[pizza],  currentPizza: .constant(.defaultPizza) )
+                //         .frame(width: CGFloat.screenWidth / 3 - 40)
+                //         .padding(.horizontal, 10)
+                // }
             }
         }
     }

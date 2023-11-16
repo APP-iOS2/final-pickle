@@ -38,7 +38,7 @@ extension Pizza {
                                            lock: false,
                                            createdAt: Date())
     
-    static let allCasePizza: [Pizza] = 
+    static let allCasePizza: [Pizza] =
     [
         pepperoni,
         cheese,
@@ -54,24 +54,24 @@ extension Pizza {
     }
     
     static let pepperoni: Pizza = .init(name: "페퍼로니 피자",
-                                             image: "pepperoni",
-                                             lock: false,
-                                             createdAt: Date())
+                                        image: "pepperoni",
+                                        lock: false,
+                                        createdAt: Date())
     
     static let cheese: Pizza = .init( name: "치즈 피자",
-                                           image: "cheese",
-                                           lock: true,
-                                           createdAt: Date())
+                                      image: "cheese",
+                                      lock: true,
+                                      createdAt: Date())
     
     static let potato: Pizza = .init(name: "포테이토 피자",
-                                          image: "potato",
-                                          lock: true,
-                                          createdAt: Date())
+                                     image: "potato",
+                                     lock: true,
+                                     createdAt: Date())
     
     static let baconPotato: Pizza = .init( name: "베이컨 포테이토 피자",
-                                                image: "baconPotato",
-                                                lock: true,
-                                                createdAt: Date())
+                                           image: "baconPotato",
+                                           lock: true,
+                                           createdAt: Date())
     
     static let sweetPotato: Pizza = .init(name: "고구마 피자",
                                           image: "sweetPotato",
@@ -79,9 +79,9 @@ extension Pizza {
                                           createdAt: Date())
     
     static let hawaian: Pizza = .init( name: "하와이안 피자",
-                                            image: "hawaiian",
-                                            lock: true,
-                                            createdAt: Date())
+                                       image: "hawaiian",
+                                       lock: true,
+                                       createdAt: Date())
     
     static let margherita: Pizza = .init(name: "마르게리타 피자",
                                          image: "margherita",

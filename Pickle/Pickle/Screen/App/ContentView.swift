@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
     @AppStorage("onboarding") var isOnboardingViewActive: Bool = true
     @AppStorage("systemTheme") private var systemTheme: Int = SchemeType.allCases.first!.rawValue
@@ -69,12 +68,9 @@ struct ContentView: View {
             }
             .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
             .onAppear {
-                userSetting()        // UserSetting
+                initUserSetting()        // initUserSetting
                 healthKitStore.requestAuthorization { success in
-                    if success {
-                        healthKitStore.fetchStepCount()
-                    }
-                }
+                    if success { healthKitStore.fetchStepCount() } }
             }
             .fullScreenCover(isPresented: $isOnboardingViewActive) {
                 SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)
@@ -88,33 +84,29 @@ struct ContentView: View {
 
 extension ContentView {
     
-    /// 처음 한번만 실행되는 함수,
-    /// 피자를 셋팅하여 아직 열리지 않은 피자는 lock 을 true 로 한다.
-    private func pizzaSetting() async {
-        let value = await pizzaStore.fetch()
-        if !value.isEmpty { return }
-        Pizza.allCasePizza.forEach { pizza in
-            do {
-                try pizzaStore.add(pizza: pizza)
-            } catch {
-                errorHandler(error)
-            }
-        }
+    private func initUserSetting() {
+        self.userSetting(.defaultPizza)
+        missionStore.missionSetting()
     }
     
-    func userSetting() {
+    private func userSetting(_ pizza: Pizza) {
         do {
             try userStore.fetchUser()
         } catch {
             // MARK: Add User Action
-            errorHandler(error)
+            errorHandler(error, pizza)
         }
     }
     
-    private func errorHandler(_ error: Error) {
+    private func errorHandler(_ error: Error, _ pizza: Pizza) {
         guard let error = error as? PersistentedError else { return }
         if error == .fetchUserError {
-            userStore.addUser()
+            var user = User.defaultUser
+            
+            user.currentPizzas = Pizza.allCasePizza.map { CurrentPizza(pizza: $0)}
+            user.pizzaID = pizza.id
+            
+            userStore.addUser(default: user)
             try! userStore.fetchUser()
         } else if error == .addFaild {
             Log.error("피자를 추가하는 중에 에러 발생")

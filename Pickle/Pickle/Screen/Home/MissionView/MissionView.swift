@@ -27,11 +27,11 @@ struct MissionView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(timeMissions.indices, id: \.self) { index in
-                    if let mission = timeMissions[safe: index] {
-                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
-                    }
-                }
+//                ForEach(timeMissions.indices, id: \.self) { index in
+//                    if let mission = timeMissions[safe: index] {
+//                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
+//                    }
+//                }
                 
                 ForEach(behaviorMissions.indices, id: \.self) { index in
                     if let mission = behaviorMissions[safe: index] {
@@ -66,12 +66,12 @@ struct MissionView: View {
                 }
             }
         }
-        .refreshable {
-            healthKitStore.fetchStepCount()
-            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-            timeMissions = _timeMissions
-            behaviorMissions = _behaviorMissions
-        }
+//        .refreshable {
+//            healthKitStore.fetchStepCount()
+//            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+//            timeMissions = _timeMissions
+//            behaviorMissions = _behaviorMissions
+//        }
         .onDisappear {
             healthKitStore.fetchStepCount()
             if let firstTimeMission = timeMissions.first {

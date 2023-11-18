@@ -44,5 +44,4 @@ extension User {
                      currentPizzas: [currentPizza],
                      createdAt: Date())
     }
-    
 }

@@ -19,7 +19,6 @@ struct CurrentPizza: Identifiable {
          currentPizzaSlice: Int = .init(),
          pizza: Pizza?,
          createdAt: Date = .init()) {
-        
         self.id = id
         self.currentPizzaCount = currentPizzaCount
         self.currentPizzaSlice = currentPizzaSlice

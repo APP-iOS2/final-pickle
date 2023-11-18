@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// TODO: 앱 진입시 홈 피자뷰 CurrentPosition 위치로 이동 구현
-
 struct HomeView: View {
     typealias PizzaSelection = PizzaSelectedView.Selection
     typealias TodoSelection = UpdateTodoView.Selection

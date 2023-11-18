@@ -14,6 +14,13 @@ struct PizzaPuchasePresentKey: PreferenceKey {
     }
 }
 
+struct ScrollOffsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = .zero
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value += nextValue()
+    }
+}
+
 // HomeView 에서 Prefenrence Change를 옵저브 하고 있었지만
 // PizzaSeletedView는 modifier로 동일 계층에 ZStack에 올린 View로써 HOmeView가 상위뷰가 아니라 동일계층으로 인식되어
 // onPreferenceChange가 호출되지 않음

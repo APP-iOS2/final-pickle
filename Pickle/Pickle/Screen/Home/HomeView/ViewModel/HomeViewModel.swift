@@ -11,14 +11,24 @@ final class HomeViewModel: ObservableObject {
     typealias PizzaSelection = PizzaSelectedView.Selection
     typealias PositionID = HomeView.ScrollPizzaID
     
+    /*피자 가로 스크롤 뷰 x offset*/
     @Published var offset: CGFloat = 0
-    @Published var scrollViewDifference: CGFloat = 0
+    
+    /*피자 한 페이지당 width geo.size.width - pagePadding*/
+    @Published var pizzaScrollViewWidth: CGFloat = 0
+    
     @Published var pizzaSelection: PizzaSelection = .init()
-    @Published var pizzaPosition: PositionID?
+    
+    @Published var pizzaPosition: PositionID = .pizza("")
+    
     @Published var currentPositionPizza: CurrentPizza = .init(pizza: .defaultPizza)
     
     var isPositionChange: Bool {
-        self.offset.remainder(dividingBy: self.scrollViewDifference) == 0
+        remainder(offset: self.offset) == 0
+    }
+    
+    func remainder(offset: CGFloat) -> CGFloat {
+        abs(offset).remainder(dividingBy: pizzaScrollViewWidth)
     }
     
     func nextPizzaScrollPosition(user: User, direction: Bool = true) {
@@ -39,18 +49,25 @@ final class HomeViewModel: ObservableObject {
         user.currentPizzas[safe: nextPosition]?.pizza?.id ?? ""
         
         pizzaPosition = .pizza(positionID)
-        // updatePositionPizza(user: user, positionID: positionID)
     }
     
     func gesturePositionUpdate(user: User) {
-        let positionIndex: Int = Int(offset / scrollViewDifference)
+        let positionIndex: Int = Int(abs(offset) / pizzaScrollViewWidth)
         guard let positionID = user.currentPizzas[safe: positionIndex]?.pizza?.id else { return }
         
         pizzaPosition = .pizza(positionID)
         updatePositionPizza(user: user, positionID: positionID)
     }
     
-    private func updatePositionPizza(user: User, positionID: String) {
+    func updatePositionPizza(user: User, positionID: String = "") {
+        var positionID = positionID
+        
+        if positionID.isEmpty {
+            if case let .pizza(ID) = self.pizzaPosition {
+                positionID = ID
+            }
+        }
+        
         let pizza = user.getCurrentPizza(using: positionID)
         if let pizza {
             currentPositionPizza = pizza
@@ -62,9 +79,9 @@ final class HomeViewModel: ObservableObject {
     }
     
     private func currentPizzaPosition(user: User) -> Int {
-        guard let position = pizzaPosition else { return 0 }
+//        guard let position = pizzaPosition else { return 0 }
         
-        if case let .pizza(ID) = position {
+        if case let .pizza(ID) = pizzaPosition {
             guard let index = pizzasIDs(user: user).firstIndex(of: ID) else { return 0 }
             return index
         }

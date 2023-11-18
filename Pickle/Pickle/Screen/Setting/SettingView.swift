@@ -164,11 +164,7 @@ struct SettingView: View {
         }
         .navigationTitle("설정")
         .preferredColorScheme(selectedScheme)
-        .onAppear {
-            Task {
-                await notificationManager.getCurrentSetting()
-            }
-        }
+        .task { await notificationManager.getCurrentSetting() }
         .sheet(isPresented: $isShowingSafari, content: {
             WKWebViewPractice(url: appInformationWebViewSite)
         })

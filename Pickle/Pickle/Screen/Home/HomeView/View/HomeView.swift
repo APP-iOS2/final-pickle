@@ -113,9 +113,9 @@ struct HomeView: View {
     private func pizza_8_successAction(user: User) {
         if user.currentPizzaSlice % 8 == 0 {
             navigationStore.pushHomeView(home: .showCompleteAlert(true))
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                navigationStore.dismiss(home: .showCompleteAlert(false))
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+//                navigationStore.dismiss(home: .showCompleteAlert(false))
+//            }
         }
     }
     

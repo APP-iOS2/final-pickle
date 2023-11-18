@@ -25,6 +25,7 @@ class TodoObject: Object, Identifiable {
                      spendTime: TimeInterval,
                      status: TodoStatusPersisted) {
         self.init()
+        self.id = id
         self.content = content
         self.startTime = startTime
         self.targetTime = targetTime

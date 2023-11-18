@@ -34,50 +34,47 @@ struct ContentView: View {
     }
     
     var body: some View {
-        ScrollViewReader { proxy in
-            TabView(selection: navigationStore.createTabViewBinding(proxy: proxy,
-                                                                    key: $rootScrollEnableKey)) {
-                NavigationStack(path: $navigationStore.homeNav) {
-                    HomeView()
-                }.tabItem {
-                    Label("홈", systemImage: "house")
-                        .environment(\.symbolVariants, .fill)
-                }.tag(TabItem.home)
-                
-                NavigationStack(path: $navigationStore.calendarNav) {
-                    CalendarView()
-                }.tabItem {
-                    Label("달력", systemImage: "calendar")
-                        .environment(\.symbolVariants, .fill)
-                }.tag(TabItem.calendar)
-                
-                NavigationStack {
-                   PizzaSummaryView()
-                }.tabItem {
-                    Label("통계", systemImage: "list.clipboard.fill")
-                        .environment(\.symbolVariants, .fill)
-                }.tag(TabItem.statistics)
-                
-                NavigationStack(path: $navigationStore.settingNav) {
-                    SettingView()
-                }
-                .tabItem {
-                    Label("설정", systemImage: "gearshape")
-                        .environment(\.symbolVariants, .fill)
-                }.tag(TabItem.setting)
+        TabView(selection: navigationStore.createTabViewBinding(key: $rootScrollEnableKey)) {
+            NavigationStack(path: $navigationStore.homeNav) {
+                HomeView()
+            }.tabItem {
+                Label("홈", systemImage: "house")
+                    .environment(\.symbolVariants, .fill)
+            }.tag(TabItem.home)
+            
+            NavigationStack(path: $navigationStore.calendarNav) {
+                CalendarView()
+            }.tabItem {
+                Label("달력", systemImage: "calendar")
+                    .environment(\.symbolVariants, .fill)
+            }.tag(TabItem.calendar)
+            
+            NavigationStack {
+                PizzaSummaryView()
+            }.tabItem {
+                Label("통계", systemImage: "list.clipboard.fill")
+                    .environment(\.symbolVariants, .fill)
+            }.tag(TabItem.statistics)
+            
+            NavigationStack(path: $navigationStore.settingNav) {
+                SettingView()
             }
-            .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
-            .onAppear {
-                initUserSetting()        // initUserSetting
-                healthKitStore.requestAuthorization { success in
-                    if success { healthKitStore.fetchStepCount() } }
-            }
-            .fullScreenCover(isPresented: $isOnboardingViewActive) {
-                SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)
-            }
-            .tint(.pickle)
-            .preferredColorScheme(selectedScheme)
+            .tabItem {
+                Label("설정", systemImage: "gearshape")
+                    .environment(\.symbolVariants, .fill)
+            }.tag(TabItem.setting)
         }
+        .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
+        .onAppear {
+            initUserSetting()        // initUserSetting
+            healthKitStore.requestAuthorization { success in
+                if success { healthKitStore.fetchStepCount() } }
+        }
+        .fullScreenCover(isPresented: $isOnboardingViewActive) {
+            SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)
+        }
+        .tint(.pickle)
+        .preferredColorScheme(selectedScheme)
         .scrollEnableInject($rootScrollEnableKey)
     }
 }

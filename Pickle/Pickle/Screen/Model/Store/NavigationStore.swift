@@ -61,8 +61,7 @@ final class NavigationStore: ObservableObject, NotificationService {
         }
     }
     
-    func createTabViewBinding(proxy: ScrollViewProxy,
-                              key enable: Binding<ScrollEnableKey>) -> Binding<TabItem> {
+    func createTabViewBinding(key enable: Binding<ScrollEnableKey>) -> Binding<TabItem> {
         Binding<TabItem>(
             get: { [weak self] in
                 guard let self else { return .home }

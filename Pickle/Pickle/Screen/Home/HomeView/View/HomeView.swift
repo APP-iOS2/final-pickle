@@ -52,9 +52,6 @@ struct HomeView: View {
             .onReceive(viewModel.$pizzaPosition) { _ in
                 viewModel.updatePositionPizza(user: userStore.user)
             }
-            // .onReceive(viewModel.$offset) { _ in
-            //     if viewModel.isPositionChange { viewModel.gesturePositionUpdate(user: userStore.user) }
-            // }
             .onChange(of: pizzaSelection.seletedPizza) { value in
                 if value.lock == false { userStore.trigger(action: .select(value)) }
             }
@@ -215,17 +212,7 @@ extension HomeView {
     private func currentPizzaPagingView() -> some View {
         GeometryReader { geo in
             HStack(spacing: 0) {
-                
-                // pagingButton(false) {
-                //     viewModel.nextPizzaScrollPosition(user: userStore.user, direction: false)
-                // }
-                
                 pizzaPagingView(geo: geo)
-                
-                // pagingButton(true) {
-                //     viewModel.nextPizzaScrollPosition(user: userStore.user, direction: true)
-                // }
-                
             }.fixSize(geo)
         }
         .scrollIndicators(.hidden)
@@ -233,10 +220,7 @@ extension HomeView {
     
     private func pizzaPagingView(geo: GeometryProxy) -> some View {
         ScrollViewReader { proxy in
-//            ScrollView(.horizontal) {
                 LazyHStack {
-                    // scrollObservableView
-                    // $viewModel.pizzaPagingSelection
                     TabView(selection: $viewModel.pizzaPosition) {
                         ForEach(Array(zip(userStore.user.currentPizzas, 
                                           userStore.user.currentPizzas.indices)),
@@ -246,30 +230,15 @@ extension HomeView {
                             }
                             .fixSize(geo, diffX: -pagePadding)
                             .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
-                            // .id(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
-                            
                         }.padding(.bottom, 10)
                             .padding(.top, -10)
                     }
                     .tabViewStyle(.page(indexDisplayMode: .always))
                     .fixSize(geo, diffY: 30)
                 }
-//            }
             .onAppear {
                 viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
             }
-//            .coordinateSpace(name: "pizzaOffset")
-//            .onPreferenceChange(ScrollOffsetKey.self) { value in
-//                Log.debug("values offset: \(value)")
-//                if viewModel.remainder(offset: value) == 0 {
-//                    viewModel.offset = value
-//                }
-//            }
-//            .onReceive(viewModel.$pizzaPosition) { value in
-//                withAnimation {
-//                    proxy.scrollTo(value)
-//                }
-//            }
         }
     }
     

@@ -134,7 +134,6 @@ struct CompleteAlert: View {
                 isPresented: .constant(true),
                 pizzaName: "smilePizza",
                 title: "축하합니다",
-                contents: "포테이토")
                 contents: "포테이토",
                 action: {})
         )

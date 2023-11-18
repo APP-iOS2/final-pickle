@@ -12,6 +12,7 @@ struct CompleteMessage {
     let pizzaName: String
     let title: String
     let contents: String
+    let action: () -> Void
 }
 
 extension View {
@@ -23,7 +24,8 @@ extension View {
                 isPresented: message.isPresented,
                 pizzaName: message.pizzaName,
                 title: message.title,
-                contents: message.contents
+                contents: message.contents,
+                action: message.action
             )
         )
     }
@@ -35,6 +37,7 @@ struct CompleteAlertModifier: ViewModifier {
     let pizzaName: String
     let title: String
     let contents: String
+    let action: () -> Void
     
     func body(content: Content) -> some View {
         ZStack {
@@ -47,14 +50,15 @@ struct CompleteAlertModifier: ViewModifier {
                         .blur(radius: isPresented ? 2 : 0)
                         .ignoresSafeArea()
                         .onTapGesture {
-                            self.isPresented = false // 외부 영역 터치 시 내려감
+                            action() // 외부 영역 터치 시 내려감
                         }
                     
                     CompleteAlert(
                         isPresented: self.$isPresented,
                         pizzaName: self.pizzaName,
                         title: self.title,
-                        contents: self.contents
+                        contents: self.contents,
+                        action: self.action
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
@@ -75,6 +79,7 @@ struct CompleteAlert: View {
     let pizzaName: String
     let title: String
     let contents: String
+    let action: () -> Void
     
     var body: some View {
         VStack(spacing: 22) {
@@ -102,6 +107,15 @@ struct CompleteAlert: View {
                 .font(.pizzaBody)
                 .foregroundStyle(.black)
                 .padding(.bottom, 20)
+            
+            Button(action: action) {
+                Text("피자 얻기")
+                    .font(.pizzaBoldButtonTitle)
+                    .foregroundColor(.pickle)
+            }
+            .padding()
+            .background(Color.black)
+            .cornerRadius(10.0)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 18)
@@ -121,5 +135,7 @@ struct CompleteAlert: View {
                 pizzaName: "smilePizza",
                 title: "축하합니다",
                 contents: "포테이토")
+                contents: "포테이토",
+                action: {})
         )
 }

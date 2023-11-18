@@ -140,7 +140,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
         
         Log.debug("willPresent notification: \(notification.request.content.userInfo)")
-        
         return [.banner, .sound]
     }
     
@@ -155,7 +154,6 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, 
                                 openSettingsFor notification: UNNotification?) {
-        
         Log.debug("notification OpenSettingsFor: \(notification?.request.content.userInfo)")
     }
     

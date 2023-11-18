@@ -43,7 +43,6 @@ struct SettingView: View {
     @State private var isShowingSafari: Bool = false
     private var appInformationWebViewSite =  "https://kai-swift.notion.site/kai-swift/5fcad0683ca24853ac1ed5b7de8c88f4"
     
-  
     var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
     
     var selectedScheme: ColorScheme? {
@@ -165,11 +164,7 @@ struct SettingView: View {
         }
         .navigationTitle("설정")
         .preferredColorScheme(selectedScheme)
-        .onAppear {
-            Task {
-                await notificationManager.getCurrentSetting()
-            }
-        }
+        .task { await notificationManager.getCurrentSetting() }
         .sheet(isPresented: $isShowingSafari, content: {
             WKWebViewPractice(url: appInformationWebViewSite)
         })
@@ -221,7 +216,6 @@ struct WKWebViewPractice: UIViewRepresentable {
         webView.load(URLRequest(url: url))
     }
 }
-
 
 
 struct SettingView_Previews: PreviewProvider {

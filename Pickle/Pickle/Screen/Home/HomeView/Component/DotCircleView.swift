@@ -12,7 +12,7 @@ struct DotCircleView: View {
     private let pi = Double.pi
     private let dotCount = 30
     private let dotLength: CGFloat = 10
-    @Binding var content: String
+    var content: String
     
     var taskPercentage: Double
     var body: some View {
@@ -45,4 +45,9 @@ struct DotCircleView: View {
     private func getSpaceLength(radius: CGFloat) -> CGFloat {
         return getCircleRadius(frame: radius) / CGFloat(dotCount) - dotLength
     }
+}
+
+#Preview {
+    DotCircleView(content: "?", taskPercentage: 0)
+        .fixSize(200)
 }

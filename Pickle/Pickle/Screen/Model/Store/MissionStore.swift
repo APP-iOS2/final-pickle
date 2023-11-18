@@ -21,7 +21,6 @@ final class MissionStore: ObservableObject {
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
     
     init() {
-        self.missionSetting()
     }
     
     func fetch() -> ([TimeMission], [BehaviorMission]) {
@@ -80,9 +79,9 @@ final class MissionStore: ObservableObject {
         do {
             switch mission {
             case .time(let timeMission):
-                let value = try timeMissionRepository.notification(id: timeMission.id,
-                                                                   keyPaths: timeMissionKeypaths)
-                { [weak self] tiemMission in
+                timeMissionToken = try timeMissionRepository.notification(id: timeMission.id,
+                                                                   keyPaths: timeMissionKeypaths) {
+                    [weak self] tiemMission in
                     Task.detached {
                             await MainActor.run {
                                 self?.updateTimeMission(timeMission)
@@ -92,8 +91,8 @@ final class MissionStore: ObservableObject {
             case .behavior(let behaviorMission):
                 behaviorMissionToken
                 = try behaviorMissionRepository.notification(id: behaviorMission.id,
-                                                             keyPaths: behaviorMissionKeypaths)
-                { [weak self] behaviorMission in
+                                                             keyPaths: behaviorMissionKeypaths) {
+                    [weak self] behaviorMission in
                     Task.detached {
                         await MainActor.run {
                             self?.updateBehaviorMission(behaviorMission)
@@ -118,7 +117,7 @@ final class MissionStore: ObservableObject {
         }
     }
     
-    private func missionSetting() {
+    func missionSetting() {
         let (t, b) = self.fetch()
         if !t.isEmpty && !b.isEmpty { return }
         if t.isEmpty {

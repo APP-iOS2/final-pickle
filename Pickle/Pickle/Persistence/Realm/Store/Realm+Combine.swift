@@ -23,4 +23,16 @@ extension RealmStore {
             .compactMap { ob in ob.compactMap { $0 as T } }
             .eraseToAnyPublisher()
     }
+    
+    func updatePublisher<T: Storable>(_ model: T.Type,
+                                      _ object: T) -> AnyPublisher<T, Error> where T: RObject {
+        Future<T, Error> { [weak self] promise in
+            try! self?.realmStore.write {
+                self?.realmStore.add(object, update: .modified)
+                promise(.success(object))
+            }
+        }
+        .receive(on: DispatchQueue.main)
+        .eraseToAnyPublisher()
+    }
 }

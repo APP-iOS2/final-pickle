@@ -11,24 +11,16 @@ extension TimeMission {
     typealias PersistenceType = TimeMissionObject
     
     func mapToPersistenceObject() -> TimeMissionObject {
-        if let id = UUID(uuidString: self.id) {
-            return TimeMissionObject(title: self.title,
-                                     status: .init(rawValue: self.status.value) ?? .ready,
-                                     date: self.date,
-                                     wakeupTime: self.wakeupTime,
-                                     changeWakeupTime: self.changeWakeupTime)
-        } else {
-            return TimeMissionObject(id: self.id,
-                                     title: self.title,
-                                     status: .init(rawValue: self.status.value) ?? .ready,
-                                     date: self.date,
-                                     wakeupTime: self.wakeupTime,
-                                     changeWakeupTime: self.changeWakeupTime)
-        }
+        TimeMissionObject(id: self.id,
+                          title: self.title,
+                          status: .init(rawValue: self.status.value) ?? .ready,
+                          date: self.date,
+                          wakeupTime: self.wakeupTime,
+                          changeWakeupTime: self.changeWakeupTime)
     }
     
     static func mapFromPersistenceObject(_ object: TimeMissionObject) -> TimeMission {
-        TimeMission(id: object.id.stringValue,
+        TimeMission(id: object.id,
                     title: object.title,
                     status: .init(rawValue: object.status.rawValue) ?? .ready,
                     date: object.date,

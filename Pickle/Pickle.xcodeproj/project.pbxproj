@@ -56,6 +56,8 @@
 		961488752AFD21EB00B87A37 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488742AFD21EB00B87A37 /* TabItem.swift */; };
 		961488772AFD221200B87A37 /* HomeView-Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488762AFD221200B87A37 /* HomeView-Routing.swift */; };
 		961488792AFD24D400B87A37 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488782AFD24D400B87A37 /* Task.swift */; };
+		9619E9392B05921E0028348C /* PizzaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619E9382B05921E0028348C /* PizzaItemView.swift */; };
+		9619E93C2B0594210028348C /* ScrollEnableKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619E93B2B0594210028348C /* ScrollEnableKey.swift */; };
 		962FFD7D2AF6443C00AE4963 /* TestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD7C2AF6443C00AE4963 /* TestStore.swift */; };
 		962FFD812AF64F8B00AE4963 /* ProcessInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD802AF64F8B00AE4963 /* ProcessInfo.swift */; };
 		962FFD832AF6533900AE4963 /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD822AF6533900AE4963 /* EntryPoint.swift */; };
@@ -66,6 +68,7 @@
 		962FFD8D2AF689AC00AE4963 /* MissionStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD8C2AF689AC00AE4963 /* MissionStoreTest.swift */; };
 		962FFD8F2AF7979C00AE4963 /* Realm+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD8E2AF7979C00AE4963 /* Realm+Async.swift */; };
 		962FFD922AF7AE9700AE4963 /* RealmStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD912AF7AE9700AE4963 /* RealmStoreTest.swift */; };
+		9637AB9B2B07846100D64F46 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9637AB9A2B07846100D64F46 /* UINavigationController.swift */; };
 		963AFF8F2AC3319D00835FD8 /* RealmMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */; };
 		963AFF922AC33A1800835FD8 /* TodoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF912AC33A1800835FD8 /* TodoObject.swift */; };
 		963AFF942AC33EAF00835FD8 /* MissionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF932AC33EAF00835FD8 /* MissionObject.swift */; };
@@ -89,6 +92,8 @@
 		96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */; };
 		96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
 		966950EC2AE11C6500676081 /* PreviewsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966950EB2AE11C6500676081 /* PreviewsContainer.swift */; };
+		966B031E2B07B4CE009B6293 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B031D2B07B4CE009B6293 /* HomeViewModel.swift */; };
+		966B03202B07DEE7009B6293 /* PizzaPagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */; };
 		968EB22D2AEE63110025BEF8 /* NavigationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968EB22C2AEE63110025BEF8 /* NavigationStore.swift */; };
 		96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
@@ -106,6 +111,7 @@
 		96AAF8322AFD509200410881 /* Mediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8312AFD509200410881 /* Mediator.swift */; };
 		96AAF8372AFD50F900410881 /* NotiMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8362AFD50F900410881 /* NotiMediator.swift */; };
 		96AAF8392AFD511200410881 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8382AFD511200410881 /* NotificationService.swift */; };
+		96B7AE6D2B023DFC001A3987 /* CurrentPizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B7AE6C2B023DFC001A3987 /* CurrentPizzaObject.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
 		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
 		96C64FE32ADC2C450042204A /* CustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C64FE22ADC2C450042204A /* CustomSheetView.swift */; };
@@ -121,6 +127,11 @@
 		96CF08EA2AD9098400648B59 /* Chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E42AD9098400648B59 /* Chab.otf */; };
 		96CF08EB2AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
 		96CF08EE2AD933A400648B59 /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
+		96EB8C182B0251D10011B973 /* CurrentPizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C172B0251D10011B973 /* CurrentPizza.swift */; };
+		96EB8C1A2B0251EA0011B973 /* TimeMission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C192B0251EA0011B973 /* TimeMission.swift */; };
+		96EB8C1C2B0251F10011B973 /* BehaviorMission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1B2B0251F10011B973 /* BehaviorMission.swift */; };
+		96EB8C1E2B029AF20011B973 /* CurrentPizza-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1D2B029AF20011B973 /* CurrentPizza-extension.swift */; };
+		96EB8C202B04C92E0011B973 /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1F2B04C92E0011B973 /* Publisher.swift */; };
 		96FEE2AB2AE51CA200BC0CCD /* DatePickerUIkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */; };
 		96FEE2AE2AE5219E00BC0CCD /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */; };
 		A0052FB42ACD48A3005B3263 /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
@@ -200,6 +211,8 @@
 		961488742AFD21EB00B87A37 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		961488762AFD221200B87A37 /* HomeView-Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView-Routing.swift"; sourceTree = "<group>"; };
 		961488782AFD24D400B87A37 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		9619E9382B05921E0028348C /* PizzaItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaItemView.swift; sourceTree = "<group>"; };
+		9619E93B2B0594210028348C /* ScrollEnableKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollEnableKey.swift; sourceTree = "<group>"; };
 		962FFD7C2AF6443C00AE4963 /* TestStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestStore.swift; sourceTree = "<group>"; };
 		962FFD7E2AF64A5B00AE4963 /* PickleTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickleTestApp.swift; sourceTree = "<group>"; };
 		962FFD802AF64F8B00AE4963 /* ProcessInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfo.swift; sourceTree = "<group>"; };
@@ -210,6 +223,7 @@
 		962FFD8C2AF689AC00AE4963 /* MissionStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionStoreTest.swift; sourceTree = "<group>"; };
 		962FFD8E2AF7979C00AE4963 /* Realm+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+Async.swift"; sourceTree = "<group>"; };
 		962FFD912AF7AE9700AE4963 /* RealmStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmStoreTest.swift; sourceTree = "<group>"; };
+		9637AB9A2B07846100D64F46 /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
 		963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMigrator.swift; sourceTree = "<group>"; };
 		963AFF912AC33A1800835FD8 /* TodoObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoObject.swift; sourceTree = "<group>"; };
 		963AFF932AC33EAF00835FD8 /* MissionObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionObject.swift; sourceTree = "<group>"; };
@@ -234,6 +248,8 @@
 		96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BehaviorMission-extension.swift"; sourceTree = "<group>"; };
 		96635F692ADFA4A70072F21E /* KeyPathEditable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathEditable.swift; sourceTree = "<group>"; };
 		966950EB2AE11C6500676081 /* PreviewsContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewsContainer.swift; sourceTree = "<group>"; };
+		966B031D2B07B4CE009B6293 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaPagingView.swift; sourceTree = "<group>"; };
 		968EB22C2AEE63110025BEF8 /* NavigationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStore.swift; sourceTree = "<group>"; };
 		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
@@ -251,6 +267,7 @@
 		96AAF8312AFD509200410881 /* Mediator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mediator.swift; sourceTree = "<group>"; };
 		96AAF8362AFD50F900410881 /* NotiMediator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotiMediator.swift; sourceTree = "<group>"; };
 		96AAF8382AFD511200410881 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		96B7AE6C2B023DFC001A3987 /* CurrentPizzaObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPizzaObject.swift; sourceTree = "<group>"; };
 		96C64FE22ADC2C450042204A /* CustomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheetView.swift; sourceTree = "<group>"; };
 		96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		96CE29C22ADE63A40070EF92 /* PizzaObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaObject.swift; sourceTree = "<group>"; };
@@ -264,6 +281,11 @@
 		96CF08E42AD9098400648B59 /* Chab.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chab.otf; sourceTree = "<group>"; };
 		96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NanumSquareNeoOTF-Rg.otf"; sourceTree = "<group>"; };
 		96CF08ED2AD933A400648B59 /* DotCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotCircleView.swift; sourceTree = "<group>"; };
+		96EB8C172B0251D10011B973 /* CurrentPizza.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPizza.swift; sourceTree = "<group>"; };
+		96EB8C192B0251EA0011B973 /* TimeMission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMission.swift; sourceTree = "<group>"; };
+		96EB8C1B2B0251F10011B973 /* BehaviorMission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMission.swift; sourceTree = "<group>"; };
+		96EB8C1D2B029AF20011B973 /* CurrentPizza-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrentPizza-extension.swift"; sourceTree = "<group>"; };
+		96EB8C1F2B04C92E0011B973 /* Publisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Publisher.swift; sourceTree = "<group>"; };
 		96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerUIkit.swift; sourceTree = "<group>"; };
 		96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		A0052FB32ACD48A3005B3263 /* TimerReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerReportView.swift; sourceTree = "<group>"; };
@@ -362,6 +384,7 @@
 		2137D5962AC1485900AFE225 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9619E93D2B05942B0028348C /* EnvironmentValues */,
 				96B4B3412AE951B0006A15E3 /* Manager */,
 				96B4B33F2AE95176006A15E3 /* Store */,
 				96635F682ADFA49B0072F21E /* Protocol */,
@@ -415,9 +438,11 @@
 			isa = PBXGroup;
 			children = (
 				2137D5A32AC14C6A00AFE225 /* CGFloat.swift */,
+				9637AB9A2B07846100D64F46 /* UINavigationController.swift */,
 				2137D5A52AC14C7500AFE225 /* Color.swift */,
 				2137D5A72AC14C7A00AFE225 /* Font.swift */,
 				B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */,
+				96EB8C1F2B04C92E0011B973 /* Publisher.swift */,
 				96AAF82F2AFD3A7B00410881 /* Dictionary.swift */,
 				96CE29C82ADED0CA0070EF92 /* Collection.swift */,
 				960C41852ACE390A009A0093 /* URL.swift */,
@@ -517,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				96A1E4AE2AD527B4001B2960 /* UserObject.swift */,
+				96B7AE6C2B023DFC001A3987 /* CurrentPizzaObject.swift */,
 				96CE29C22ADE63A40070EF92 /* PizzaObject.swift */,
 				963AFF912AC33A1800835FD8 /* TodoObject.swift */,
 				963AFF932AC33EAF00835FD8 /* MissionObject.swift */,
@@ -561,6 +587,14 @@
 				961488742AFD21EB00B87A37 /* TabItem.swift */,
 			);
 			path = Item;
+			sourceTree = "<group>";
+		};
+		9619E93D2B05942B0028348C /* EnvironmentValues */ = {
+			isa = PBXGroup;
+			children = (
+				9619E93B2B0594210028348C /* ScrollEnableKey.swift */,
+			);
+			path = EnvironmentValues;
 			sourceTree = "<group>";
 		};
 		962FFD872AF6564900AE4963 /* StoreTest */ = {
@@ -651,6 +685,7 @@
 			children = (
 				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
 				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
+				9619E9382B05921E0028348C /* PizzaItemView.swift */,
 				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
 				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
 				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
@@ -662,6 +697,7 @@
 			isa = PBXGroup;
 			children = (
 				2137D5892AC1473C00AFE225 /* HomeView.swift */,
+				966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -685,6 +721,7 @@
 				96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */,
 				96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */,
 				96635F5F2ADF9EF50072F21E /* User-extension.swift */,
+				96EB8C1D2B029AF20011B973 /* CurrentPizza-extension.swift */,
 				96635F612ADF9EFC0072F21E /* Pizza-extension.swift */,
 			);
 			path = Extension;
@@ -696,6 +733,14 @@
 				96635F692ADFA4A70072F21E /* KeyPathEditable.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		966B031C2B07B4C8009B6293 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				966B031D2B07B4CE009B6293 /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		96A1D4A82AD176AD003BC207 /* Key */ = {
@@ -760,9 +805,12 @@
 			children = (
 				96A1E4A82AD403BB001B2960 /* MissionType.swift */,
 				96635F642ADF9F380072F21E /* Status.swift */,
-				21FA26762AC2A10800877122 /* Todo.swift */,
 				21FA267A2AC2ADFB00877122 /* Mission.swift */,
+				96EB8C192B0251EA0011B973 /* TimeMission.swift */,
+				96EB8C1B2B0251F10011B973 /* BehaviorMission.swift */,
+				21FA26762AC2A10800877122 /* Todo.swift */,
 				21FA267C2AC2B50D00877122 /* User.swift */,
+				96EB8C172B0251D10011B973 /* CurrentPizza.swift */,
 				21FA267E2AC2BB3800877122 /* Pizza.swift */,
 				21E7118E2AD53862002B8069 /* LocalNotification.swift */,
 			);
@@ -821,9 +869,10 @@
 		96C872CA2AE0BDA2007BD155 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
+				966B031C2B07B4C8009B6293 /* ViewModel */,
 				966110822AFA7DE4008A80DE /* View */,
-				966110832AFA7DF1008A80DE /* Util */,
 				966110812AFA7DD6008A80DE /* Component */,
+				966110832AFA7DF1008A80DE /* Util */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -1005,6 +1054,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96EB8C1C2B0251F10011B973 /* BehaviorMission.swift in Sources */,
+				9619E9392B05921E0028348C /* PizzaItemView.swift in Sources */,
 				B0C74AE82ACFC7A100A14A8B /* RewardAlert.swift in Sources */,
 				B0CB776C2AE679DA0022491A /* CompleteAlert.swift in Sources */,
 				965C9BEB2ADBAF7E0015ABBE /* PizzaAlert.swift in Sources */,
@@ -1023,6 +1074,7 @@
 				960C41842ACDA42B009A0093 /* BaseRepository.swift in Sources */,
 				B0C158DA2AC1647D003B00E6 /* MissionStyleView.swift in Sources */,
 				B0CB77662AE57FB70022491A /* MySceneDelegate.swift in Sources */,
+				96EB8C1A2B0251EA0011B973 /* TimeMission.swift in Sources */,
 				21E7118B2AD48DE9002B8069 /* SettingNotiicationView.swift in Sources */,
 				960C41922ACE41E1009A0093 /* Object+Extensions.swift in Sources */,
 				968EB22D2AEE63110025BEF8 /* NavigationStore.swift in Sources */,
@@ -1035,6 +1087,7 @@
 				966110802AF907EE008A80DE /* ClearBackgroundViewModifier.swift in Sources */,
 				961488772AFD221200B87A37 /* HomeView-Routing.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
+				9619E93C2B0594210028348C /* ScrollEnableKey.swift in Sources */,
 				96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */,
@@ -1042,9 +1095,12 @@
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
 				960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */,
+				966B03202B07DEE7009B6293 /* PizzaPagingView.swift in Sources */,
 				9661108B2AFA84CA008A80DE /* PreferenceKey.swift in Sources */,
 				9661107C2AF800AD008A80DE /* Realm+Combine.swift in Sources */,
+				966B031E2B07B4CE009B6293 /* HomeViewModel.swift in Sources */,
 				96AAF8372AFD50F900410881 /* NotiMediator.swift in Sources */,
+				96EB8C1E2B029AF20011B973 /* CurrentPizza-extension.swift in Sources */,
 				961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */,
 				961488732AFD21D800B87A37 /* ScrollAnchor.swift in Sources */,
 				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
@@ -1083,14 +1139,18 @@
 				96FEE2AB2AE51CA200BC0CCD /* DatePickerUIkit.swift in Sources */,
 				96A1D4AC2AD17829003BC207 /* Midiator.swift in Sources */,
 				960C417F2ACD41CD009A0093 /* CornerButtonModifier.swift in Sources */,
+				9637AB9B2B07846100D64F46 /* UINavigationController.swift in Sources */,
+				96EB8C182B0251D10011B973 /* CurrentPizza.swift in Sources */,
 				96AAF8392AFD511200410881 /* NotificationService.swift in Sources */,
 				962FFD812AF64F8B00AE4963 /* ProcessInfo.swift in Sources */,
+				96EB8C202B04C92E0011B973 /* Publisher.swift in Sources */,
 				A072B9482AE0460E001C3DAF /* TimerViewModel.swift in Sources */,
 				B7C341B52AC2CA7400744EB7 /* Date+Extensions.swift in Sources */,
 				961296962AC16FBE009A9815 /* BackColorModifier.swift in Sources */,
 				21FA26772AC2A10800877122 /* Todo.swift in Sources */,
 				96AAF8302AFD3A7B00410881 /* Dictionary.swift in Sources */,
 				96A1D4AA2AD176B6003BC207 /* Injection+Key.swift in Sources */,
+				96B7AE6D2B023DFC001A3987 /* CurrentPizzaObject.swift in Sources */,
 				96CE29C32ADE63A40070EF92 /* PizzaObject.swift in Sources */,
 				96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */,
 				960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */,

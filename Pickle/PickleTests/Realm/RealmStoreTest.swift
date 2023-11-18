@@ -140,7 +140,6 @@ final class RealmStoreTest: XCTestCase {
 extension RealmStoreTest {
     func equalTodoObject(object: TodoObject, casting: TodoObject) -> Bool {
         if object.id == casting.id &&
-            object.id.stringValue == casting.id.stringValue &&
             object.content == casting.content &&
             object.startTime == casting.startTime &&
             object.spendTime == casting.spendTime &&

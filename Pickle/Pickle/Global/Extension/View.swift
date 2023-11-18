@@ -20,6 +20,22 @@ extension View {
 }
 
 extension View {
+    func fixSize(_ width: CGFloat) -> some View {
+        self.frame(width: width,
+                height: width,
+                alignment: .center)
+    }
+    func fixSize(_ geo: GeometryProxy,
+                 diffX x: CGFloat = 0,
+                 diffY y: CGFloat = 0) -> some View {
+        
+        self.frame(width: geo.size.width + x,
+                height: geo.size.height + y,
+                alignment: .center)
+    }
+}
+
+extension View {
     func backKeyModifier(_ title: String = "", tabBarvisibility: Binding<Visibility>) -> some View {
         modifier(NavigationBar(title: title, tabBarvisibility: tabBarvisibility))
     }

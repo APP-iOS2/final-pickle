@@ -20,8 +20,6 @@ import SwiftUI
 struct PizzaSelectedView: View {
     
     var columns: [GridItem] = Array(repeating: .init(.flexible()), count: 3)
-    
-    @EnvironmentObject var navigationStore: NavigationStore
     @State private var isPizzaPuchasePresent: Bool = false
     @Binding var selection: Selection
     
@@ -60,7 +58,6 @@ struct PizzaSelectedView: View {
     }
     
     private func selectionLogic(index: Int) {
-        
         selection.seletedPizza = selection.pizzas[safe: index] ?? .defaultPizza
         
         if selection.seletedPizza.lock {
@@ -69,70 +66,12 @@ struct PizzaSelectedView: View {
     }
 }
 
-struct PizzaItemView: View {
-    
-    @Binding var pizza: Pizza
-    @Binding var currentPizza: Pizza
-    
-    var selectedTrigger: Bool {
-        if currentPizza.name == pizza.name,
-           !currentPizza.lock {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    var body: some View {
-        VStack {
-            ZStack {
-                if pizza.lock {
-                    Image(systemName: "lock.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .foregroundStyle(.white)
-                        .frame(width: 30, height: 30, alignment: .center)
-                        .zIndex(2)
-                }
-                
-                Image("\(pizza.image)")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 80)
-                    .clipShape( Circle() )
-                    .overlay {
-                        Circle()
-                            .fill(pizza.lock ? .black.opacity(0.4) : .clear )
-                        if selectedTrigger {
-                            Circle()
-                                .stroke(Color.pickle, lineWidth: 3)
-                        }
-                    }
-            }
-            .frame(width: CGFloat.screenWidth / 3 - 40,
-                   height: CGFloat.screenWidth / 3 - 40)
-            
-            Text("\(pizza.name)")
-                .font(.pizzaDescription)
-                .foregroundStyle(selectedTrigger ? Color.pickle : .primary)
-                .tint(selectedTrigger ? .pickle : .primary)
-                .minimumScaleFactor(0.5)
-                .lineLimit(1)
-        }
-    }
-}
 
 #Preview {
-    Text("daf")
-//    PizzaSelectedView(columns: Array(repeating: .init(.flexible()), count: 3),
-//                      pizzas: .constant( [Pizza(name: "고구마", 
-//                                                image: "baconPotato",
-//                                                lock: false,
-//                                                createdAt: Date())]),
-//                      seletedPizza: .constant(Pizza(name: "고구마", 
-//                                                    image: "baconPotato",
-//                                                    lock: false,
-//                                                    createdAt: Date())), 
-//                      currentPizza: .constant(.baconPotato)
-//    )
+    
+    PizzaSelectedView(selection: .init(projectedValue: .constant(.init(pizzas: Pizza.allCasePizza,
+                                                                       seletedPizza: .defaultPizza,
+                                                                       currentPizza: .defaultPizza,
+                                                                       isPizzaSelected: true,
+                                                                       isPizzaPuchasePresent: false))))
 }

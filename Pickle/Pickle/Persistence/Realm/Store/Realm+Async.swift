@@ -50,19 +50,22 @@ extension RealmActor {
                              data: Data) async throws -> T {
         return try await realm.asyncWrite {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
-            let value = realm.create(model, value: json)
-            return value
+            guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
+            let value = self.realm.create(model, value: json)
+            return value as! T
         }
     }
     
     func save<T: Storable>(object: T) async throws {
         return try await realm.asyncWrite {
+            guard let object = object as? RObject else { throw RealmError.notRealmObject }
             realm.add(object)
         }
     }
     
     func update(object: Storable) async throws {
         try await realm.asyncWrite {
+            guard let object = object as? RObject else { throw RealmError.notRealmObject }
             realm.add(object, update: .modified)
         }
     }
@@ -84,7 +87,7 @@ extension RealmActor {
     
     func fetch<T>(_ model: T.Type,
                   query: ((Query<T>) -> Query<Bool>)?,
-                  sorted: Sorted?) async throws -> [T] where T: Storable {
+                  sorted: Sorted?) async throws -> [T] where T: Storable, T: RObject {
         
         // MARK: asyncRefresh() can only be called on main thread or actor-isolated Realms
         await realm.asyncRefresh()
@@ -101,13 +104,9 @@ extension RealmActor {
     ///   - model: 삭제할 모델의 메타타입
     ///   - id: Primary id
     func delete<T: Storable>(model: T.Type, id: String) async throws {
-        guard
-            let objectID = try? ObjectId(string: id)
-        else {
-            throw RealmError.notRealmObject
-        }
         try await realm.asyncWrite {
-            if let value = realm.object(ofType: model, forPrimaryKey: objectID) {
+            guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
+            if let value = realm.object(ofType: model, forPrimaryKey: id) {
                 realm.delete(value)
             } else {
                 throw RealmError.deleteFailed
@@ -115,7 +114,7 @@ extension RealmActor {
         }
     }
     
-    func deleteAll<T: Storable>(_ model: T.Type) async throws {
+    func deleteAll<T: Storable>(_ model: T.Type) async throws where T: RObject {
         try await realm.asyncWrite {
             let objects = realm.objects(model)
             for object in objects {
@@ -129,13 +128,7 @@ extension RealmActor {
                                         keyPaths: [PartialKeyPath<T>],
                                         _ completion: @escaping ObjectCompletion<T>)
     async throws -> NotificationToken
-    where T: RObject
-    {
-        guard
-            let id =  try? ObjectId(string: id)
-        else {
-            throw RealmError.notRealmObject
-        }
+    where T: RObject {
         let object = realm.object(ofType: model, forPrimaryKey: id)
         guard let object else { throw RealmError.invalidObjectORPrimaryKey }
         return object.observe(keyPaths: keyPaths, completion)

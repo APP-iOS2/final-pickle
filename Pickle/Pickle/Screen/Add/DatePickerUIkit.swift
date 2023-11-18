@@ -43,7 +43,6 @@ struct DatePickerUIKit: UIViewRepresentable {
 
     func updateUIView(_ uiView: UIDatePicker, context: Context) {
         datePicker.date = selection
-
     }
 
     func makeCoordinator() -> DatePickerUIKit.Coordinator {

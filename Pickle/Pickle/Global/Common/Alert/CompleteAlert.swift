@@ -78,16 +78,25 @@ struct CompleteAlert: View {
     
     var body: some View {
         VStack(spacing: 22) {
+            Button {
+                isPresented = false
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 20))
+                    .hTrailing()
+                    .foregroundColor(.black)
+            }
+            
             Image(pizzaName)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: CGFloat.screenWidth * 0.5)
-                .padding(.top, 20)
             
             Text(title)
                 .font(.title)
                 .bold()
                 .foregroundColor(.black)
+            
             
             Text("\(contents) 완성")
                 .font(.pizzaBody)
@@ -111,6 +120,6 @@ struct CompleteAlert: View {
                 isPresented: .constant(true),
                 pizzaName: "smilePizza",
                 title: "축하합니다",
-            contents: "포테이토")
+                contents: "포테이토")
         )
 }

@@ -81,10 +81,11 @@ struct CompleteAlert: View {
             Button {
                 isPresented = false
             } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 20))
-                    .hTrailing()
-                    .foregroundColor(.black)
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .tint(Color.defaultGray)
+                    .frame(width: 28, height: 28)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
             }
             
             Image(pizzaName)
@@ -96,7 +97,6 @@ struct CompleteAlert: View {
                 .font(.title)
                 .bold()
                 .foregroundColor(.black)
-            
             
             Text("\(contents) 완성")
                 .font(.pizzaBody)

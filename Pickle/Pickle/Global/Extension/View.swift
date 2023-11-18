@@ -25,7 +25,10 @@ extension View {
                 height: width,
                 alignment: .center)
     }
-    func fixSize(_ geo: GeometryProxy,diffX x: CGFloat = 0,diffY y: CGFloat = 0) -> some View {
+    func fixSize(_ geo: GeometryProxy,
+                 diffX x: CGFloat = 0,
+                 diffY y: CGFloat = 0) -> some View {
+        
         self.frame(width: geo.size.width + x,
                 height: geo.size.height + y,
                 alignment: .center)

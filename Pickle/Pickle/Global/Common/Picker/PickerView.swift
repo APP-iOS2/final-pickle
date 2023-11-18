@@ -59,10 +59,9 @@ struct PickerView: View {
     }
 }
 
-
 extension PickerView {
     static func constraint(start: DateComponents,
-                    end: DateComponents) -> ClosedRange<Date> {
+                           end: DateComponents) -> ClosedRange<Date> {
         
         let calendar = Calendar.current
         

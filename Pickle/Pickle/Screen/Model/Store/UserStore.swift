@@ -23,8 +23,6 @@ final class UserStore: ObservableObject {
         return Double(user.currentPizzas.map(\.currentPizzaSlice).reduce(0, +))
     }
     
-    // TODO: 변경 필요 - currentPizza로 변경
-    // 기존 user안에있는 slice와 count를 currentPizza 데이터 내부로 이동
     var pizzaCount: Int {
         user.currentPizzas.map(\.currentPizzaCount).reduce(0, +)
     }
@@ -33,6 +31,7 @@ final class UserStore: ObservableObject {
         case select(Pizza)
         case create
         case delete
+        case update(CurrentPizza)
     }
     
     func trigger(action: Action) {
@@ -44,6 +43,9 @@ final class UserStore: ObservableObject {
             break
         case .delete:
             break
+        case .update(let currentPizza):
+            Log.debug(currentPizza)
+            break
         }
     }
     
@@ -51,10 +53,10 @@ final class UserStore: ObservableObject {
     func fetchUser() throws {
         do {
             self.user = try userRepository.fetchUser()
-            // TODO: 변경 필요
-            self.currentPizza = user.currentPizzas.filter { $0.pizza!.id == user.pizzaID }.first ?? self.user.currentPizzas.first!
-            self.token?.invalidate()
-            observeUser()
+            let current = user.getCurrentPizza(using: user.pizzaID)
+            if let current {
+                self.currentPizza = current
+            }
         } catch {
             Log.error("failed : \(error)")
             throw error
@@ -98,22 +100,23 @@ final class UserStore: ObservableObject {
         }
     }
     
+    func addPizzaCount() {
+        let currentPizzaCount = self.currentPizza.addPizzaCount()
+        Log.debug("pizza 획득 : \(currentPizzaCount) 개")
+        let user = self.user.update(current: self.currentPizza)
+        self.updateUser(user: user)
+    }
+    
     func addPizzaSlice(slice count: Int) throws {
-        // let user = self.user.addPizzaSliceValidation(count: count)
-        let currentPizza = self.currentPizza.addPizzaSliceValidation()
-        Log.debug("add Pizza Slice: \(currentPizza.currentPizzaSlice)")
-        let user = self.user.update(current: currentPizza)
+        self.currentPizza.addPizzaSliceValidation()
+        let user = self.user.update(current: self.currentPizza)
+        self.updateUser(user: user)
+    }
+    
+    func updateUser(user: User) {
         do {
             try userRepository.updateUser(model: user)
             self.user = user
-        } catch {
-            assert(false)
-        }
-    }
-    
-    func updateUser(user: User) async throws {
-        do {
-            try userRepository.updateUser(model: user)
         } catch {
             Log.error("update User Failed")
             assert(false, "update User Failed")

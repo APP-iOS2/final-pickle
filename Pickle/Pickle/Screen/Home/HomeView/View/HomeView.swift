@@ -21,45 +21,42 @@ struct HomeView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var navigationStore: NavigationStore
+    @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     
     @Environment(\.scrollEnable) var scrollEnable
     
     @State private var tabBarvisibility: Visibility = .visible
     @State private var animatedText = ""
     @State private var currentIndex = 0
-    private let fullText = "할일을 완료하고 피자를 모아보아요"
-    @State var pizzaPosition: ScrollPizzaID = .pizza("")
-    
     @State private var showCompleteAlert: Bool = false
+    private let fullText = "할일을 완료하고 피자를 모아보아요"
     
     @State private var pizzaSelection: PizzaSelection = .init()
     @State private var editSelection: TodoSelection = .init()
     @State private var timerSelection: TimerSelection = .init()
     
-    @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
-    
     var body: some View {
         content
-            .task { 
+            .task {
                 await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
             }
             .onReceive(userStore.$user) {
                 userUpdateAction(user: $0)
             }
             .onReceive(userStore.$currentPizza) { currentPizza in
-                Log.debug("onReceive - userStore.$currentPizza: \(currentPizza.currentPizzaSlice)")
-                if let pizza = currentPizza.pizza {
-                    self.pizzaSelection.currentPizza = pizza
-                    self.pizzaPosition = .pizza(pizza.id)
-                }
+                currentPizzaUpdateAction(currentPizza: currentPizza)
             }
             .onReceive(navigationStore.$homeSheet) { sheet in
                 routing(route: sheet)
             }
+            .onReceive(viewModel.$pizzaPosition) { _ in
+                viewModel.updatePositionPizza(user: userStore.user)
+            }
+            // .onReceive(viewModel.$offset) { _ in
+            //     if viewModel.isPositionChange { viewModel.gesturePositionUpdate(user: userStore.user) }
+            // }
             .onChange(of: pizzaSelection.seletedPizza) { value in
-                if value.lock == false {
-                    userStore.trigger(action: .select(value))
-                }
+                if value.lock == false { userStore.trigger(action: .select(value)) }
             }
             .navigationDestination(for: HomeView.Routing.self) { route in
                 routing(stack: route)
@@ -72,7 +69,9 @@ struct HomeView: View {
                 MissionView()
                 .backKeyModifier(tabBarvisibility: $tabBarvisibility)
             )
-        } else if route == .pushRegisterTodo {
+        }
+        
+        if route == .pushRegisterTodo {
             return AnyView(
                 RegisterView(willUpdateTodo: .constant(Todo.sample),
                              successDelete: .constant(false),
@@ -80,9 +79,8 @@ struct HomeView: View {
                              isModify: false)
                 .backKeyModifier(tabBarvisibility: $tabBarvisibility)
             )
-        } else {
-            return AnyView(EmptyView())
         }
+        return AnyView(EmptyView())
     }
     
     private func routing(route: HomeView.Routing) {
@@ -95,8 +93,9 @@ struct HomeView: View {
             self.editSelection = TodoSelection.init(isShowing: flag, seleted: todo)
         
         case .showCompleteAlert(let flag):
-            self.showCompleteAlert = flag
-            
+            withAnimation {
+                self.showCompleteAlert = flag
+            }
         case .isShowingTimerView(let todo):
             self.timerSelection = .init(selectedTodo: todo,
                                         isShowingTimer: !timerSelection.isShowingTimer)
@@ -106,40 +105,26 @@ struct HomeView: View {
     }
     
     private func userUpdateAction(user: User) {
-        pizzaUpdate(user: user)
-        pizzaCompleteSuccessUpdate(user: user)
+        pizzaSelection.pizzas = user.currentPizzas.compactMap { $0.pizza }
     }
     
-    private func pizzaPuchaseORSelectedAction(pizza: Pizza) {
-        if pizza.lock {
-            /* selection.toggle() */
-        } else {
-             // pizzaSelection.currentPizza = pizza
-             // CurrentPizza는 홈뷰가
+    private func currentPizzaUpdateAction(currentPizza: CurrentPizza) {
+        if let pizza = currentPizza.pizza {
+            withAnimation {
+                Log.debug("currentPizzaUpdate Action")
+                self.pizzaSelection.currentPizza = pizza
+                viewModel.pizzaPosition = .pizza(pizza.id)
+                viewModel.currentPositionPizza = currentPizza
+            }
         }
-    }
-    
-    private func pizzaUpdate(user: User) {
-        // TODO: 변경 필요
-        //
-        pizzaSelection.pizzas = userStore.user.currentPizzas.compactMap { $0.pizza }
-        // placeHolderContent = userStore.user.currentPizzaSlice > 0 ? "" : "?"
-    }
-    
-    // TODO: 변경 필요
-    private func pizzaCompleteSuccessUpdate(user: User) {
-        // if user.currentPizzaSlice % 8 == 0 {
-        //     navigationStore.pushHomeView(home: .showCompleteAlert(true))
-        //     DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-        //         navigationStore.dismiss(home: .showCompleteAlert(false))
-        //     }
-        // }
+        
+        if currentPizza.currentPizzaSlice >= 8 {
+            navigationStore.pushHomeView(home: .showCompleteAlert(true))
+        }
     }
     
     private func unLockPizzaAction() {
         userStore.unLockPizza(pizza: pizzaSelection.seletedPizza)
-        // TODO: 변경 필요
-        // self.pizzaSelection.pizzas = self.userStore.user.pizzas
     }
     
     private func startTyping() {
@@ -157,11 +142,15 @@ struct HomeView: View {
 // MARK: HomeView Component , PizzaView, button, temp component, task complte label
 extension HomeView {
     
-    var completeMessage: CompleteMessage {
+    private var completeMessage: CompleteMessage {
         .init(isPresented: $showCompleteAlert,
-              pizzaName: pizzaSelection.seletedPizza.image,
+              pizzaName: userStore.currentPizza.pizza?.image ?? "",
               title: "축하합니다",
-              contents: pizzaSelection.seletedPizza.name)
+              contents: userStore.currentPizza.pizza?.name ?? "",
+              action: {
+            userStore.addPizzaCount()
+            navigationStore.dismiss(home: .showCompleteAlert(false))
+        })
     }
     
     var content: some View {
@@ -175,7 +164,7 @@ extension HomeView {
                         .frame(width: CGFloat.screenWidth,
                                height: CGFloat.screenWidth / 2 + 44,
                                alignment: .center)
-
+                    
                     pizzaSliceAndDescriptionView    /* 피자 슬라이스 텍스트 뷰 + description View */
                     
                     if todoStore.readyTodos.isEmpty {
@@ -183,14 +172,16 @@ extension HomeView {
                     } else {
                         todosTaskTableView          // 할일 목록 테이블 뷰
                     }
-                }.padding(.vertical, 20)
-            }.onChange(of: scrollEnable.root.wrappedValue) { enable in
+                }
+                .padding(.vertical, 20)
+            }
+            .onChange(of: scrollEnable.root.wrappedValue) { enable in
                 if enable { withAnimation { proxy.scrollTo(ScrollAnchor.home) } }
             }
         }
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
                                                                 /* leading - (MissionView), trailing - (RegisterView) */
-        .completePizzaAlert(message: completeMessage)
+        .completePizzaAlert(message: completeMessage) 
         
         .sheetModifier(selection: $pizzaSelection)              /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
         
@@ -225,38 +216,76 @@ extension HomeView {
         GeometryReader { geo in
             HStack(spacing: 0) {
                 
-                pagingButton(false) {  }
+                // pagingButton(false) {
+                //     viewModel.nextPizzaScrollPosition(user: userStore.user, direction: false)
+                // }
                 
                 pizzaPagingView(geo: geo)
                 
-                pagingButton(true) { }
+                // pagingButton(true) {
+                //     viewModel.nextPizzaScrollPosition(user: userStore.user, direction: true)
+                // }
                 
             }.fixSize(geo)
         }
-        .onAppear { UIScrollView.appearance().isPagingEnabled = true }
         .scrollIndicators(.hidden)
     }
     
     private func pizzaPagingView(geo: GeometryProxy) -> some View {
         ScrollViewReader { proxy in
-            ScrollView(.horizontal) {
-                VStack(spacing: 0) {
-                    // FIX: spacing 으로 인한 scrollView 간격 불일치 0으로 해결
-                    LazyHStack(spacing: 0) {
-                        ForEach(userStore.user.currentPizzas, id: \.id) { currentPizza in
+//            ScrollView(.horizontal) {
+                LazyHStack {
+                    // scrollObservableView
+                    // $viewModel.pizzaPagingSelection
+                    TabView(selection: $viewModel.pizzaPosition) {
+                        ForEach(Array(zip(userStore.user.currentPizzas, 
+                                          userStore.user.currentPizzas.indices)),
+                                id: \.1) { currentPizza in
                             ZStack {
-                                makePizzaView(currentPizza: currentPizza)
-                            }.fixSize(geo, diffX: -pagePadding)
-                                .id(ScrollPizzaID.pizza(currentPizza.pizza!.id))
-                        }
+                                makePizzaView(currentPizza: currentPizza.0)
+                            }
+                            .fixSize(geo, diffX: -pagePadding)
+                            .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
+                            // .id(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
+                            
+                        }.padding(.bottom, 10)
+                            .padding(.top, -10)
                     }
+                    .tabViewStyle(.page(indexDisplayMode: .always))
+                    .fixSize(geo, diffY: 30)
                 }
-            }.onChange(of: pizzaPosition) { value in
-                withAnimation {
-                    proxy.scrollTo(value)
-                }
+//            }
+            .onAppear {
+                viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
             }
-        } // .border(.brown)
+//            .coordinateSpace(name: "pizzaOffset")
+//            .onPreferenceChange(ScrollOffsetKey.self) { value in
+//                Log.debug("values offset: \(value)")
+//                if viewModel.remainder(offset: value) == 0 {
+//                    viewModel.offset = value
+//                }
+//            }
+//            .onReceive(viewModel.$pizzaPosition) { value in
+//                withAnimation {
+//                    proxy.scrollTo(value)
+//                }
+//            }
+        }
+    }
+    
+    private var scrollObservableView: some View {
+        GeometryReader { proxy in
+            let offsetX = proxy.frame(in: .named("pizzaOffset")).origin.x
+            Color.red
+                .preference(
+                    key: ScrollOffsetKey.self,
+                    value: offsetX
+                )
+                .onAppear {
+                    viewModel.offset = offsetX  /* 나타날때 뷰의 최초위치를 저장하는 로직 */
+                }
+        }
+        .frame(width: 0, height: 0)
     }
     
     private func makePizzaView(currentPizza: CurrentPizza) -> some View {
@@ -288,9 +317,12 @@ extension HomeView {
     var pizzaSliceAndDescriptionView: some View {
         VStack(spacing: 0) {
             
+            pizzaName
+                .padding(.bottom, 10)
+            
             tempButton
             
-            Text("\(userStore.currentPizza.pizzaTaskSlice)")
+            Text("\(viewModel.currentPositionPizza.pizzaTaskSlice)")
                 .font(.chab)
                 .foregroundStyle(Color.pickle)
             
@@ -305,6 +337,12 @@ extension HomeView {
                 .padding(.bottom, 20)
         }
         .padding(.horizontal)
+    }
+    
+    private var pizzaName: some View {
+        // Text("\(userStore.currentPizza.pizza?.name ?? "N/A")")
+        Text("\(viewModel.currentPositionPizza.pizza?.name ?? "N/A")")
+            .font(.pizzaStoreMiddle)
     }
     
     var todosTaskTableView: some View {

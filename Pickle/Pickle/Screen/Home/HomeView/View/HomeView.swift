@@ -160,9 +160,14 @@ struct HomeView: View {
     
     private func unLockPizzaAction() {
        let effect = viewModel.trigger(action: .unlock(userStore, pizzaSelection.seletedPizza))
-       if case let .unlockFail(count) = effect {
-           description = "피자 \(count)개가 부족해요 ㅠㅠ \n 할일 을 하러 가볼까요?"
-       }
+        if case let .unlockFail(count) = effect {
+            description = "피자 \(count)개가 부족해요 ㅠㅠ \n 할일 을 하러 가볼까요?"
+            return
+        }
+        if case .success = effect {
+            pizzaSelection.isPizzaPuchasePresent = false
+            return
+        }
    }
 }
 

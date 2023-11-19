@@ -28,7 +28,6 @@ struct PizzaSummaryView: View {
                         
                         myPieceOfPizzaView()
                             .modifier(PizzaSummaryModifier())
-                        
                     }
                     .padding(.horizontal)
             
@@ -44,10 +43,8 @@ struct PizzaSummaryView: View {
             .task {
                 await todoStore.fetch()
             }
-            
         }
         .navigationTitle("통계")
-        
     }
     
     // MARK: - 나의 피자
@@ -57,11 +54,8 @@ struct PizzaSummaryView: View {
                 Text("완성한 피자")
                 Text("\(userStore.pizzaCount) 판")
                     .foregroundStyle(Color.pickle)
-                
             }
-            
         }
-        
     }
     
     // MARK: - 나의 피자 조각, 8조각 완성하면 0으로 초기화 되어버림
@@ -71,18 +65,14 @@ struct PizzaSummaryView: View {
                 Text("구운 피자 조각")
                     .lineLimit(1)
                 Text("\(myTotalPizza) 조각")
-                
                     .foregroundStyle(Color.pickle)
-                
             }
         }
     }
     
     // MARK: - 피자 구운시간이 아니라 집중한 시간 -> SpendTime 활용하기, 시간이 왔다갔다 난리도 안임
     func myTotalSpendTimeForPizzaView() -> some View {
-        
         HStack {
-            
             VStack(alignment: .center, spacing: 8) {
                 
                 Text("피자 구운 시간")
@@ -92,25 +82,21 @@ struct PizzaSummaryView: View {
                 
                 Text("\(finalSpendTime)")
                     .foregroundStyle(Color.pickle)
-                
             }
-            
         }
     }
     
     // MARK: - 피자 컬렉션
     func myPizzaCollectionView() -> some View {
-        
         VStack {
-            
             Text("피자 컬렉션")
             LazyVGrid(columns: columns) {
-                // TODO: 변경 필요
-                // ForEach(userStore.user.pizzas.indices) { pizza in
-                //     PizzaCollectionView(pizza: $userStore.user.pizzas[pizza],  currentPizza: .constant(.defaultPizza) )
-                //         .frame(width: CGFloat.screenWidth / 3 - 40)
-                //         .padding(.horizontal, 10)
-                // }
+                 ForEach(userStore.user.currentPizzas.compactMap(\.pizza)) { pizza in
+                     PizzaCollectionView(pizza: .constant(pizza),
+                                         currentPizza: .constant(.defaultPizza) )
+                         .frame(width: CGFloat.screenWidth / 3 - 40)
+                         .padding(.horizontal, 10)
+                 }
             }
         }
     }
@@ -121,7 +107,6 @@ struct PizzaSummaryView: View {
         let seconds: Int = Int(timeInSecond.truncatingRemainder(dividingBy: 60))
         
         return String(format: "%02i시간 %02i분 %02i초", hours, minutes, seconds)
-        
     }
 }
 

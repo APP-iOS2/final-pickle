@@ -24,22 +24,34 @@ struct LocalNotification {
     
     static func makeLocalNotification(_ item: Todo,
                                       before time: Int = 3) -> Self {
-        
+       
         let date = item.startTime.adding(minutes: -time)
         let dateComp = Calendar.current.dateComponents([.hour, .minute], from: date )
-        let body = "\(item.content) 시작 3분전이에요"
-        
+        let body = "\(item.content) 시작 \(time)분전이에요"
         var info: [String: Any] = item.asDictionary
         info["status"] = item.status.rawValue
         
+        let timeDifference = date.timeIntervalSince(currentDate)
+        let body2 = "\(item.content) 시작할 시간이에요"
+
+        if timeDifference > 180 {
+            
+            return .init(identifier: item.id,
+                         title: _title,
+                         body: body,
+                         dateComponents: dateComp,
+                         repeats: false,
+                         userInfo: info,
+                         type: .calendar)
+        }
         return .init(identifier: item.id,
                      title: _title,
-                     body: body,
-                     dateComponents: dateComp,
+                     body: body2,
+                     dateComponents: Calendar.current.dateComponents([.hour, .minute], from: Date().adding(minutes: 1)),
                      repeats: false,
                      userInfo: info,
-                     type: .calendar)
+                    type: .calendar)
     }
-    
+    static let currentDate = Date()
     static let _title: String = "현실도 피자"
 }

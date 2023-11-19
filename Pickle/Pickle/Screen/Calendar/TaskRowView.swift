@@ -15,13 +15,18 @@ struct TaskRowView: View {
     
     var task: Todo
     var indicatorColor: Color {
-        return task.startTime.isSameHour && task.status == .ready ? .pickle : .primary
+        switch task.status {
+        case .done:
+            return .pickle
+        case .giveUp:
+            return .red
+        default:
+            return .pickle
+        }
     }
     
     var taskSymbol: Image {
         switch task.status {
-        case .ready:
-            return Image(systemName: "circle.dotted")
         case .done:
             return Image(systemName: "checkmark.circle.fill")
         case .giveUp:
@@ -34,7 +39,7 @@ struct TaskRowView: View {
     var body: some View {
         
         if task.status == .done || task.status == .giveUp {
-
+            
             Button {
                 isShowingReportSheet = true
             } label: {
@@ -47,35 +52,38 @@ struct TaskRowView: View {
     
     @ViewBuilder
     private var taskContent: some View {
-        Text(task.content)
-            .font(.callout)
-            .fontWeight(.light)
-        
+            Text(task.content)
+                .font(.callout)
+                .fontWeight(.light)
     }
     
     @ViewBuilder
     private var taskRowView: some View {
-        HStack(alignment: .center, spacing: 5) {
+        HStack(alignment: .center) {
             taskSymbol
-                .foregroundStyle(Color.pickle)
-                .frame(width: 15, height: 15)
-                .padding(4)
-            
-            VStack(alignment: .leading, spacing: 9) {
-                taskContent
-            }
-            
-            Label(task.startTime.format(timeFormat), systemImage: "clock")
                 .font(.caption)
-                .foregroundColor(indicatorColor)
+                .foregroundStyle(indicatorColor)
+            
+            taskContent
+                    
+            HStack {
+                if task.status == .ready && task.startTime.isSameHour {
+                    Image(systemName: "clock.badge")
+                        .foregroundColor(.pickle)
+                }
+                Text(task.startTime.format(timeFormat))
+            }
+                .font(.caption)
                 .padding(.horizontal)
                 .hSpacing(.trailing)
                 .frame(maxWidth: .infinity)
+  
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
+        .padding(.bottom, 5)
         .padding(.leading, 18)
         .padding(.trailing, 5)
         

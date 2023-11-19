@@ -72,4 +72,9 @@ final class TodoStore: ObservableObject {
         let notification = LocalNotification.makeLocalNotification(todo)
         noti.scheduleNotification(localNotification: notification)
     }
+    
+    func deleteNotificaton(todo: Todo, noti: NotificationManager) {
+        noti.removeSpecificNotification(id: [todo.id])
+      
+    }
 }

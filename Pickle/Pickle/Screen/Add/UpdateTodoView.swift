@@ -38,8 +38,8 @@ struct UpdateTodoView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        notificationManager.removeSpecificNotification(id: [selection.seleted.id])
                         todoStore.delete(todo: selection.seleted)
+                        todoStore.deleteNotificaton(todo: selection.seleted, noti: notificationManager)
                         
                         successDelete.toggle()
                     } label: {

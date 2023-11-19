@@ -22,23 +22,19 @@ struct RegisterView: View {
     
     @Binding var willUpdateTodo: Todo
     @Binding var successDelete: Bool
-    @Binding var isShowingEditTodo: Bool
+    
     var isModify: Bool
     
     @State(wrappedValue: "") private var content: String
     @State private var showingStartTimeSheet: Bool = false
     @State private var showingTargetTimeSheet: Bool = false
-    @State private var showingWeekSheet: Bool = false
     
     @State private var startTimes = Date()
     @State private var targetTimes: String = "1분"
     @State private var seletedAlarm: String = "시간 선택"
     
     // MARK: Alert State
-    @State private var showSuccessAlert: Bool = false
-    @State private var showFailedAlert: Bool = false
-    @State private var showUpdateSuccessAlert: Bool = false
-    @State private var showUpdateEqual: Bool = false
+    @State private var alertCondition: AlertCondition = .init()
     
     // MARK: 도도독 State, Task
     @State private var placeHolderText: String = ""

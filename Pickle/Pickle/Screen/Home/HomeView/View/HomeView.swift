@@ -35,7 +35,7 @@ struct HomeView: View {
     @State private var pizzaSelection: PizzaSelection = .init()
     @State private var editSelection: TodoSelection = .init()
     @State private var timerSelection: TimerSelection = .init()
-    
+    @State private var description: String = ""
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     

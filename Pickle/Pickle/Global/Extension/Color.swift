@@ -28,12 +28,12 @@ extension Color {
     }
     
     static var mainRed: Color {
-            return Color.init(hex: 0xE62E2E)
-        }
+        return Color.init(hex: 0xE62E2E)
+    }
     
     static var pepperoniRed: Color {
-            return Color.init(hex: 0xFF4145)
-        }
+        return Color.init(hex: 0xFF4145)
+    }
 
 }
 

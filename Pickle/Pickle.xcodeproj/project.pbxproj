@@ -565,8 +565,6 @@
 		960C41972ACE7A08009A0093 /* Add */ = {
 			isa = PBXGroup;
 			children = (
-				96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */,
-				2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */,
 				966CD9ED2B0A6B0D003AE885 /* View */,
 				966CD9EC2B0A6B04003AE885 /* Component */,
 				967575BD2B0AB986004957AD /* Helper */,
@@ -769,6 +767,8 @@
 		966CD9ED2B0A6B0D003AE885 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */,
+				96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

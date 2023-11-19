@@ -185,6 +185,16 @@ extension HomeView {
         })
     }
     
+    private var stopAlertContent: StopAlertContent {
+        .init(isPresented: $timerVM.showOngoingAlert,
+              title: "타이머 중단",
+              alertContent: "앱이 종료되어 피자굽기를 실패하였습니다",
+              primaryButtonTitle: "확인",
+              secondaryButtonTitle: "",
+              primaryAction: stopTodo,
+              externalTapAction: stopTodo)
+    }
+    
     var content: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical) {
@@ -219,16 +229,12 @@ extension HomeView {
         .sheetModifier(selection: $pizzaSelection)              /* PizzaSelectedView 피자 뷰를 클릭했을시 실행되는 Modifier */
         
         .fullScreenCover(edit: $editSelection)                  /* 풀스크린 Todo 수정뷰 모달 */
+        
         .fullScreenCover(timer: $timerSelection)                /* 풀스크린  Timer 뷰  모달 */
-        .stopAlert(isPresented: $timerVM.showOngoingAlert,
-                   title: "타이머 중단",
-                   alertContent: "앱이 종료되어 피자굽기를 실패하였습니다",
-                   primaryButtonTitle: "확인",
-                   secondaryButtonTitle: "",
-                   primaryAction: stopTodo,
-                   externalTapAction: stopTodo)
-        .showPizzaPurchaseAlert($pizzaSelection, $description, unLockPizzaAction)
-        /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
+        
+        .stopAlert(content: stopAlertContent)                   /* 할일 타이머 실패시 띄울 Alert */
+        
+        .showPizzaPurchaseAlert($pizzaSelection, $description, unLockPizzaAction) /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
     }
     
     enum ScrollPizzaID: Identifiable, Hashable {
@@ -400,7 +406,6 @@ extension HomeView {
 }
 
 struct HomeView_Previews: PreviewProvider {
-    
     static var previews: some View {
         NavigationStack {
             let _ = PreviewsContainer.setUpDependency()

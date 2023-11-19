@@ -37,6 +37,10 @@ struct TimerView: View {
     
     @State private var wiseSaying: String = ""
     
+    @AppStorage("isRunTimer") var isRunTimer: Bool = false
+    @AppStorage("backgroundNumber") var backgroundNumber: Int = 0
+    @AppStorage("todoId") var todoId: String = ""
+    
     var body: some View {
         ZStack {
             VStack {
@@ -66,6 +70,7 @@ struct TimerView: View {
             startTodo()
             timerVM.makeRandomSaying()
             timerVM.fetchTodo(todo: todo)
+            todoId = todo.id
             print("\(timerVM.wiseSaying)")
             print("\(timerVM.timeRemaining)")
         }
@@ -92,7 +97,7 @@ struct TimerView: View {
     }
     // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
-        //        timerVM.timerVMreset()
+        print("beforeUpdate StartTime:\(todo.startTime)")
         let todo = Todo(id: todo.id,
                         content: todo.content,
                         startTime: Date(),
@@ -101,7 +106,13 @@ struct TimerView: View {
                         status: .ongoing)
         todoStore.update(todo: todo)
         timerVM.updateStart()
+        print("afterUpdate StartTime:\(todo.startTime)")
         self.realStartTime = Date()
+        
+        backgroundNumber = 0
+        timerVM.activeNumber = 0
+        isRunTimer = true
+        print("isRunTimer:\(isRunTimer)")
     }
     // 포기시 업데이트, status giveup으로
     func updateGiveup(spendTime: TimeInterval) {
@@ -113,7 +124,16 @@ struct TimerView: View {
                         status: .giveUp)
         todoStore.update(todo: todo)
         timerVM.updateTodo(spendTime: spendTime, status: .giveUp)
+        isRunTimer = false
+        print("isRunTimer:\(isRunTimer)")
+        backgroundNumber = 0
+        print("backgroundNumber: \(backgroundNumber)")
+        
+        if spendTime < todo.targetTime {
+            notificationManager.removeSpecificNotification(id: [todo.id])
+        }
         isShowingReportSheet = true
+        
     }
     // 완료 + 피자겟챠
     func updateDone(spendTime: TimeInterval) {
@@ -125,6 +145,16 @@ struct TimerView: View {
                         status: .done)
         todoStore.update(todo: todo)
         timerVM.updateTodo(spendTime: spendTime, status: .done)
+        isRunTimer = false
+        print("isRunTimer:\(isRunTimer)")
+        backgroundNumber = 0
+        
+        print("done: spendTime:\(spendTime) targetTime:\(todo.targetTime)")
+        if spendTime < todo.targetTime {
+//            todoStore.deleteNotification(todo: todo, notificationManager: notificationManager)
+            print("노티 삭제~")
+        }
+        
 
     }
     
@@ -164,6 +194,8 @@ struct TimerView: View {
         self.settingTime = todo.targetTime
         timerVM.timeRemaining = settingTime
         timerVM.spendTime = 0
+        timerVM.activeNumber = 0
+        backgroundNumber = 0
     }
     
     func turnMode() {
@@ -283,6 +315,10 @@ extension TimerView {
                             .foregroundColor(.pickle)
                             .font(.pizzaTimerNum)
                             .onReceive(timer) { _ in
+                                // disabled가 풀리기 전에 background 갔다가 오는 경우를 위해
+                                if timerVM.spendTime > completeLimit {
+                                    isDisabled = false
+                                }
                                 if (!isStart && !isComplete) || timerVM.isPuase {
                                     timerVM.timeExtra += 1
                                     timerVM.spendTime += 1

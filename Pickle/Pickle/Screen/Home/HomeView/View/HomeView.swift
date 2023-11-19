@@ -21,6 +21,7 @@ struct HomeView: View {
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var navigationStore: NavigationStore
+    @EnvironmentObject var timerVM: TimerViewModel
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
     
     @Environment(\.scrollEnable) var scrollEnable
@@ -35,10 +36,26 @@ struct HomeView: View {
     @State private var editSelection: TodoSelection = .init()
     @State private var timerSelection: TimerSelection = .init()
     
+    @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
+    private let goalTotal: Double = 8                   // 피자 완성 카운트
+    
+    @State private var ongoingTodo: Todo = Todo(id: "",
+                                                content: "",
+                                                startTime: Date(),
+                                                targetTime: 0,
+                                                spendTime: 0,
+                                                status: .ongoing)
+    @AppStorage("isRunTimer") var isRunTimer: Bool = false
+    @AppStorage("todoId") var todoId: String = ""
+    
+    
     var body: some View {
         content
             .task {
                 await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+                if isRunTimer {
+                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
+                }
             }
             .onReceive(userStore.$user) {
                 userUpdateAction(user: $0)
@@ -58,6 +75,11 @@ struct HomeView: View {
             .navigationDestination(for: HomeView.Routing.self) { route in
                 routing(stack: route)
             }
+//            .onAppear{
+//                if isRunTimer {
+//                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
+//                }
+//            }
     }
     
     private func routing(stack route: HomeView.Routing) -> some View {
@@ -134,6 +156,18 @@ struct HomeView: View {
             }
         }
     }
+    
+    private func stopTodo() {
+        let todo = Todo(id: ongoingTodo.id,
+                        content: ongoingTodo.content,
+                        startTime: ongoingTodo.startTime,
+                        targetTime: ongoingTodo.targetTime,
+                        spendTime: 0,
+                        status: .giveUp)
+        todoStore.update(todo: todo)
+        isRunTimer = false
+        print("isRunTimer:\(isRunTimer)")
+    }
 }
 
 // MARK: HomeView Component , PizzaView, button, temp component, task complte label
@@ -175,6 +209,7 @@ extension HomeView {
             .onChange(of: scrollEnable.root.wrappedValue) { enable in
                 if enable { withAnimation { proxy.scrollTo(ScrollAnchor.home) } }
             }
+            
         }
         .navigationSetting(tabBarvisibility: $tabBarvisibility) /* 뷰 네비게이션 셋팅 custom modifier */
                                                                 /* leading - (MissionView), trailing - (RegisterView) */
@@ -184,6 +219,16 @@ extension HomeView {
         
         .fullScreenCover(edit: $editSelection)                  /* 풀스크린 Todo 수정뷰 모달 */
         .fullScreenCover(timer: $timerSelection)                /* 풀스크린  Timer 뷰  모달 */
+        .stopAlert(isPresented: $timerVM.showOngoingAlert,
+                   title: "타이머 중단",
+                   alertContent: "앱이 종료되어 피자굽기를 실패하였습니다",
+                   primaryButtonTitle: "확인",
+                   secondaryButtonTitle: "",
+                   primaryAction: stopTodo,
+                   externalTapAction: stopTodo)
+//        .alert(isPresented: $timerVM.showOngoingAlert, content: {
+//            Alert(title: Text("타이머 아직안끝낫는디..."))
+//        })
         
         .showPizzaPurchaseAlert(pizzaSelection.seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
                                 $pizzaSelection.isPizzaPuchasePresent) {       /* 두가지의 (액션)클로져를 받는다, */

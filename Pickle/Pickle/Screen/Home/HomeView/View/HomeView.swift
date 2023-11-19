@@ -89,7 +89,6 @@ struct HomeView: View {
             return AnyView(
                 RegisterView(willUpdateTodo: .constant(Todo.sample),
                              successDelete: .constant(false),
-                             isShowingEditTodo: .constant(false),
                              isModify: false)
                 .backKeyModifier(tabBarvisibility: $tabBarvisibility)
             )

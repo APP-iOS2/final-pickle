@@ -19,7 +19,6 @@ struct HomeView: View {
     
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var navigationStore: NavigationStore
     @EnvironmentObject var timerVM: TimerViewModel
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
@@ -48,7 +47,6 @@ struct HomeView: View {
     @AppStorage("isRunTimer") var isRunTimer: Bool = false
     @AppStorage("todoId") var todoId: String = ""
     
-    
     var body: some View {
         content
             .task {
@@ -75,11 +73,6 @@ struct HomeView: View {
             .navigationDestination(for: HomeView.Routing.self) { route in
                 routing(stack: route)
             }
-//            .onAppear{
-//                if isRunTimer {
-//                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
-//                }
-//            }
     }
     
     private func routing(stack route: HomeView.Routing) -> some View {
@@ -140,10 +133,6 @@ struct HomeView: View {
         if currentPizza.currentPizzaSlice >= 8 {
             navigationStore.pushHomeView(home: .showCompleteAlert(true))
         }
-    }
-    
-    private func unLockPizzaAction() {
-        userStore.unLockPizza(pizza: pizzaSelection.seletedPizza)
     }
     
     private func startTyping() {
@@ -226,9 +215,6 @@ extension HomeView {
                    secondaryButtonTitle: "",
                    primaryAction: stopTodo,
                    externalTapAction: stopTodo)
-//        .alert(isPresented: $timerVM.showOngoingAlert, content: {
-//            Alert(title: Text("타이머 아직안끝낫는디..."))
-//        })
         
         .showPizzaPurchaseAlert(pizzaSelection.seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
                                 $pizzaSelection.isPizzaPuchasePresent) {       /* 두가지의 (액션)클로져를 받는다, */

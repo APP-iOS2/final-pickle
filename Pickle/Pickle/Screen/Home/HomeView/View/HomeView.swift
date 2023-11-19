@@ -220,7 +220,7 @@ extension HomeView {
         .fullScreenCover(edit: $editSelection)                  /* 풀스크린 Todo 수정뷰 모달 */
         .fullScreenCover(timer: $timerSelection)                /* 풀스크린  Timer 뷰  모달 */
         .stopAlert(isPresented: $timerVM.showOngoingAlert,
-                   title: "실패(타이머 중단)",
+                   title: "타이머 중단",
                    alertContent: "앱이 종료되어 피자굽기를 실패하였습니다",
                    primaryButtonTitle: "확인",
                    secondaryButtonTitle: "",

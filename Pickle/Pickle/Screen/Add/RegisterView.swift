@@ -131,31 +131,47 @@ struct RegisterView: View {
         return "\(value)분"
     }
     
-    private func todoAddUpdateAction() {
-        if isModify && notEqualContent { //여기가 할일 추가 된건데 할일 추가 수정하면
+    private func onAppearAction() {
+        if isModify {
+            self.content = willUpdateTodo.content
+            self.targetTimes = targetToTimeString(willUpdateTodo.targetTime)
+            self.startTimes = willUpdateTodo.startTime
+            return
+        }
+        self.startTimes = Date()  // 시간 onAppear일때 수정
+        updateTextField(Const.ALL.randomElement()!)
+    }
+    
+    private func deleteAction() {
+        todoStore.delete(todo: willUpdateTodo)
+        notificationManager.removeSpecificNotification(id: [ willUpdateTodo.id ])
+    }
+    
+    private func modifyAction() {
+        if notEqualContent {
             Task {
                 let updatedTodo = todoStore.update(todo: computedTodo)
                 _ = await todoStore.fetch()
-                    //.fixnotification 여기가 알람 설정된거 수정하는거
+                
                 todoStore.fixNotification(todo: updatedTodo,
                                           noti: notificationManager)
-                showUpdateSuccessAlert.toggle()
+                alertCondition.showUpdateSuccessAlert.toggle()
             }
-        } else { // 여기가 할일 처음 추가할때
-            if isModify { showUpdateEqual.toggle(); return }
-            let flag = isRightContent
-            let todo = computedTodo
-            
-            if flag {
-                let addedTodo = todoStore.add(todo: todo)
-                
-                //처음 알람 설정하는곳  -> 디테일은 TODO에서 확인하기~
-                todoStore.notificationAdding(todo: addedTodo,
-                                             noti: notificationManager)
-                showSuccessAlert.toggle()
-            }
-            else { showFailedAlert.toggle() }
+            return
         }
+        alertCondition.showUpdateEqual.toggle()
+    }
+    
+    private func todoAddAction() {
+        if isRightContent {
+            let addedTodo = todoStore.add(todo: computedTodo)
+            todoStore.notificationAdding(todo: addedTodo,
+                                         noti: notificationManager)
+            
+            alertCondition.showSuccessAlert.toggle()
+            return
+        }
+        alertCondition.showFailedAlert.toggle()
     }
     
     @ViewBuilder

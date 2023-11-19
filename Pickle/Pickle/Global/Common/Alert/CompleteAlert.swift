@@ -84,7 +84,7 @@ struct CompleteAlert: View {
     var body: some View {
         VStack(spacing: 12) {
             Button {
-                isPresented = false
+                action()
             } label: {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()

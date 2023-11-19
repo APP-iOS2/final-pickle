@@ -10,55 +10,41 @@ import SwiftUI
 extension View {
 
     func failedAlert(
-        isPresented: Binding<Bool>,
-        title: String,
-        alertContent: String,
-        primaryButtonTitle: String,
-        secondaryButtonTitle: String,
-        primaryAction: @escaping () -> Void,
-        secondaryAction: (() -> Void)? = nil,
-        _ externalTapAction: (() -> Void)?  = nil
+        content: AlertContent
     ) -> some View {
         return modifier(
             FaildAlertModifier(
-                isPresented: isPresented,
-                title: title,
-                alertContent: alertContent,
-                primaryButtonTitle: primaryButtonTitle,
-                secondaryButtonTitle: secondaryButtonTitle,
-                primaryAction: primaryAction,
-                secondaryAction: secondaryAction,
-                externalAction: externalTapAction
+                isPresented: content.isPresented,
+                title: content.title,
+                alertContent: content.alertContent,
+                primaryButtonTitle: content.primaryButtonTitle,
+                secondaryButtonTitle: content.secondaryButtonTitle,
+                primaryAction: content.primaryAction,
+                secondaryAction: content.secondaryAction,
+                externalAction: content.externalTapAction
             )
         )
     }
     
     func successAlert(
-        isPresented: Binding<Bool>,
-        title: String,
-        alertContent: String,
-        primaryButtonTitle: String,
-        secondaryButtonTitle: String,
-        primaryAction: @escaping () -> Void,
-        secondaryAction: (() -> Void)? = nil,
-        _ externalTapAction: (() -> Void)? = nil
+        content: AlertContent
     ) -> some View {
         return modifier(
             FaildAlertModifier(
-                isPresented: isPresented,
-                title: title,
-                alertContent: alertContent,
-                primaryButtonTitle: primaryButtonTitle,
-                secondaryButtonTitle: secondaryButtonTitle,
-                primaryAction: primaryAction,
-                secondaryAction: secondaryAction,
-                externalAction: externalTapAction
+                isPresented: content.isPresented,
+                title: content.title,
+                alertContent: content.alertContent,
+                primaryButtonTitle: content.primaryButtonTitle,
+                secondaryButtonTitle: content.secondaryButtonTitle,
+                primaryAction: content.primaryAction,
+                secondaryAction: content.secondaryAction,
+                externalAction: content.externalTapAction
             )
         )
     }
     
     func stopAlert(
-        content: StopAlertContent
+        content: AlertContent
     ) -> some View {
         return modifier(
             FaildAlertModifier(
@@ -75,17 +61,16 @@ extension View {
     }
 }
 
-struct StopAlertContent {
+struct AlertContent {
     let isPresented: Binding<Bool>
     let title: String
     let alertContent: String
     let primaryButtonTitle: String
     let secondaryButtonTitle: String
     let primaryAction: () -> Void
-    let secondaryAction: (() -> Void)? = nil
-    let externalTapAction: () -> Void
+    var secondaryAction: (() -> Void)? = nil
+    var externalTapAction: (() -> Void)? = nil
 }
-
 
 struct FaildAlertModifier: ViewModifier {
     

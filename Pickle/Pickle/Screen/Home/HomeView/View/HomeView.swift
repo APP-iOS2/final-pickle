@@ -185,7 +185,7 @@ extension HomeView {
         })
     }
     
-    private var stopAlertContent: StopAlertContent {
+    private var stopAlertContent: AlertContent {
         .init(isPresented: $timerVM.showOngoingAlert,
               title: "타이머 중단",
               alertContent: "앱이 종료되어 피자굽기를 실패하였습니다",

@@ -23,8 +23,87 @@ final class HomeViewModel: ObservableObject {
     
     @Published var currentPositionPizza: CurrentPizza = .init(pizza: .defaultPizza)
     
-    var isPositionChange: Bool {
-        remainder(offset: self.offset) == 0
+    @Published var description: String = "피자를 완성하면 얻을수 있어요"
+    
+    enum Action {
+        case unlock(UserStore, Pizza)
+        case updatePosition(User)
+        case updateCurrent(CurrentPizza)
+    }
+    
+    enum Effect {
+        case unlockFail(Int)
+        case success
+        case unknown
+    }
+    
+    @discardableResult
+    func trigger(action: HomeViewModel.Action) -> Effect? {
+        switch action {
+        case .unlock(let userStore, let pizza):
+            return self.unLockPizzaAction(userStore: userStore, pizza: pizza)
+            
+        case .updatePosition(let user):
+            self.updatePositionPizza(user: user)
+            return nil
+        case .updateCurrent(let currentPizza):
+            if let pizza = currentPizza.pizza {
+                pizzaPosition = .pizza(pizza.id)
+                currentPositionPizza = currentPizza
+            }
+            return nil
+        }
+    }
+    
+    private func unLockPizzaAction(userStore: UserStore, pizza: Pizza) -> Effect {
+        do {
+            try userStore.unLockPizza(pizza: pizza) /*pizzaSelection.seletedPizza*/
+            return .success
+        } catch {
+            if let unlock = error as? User.UnlockError {
+                if case let .notMeet(count) = unlock {
+                    Log.debug("이만큼 부족함 : \(count)")
+                    
+                    return .unlockFail(count)
+                }
+            }
+            return .unknown
+        }
+    }
+    
+    func gesturePositionUpdate(user: User) {
+        let positionIndex: Int = Int(abs(offset) / pizzaScrollViewWidth)
+        guard let positionID = user.currentPizzas[safe: positionIndex]?.pizza?.id else { return }
+        
+        pizzaPosition = .pizza(positionID)
+        updatePositionPizza(user: user, positionID: positionID)
+    }
+    
+    private func updatePositionPizza(user: User, positionID: String = "") {
+        var positionID = positionID
+        
+        if positionID.isEmpty {
+            if case let .pizza(ID) = self.pizzaPosition {
+                positionID = ID
+            }
+        }
+        
+        let pizza = user.getPizza(using: positionID)
+        if let pizza {
+            currentPositionPizza = pizza
+        }
+    }
+    
+    private func pizzasIDs(user: User) -> [String] {
+        user.currentPizzas.compactMap(\.pizza).map(\.id)
+    }
+    
+    private func currentPizzaPosition(user: User) -> Int {
+        if case let .pizza(ID) = pizzaPosition {
+            guard let index = pizzasIDs(user: user).firstIndex(of: ID) else { return 0 }
+            return index
+        }
+        return 0
     }
     
     func remainder(offset: CGFloat) -> CGFloat {
@@ -49,43 +128,6 @@ final class HomeViewModel: ObservableObject {
         user.currentPizzas[safe: nextPosition]?.pizza?.id ?? ""
         
         pizzaPosition = .pizza(positionID)
-    }
-    
-    func gesturePositionUpdate(user: User) {
-        let positionIndex: Int = Int(abs(offset) / pizzaScrollViewWidth)
-        guard let positionID = user.currentPizzas[safe: positionIndex]?.pizza?.id else { return }
-        
-        pizzaPosition = .pizza(positionID)
-        updatePositionPizza(user: user, positionID: positionID)
-    }
-    
-    func updatePositionPizza(user: User, positionID: String = "") {
-        var positionID = positionID
-        
-        if positionID.isEmpty {
-            if case let .pizza(ID) = self.pizzaPosition {
-                positionID = ID
-            }
-        }
-        
-        let pizza = user.getCurrentPizza(using: positionID)
-        if let pizza {
-            currentPositionPizza = pizza
-        }
-    }
-    
-    private func pizzasIDs(user: User) -> [String] {
-        user.currentPizzas.compactMap(\.pizza).map(\.id)
-    }
-    
-    private func currentPizzaPosition(user: User) -> Int {
-//        guard let position = pizzaPosition else { return 0 }
-        
-        if case let .pizza(ID) = pizzaPosition {
-            guard let index = pizzasIDs(user: user).firstIndex(of: ID) else { return 0 }
-            return index
-        }
-        return 0
     }
     
 }

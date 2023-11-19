@@ -156,6 +156,7 @@ struct RegisterView: View {
                              showSuccessAlert: $showSuccessAlert,
                              successDelete: $successDelete,
                              isShowingEditTodo: $isShowingEditTodo)
+        .preference(key: SuccessUpdateKey.self, value: alertCondition.isShowingEditTodo)
     }
     
     private func resetContents() {

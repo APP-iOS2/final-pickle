@@ -47,6 +47,7 @@ struct UpdateTodoView: View {
                             .tint(.red)
                     }
                 }
+            .onPreferenceChange(SuccessUpdateKey.self) { selection.isShowing = $0 }
             }
         }
     }

@@ -461,59 +461,6 @@ extension RegisterView {
     }
 }
 
-// MARK: Register PickerView extension
-extension RegisterView {
-    
-    var timeConstraint: ClosedRange<Date> {
-        let value = Date().format("yyyy-MM-dd-HH-mm")
-        
-        let dates = value.split(separator: "-").map { Int(String($0))! }
-        let start: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),
-                                                   year: dates[safe: 0],
-                                                   month: dates[safe: 1],
-                                                   day: dates[safe: 2],
-                                                   hour: dates[safe: 3],
-                                                   minute: dates[safe: 4])
-        let end: DateComponents = DateComponents(timeZone: TimeZone(identifier: "KST"),
-                                                 year: dates[safe: 0],
-                                                 month: dates[safe: 1],
-                                                 day: dates[safe: 2],
-                                                 hour: 23,
-                                                 minute: 59)
-        return PickerView.constraint(start: start,
-                                     end: end)
-    }
-    
-    private func datePickerGenerator(binding: Binding<Date>, show: Binding<Bool>) -> some View {
-        PickerView(isTimeMissionSettingModalPresented: show,
-                   changedWakeupTime: binding,
-                   title: "오늘 할일 시간",
-                   action: { show.wrappedValue.toggle() },
-                   closedRange: timeConstraint)
-    }
-    
-    private func targetTimePickerViewGenerator(binding: Binding<String>, show: Binding<Bool>) -> some View {
-        VStack {
-            Picker("단위시간", selection: $targetTimes) {
-                let times = ["1분"] + targetTimeUnitStrs    // TODO: 테스트용 1분 추가 추후 삭제
-                ForEach(times.indices, id: \.self) {
-                    Text("\(times[$0])").tag(times[$0])
-                }
-            }
-            .pickerStyle(.wheel)
-            .presentationDetents([.fraction(0.3)])
-            
-            Button {
-                show.wrappedValue.toggle()
-            } label: {
-                Text("확인")
-                    .tint(Color.textGray)
-            }
-            .padding(.vertical, 10)
-        }
-    }
-}
-
 #Preview {
     RegisterView(willUpdateTodo: .constant(Todo.sample),
                  successDelete: .constant(false),

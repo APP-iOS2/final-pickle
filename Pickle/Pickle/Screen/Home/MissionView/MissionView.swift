@@ -100,16 +100,16 @@ struct MissionView: View {
             primaryButtonTitle: "확인",
             primaryAction: {}
         )
-        .successAlert(
-            isPresented: $showSuccessAlert,
-            title: "수정 성공",
-            alertContent: "기상 시간이 변경되었습니다",
-            primaryButtonTitle: "확인",
-            secondaryButtonTitle: "",
-            primaryAction: { showSuccessAlert.toggle() },
-            secondaryAction: {},
-            {}
-        )
+        .successAlert(content: alertContent)
+    }
+    
+    var alertContent: AlertContent {
+        .init(isPresented: $showSuccessAlert,
+              title: "수정 성공",
+              alertContent: "기상 시간이 변경되었습니다",
+              primaryButtonTitle: "확인",
+              secondaryButtonTitle: "",
+              primaryAction: { showSuccessAlert.toggle() })
     }
 }
 

@@ -45,12 +45,10 @@ struct RegisterView: View {
         }
     }
     
-    @State var dateFrom = Date()
-    
     private let alarmCount: [String] = ["한번", "두번", "3번"]
     private let targetTimeUnit: TimeUnit = .ten
     
-    private var targetTimeUnitStrs: [String] {
+    var targetTimeUnitStrs: [String] {
         (10...180)
             .filter { $0 % targetTimeUnit.value == 0 }
             .reduce(into: [String]()) { original, value in
@@ -99,44 +97,26 @@ struct RegisterView: View {
                     todoTitleInputField
                         .padding(.top, 40)
                     
-                    timeConstraintPickCell("시작시간",
-                                           binding: $startTimes,
-                                           show: $showingStartTimeSheet)
+                    timeConstraintPickCell("시작시간")
                     
-                    targetTimePickCell("목표시간",
-                                       binding: $targetTimes,
-                                       show: $showingTargetTimeSheet)
+                    targetTimePickCell("목표시간")
+                    
                     Spacer()
                     
                     confirmActionButton {
-                        todoAddUpdateAction()
+                        isModify ? modifyAction() : todoAddAction()
                     }
                 }
                 .frame(minHeight: geometry.size.height)
             }
             .frame(width: geometry.size.width)
         }
-        .refreshable {
-            updateTextField(Const.ALL.randomElement()!)
-        }
-        .onAppear {
-            if isModify {
-                self.content = willUpdateTodo.content
-                self.targetTimes = targetToTimeString(willUpdateTodo.targetTime)
-                self.startTimes = willUpdateTodo.startTime
-            } else {
-                self.startTimes = Date()  // 시간 onAppear일때 수정
-            }
-            
-            updateTextField(Const.ALL.randomElement()!)
-        }
-        .onChange(of: showSuccessAlert, perform: { if !$0 { resetContents() } })
-        .differentTypeAlerts(showFailedAlert: $showFailedAlert,
-                             showUpdateEqual: $showUpdateEqual,
-                             showUpdateSuccessAlert: $showUpdateSuccessAlert,
-                             showSuccessAlert: $showSuccessAlert,
-                             successDelete: $successDelete,
-                             isShowingEditTodo: $isShowingEditTodo)
+        .refreshable { updateTextField(Const.ALL.randomElement()!) }
+        .onAppear { onAppearAction() }
+        .onChange(of: alertCondition.showSuccessAlert, perform: { if !$0 { resetContents() } })
+        .differentTypeAlerts(alert: $alertCondition,
+                             delete: $successDelete,
+                             deleteAction: deleteAction)
         .preference(key: SuccessUpdateKey.self, value: alertCondition.isShowingEditTodo)
     }
     
@@ -235,47 +215,23 @@ struct RegisterView: View {
                 .padding(.leading, 16)
             Spacer()
             Button {
-                show.wrappedValue.toggle()
+                showingStartTimeSheet.toggle()
             } label: {
-                Text("\(binding.wrappedValue.format("HH:mm"))")
+                Text("\(startTimes.format("HH:mm"))")
                     .padding(.vertical, 16)
                     .padding(.trailing, 16)
                     .tint(Color.textGray)
             }
         }
         .asRoundBackground()
-        .sheet(isPresented: show) {
+        .sheet(isPresented: $showingStartTimeSheet) {
             VStack {
-                datePickerGenerator(binding: binding, show: show)
+                datePickerGenerator(startTimes: $startTimes, show: $showingStartTimeSheet)
                     .presentationDetents([.fraction(0.4)])
             }
         }
         .onTapGesture {
-            show.wrappedValue.toggle()
-        }
-    }
-    
-    @ViewBuilder
-    private var alarmSelector: some View {
-        HStack {
-            Text("알림")
-                .font(Font.pizzaBody)
-                .bold()
-                .padding(.vertical, 16)
-                .padding(.leading, 16)
-            Spacer()
-            Button {
-                showingWeekSheet.toggle()
-            } label: {
-                Text("\(seletedAlarm)")
-                    .padding(.vertical, 16)
-                    .padding(.trailing, 16)
-                    .tint(Color.textGray)
-            }
-        }
-        .asRoundBackground()
-        .sheet(isPresented: $showingWeekSheet) {
-            alarmPickerView
+            showingStartTimeSheet.toggle()
         }
     }
     
@@ -308,5 +264,6 @@ extension RegisterView {
 #Preview {
     RegisterView(willUpdateTodo: .constant(Todo.sample),
                  successDelete: .constant(false),
+                 isModify: false)
     .environmentObject(TodoStore())
 }

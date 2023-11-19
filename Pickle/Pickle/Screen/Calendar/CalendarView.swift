@@ -9,13 +9,11 @@ import SwiftUI
 
 struct CalendarView: View {
     
-
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var userStore: UserStore
     @EnvironmentObject var navigationStore: NavigationStore
     @Environment(\.scrollEnable) var scrollEnable: Binding<ScrollEnableKey>
-
     
     @StateObject private var calendarModel: CalendarViewModel = CalendarViewModel()
     
@@ -23,49 +21,29 @@ struct CalendarView: View {
     @State private var filteredTodayMission: [TimeMission]?
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
-
-
     @State private var todayPieceOfPizza: Int = 0
     @State private var pizzaSummarySheet: Bool = false
     @State private var todayCompletedTasks: Int = 0
     @State private var wakeUpMission: Int = 0
     @State private var walkMission: Int = 0
     
-    var underlineBool: Bool {
-        
-        todayPieceOfPizza != 0 ? false : true
-    }
-    
     var body: some View {
-
+        
         GeometryReader { geometry in
-//            VStack(alignment: .leading) {
-//                headerView()
-//                    .padding(.top, 15)
-//                    .padding(.bottom, 8)
-//                
-//                currentPizzaSummaryView()
+            
+            VStack(alignment: .leading) {
+                headerView()
+                currentPizzaSummaryView()
                 
                 ScrollView(.vertical) {
                     
-                    VStack(alignment: .leading) {
-                    headerView()
-                        .padding(.top, 15)
-                        .padding(.bottom, 8)
+                    taskView(tasks: filteredTasks ?? [])
                     
-                    currentPizzaSummaryView()
-                        
-                        taskView(tasks: filteredTasks ?? [])
-                        
-                    }
-//                    .frame(height: geometry.size.height)
-
                 }
                 .scrollIndicators(.hidden)
                 .frame(width: geometry.size.width)
                 
-//            }
-            
+            }
         }
         .task {
             await todoStore.fetch()
@@ -165,12 +143,15 @@ struct CalendarView: View {
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                 }
                 weekHeaderView()
-
-                if weekToMonth { monthlyView() } else { weekView(calendarModel.currentWeek) }
+                
+                if weekToMonth { monthlyView() }
+                else { weekView(calendarModel.currentWeek)
+                    .padding(.bottom, 5)}
             }
             .hLeading()
         }
         .padding(.horizontal)
+        .padding(.top, 15)
     }
     
     func weekHeaderView() -> some View {
@@ -200,7 +181,6 @@ struct CalendarView: View {
                         .font(.callout)
                         .fontWeight(.semibold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
-                        .underline(underlineBool, color: .orange)
                         .frame(width: 30, height: 30)
                         .background {
                             if isSameDate(day, date2: calendarModel.currentDay) {
@@ -265,7 +245,7 @@ struct CalendarView: View {
     
     // MARK: - Montly View
     func monthlyView() -> some View {
-      
+        
         VStack {
             let dates = calendarModel.extractMonth()
             HStack {
@@ -277,7 +257,6 @@ struct CalendarView: View {
                         if day.day != -1 {
                             Text("\(day.day)")
                                 .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
-                                .underline(isSameDate(day.date, date2: calendarModel.currentDay) && underlineBool, color: .orange)
                                 .font(.callout)
                                 .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
@@ -364,12 +343,13 @@ struct CalendarView: View {
             
         }
         .padding(.horizontal)
+        .padding(.bottom, 5)
     }
     
     func pizzaSheetView() -> some View {
         ScrollView {
             VStack(alignment: .center, spacing: 25) {
-  
+                
                 HStack {
                     Text("\(calendarModel.currentDay.format("M월 d일"))" + " 피자 🍕")
                         .font(.nanumBd)
@@ -396,7 +376,7 @@ struct CalendarView: View {
                     Text("✅")
                     Text("오늘 할일 완료")
                     Spacer()
-                    Text("x" + "\(todayCompletedTasks)")
+                    Text("x" + " \(todayCompletedTasks)")
                 }
                 .font(.nanumRg)
                 

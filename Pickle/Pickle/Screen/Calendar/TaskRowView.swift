@@ -48,9 +48,8 @@ struct TaskRowView: View {
     @ViewBuilder
     private var taskContent: some View {
         Text(task.content)
-            .font(.pizzaStoreSmall)
-            .foregroundStyle(.primary)
-            .fontWeight(.regular)
+            .font(.callout)
+            .fontWeight(.light)
         
     }
     
@@ -62,7 +61,7 @@ struct TaskRowView: View {
                 .frame(width: 15, height: 15)
                 .padding(4)
             
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 9) {
                 taskContent
             }
             
@@ -71,11 +70,15 @@ struct TaskRowView: View {
                 .foregroundColor(indicatorColor)
                 .padding(.horizontal)
                 .hSpacing(.trailing)
+                .frame(maxWidth: .infinity)
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
+        .padding(.leading, 18)
+        .padding(.trailing, 5)
+        
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet,
                             isShowingTimerView: .constant(false),

@@ -21,13 +21,6 @@ import RealmSwift
 // TODO: Alert 구조 refactoring - 추후 리팩토링 진행중
 // TODO: Alert TimerView의 알럿으로 통일하기 - 100%  완료
 
-enum Const: CaseIterable {
-    static let ALL: [[String]] = [WELCOME1, WELCOME2, WELCOME3, WELCOME4]
-    static let WELCOME1 = "오늘은 무슨일을 하실 생각 이세여?".map { String($0) }
-    static let WELCOME2 = "피자가 드시고 싶으시다구요?".map { String($0) }
-    static let WELCOME3 = "피자가 먹고 싶어요.........".map { String($0) }
-    static let WELCOME4 = "저는 아무것도 모른답니당ㅎㅎ".map { String($0) }
-}
 
 struct RegisterView: View {
     

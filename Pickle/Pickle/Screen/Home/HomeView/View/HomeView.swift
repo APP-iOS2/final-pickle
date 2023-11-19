@@ -250,27 +250,32 @@ extension HomeView {
     }
     
     private func pizzaPagingView(geo: GeometryProxy) -> some View {
-        ScrollViewReader { proxy in
-                LazyHStack {
-                    TabView(selection: $viewModel.pizzaPosition) {
-                        ForEach(Array(zip(userStore.user.currentPizzas, 
-                                          userStore.user.currentPizzas.indices)),
-                                id: \.1) { currentPizza in
-                            ZStack {
-                                makePizzaView(currentPizza: currentPizza.0)
-                            }
-                            .fixSize(geo, diffX: -pagePadding)
-                            .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
-                        }.padding(.bottom, 10)
-                            .padding(.top, -10)
+        LazyHStack {
+            TabView(selection: $viewModel.pizzaPosition) {
+                ForEach(Array(zip(userStore.user.currentPizzas,
+                                  userStore.user.currentPizzas.indices)),
+                        id: \.1) { currentPizza in
+                    ZStack {
+                        makePizzaView(currentPizza: currentPizza.0)
                     }
-                    .tabViewStyle(.page(indexDisplayMode: .always))
-                    .fixSize(geo, diffY: 30)
-                }
-            .onAppear {
-                viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
+                    .fixSize(geo, diffX: -pagePadding)
+                    .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
+                }.padding(.bottom, 10)
+                    .padding(.top, -10)
             }
+            .tabViewStyle(.page(indexDisplayMode: .always))
+            .fixSize(geo, diffY: 30)
         }
+        .onAppear {
+            viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
+            setupAppearance()
+        }
+    }
+    
+    private func setupAppearance() {
+        let color = UIColor(Color.pickle)
+        UIPageControl.appearance().currentPageIndicatorTintColor = color
+        UIPageControl.appearance().pageIndicatorTintColor = color.withAlphaComponent(0.3)
     }
     
     private var scrollObservableView: some View {

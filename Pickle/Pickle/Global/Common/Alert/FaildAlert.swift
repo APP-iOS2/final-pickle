@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension View {
+
+    
     func failedAlert(
         isPresented: Binding<Bool>,
         title: String,
@@ -41,6 +43,30 @@ extension View {
         primaryAction: @escaping () -> Void,
         secondaryAction: (() -> Void)? = nil,
         _ externalTapAction: (() -> Void)? = nil
+    ) -> some View {
+        return modifier(
+            FaildAlertModifier(
+                isPresented: isPresented,
+                title: title,
+                alertContent: alertContent,
+                primaryButtonTitle: primaryButtonTitle,
+                secondaryButtonTitle: secondaryButtonTitle,
+                primaryAction: primaryAction,
+                secondaryAction: secondaryAction,
+                externalAction: externalTapAction
+            )
+        )
+    }
+    
+    func stopAlert(
+        isPresented: Binding<Bool>,
+        title: String,
+        alertContent: String,
+        primaryButtonTitle: String,
+        secondaryButtonTitle: String,
+        primaryAction: @escaping () -> Void,
+        secondaryAction: (() -> Void)? = nil,
+        externalTapAction: @escaping () -> Void
     ) -> some View {
         return modifier(
             FaildAlertModifier(

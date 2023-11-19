@@ -27,11 +27,11 @@ struct MissionView: View {
     var body: some View {
         ScrollView {
             VStack {
-                ForEach(timeMissions.indices, id: \.self) { index in
-                    if let mission = timeMissions[safe: index] {
-                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
-                    }
-                }
+//                ForEach(timeMissions.indices, id: \.self) { index in
+//                    if let mission = timeMissions[safe: index] {
+//                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
+//                    }
+//                }
                 
                 ForEach(behaviorMissions.indices, id: \.self) { index in
                     if let mission = behaviorMissions[safe: index] {
@@ -49,11 +49,6 @@ struct MissionView: View {
             timeMissions = _timeMissions
             behaviorMissions = _behaviorMissions
             
-            //TODO: 내일 기상 미션 알림 확인하기 -> 백그라운드에서 wakeupTime에 changeWakeupTime이 적용됐는지
-            // 적용됐으면 알림은 울렸는지 오후 1:00
-            print(timeMissions.first?.date) // Optional(2023-11-10 11:19:32 +0000)
-            print(timeMissions.first?.wakeupTime) // Optional(2023-11-10 11:19:32 +0000)
-            print(timeMissions.first?.changeWakeupTime) // Optional(2023-11-10 04:00:32 +0000)
             if let firstTimeMission = timeMissions.first, firstTimeMission.date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
                 missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
                                                                title: firstTimeMission.title,
@@ -71,12 +66,12 @@ struct MissionView: View {
                 }
             }
         }
-        .refreshable {
-            healthKitStore.fetchStepCount()
-            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-            timeMissions = _timeMissions
-            behaviorMissions = _behaviorMissions
-        }
+//        .refreshable {
+//            healthKitStore.fetchStepCount()
+//            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+//            timeMissions = _timeMissions
+//            behaviorMissions = _behaviorMissions
+//        }
         .onDisappear {
             healthKitStore.fetchStepCount()
             if let firstTimeMission = timeMissions.first {
@@ -108,7 +103,7 @@ struct MissionView: View {
         .successAlert(
             isPresented: $showSuccessAlert,
             title: "수정 성공",
-            alertContent: "수정한 기상 미션은 내일부터 적용됩니다",
+            alertContent: "기상 시간이 변경되었습니다",
             primaryButtonTitle: "확인",
             secondaryButtonTitle: "",
             primaryAction: { showSuccessAlert.toggle() },

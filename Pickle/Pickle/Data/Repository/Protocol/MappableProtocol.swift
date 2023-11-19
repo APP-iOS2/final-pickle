@@ -12,3 +12,9 @@ protocol MappableProtocol {
     func mapToPersistenceObject() -> PersistenceType
     static func mapFromPersistenceObject(_ object: PersistenceType) -> Self
 }
+
+protocol EmbeddedMappableProtocol {
+    associatedtype PersistenceType
+    func mapToPersistenceObject() -> PersistenceType
+    static func mapFromPersistenceObject(_ object: PersistenceType) -> Self
+}

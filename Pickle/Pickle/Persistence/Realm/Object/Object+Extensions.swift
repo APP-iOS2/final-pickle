@@ -12,3 +12,4 @@ extension BehaviorMissionObject: Storable {}
 extension TimeMissionObject: Storable {}
 extension UserObject: Storable {}
 extension PizzaObject: Storable {}
+extension CurrentPizzaObject: Storable {}

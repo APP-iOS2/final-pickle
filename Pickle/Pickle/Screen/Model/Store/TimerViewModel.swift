@@ -22,6 +22,10 @@ class TimerViewModel: ObservableObject {
     var backgroundSpendTime: TimeInterval = 0
     var backgroundTimeExtra: TimeInterval = 0
     
+    @Published var activeNumber: Int = 0
+    
+    @Published var showOngoingAlert: Bool = false
+    
     @Published var todo: Todo = Todo(id: "",
                                      content: "",
                                      startTime: Date(),

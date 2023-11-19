@@ -37,12 +37,11 @@ enum PreviewsContainer {
     @MainActor static func pizzaSetting(_ store: PizzaStore) async {
         let value = await store.fetch()
         if !value.isEmpty { return }
-        print("value")
         Pizza.allCasePizza.forEach { pizza in
             do {
                 try store.add(pizza: pizza)
             } catch {
-                errorHandler(error,nil)
+                errorHandler(error, nil)
             }
         }
     }

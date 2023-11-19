@@ -11,24 +11,16 @@ extension BehaviorMission {
     typealias PersistenceType = BehaviorMissionObject
     
     func mapToPersistenceObject() -> BehaviorMissionObject {
-        if UUID(uuidString: self.id) != nil {
-            return BehaviorMissionObject(title: self.title,
-                                         status: .init(rawValue: self.status.value) ?? .ready,
-                                         status1: .init(rawValue: self.status1.value) ?? .ready,
-                                         status2: .init(rawValue: self.status2.value) ?? .ready,
-                                         date: self.date)
-        } else {
-            return BehaviorMissionObject(id: self.id,
-                                         title: self.title,
-                                         status: .init(rawValue: self.status.value) ?? .ready,
-                                         status1: .init(rawValue: self.status1.value) ?? .ready,
-                                         status2: .init(rawValue: self.status2.value) ?? .ready,
-                                         date: self.date)
-        }
+        BehaviorMissionObject(id: self.id,
+                              title: self.title,
+                              status: .init(rawValue: self.status.value) ?? .ready,
+                              status1: .init(rawValue: self.status1.value) ?? .ready,
+                              status2: .init(rawValue: self.status2.value) ?? .ready,
+                              date: self.date)
     }
     
     static func mapFromPersistenceObject(_ object: BehaviorMissionObject) -> BehaviorMission {
-        BehaviorMission(id: object.id.stringValue,
+        BehaviorMission(id: object.id,
                         title: object.title,
                         status: .init(rawValue: object.status.rawValue) ?? .ready,
                         status1: .init(rawValue: object.status1.rawValue) ?? .ready,

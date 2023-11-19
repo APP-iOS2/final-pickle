@@ -12,32 +12,17 @@ extension Todo: MappableProtocol {
     typealias PersistenceType = TodoObject
     
     func mapToPersistenceObject() -> TodoObject {
-        if self.id.count < 12 {
-            return TodoObject(content: self.content,
-                              startTime: self.startTime,
-                              targetTime: self.targetTime, //self.targetTime,
-                              spendTime: self.spendTime,
-                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
-        }
+        TodoObject(id: self.id,
+                   content: self.content,
+                   startTime: self.startTime,
+                   targetTime: self.targetTime, //self.targetTime,
+                   spendTime: self.spendTime,
+                   status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
         
-        if let _ = UUID(uuidString: self.id) {
-            return TodoObject(content: self.content,
-                              startTime: self.startTime,
-                              targetTime: self.targetTime, //self.targetTime,
-                              spendTime: self.spendTime,
-                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
-        } else {
-            return TodoObject(id: self.id,
-                              content: self.content,
-                              startTime: self.startTime,
-                              targetTime: self.targetTime, //self.targetTime,
-                              spendTime: self.spendTime,
-                              status: TodoStatusPersisted(rawValue: self.status.value) ?? .ready)
-        }
     }
     
     static func mapFromPersistenceObject(_ object: TodoObject) -> Todo {
-        let todo: Todo = Todo(id: object.id.stringValue,
+        let todo: Todo = Todo(id: object.id,
                               content: object.content,
                               startTime: object.startTime,
                               targetTime: object.targetTime,

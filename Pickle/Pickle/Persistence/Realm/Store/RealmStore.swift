@@ -10,7 +10,6 @@ import RealmSwift
 import Combine
 import Realm
 
-
 // TODO: 트러블 슈팅 정리......
 typealias RealmFilter<T: Storable> = (Query<T>) -> Query<Bool>
 
@@ -19,7 +18,6 @@ typealias RObjectBase = ObjectBase
 typealias ObjectCompletion<T> = (ObjectChange<T>) -> Void
 typealias RNotificationToken = NotificationToken
 typealias RObject = RealmSwiftObject
-
 
 final class RealmStore: DBStore {
     
@@ -50,11 +48,12 @@ final class RealmStore: DBStore {
                    completion: @escaping (T) -> Void) throws where T: Storable {
         
         let realm = realmStore!
+        guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
         
         try realm.write {
             let json = try! JSONSerialization.jsonObject(with: data, options: [])
             let value = realm.create(model, value: json)
-            completion(value)
+            completion(value as! T)
         }
     }
     
@@ -63,15 +62,16 @@ final class RealmStore: DBStore {
                    completion: @escaping (T) -> Void) throws where T: Storable {
         
         let realm = realmStore!
+        guard let model = model as? Object.Type else { throw RealmError.notRealmObject }
         try realm.write {
             let type = realm.create(model, value: item)
-            completion(type)
+            completion(type as! T)
         }
     }
     
     func save(object: Storable) throws {
-        
         let realm = realmStore!
+        guard let object = object as? RObject else { throw RealmError.notRealmObject }
         try realm.write {
             realm.add(object)
         }
@@ -79,6 +79,7 @@ final class RealmStore: DBStore {
     
     func update(object: Storable) throws {
         let realm = realmStore!
+        guard let object = object as? RObject else { throw RealmError.notRealmObject }
         try realm.write {
             realm.add(object, update: .modified)
         }
@@ -110,13 +111,12 @@ final class RealmStore: DBStore {
     func delete<T>(model: T.Type, id: String) throws {
         guard
             let realm = realmStore,
-            let model = model as? Object.Type,
-            let objectID = try? ObjectId(string: id)
+            let model = model as? Object.Type
         else {
             throw RealmError.notRealmObject
         }
         try realm.write {
-            if let value = realm.object(ofType: model, forPrimaryKey: objectID) {
+            if let value = realm.object(ofType: model, forPrimaryKey: id) {
                 realm.delete(value)
             } else {
                 throw RealmError.deleteFailed
@@ -126,7 +126,8 @@ final class RealmStore: DBStore {
     
     func deleteAll<T>(_ model: T.Type) throws where T: Storable {
         guard
-            let realm = realmStore
+            let realm = realmStore,
+            let model = model as? RObject.Type
         else {
             throw RealmError.notRealmObject
         }
@@ -142,7 +143,7 @@ final class RealmStore: DBStore {
                   predicate: NSPredicate?,
                   sorted: Sorted?) throws -> [T] where T: Storable {
         let realm = realmStore!
-        
+        guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
         var objects = realm.objects(model)
         
         if let predicate = predicate {
@@ -152,7 +153,7 @@ final class RealmStore: DBStore {
         if let sorted {
             objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
         }
-        return objects.compactMap { $0 as T }
+        return objects.compactMap { $0 as? T }
     }
     
     func notificationToken<T>(_ model: T.Type,
@@ -160,12 +161,8 @@ final class RealmStore: DBStore {
                               keyPaths: [PartialKeyPath<T>],
                               _ completion: @escaping ObjectCompletion<T>) throws 
     -> NotificationToken where T: Storable, T: ObjectBase {
-        guard
-            let realm = realmStore,
-            let id =  try? ObjectId(string: id)
-        else {
-            throw RealmError.notRealmObject
-        }
+        let realm = realmStore!
+        guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
         let object = realm.object(ofType: model, forPrimaryKey: id)
         guard let object else { throw RealmError.invalidObjectORPrimaryKey }
         return object.observe(keyPaths: keyPaths, completion)
@@ -187,6 +184,7 @@ final class RealmStore: DBStore {
                   sorted: Sorted?,
                   complection: ([T]) -> Void) throws where T: Storable {
         let realm = realmStore!
+        guard let model = model as? RObject.Type else { throw RealmError.notRealmObject }
         var objects = realm.objects(model)
         if let predicate = predicate {
             objects = objects.filter(predicate)
@@ -194,7 +192,7 @@ final class RealmStore: DBStore {
         if let sorted {
             objects = objects.sorted(byKeyPath: sorted.key, ascending: sorted.ascending)
         }
-        complection(objects.compactMap { $0 as T })
+        complection(objects.compactMap { $0 as? T })
     }
 }
 

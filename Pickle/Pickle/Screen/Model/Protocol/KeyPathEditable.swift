@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 enum KeyPathError: Error {
     case unableToCast(String)
@@ -23,6 +24,19 @@ extension KeyPathEditable {
         var copy = self
         copy[keyPath: writableKeyPath] = value
         return copy
+    }
+    
+    func updatePublihser<KeyPathType>(path: PartialKeyPath<Self>,
+                                      to value: KeyPathType) -> AnyPublisher<Self, KeyPathError> {
+        Future<Self, KeyPathError> { promise in
+            guard let writableKeyPath = path as? WritableKeyPath<Self, KeyPathType> else {
+                return promise(.failure(KeyPathError.unableToCast("이 \(value) 데이터는 값타입이 아니에유;;")))
+            }
+            var copy = self
+            copy[keyPath: writableKeyPath] = value
+            promise(.success(copy))
+        }
+        .eraseToAnyPublisher()
     }
 }
 

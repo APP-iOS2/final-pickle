@@ -21,6 +21,7 @@ extension Font {
     static let pizzaBoldSmallTitle = makeFont(name: "NanumSquareNeo-cBd", size: 18, style: .title3)
     static let pizzaRegularSmallTitle = makeFont(name: "NanumSquareNeo-bRg", size: 15, style: .subheadline)
     static let pizzaStoreSmall = makeFont(name: "NanumSquareNeo-aLt", size: 14, style: .body)
+    static let pizzaStoreMiddle = makeFont(name: "NanumSquareNeo-aLt", size: 16, style: .body)
     static let pizzaTimerNum = makeFont(name: "LOTTERIACHAB", size: 44, style: .title)
     static let pizzaRegularTitle = makeFont(name: "NanumSquareNeo-cBd", size: 24, style: .title)
     static let pizzaBoldTitle = makeFont(name: "NanumSquareNeo-dEb", size: 24, style: .title)

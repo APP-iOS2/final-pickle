@@ -80,21 +80,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.ddudios.realpizza.refresh_process", using: nil) { task in
             self.handleProcessingTask(task: task as! BGProcessingTask)
-            self.updateRealmDataTomorrow()
         }
-    }
-    
-    func updateRealmDataTomorrow() {
-        let dateComponent = Calendar.current.dateComponents([.hour, .minute], from: missionStore.timeMissions[0].changeWakeupTime)
-        
-        notificationManager.scheduleNotification(
-            localNotification: LocalNotification(identifier: UUID().uuidString,
-                                                 title: "현실도 피자",
-                                                 body: "기상 미션을 완료하고 피자조각을 획득하세요!",
-                                                 dateComponents: dateComponent,
-                                                 repeats: true,
-                                                 type: .calendar)
-        )
     }
     
     func application(_ application: UIApplication,
@@ -133,6 +119,9 @@ struct PickleApp: App {
     @Environment(\.scenePhase) var scenePhase
     @State private var debugDelete: Bool = true
     
+    @AppStorage("backgroundNumber") var backgroundNumber: Int = 0
+    @AppStorage("isRunTimer") var isRunTimer: Bool = false
+
     var body: some Scene {
         WindowGroup {
             if ProcessInfo.processInfo.isRunningTests {
@@ -159,61 +148,83 @@ struct PickleApp: App {
         if newScene == .background {
             print("BACKGROUD")
             
-            timerVM.isPuase = true
-            timerVM.backgroundTimeStemp = Date()
-            print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
-            timerVM.fromBackground = true
+            backgroundNumber += 1
+            print("backgroundNumber: \(backgroundNumber)")
             
-            print("BACKGROUD_timeRemaining:\(timerVM.timeRemaining)")
+            timerVM.activeNumber += 1
+            print("activeNumber: \(timerVM.activeNumber)")
             
-            timerVM.backgroundTimeRemain = timerVM.timeRemaining
-            print("BACKGROUD_timeRemain:\(timerVM.backgroundTimeRemain)")
-            timerVM.backgroundSpendTime = timerVM.spendTime
-            
-            timerVM.backgroundTimeExtra = timerVM.timeExtra
+            if isRunTimer {
+                timerVM.isPuase = true
+                timerVM.backgroundTimeStemp = Date()
+                print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
+                timerVM.fromBackground = true
+                
+                print("BACKGROUD_timeRemaining:\(timerVM.timeRemaining)")
+                
+                timerVM.backgroundTimeRemain = timerVM.timeRemaining
+                print("BACKGROUD_timeRemain:\(timerVM.backgroundTimeRemain)")
+                timerVM.backgroundSpendTime = timerVM.spendTime
+                
+                timerVM.backgroundTimeExtra = timerVM.timeExtra
+            }
             
         }
         if newScene == .active {
             print("ACTIVE")
             
-            if timerVM.fromBackground {
-                timerVM.makeRandomSaying()
-                print("\(timerVM.wiseSaying)")
-                
-                print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
-                
-                var currentTime: Date = Date()
-                print("currentTime:\(currentTime) / Date(): \(Date())")
-                
-                var diff = currentTime.timeIntervalSince(timerVM.backgroundTimeStemp)
-                print("ActiveDiff: \(TimeInterval(diff))")
-                timerVM.timeRemaining = timerVM.backgroundTimeRemain
-                print("ActiveTimeRemaining: \(timerVM.timeRemaining)")
-                
-                timerVM.spendTime = timerVM.backgroundSpendTime
-                print("ActiveSpendTime: \(timerVM.spendTime)")
+            print("activeNumber: \(timerVM.activeNumber)")
+            print("backgroundNumber: \(backgroundNumber)")
+            print("isRunTimer: \(isRunTimer)")
             
-                timerVM.spendTime += diff
-                print("afterCalc:SpendTime\(timerVM.spendTime)")
+            if isRunTimer {
                 
-                timerVM.timeExtra = timerVM.backgroundTimeExtra
+                if timerVM.activeNumber != backgroundNumber {
+                    timerVM.showOngoingAlert = true
+                    print("timerVM.showOngoingAlert: \(timerVM.showOngoingAlert)")
+                    print("여기들어왓니..")
+                }
                 
-                if timerVM.timeRemaining > 0 {
-                    if timerVM.timeRemaining > diff {
-                        timerVM.timeRemaining -= diff
+                if timerVM.fromBackground {
+                    
+                    timerVM.makeRandomSaying()
+                    print("\(timerVM.wiseSaying)")
+                    
+                    print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
+                    
+                    var currentTime: Date = Date()
+                    print("currentTime:\(currentTime) / Date(): \(Date())")
+                    
+                    var diff = currentTime.timeIntervalSince(timerVM.backgroundTimeStemp)
+                    print("ActiveDiff: \(TimeInterval(diff))")
+                    timerVM.timeRemaining = timerVM.backgroundTimeRemain
+                    print("ActiveTimeRemaining: \(timerVM.timeRemaining)")
+                    
+                    timerVM.spendTime = timerVM.backgroundSpendTime
+                    print("ActiveSpendTime: \(timerVM.spendTime)")
+                    
+                    timerVM.spendTime += diff
+                    print("afterCalc:SpendTime\(timerVM.spendTime)")
+                    
+                    timerVM.timeExtra = timerVM.backgroundTimeExtra
+                    
+                    if timerVM.timeRemaining > 0 {
+                        if timerVM.timeRemaining > diff {
+                            timerVM.timeRemaining -= diff
+                        } else {
+                            diff -= timerVM.timeRemaining
+                            timerVM.isDecresing = false
+                            timerVM.timeExtra += diff
+                        }
                     } else {
-                        diff -= timerVM.timeRemaining
-                        timerVM.isDecresing = false
                         timerVM.timeExtra += diff
                     }
-                } else {
-                    timerVM.timeExtra += diff
+                    print("afterCalcTimeRemaining:\(timerVM.timeRemaining)")
+                    
+                    timerVM.fromBackground = false
+                    timerVM.isPuase = false
+                    
                 }
-                print("afterCalcTimeRemaining:\(timerVM.timeRemaining)")
-                
-                timerVM.fromBackground = false
-                timerVM.isPuase = false
-               
             }
         }
     }

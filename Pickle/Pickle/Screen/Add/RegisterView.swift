@@ -435,8 +435,8 @@ extension RegisterView {
                     isPresented: $successDelete,
                     title: "삭제",
                     alertContent: "삭제 하시겠습니까?",
-                    primaryButtonTitle: "취소하기",
-                    secondaryButtonTitle: "삭제하기",
+                    primaryButtonTitle: "삭제하기",
+                    secondaryButtonTitle: "취소하기",
                     primaryAction: {
                         isShowingEditTodo.toggle()
                         //4번 할일이 삭제 되었을 경우, 해당 등록된 알림도 삭제해야함. 해당 할일의 아이디 넣어줘야함

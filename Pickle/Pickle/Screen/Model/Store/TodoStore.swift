@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 
-
 @MainActor
 final class TodoStore: ObservableObject {
     
@@ -58,6 +57,7 @@ final class TodoStore: ObservableObject {
         repository.deleteAll()
     }
     
+    @discardableResult
     func update(todo: Todo) -> Todo {
         let object = repository.updateTodo(todo: todo)
         return Todo.mapFromPersistenceObject(object)

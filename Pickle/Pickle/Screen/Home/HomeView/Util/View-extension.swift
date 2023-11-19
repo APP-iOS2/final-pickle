@@ -28,19 +28,20 @@ extension View {
         modifier(HomeView.TimerViewModifier(selection: selection))
     }
     
-    func showPizzaPurchaseAlert(_ pizza: Pizza,
-                                _ isPizzaPuchasePresented: Binding<Bool>,
+    func showPizzaPurchaseAlert(_ pizzaSelection: Binding<HomeView.PizzaSelection>,
+                                _ description: Binding<String>,
                                 _ purchaseAction: @escaping () -> Void,
                                 _ navAction: (() -> Void)? = nil) -> some View {
-        modifier(PizzaAlertModifier(isPresented: isPizzaPuchasePresented,
-                                    title: "\(pizza.name)",
-                                    price: "",
-                                    descripation: "피자 2판을 완성하면 얻을수 있어요",
-                                    image: "\(pizza.image)",
-                                    lock: pizza.lock,
-                                    puchaseButtonTitle: "피자 구매하기 (₩1,200)",
-                                    primaryButtonTitle: "피자 완성하러 가기",
-                                    primaryAction: purchaseAction,
-                                    pizzaMakeNavAction: navAction))
+        let pizza = pizzaSelection.wrappedValue.seletedPizza
+        return modifier(PizzaAlertModifier(isPresented: pizzaSelection.isPizzaPuchasePresent,
+                                           title: "\(pizza.name)",
+                                           price: "",
+                                           description: description,
+                                           image: "\(pizza.image)",
+                                           lock: pizza.lock,
+                                           puchaseButtonTitle: "잠금해제 하기",
+                                           primaryButtonTitle: "피자 완성하러 가기",
+                                           primaryAction: purchaseAction,
+                                           pizzaMakeNavAction: navAction))
     }
 }

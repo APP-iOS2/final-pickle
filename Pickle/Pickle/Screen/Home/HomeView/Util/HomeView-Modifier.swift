@@ -10,8 +10,6 @@ import SwiftUI
 extension HomeView {
     struct SheetModifier: ViewModifier {
         @GestureState private var offset = CGSize.zero
-        @EnvironmentObject var pizzaStore: PizzaStore
-        @EnvironmentObject var userStore: UserStore
         
         @Binding var selection: PizzaSelectedView.Selection
         

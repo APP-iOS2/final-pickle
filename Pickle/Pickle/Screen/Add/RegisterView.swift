@@ -214,34 +214,7 @@ struct RegisterView: View {
         }
     }
     
-    @ViewBuilder
-    private var repeatDay: some View {
-        HStack {
-            Text("반복 요일")
-                .font(Font.pizzaBody)
-                .bold()
-                .padding(.vertical, 16)
-                .padding(.leading, 16)
-            
-            Spacer()
-            Button {
-                showingWeekSheet.toggle()
-            } label: {
-                Text("주말")
-                    .padding(.vertical, 16)
-                    .padding(.trailing, 16)
-                    .tint(Color.textGray)
-            }
-        }
-        .asRoundBackground()
-        .sheet(isPresented: $showingWeekSheet) {
-            alarmPickerView
-        }
-    }
-    
-    private func targetTimePickCell(_ label: String,
-                                    binding: Binding<String>,
-                                    show: Binding<Bool>) -> some View {
+    private func targetTimePickCell(_ label: String) -> some View {
         HStack {
             Text("\(label)")
                 .font(Font.pizzaBody)
@@ -250,29 +223,28 @@ struct RegisterView: View {
                 .padding(.leading, 16)
             Spacer()
             Button {
-                show.wrappedValue.toggle()
+                showingTargetTimeSheet.toggle()
             } label: {
-                Text("\(binding.wrappedValue)")
+                Text("\(targetTimes)")
                     .padding(.vertical, 16)
                     .padding(.trailing, 16)
                     .tint(Color.textGray)
             }
         }
         .asRoundBackground()
-        .sheet(isPresented: show) {
+        .sheet(isPresented: $showingTargetTimeSheet) {
             VStack {
-                targetTimePickerViewGenerator(binding: binding,
-                                              show: show)
+                targetTimePickerViewGenerator(targetTimes: $targetTimes,
+                                              show: $showingTargetTimeSheet,
+                                              targetTimeUnitStrs: targetTimeUnitStrs)
             }
         }
         .onTapGesture {
-            show.wrappedValue.toggle()
+            showingTargetTimeSheet.toggle()
         }
     }
     
-    private func timeConstraintPickCell(_ label: String,
-                                        binding: Binding<Date>,
-                                        show: Binding<Bool>) -> some View {
+    private func timeConstraintPickCell(_ label: String) -> some View {
         HStack {
             Text("\(label)")
                 .font(Font.pizzaBody)

@@ -82,26 +82,26 @@ struct ContentView: View {
 extension ContentView {
     
     private func initUserSetting() {
-        self.userSetting(.defaultPizza)
+        self.userSetting()
         missionStore.missionSetting()
     }
     
-    private func userSetting(_ pizza: Pizza) {
+    private func userSetting() {
         do {
             try userStore.fetchUser()
         } catch {
             // MARK: Add User Action
-            errorHandler(error, pizza)
+            errorHandler(error)
         }
     }
     
-    private func errorHandler(_ error: Error, _ pizza: Pizza) {
+    private func errorHandler(_ error: Error) {
         guard let error = error as? PersistentedError else { return }
         if error == .fetchUserError {
             var user = User.defaultUser
             
             user.currentPizzas = Pizza.allCasePizza.map { CurrentPizza(pizza: $0)}
-            user.pizzaID = pizza.id
+            user.pizzaID = user.currentPizzas.first!.pizza!.id
             
             userStore.addUser(default: user)
             try! userStore.fetchUser()

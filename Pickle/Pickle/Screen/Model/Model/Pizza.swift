@@ -29,7 +29,7 @@ struct Pizza: Identifiable {
 }
 
 extension Pizza: Codable { }
-extension Pizza: Equatable {}
+extension Pizza: Equatable { }
 
 extension Pizza {
     

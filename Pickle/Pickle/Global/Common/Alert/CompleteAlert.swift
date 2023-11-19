@@ -82,7 +82,7 @@ struct CompleteAlert: View {
     let action: () -> Void
     
     var body: some View {
-        VStack(spacing: 22) {
+        VStack(spacing: 12) {
             Button {
                 isPresented = false
             } label: {

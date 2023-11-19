@@ -19,7 +19,6 @@ struct HomeView: View {
     
     @EnvironmentObject var todoStore: TodoStore
     @EnvironmentObject var userStore: UserStore
-    @EnvironmentObject var pizzaStore: PizzaStore
     @EnvironmentObject var navigationStore: NavigationStore
     @EnvironmentObject var timerVM: TimerViewModel
     @StateObject private var viewModel: HomeViewModel = HomeViewModel()
@@ -35,7 +34,7 @@ struct HomeView: View {
     @State private var pizzaSelection: PizzaSelection = .init()
     @State private var editSelection: TodoSelection = .init()
     @State private var timerSelection: TimerSelection = .init()
-    
+    @State private var description: String = ""
     @State private var placeHolderContent: String = "?" // MARK: Dot Circle 뷰의 원 중심에 있는 content
     private let goalTotal: Double = 8                   // 피자 완성 카운트
     
@@ -48,14 +47,15 @@ struct HomeView: View {
     @AppStorage("isRunTimer") var isRunTimer: Bool = false
     @AppStorage("todoId") var todoId: String = ""
     
-    
     var body: some View {
         content
-            .task {
-                await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+            .onAppear {
                 if isRunTimer {
                     ongoingTodo = todoStore.getSeletedTodo(id: todoId)
                 }
+            }
+            .task {
+                await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
             }
             .onReceive(userStore.$user) {
                 userUpdateAction(user: $0)
@@ -67,19 +67,14 @@ struct HomeView: View {
                 routing(route: sheet)
             }
             .onReceive(viewModel.$pizzaPosition) { _ in
-                viewModel.updatePositionPizza(user: userStore.user)
+                viewModel.trigger(action: .updatePosition(userStore.user))
             }
-            .onChange(of: pizzaSelection.seletedPizza) { value in
-                if value.lock == false { userStore.trigger(action: .select(value)) }
+            .onChange(of: pizzaSelection.seletedPizza) { pizza in
+                if pizza.lock == false { userStore.trigger(action: .select(pizza)) }
             }
             .navigationDestination(for: HomeView.Routing.self) { route in
                 routing(stack: route)
             }
-//            .onAppear{
-//                if isRunTimer {
-//                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
-//                }
-//            }
     }
     
     private func routing(stack route: HomeView.Routing) -> some View {
@@ -129,21 +124,15 @@ struct HomeView: View {
     
     private func currentPizzaUpdateAction(currentPizza: CurrentPizza) {
         if let pizza = currentPizza.pizza {
-            withAnimation {
-                Log.debug("currentPizzaUpdate Action")
+            withAnimation(.easeIn(duration: 0.1)) {
                 self.pizzaSelection.currentPizza = pizza
-                viewModel.pizzaPosition = .pizza(pizza.id)
-                viewModel.currentPositionPizza = currentPizza
+                self.viewModel.trigger(action: .updateCurrent(currentPizza))
             }
         }
         
         if currentPizza.currentPizzaSlice >= 8 {
             navigationStore.pushHomeView(home: .showCompleteAlert(true))
         }
-    }
-    
-    private func unLockPizzaAction() {
-        userStore.unLockPizza(pizza: pizzaSelection.seletedPizza)
     }
     
     private func startTyping() {
@@ -168,6 +157,13 @@ struct HomeView: View {
         isRunTimer = false
         print("isRunTimer:\(isRunTimer)")
     }
+    
+    private func unLockPizzaAction() {
+       let effect = viewModel.trigger(action: .unlock(userStore, pizzaSelection.seletedPizza))
+       if case let .unlockFail(count) = effect {
+           description = "피자 \(count)개가 부족해요 ㅠㅠ \n 할일 을 하러 가볼까요?"
+       }
+   }
 }
 
 // MARK: HomeView Component , PizzaView, button, temp component, task complte label
@@ -226,15 +222,8 @@ extension HomeView {
                    secondaryButtonTitle: "",
                    primaryAction: stopTodo,
                    externalTapAction: stopTodo)
-//        .alert(isPresented: $timerVM.showOngoingAlert, content: {
-//            Alert(title: Text("타이머 아직안끝낫는디..."))
-//        })
-        
-        .showPizzaPurchaseAlert(pizzaSelection.seletedPizza,                   /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
-                                $pizzaSelection.isPizzaPuchasePresent) {       /* 두가지의 (액션)클로져를 받는다, */
-            Log.debug("인앱 결제 액션")                                            /* 1. 구매 액션 */
-            unLockPizzaAction()
-        }
+        .showPizzaPurchaseAlert($pizzaSelection, $description, unLockPizzaAction)
+        /* 피자 선택 sheet에서 피자를 선택하면 실행되는 alert Modifier */
     }
     
     enum ScrollPizzaID: Identifiable, Hashable {
@@ -264,27 +253,32 @@ extension HomeView {
     }
     
     private func pizzaPagingView(geo: GeometryProxy) -> some View {
-        ScrollViewReader { proxy in
-                LazyHStack {
-                    TabView(selection: $viewModel.pizzaPosition) {
-                        ForEach(Array(zip(userStore.user.currentPizzas, 
-                                          userStore.user.currentPizzas.indices)),
-                                id: \.1) { currentPizza in
-                            ZStack {
-                                makePizzaView(currentPizza: currentPizza.0)
-                            }
-                            .fixSize(geo, diffX: -pagePadding)
-                            .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
-                        }.padding(.bottom, 10)
-                            .padding(.top, -10)
+        LazyHStack {
+            TabView(selection: $viewModel.pizzaPosition) {
+                ForEach(Array(zip(userStore.user.currentPizzas,
+                                  userStore.user.currentPizzas.indices)),
+                        id: \.1) { currentPizza in
+                    ZStack {
+                        makePizzaView(currentPizza: currentPizza.0)
                     }
-                    .tabViewStyle(.page(indexDisplayMode: .always))
-                    .fixSize(geo, diffY: 30)
-                }
-            .onAppear {
-                viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
+                    .fixSize(geo, diffX: -pagePadding)
+                    .tag(ScrollPizzaID.pizza(currentPizza.0.pizza!.id))
+                }.padding(.bottom, 10)
+                    .padding(.top, -10)
             }
+            .tabViewStyle(.page(indexDisplayMode: .always))
+            .fixSize(geo, diffY: 30)
         }
+        .onAppear {
+            viewModel.pizzaScrollViewWidth = geo.size.width - pagePadding
+            setupAppearance()
+        }
+    }
+    
+    private func setupAppearance() {
+        let color = UIColor(Color.pickle)
+        UIPageControl.appearance().currentPageIndicatorTintColor = color
+        UIPageControl.appearance().pageIndicatorTintColor = color.withAlphaComponent(0.3)
     }
     
     private var scrollObservableView: some View {
@@ -414,6 +408,7 @@ struct HomeView_Previews: PreviewProvider {
                                                         todo: todo,
                                                         mission: mission)
             HomeView()
+                .environmentObject(TimerViewModel())
                 .environmentObject(todo)
                 .environmentObject(pizza)
                 .environmentObject(user)

@@ -28,6 +28,7 @@ final class UserStore: ObservableObject {
     }
     
     enum Action {
+        case unlock(Pizza)
         case select(Pizza)
         case create
         case delete
@@ -39,12 +40,7 @@ final class UserStore: ObservableObject {
         case .select(let pizza):
             Log.debug("pizza")
             self.selectCurrentPizza(pizza: pizza)
-        case .create:
-            break
-        case .delete:
-            break
-        case .update(let currentPizza):
-            Log.debug(currentPizza)
+        default:
             break
         }
     }
@@ -53,7 +49,7 @@ final class UserStore: ObservableObject {
     func fetchUser() throws {
         do {
             self.user = try userRepository.fetchUser()
-            let current = user.getCurrentPizza(using: user.pizzaID)
+            let current = user.getPizza(using: user.pizzaID)
             if let current {
                 self.currentPizza = current
             }
@@ -125,12 +121,15 @@ final class UserStore: ObservableObject {
     
     /// 피자를 언락 하기 위한 메서드
     /// - Parameter pizza: 언락할 피자를 인자로 받는다
-    func unLockPizza(pizza: Pizza) {
-        self.user.unlockPizza(pizza: pizza)
+    func unLockPizza(pizza: Pizza) throws {
         do {
+            try self.user.unlockPizza(pizza: pizza)
             try userRepository.updateUser(model: user)
         } catch {
             Log.error("\(error)")
+            if let unlock = error as? User.UnlockError {
+                throw unlock
+            }
         }
     }
     

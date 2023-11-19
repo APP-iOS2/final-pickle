@@ -12,7 +12,7 @@ extension View {
         isPresented: Binding<Bool>,
         title: String,
         price: String,
-        descripation: String,
+        description: Binding<String>,
         image: String,
         lock: Bool,
         puchaseButtonTitle: String,
@@ -24,7 +24,7 @@ extension View {
             PizzaAlertModifier(isPresented: isPresented,
                                title: title,
                                price: price,
-                               descripation: descripation,
+                               description: description,
                                image: image,
                                lock: lock,
                                puchaseButtonTitle: puchaseButtonTitle,
@@ -47,7 +47,7 @@ struct PizzaAlertModifier: ViewModifier {
     @Binding var isPresented: Bool
     let title: String
     let price: String
-    let descripation: String
+    @Binding var description: String
     let image: String
     let lock: Bool
     let puchaseButtonTitle: String
@@ -66,13 +66,14 @@ struct PizzaAlertModifier: ViewModifier {
                         .onTapGesture {
                             withAnimation {
                                 self.isPresented.toggle() // 외부 영역 터치 시 내려감
+                                self.description = ""
                             }
                         }
                     
                     PizzaAlert(isPresented: $isPresented,
                                title: title,
                                price: price,
-                               descripation: descripation,
+                               description: $description,
                                image: image,
                                lock: lock,
                                puchaseButtonTitle: puchaseButtonTitle,
@@ -97,7 +98,7 @@ struct PizzaAlert: View {
     @Binding var isPresented: Bool
     let title: String
     let price: String
-    let descripation: String
+    @Binding var description: String
     let image: String
     let lock: Bool
     let puchaseButtonTitle: String
@@ -106,8 +107,8 @@ struct PizzaAlert: View {
     let pizzaMakeNavAction: () -> Void
     
     var body: some View {
-        VStack(spacing: 30) {
-            VStack(alignment: .center, spacing: 8) {
+        VStack(spacing: 16) {
+            VStack(alignment: .center, spacing: 4) {
                 HStack(alignment: .center) {
                     ZStack {
                         Text(title)
@@ -119,6 +120,7 @@ struct PizzaAlert: View {
                         Button(action: {
                             withAnimation {
                                 isPresented.toggle()
+                                description = ""
                             }
                         }, label: {
                             Image(systemName: "xmark.circle.fill")
@@ -133,8 +135,15 @@ struct PizzaAlert: View {
                 Text("\(price)")
                     .font(.pizzaRegularSmallTitle)
                 
-                Text("\(descripation)")
-                    .font(.pizzaRegularSmallTitle)
+                if let values = User.PizzaUnlockCondition(rawValue: image)?.description,
+                   description.isEmpty {
+                    Text("\(values)")
+                        .font(.pizzaRegularSmallTitle)
+                } else {
+                    Text("\(description)")
+                        .foregroundStyle(Color.mainRed)
+                        .font(.pizzaRegularSmallTitle)
+                }
             }
             
             ZStack {
@@ -161,9 +170,6 @@ struct PizzaAlert: View {
             }
             
             Button {
-                withAnimation {
-                    isPresented.toggle()
-                }
                 puchaseAction()
             } label: {
                 Text(puchaseButtonTitle)
@@ -175,18 +181,6 @@ struct PizzaAlert: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.defaultGray)
-            
-            Button {
-                withAnimation {
-                    isPresented.toggle()
-                }
-                pizzaMakeNavAction()
-            } label: {
-                Text("\(primaryButtonTitle)")
-                    .font(.pizzaBody)
-                    .tint(Color.pickle)
-                    .padding(.bottom, 10)
-            }
         }
         .padding(.horizontal, 25)
         .padding(.vertical, 18)
@@ -208,7 +202,7 @@ struct PizzaAlert: View {
         .modifier(PizzaAlertModifier(isPresented: .constant(true),
                                      title: "안녕하세요",
                                      price: "안녕하세요",
-                                     descripation: "안녕하세요",
+                                     description: .constant("안녕하세요"),
                                      image: "potatoPizza",
                                      lock: false,
                                      puchaseButtonTitle: "안녕하세요",

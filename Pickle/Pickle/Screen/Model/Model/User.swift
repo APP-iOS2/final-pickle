@@ -63,22 +63,43 @@ extension User: Equatable {
     
     /// 피자 한개의 잠금해제 메소드
     /// - Parameter pizza: 잠금 해제할 피자
-    mutating func unlockPizza(pizza: Pizza) {
-        let currentPizza = getCurrentPizza(using: pizza.id)
+    mutating func unlockPizza(pizza: Pizza) throws {
+        let willUnlockPizza = getPizza(using: pizza.id)
     
-        guard var currentPizza else { return }
+        guard var willUnlockPizza else { return }
+        
+        try lockDetermine(pizza: pizza)
+        
         var pizza = pizza
         pizza.lockToggle()
-        currentPizza.pizza = pizza
+        willUnlockPizza.pizza = pizza
         
         self.currentPizzas = self.currentPizzas.map {
-            return currentPizza.id == $0.id ? currentPizza : $0
+            return willUnlockPizza.id == $0.id ? willUnlockPizza : $0
         }
     }
     
-    func getCurrentPizza(using id: String) -> CurrentPizza? {
+    private func lockDetermine(pizza: Pizza) throws {
+        guard
+            let lockPizza = PizzaUnlockCondition.init(rawValue: pizza.image)
+        else {
+            throw UnlockError.nameMismatch
+        }
+        
+        let currentPizzaCount = self.currentPizzas.map(\.currentPizzaCount).reduce(0, +)
+        
+        let condition = lockConditiion(pizza: lockPizza, pizza: currentPizzaCount)
+        
+        // 잠금조건이 달성 되지 않으면 해제 불가능 throw error
+        if let count = condition {
+            throw UnlockError.notMeet(count)
+        }
+    }
+    
+    // pizzaID 를 통해서 User의 현재 currentPizza 반환
+    func getPizza(using pizzaID: String) -> CurrentPizza? {
         return self.currentPizzas.filter {
-            if $0.pizza?.id == id {
+            if $0.pizza?.id == pizzaID {
                 return true
             }
             return false
@@ -93,6 +114,68 @@ extension User: Equatable {
              currentPizzaSlice: self.currentPizzaSlice,
              currentPizzas: self.currentPizzas,
              createdAt: self.createdAt)
+    }
+}
+
+// MARK: - 피자 잠금 해제
+extension User {
+    
+    /* 기본 페퍼로니 -> 치즈 2 (16)
+     -> 포테이토 4 (32) -> 베이컨 포테이토 6 (64)
+     -> 고구마 12 (128) -> 하와이안 24 (256)
+     -> 마르게리타 32 (512) */
+    // 카운트? , 슬라이스 로?
+    
+    enum UnlockError: Error {
+        // assosicatedType Int -> 부족한 조각 갯수
+        case notMeet(Int)
+        case nameMismatch
+    }
+    
+    enum PizzaUnlockCondition: String {
+        case pepperoni
+        case cheese
+        case potato
+        case baconPotato
+        case hawaiian
+        case sweetPotato
+        case margherita
+        
+        var condition: Int {
+            switch self {
+            case .pepperoni:
+                return 0
+            case .cheese:
+                return 2
+            case .potato:
+                return 4
+            case .baconPotato:
+                return 6
+            case .hawaiian:
+                return 12
+            case .sweetPotato:
+                return 24
+            case .margherita:
+                return 32
+            }
+        }
+        
+        var description: String {
+            "피자 \(self.condition)개를 얻어야 얻어야\n 잠금을 해제 할수 있어요~"
+        }
+    }
+    
+    /// 잠금해제 조건 판별 메서드
+    /// - Parameters:
+    ///   - pizza: 해제할 Lock condition Case
+    ///   - currentCount: 현재 가지고 있는 피자 갯수
+    /// - Returns: Int -> 부족한 피자 갯수 , 성공시 nil
+    private func lockConditiion(pizza: PizzaUnlockCondition, pizza currentCount: Int) -> Int? {
+        let condition = pizza.condition
+        switch pizza {
+        default:
+            return currentCount >= condition ? nil : condition - currentCount
+        }
     }
 }
 

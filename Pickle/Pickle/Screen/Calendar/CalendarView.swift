@@ -331,6 +331,7 @@ struct CalendarView: View {
                 Text("x")
                 Text("\(todayPieceOfPizza)")
                     .font(.pizzaBody)
+                
                     .foregroundStyle(Color.pickle)
                 Text("조각")
             }
@@ -357,11 +358,12 @@ struct CalendarView: View {
                 }
                 
                 Divider()
+                
                 HStack {
-                    Text("☀️")
-                    Text("기상 미션 완료")
+                    Text("✅")
+                    Text("오늘 할일 완료")
                     Spacer()
-                    Text("x" + " \(wakeUpMission)")
+                    Text("x" + " \(todayCompletedTasks)")
                 }
                 .font(.nanumRg)
                 
@@ -374,10 +376,11 @@ struct CalendarView: View {
                 .font(.nanumRg)
                 
                 HStack {
-                    Text("✅")
-                    Text("오늘 할일 완료")
+                    Text("☀️")
+                    Text("기상 미션 완료")
                     Spacer()
-                    Text("x" + " \(todayCompletedTasks)")
+                    Text("(곧 공개될 예정이에요!)")
+                        .font(.callout)
                 }
                 .font(.nanumRg)
                 

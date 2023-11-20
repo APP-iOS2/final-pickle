@@ -21,7 +21,7 @@ final class NotificationManager: NSObject,
     // 설정탭에서 알림 설정 권장 Alert
     @Published var isAlertOccurred: Bool = false
     
-    // MARK: SetNotiView DatePicker 연결, 알림 테스트용..삭제 예정
+    // MARK: SetNotiView DatePicker 연결
     @Published var notiTime: Date = Date() {
         didSet {
             removeAllNotifications()
@@ -58,7 +58,7 @@ final class NotificationManager: NSObject,
         isGranted = (currentSetting.authorizationStatus == .authorized)
     }
     
-    // MARK: SetNotiView DatePicker 연결, 알림 테스트용..삭제 예정
+    // MARK: SetNotiView DatePicker 연결
     func addNotification(with time: Date) {
         let content = UNMutableNotificationContent()
         content.title = "🍕 현실도 피자~"

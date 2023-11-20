@@ -373,7 +373,6 @@ extension HomeView {
     }
     
     private var tempButton: some View {
-        // MARK: 테스트용, 추후 삭제
         Button("할일 완료") {
             withAnimation {
                 do {

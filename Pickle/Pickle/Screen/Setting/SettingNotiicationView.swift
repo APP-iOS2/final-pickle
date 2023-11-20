@@ -77,12 +77,6 @@ struct SettingNotiicationView: View {
       
             }
             
-            // MARK: 알림 테스트용 DatePicker, 추후 삭제
-            //            Divider()
-            //            DatePicker("알림 시간 설정", selection: $notificationManager.notiTime, displayedComponents: .hourAndMinute)
-            //                .padding()
-            //            Divider()
-            
         Text("원활한 서비스 이용을 위해 ") + Text("알림을 허용").bold() + Text("해주세요!")
             Spacer()
             

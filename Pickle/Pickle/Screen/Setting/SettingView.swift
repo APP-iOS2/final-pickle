@@ -41,7 +41,7 @@ struct SettingView: View {
     @State private var isShowingEmailAlert: Bool = false
     
     @State private var isShowingSafari: Bool = false
-    private var appInformationWebViewSite =  "https://kai-swift.notion.site/kai-swift/5fcad0683ca24853ac1ed5b7de8c88f4"
+    private var appInformationWebViewSite =  "https://ahshch.notion.site/e899a56e18e9429bae8ce390181e42e4?pvs=4"
     
     var notificationStatus: String { notificationManager.isGranted ? "ON" : "OFF"}
     
@@ -112,22 +112,22 @@ struct SettingView: View {
             }
             
             Section("앱 정보") {
-                NavigationLink {
-                    // MARK: 가이드
-                } label: {
-                    HStack {
-                        Image(systemName: "questionmark.circle")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.secondary)
-                            .padding(.trailing)
-                        
-                        Text("가이드")
-                    }
-                }
+//                NavigationLink {
+//                    // MARK: 가이드
+//                } label: {
+//                    HStack {
+//                        Image(systemName: "questionmark.circle")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .frame(width: 24, height: 24)
+//                            .foregroundColor(.secondary)
+//                            .padding(.trailing)
+//                        
+//                        Text("가이드")
+//                    }
+//                }
                 
-               Button {
+                Button {
                     // MARK: 앱 정보
                     isShowingSafari = true
                 } label: {
@@ -145,21 +145,23 @@ struct SettingView: View {
                     
                 }
                 
-                HStack {
-                    Image(systemName: "envelope")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.secondary)
-                        .padding(.trailing)
-                    
-                    Text("문의")
-                    
-                    Spacer()
-                }
-                .onTapGesture {
+                Button {
                     copyToClipboard()
                     isShowingEmailAlert = true
+                } label: {
+                    HStack {
+                        Image(systemName: "envelope")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.secondary)
+                            .padding(.trailing)
+                        
+                        Text("문의")
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                    }
                 }
             }
         }
@@ -191,8 +193,8 @@ struct SettingView: View {
     }
     
     func copyToClipboard() {
-        pasteboard.string = "real.do.pizza@gmail.com"
-       
+        pasteboard.string = "realdo.pizza.app@gmail.com"
+        
     }
 }
 
@@ -204,7 +206,7 @@ struct WKWebViewPractice: UIViewRepresentable {
             return WKWebView()
         }
         let webView = WKWebView()
-
+        
         webView.load(URLRequest(url: url))
         
         return webView

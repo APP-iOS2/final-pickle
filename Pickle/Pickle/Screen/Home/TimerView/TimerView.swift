@@ -75,8 +75,7 @@ struct TimerView: View {
             timerVM.makeRandomSaying()
             timerVM.fetchTodo(todo: todo)
             todoId = todo.id
-            print("\(timerVM.wiseSaying)")
-            print("\(timerVM.timeRemaining)")
+ 
         }
         .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $isShowingReportSheet) {
@@ -101,7 +100,7 @@ struct TimerView: View {
     }
     // 시작 시 시간시간 업데이트, status ongoing으로
     func updateStart() {
-        print("beforeUpdate StartTime:\(todo.startTime)")
+
         let todo = Todo(id: todo.id,
                         content: todo.content,
                         startTime: Date(),
@@ -110,13 +109,13 @@ struct TimerView: View {
                         status: .ongoing)
         todoStore.update(todo: todo)
         timerVM.updateStart()
-        print("afterUpdate StartTime:\(todo.startTime)")
+
         self.realStartTime = Date()
         
         backgroundNumber = 1
         timerVM.activeNumber = 1
         isRunTimer = true
-        print("isRunTimer:\(isRunTimer)")
+
     }
     // 포기시 업데이트, status giveup으로
     func updateGiveup(spendTime: TimeInterval) {
@@ -129,9 +128,9 @@ struct TimerView: View {
         todoStore.update(todo: todo)
         timerVM.updateTodo(spendTime: spendTime, status: .giveUp)
         isRunTimer = false
-        print("isRunTimer:\(isRunTimer)")
+
         backgroundNumber = 0
-        print("backgroundNumber: \(backgroundNumber)")
+
         
         if spendTime < todo.targetTime {
             notificationManager.removeSpecificNotification(id: [todo.id])
@@ -150,7 +149,7 @@ struct TimerView: View {
         todoStore.update(todo: todo)
         timerVM.updateTodo(spendTime: spendTime, status: .done)
         isRunTimer = false
-        print("isRunTimer:\(isRunTimer)")
+
         backgroundNumber = 0
         
         do {
@@ -159,10 +158,10 @@ struct TimerView: View {
             Log.error("❌피자 조각 추가 실패❌")
         }
         
-        print("done: spendTime:\(spendTime) targetTime:\(todo.targetTime)")
+
         if spendTime < todo.targetTime {
             todoStore.deleteNotificaton(todo: todo, noti: notificationManager)
-            print("노티 삭제~")
+    
         }
         
 
@@ -306,9 +305,9 @@ extension TimerView {
                         .onReceive(timer) { _ in
                             if !isComplete || timerVM.isPuase {
                                 timerVM.timeRemaining -= 1
-                                print("TimerView_timerRemaing:\(timerVM.timeRemaining)")
+                          
                                 timerVM.spendTime += 1
-                                print("TimerView_SpendTime:\(timerVM.spendTime)")
+                        
                                 
                                 if timerVM.spendTime > completeLimit {
                                     isDisabled = false
@@ -351,7 +350,6 @@ extension TimerView {
             // 완료 버튼
             
             Button {
-                print("완료시 spendTime:\(timerVM.spendTime)")
                 isComplete = true
                 updateDone(spendTime: timerVM.spendTime)
             

@@ -25,14 +25,17 @@ struct PickleAppTest: App {
     // Launch Screen Delay
     init() {
         Thread.sleep(forTimeInterval: 2)
-        print("valueDefaile")
+        
     }
     
     var body: some Scene {
         WindowGroup {
             if debugDelete {
                 let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
+
+                
                 let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
+
             }
             Text("TestApplication")
         }

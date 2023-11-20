@@ -340,7 +340,7 @@ struct CalendarView: View {
                 .stroke(Color.secondary, lineWidth: 1))
             .onTapGesture {
                 pizzaSummarySheet.toggle()
-                print("\(pizzaSummarySheet)")
+         
             }
             
         }

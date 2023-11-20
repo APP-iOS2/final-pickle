@@ -192,8 +192,7 @@ struct SettingView: View {
     
     func copyToClipboard() {
         pasteboard.string = "real.do.pizza@gmail.com"
-        
-        print("이메일 복사됨")
+       
     }
 }
 

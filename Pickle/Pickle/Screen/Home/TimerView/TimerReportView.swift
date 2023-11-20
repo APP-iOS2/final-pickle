@@ -127,8 +127,7 @@ struct TimerReportView: View {
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
-            print("onAppearspendTime:\(todo.spendTime)")
-            print("onAppearstatus:\(todo.status)")
+         
         }
         .onDisappear {
             Task {

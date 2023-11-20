@@ -151,7 +151,7 @@ struct HomeView: View {
                         status: .giveUp)
         todoStore.update(todo: todo)
         isRunTimer = false
-        print("isRunTimer:\(isRunTimer)")
+ 
     }
     
     private func unLockPizzaAction() {

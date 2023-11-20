@@ -47,7 +47,7 @@ class TimerViewModel: ObservableObject {
                          targetTime: todo.targetTime,
                          spendTime: todo.spendTime,
                          status: todo.status)
-        print("fetchTodo:\(todo)")
+    
     }
     
     func updateStart() {
@@ -66,7 +66,7 @@ class TimerViewModel: ObservableObject {
                         targetTime: todo.targetTime,
                         spendTime: spendTime,
                         status: status)
-        print("updateTodo:\(todo)")
+       
     }
 
     func timerVMreset() {
@@ -82,6 +82,7 @@ class TimerViewModel: ObservableObject {
                              status: .ready)
     }
     
+    @discardableResult
     func makeRandomSaying() -> String {
         wiseSaying = wiseSayingArray.randomElement()!
         return wiseSaying

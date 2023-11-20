@@ -151,7 +151,7 @@ struct TimeMissionStyleView: View {
                 withAnimation {
                     do {
                         try userStore.addPizzaSlice(slice: 1)
-                        print("pizza +1")
+                        
                     } catch {
                         Log.error("❌피자 조각 추가 실패❌")
                     }

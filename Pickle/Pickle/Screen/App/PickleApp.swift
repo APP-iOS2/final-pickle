@@ -60,7 +60,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print("\(Date()): Could not schedule app refresh: \(error)")
+            Log.error("\(Date()): Could not schedule app refresh: \(error)")
         }
     }
     
@@ -73,7 +73,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print("\(Date()): Could not schedule processing task: \(error)")
+            Log.error("\(Date()): Could not schedule processing task: \(error)")
         }
         
         guard missionStore.timeMissions[0].date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") else { return }
@@ -146,71 +146,50 @@ struct PickleApp: App {
     }
     
     private func backgroundEvent(newScene: ScenePhase) {
+
         if newScene == .background {
-            print("BACKGROUD")
             
             backgroundNumber += 1
-            print("backgroundNumber: \(backgroundNumber)")
             
             timerVM.activeNumber += 1
-            print("activeNumber: \(timerVM.activeNumber)")
             
             if isRunTimer {
                 timerVM.isPuase = true
                 timerVM.backgroundTimeStemp = Date()
-                print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
                 timerVM.fromBackground = true
-                
-                print("BACKGROUD_timeRemaining:\(timerVM.timeRemaining)")
-                
                 timerVM.backgroundTimeRemain = timerVM.timeRemaining
-                print("BACKGROUD_timeRemain:\(timerVM.backgroundTimeRemain)")
                 timerVM.backgroundSpendTime = timerVM.spendTime
-                
                 timerVM.backgroundTimeExtra = timerVM.timeExtra
             }
             
         }
         if newScene == .active {
+            #if DEBUG
             print("ACTIVE")
             
             print("activeNumber: \(timerVM.activeNumber)")
             print("backgroundNumber: \(backgroundNumber)")
             print("isRunTimer: \(isRunTimer)")
+            #endif
             
             if isRunTimer {
                 
                 if timerVM.activeNumber != backgroundNumber {
                     
                     timerVM.todo = todoStore.getSeletedTodo(id: todoId)
-                    print("todoID:\(todoId)")
-                    print("getTodo:\(timerVM.todo)")
                     timerVM.showOngoingAlert = true
-                    print("timerVM.showOngoingAlert: \(timerVM.showOngoingAlert)")
-                    print("여기들어왓니..")
+                
                 }
                 
                 if timerVM.fromBackground {
                     
                     timerVM.makeRandomSaying()
-                    print("\(timerVM.wiseSaying)")
-                    
-                    print("backgroundTimeStemp: \(timerVM.backgroundTimeStemp)")
-                    
                     var currentTime: Date = Date()
-                    print("currentTime:\(currentTime) / Date(): \(Date())")
-                    
                     var diff = currentTime.timeIntervalSince(timerVM.backgroundTimeStemp)
-                    print("ActiveDiff: \(TimeInterval(diff))")
+                    
                     timerVM.timeRemaining = timerVM.backgroundTimeRemain
-                    print("ActiveTimeRemaining: \(timerVM.timeRemaining)")
-                    
                     timerVM.spendTime = timerVM.backgroundSpendTime
-                    print("ActiveSpendTime: \(timerVM.spendTime)")
-                    
                     timerVM.spendTime += diff
-                    print("afterCalc:SpendTime\(timerVM.spendTime)")
-                    
                     timerVM.timeExtra = timerVM.backgroundTimeExtra
                     
                     if timerVM.timeRemaining > 0 {
@@ -224,7 +203,6 @@ struct PickleApp: App {
                     } else {
                         timerVM.timeExtra += diff
                     }
-                    print("afterCalcTimeRemaining:\(timerVM.timeRemaining)")
                     
                     timerVM.fromBackground = false
                     timerVM.isPuase = false

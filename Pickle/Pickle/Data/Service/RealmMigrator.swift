@@ -23,9 +23,10 @@ class RealmMigrator {
     func updateSchema() {
         let config = Realm.Configuration(fileURL: URL.inDocumentsFolder("main.realm"), 
                                          schemaVersion: 3, migrationBlock: { migration, oldSchemaVersion in
-            print("migration: \(migration)")
-            print("oldSchemaVersion : \(oldSchemaVersion)")
             
+            Log.info("migration: \(migration)")
+            Log.info("oldSchemaVersion : \(oldSchemaVersion)")
+
             if oldSchemaVersion < 2 { migrationFromV1ToV2(migration: migration) }
             if oldSchemaVersion < 3 { migrationFromV2ToV3(migration: migration) }
         }, deleteRealmIfMigrationNeeded: true)
@@ -66,8 +67,9 @@ struct RealmProvider {
     var realm: Realm? {
         do {
             return try Realm(configuration: configuration)
-        } catch {
-            print(error.localizedDescription)
+        } catch {  
+
+            Log.error(error.localizedDescription)
             return nil
         }
     }

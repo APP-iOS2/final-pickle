@@ -14,7 +14,7 @@ class MySceneDelegate: UIResponder, UIWindowSceneDelegate {
             appDelegate.scheduleAppRefresh()
             appDelegate.scheduleProcessingTaskIfNeeded()
         } else {
-            print("AppDelegate를 찾을 수 없습니다.")
+            Log.error("AppDelegate를 찾을 수 없습니다.")
         }
     }
 }

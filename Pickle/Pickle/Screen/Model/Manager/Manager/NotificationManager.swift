@@ -93,7 +93,7 @@ final class NotificationManager: NSObject,
     func removeSpecificNotification(id: [String]) {
         notificationCenter.removeDeliveredNotifications(withIdentifiers: id)
         notificationCenter.removePendingNotificationRequests(withIdentifiers: id)
-        Log.debug("❌노티피케이션MANAGer 삭제 \(id)")
+        Log.debug("❌ NotificationManager에서 삭제 \(id)")
     }
     
     // 설정 앱으로 이동
@@ -167,7 +167,7 @@ extension UNMutableNotificationContent {
         let request = UNNotificationRequest(identifier: identifier,
                                             content: self,
                                             trigger: trigger)
-        Log.debug("✅노티피케이션MANAGer 안의 등록시 \(identifier)")
+        Log.debug("✅ NotificationManager 안의 등록시 \(identifier)")
         return request
     }
 }

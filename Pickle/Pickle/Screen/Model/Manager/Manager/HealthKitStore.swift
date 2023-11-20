@@ -49,7 +49,7 @@ class HealthKitStore: ObservableObject {
                     completion()
                 }
             } else if let error = error {
-                print("걸음 수 가져오기 실패: \(error.localizedDescription)")
+                Log.error("걸음 수 가져오기 실패: \(error.localizedDescription)")
             }
         }
         healthStore.execute(query)

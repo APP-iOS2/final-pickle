@@ -116,7 +116,8 @@ struct SettingView: View {
                     // MARK: 가이드
                 } label: {
                     HStack {
-                        Image(systemName: "questionmark.circle")                            .resizable()
+                        Image(systemName: "questionmark.circle")
+                            .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 24, height: 24)
                             .foregroundColor(.secondary)

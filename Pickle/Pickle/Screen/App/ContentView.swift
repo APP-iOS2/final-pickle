@@ -67,8 +67,6 @@ struct ContentView: View {
         .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
         .onAppear {
             initUserSetting()        // initUserSetting
-            healthKitStore.requestAuthorization { success in
-                if success { healthKitStore.fetchStepCount() } }
         }
         .fullScreenCover(isPresented: $isOnboardingViewActive) {
             SettingNotiicationView(isShowingOnboarding: $isOnboardingViewActive)

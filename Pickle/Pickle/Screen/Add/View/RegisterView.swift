@@ -106,6 +106,7 @@ struct RegisterView: View {
                     confirmActionButton {
                         isModify ? modifyAction() : todoAddAction()
                     }
+                    .padding(.bottom)
                 }
                 .frame(minHeight: geometry.size.height)
             }

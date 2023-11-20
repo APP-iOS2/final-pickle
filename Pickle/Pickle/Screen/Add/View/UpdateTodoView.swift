@@ -25,28 +25,29 @@ struct UpdateTodoView: View {
         NavigationStack {
             RegisterView(willUpdateTodo: $selection.seleted,
                          successDelete: $successDelete,
-                         isShowingEditTodo: $selection.isShowing,
                          isModify: true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        navigationStore.dismiss(home: .isShowingEditTodo(false, selection.seleted))
-                    } label: {
-                        Text("닫기")
-                            .tint(.primary)
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        todoStore.delete(todo: selection.seleted)
-                        todoStore.deleteNotificaton(todo: selection.seleted, noti: notificationManager)
-                        
-                        successDelete.toggle()
-                    } label: {
-                        Text("삭제")
-                            .tint(.red)
-                    }
-                }
+
+            .toolbar { toolBarView }
+            .onPreferenceChange(SuccessUpdateKey.self) { selection.isShowing = $0 }
+        }
+    }
+    
+    @ToolbarContentBuilder
+    var toolBarView: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                navigationStore.dismiss(home: .isShowingEditTodo(false, selection.seleted))
+            } label: {
+                Text("닫기")
+                    .tint(.primary)
+            }
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                successDelete.toggle()
+            } label: {
+                Text("삭제")
+                    .tint(.red)
             }
         }
     }

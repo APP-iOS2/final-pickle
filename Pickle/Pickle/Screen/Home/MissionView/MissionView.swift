@@ -27,17 +27,23 @@ struct MissionView: View {
     var body: some View {
         ScrollView {
             VStack {
-//                ForEach(timeMissions.indices, id: \.self) { index in
-//                    if let mission = timeMissions[safe: index] {
-//                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
-//                    }
-//                }
+                //                ForEach(timeMissions.indices, id: \.self) { index in
+                //                    if let mission = timeMissions[safe: index] {
+                //                        TimeMissionStyleView(timeMission: $timeMissions[index], showsAlert: $showsAlert, showSuccessAlert: $showSuccessAlert)
+                //                    }
+                //                }
                 
                 ForEach(behaviorMissions.indices, id: \.self) { index in
                     if let mission = behaviorMissions[safe: index] {
                         BehaviorMissionStyleView(behaviorMission: $behaviorMissions[index], showsAlert: $showsAlert, healthKitStore: healthKitStore)
                     }
                 }
+                
+                Text("'설정 > 건강 > 데이터 접근 및 기기'에서 권한을 수정할 수 있습니다.")
+                    .font(.nanumLt)
+                    .foregroundStyle(.secondary)
+                    .lineSpacing(5)
+                    .padding(.top, 1)
                 Spacer()
             }
         }
@@ -69,12 +75,12 @@ struct MissionView: View {
                 }
             }
         }
-//        .refreshable {
-//            healthKitStore.fetchStepCount()
-//            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-//            timeMissions = _timeMissions
-//            behaviorMissions = _behaviorMissions
-//        }
+        //        .refreshable {
+        //            healthKitStore.fetchStepCount()
+        //            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+        //            timeMissions = _timeMissions
+        //            behaviorMissions = _behaviorMissions
+        //        }
         .onDisappear {
             healthKitStore.fetchStepCount()
             

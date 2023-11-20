@@ -97,6 +97,7 @@ struct CompleteAlert: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: CGFloat.screenWidth * 0.5)
+                .padding(.bottom, 8)
             
             Text(title)
                 .font(.title)
@@ -106,16 +107,7 @@ struct CompleteAlert: View {
             Text("\(contents) 완성")
                 .font(.pizzaBody)
                 .foregroundStyle(.black)
-                .padding(.bottom, 20)
-            
-            Button(action: action) {
-                Text("피자 얻기")
-                    .font(.pizzaBoldButtonTitle)
-                    .foregroundColor(.pickle)
-            }
-            .padding()
-            .background(Color.black)
-            .cornerRadius(10.0)
+                .padding(.bottom, 30)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 18)

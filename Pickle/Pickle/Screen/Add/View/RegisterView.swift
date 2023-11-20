@@ -30,7 +30,7 @@ struct RegisterView: View {
     @State private var showingTargetTimeSheet: Bool = false
     
     @State private var startTimes = Date()
-    @State private var targetTimes: String = "1분"
+    @State private var targetTimes: String = "10분"
     @State private var seletedAlarm: String = "시간 선택"
     
     // MARK: Alert State
@@ -124,7 +124,7 @@ struct RegisterView: View {
     private func resetContents() {
         self.content = ""
         self.startTimes = Date()
-        self.targetTimes = "1분"
+        self.targetTimes = "10분"
     }
     
     private func targetToTimeString(_ time: TimeInterval) -> String {

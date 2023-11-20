@@ -15,7 +15,7 @@ struct TimeUnitPickerView: View {
     var body: some View {
         VStack {
             Picker("단위시간", selection: $targetTimes) {
-                let times = ["1분"] + targetTimeUnitStrs    // TODO: 테스트용 1분 추가 추후 삭제
+                let times = targetTimeUnitStrs    // TODO: 테스트용 1분 추가 추후 삭제
                 ForEach(times.indices, id: \.self) {
                     Text("\(times[$0])").tag(times[$0])
                 }

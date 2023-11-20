@@ -143,6 +143,7 @@ struct CalendarView: View {
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                 }
                 weekHeaderView()
+                    .padding(.top,5)
                 
                 if weekToMonth { monthlyView() }
                 else { weekView(calendarModel.currentWeek)

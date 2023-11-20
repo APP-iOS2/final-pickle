@@ -76,7 +76,7 @@ extension Todo {
               startTime: Date(),
               targetTime: 0,
               spendTime: 10,
-              status: .ready)
+              status: .giveUp)
     }
 }
 

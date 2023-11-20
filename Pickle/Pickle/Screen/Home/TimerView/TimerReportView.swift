@@ -99,31 +99,31 @@ struct TimerReportView: View {
                 
             }
             
-            Button(action: {
-                if todo.status == .done{
-                    do {
-                        try userStore.addPizzaSlice(slice: 1)
-                    } catch {
-                        Log.error("❌피자 조각 추가 실패❌")
-                    }
-                }
-  
-                
-                timerVM.timerVMreset()
-                dismiss()
-                isShowingTimerView.toggle()
-                
-            }, label: {
-                Text("확인")
-                    .font(.pizzaBody)
-                    .bold()
-                    .padding(.vertical, 8)
-                    .frame(width: .screenWidth * 0.2)
-                    .foregroundColor(.white)
-            })
-            .buttonStyle(.borderedProminent)
-            .tint(.pickle)
-            .padding(.bottom, .screenWidth * 0.1)
+                Button(action: {
+//                    if todo.status == .done {
+//                        do {
+//                            try userStore.addPizzaSlice(slice: 1)
+//                        } catch {
+//                            Log.error("❌피자 조각 추가 실패❌")
+//                        }
+//                    }
+                    
+                    timerVM.timerVMreset()
+                    dismiss()
+                    isShowingTimerView.toggle()
+                    
+                }, label: {
+                    Text("확인")
+                        .font(.pizzaBody)
+                        .bold()
+                        .padding(.vertical, 8)
+                        .frame(width: .screenWidth * 0.2)
+                        .foregroundColor(.white)
+                })
+                .buttonStyle(.borderedProminent)
+                .tint(.pickle)
+                .padding(.bottom, .screenWidth * 0.1)
+            
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"

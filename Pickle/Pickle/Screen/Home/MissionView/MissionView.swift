@@ -42,8 +42,11 @@ struct MissionView: View {
             }
         }
         .onAppear {
+            healthKitStore.requestAuthorization { success in
+                if success { healthKitStore.fetchStepCount() }
+            }
+            
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
-            healthKitStore.fetchStepCount()
             
             let (_timeMissions, _behaviorMissions) = missionStore.fetch()
             timeMissions = _timeMissions
@@ -74,6 +77,7 @@ struct MissionView: View {
 //        }
         .onDisappear {
             healthKitStore.fetchStepCount()
+            
             if let firstTimeMission = timeMissions.first {
                 missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
                                                                title: firstTimeMission.title,

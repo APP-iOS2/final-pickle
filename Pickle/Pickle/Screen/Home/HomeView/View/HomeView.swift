@@ -49,16 +49,10 @@ struct HomeView: View {
     
     var body: some View {
         content
-//            .onAppear {
-//                print("todoId:\(todoId)")
-//                print("isRundTimer: \(isRunTimer)")
-//                if isRunTimer {
-//                    print("todoId:\(todoId)")
-//                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
-//                }
-//            }
             .task {
                 await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
+                
+                if isRunTimer { ongoingTodo = todoStore.getSeletedTodo(id: todoId) }
             }
             .onReceive(userStore.$user) {
                 userUpdateAction(user: $0)

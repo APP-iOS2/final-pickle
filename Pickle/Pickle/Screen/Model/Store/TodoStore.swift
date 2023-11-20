@@ -46,8 +46,8 @@ final class TodoStore: ObservableObject {
         return Todo.mapFromPersistenceObject(object)
     }
     
-    func delete(todo: Todo) {                               // TODO: Delete가 실패 했을때 처리 해야함
-        repository.deleteTodo(model: todo)                  // repository.deleteTodo(todo: todo)
+    func delete(todo: Todo) {
+        repository.deleteTodo(model: todo)
         self.todos.removeAll(where: { $0.id == todo.id })
     }
     
@@ -69,12 +69,11 @@ final class TodoStore: ObservableObject {
     }
     
     func notificationAdding(todo: Todo, noti: NotificationManager) {
-        let notification = LocalNotification.makeLocalNotification(todo)
+        let notification = LocalNotification.makeLocalNotification(todo, notification: .todo(todo))
         noti.scheduleNotification(localNotification: notification)
     }
     
     func deleteNotificaton(todo: Todo, noti: NotificationManager) {
         noti.removeSpecificNotification(id: [todo.id])
-      
     }
 }

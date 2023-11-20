@@ -94,7 +94,7 @@ struct SettingNotiicationView: View {
                             localNotification: LocalNotification(identifier: UUID().uuidString,
                                                                  title: "현실도 피자",
                                                                  body: "환영합니다!",
-                                                                 timeInterval: 3,
+                                                                 timeInterval: 1,
                                                                  repeats: false,
                                                                  type: .time)
                         )

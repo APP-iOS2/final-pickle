@@ -79,7 +79,7 @@ struct TimeMissionSettingView: View {
                                                  body: "기상 미션을 완료하고 피자조각을 획득하세요!",
                                                  dateComponents: dateComponent,
                                                  repeats: true,
-                                                 type: .calendar)
+                                                 type: .wakeUp)
         )
     }
 }

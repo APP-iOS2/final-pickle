@@ -161,7 +161,7 @@ extension User {
         }
         
         var description: String {
-            "피자 \(self.condition)개를 얻어야 얻어야\n 잠금을 해제 할수 있어요~"
+            "피자 \(self.condition)판을 모아야 잠금을 해제할 수 있어요"
         }
     }
     

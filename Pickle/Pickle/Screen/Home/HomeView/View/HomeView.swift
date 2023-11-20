@@ -157,7 +157,7 @@ struct HomeView: View {
     private func unLockPizzaAction() {
        let effect = viewModel.trigger(action: .unlock(userStore, pizzaSelection.seletedPizza))
         if case let .unlockFail(count) = effect {
-            description = "피자 \(count)개가 부족해요 ㅠㅠ \n 할일 을 하러 가볼까요?"
+            description = "피자 \(count)판을 더 모아야 잠금을 해제할 수 있어요"
             return
         }
         if case .success = effect {

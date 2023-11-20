@@ -44,8 +44,11 @@ struct TimerView: View {
     var body: some View {
         ZStack {
             VStack {
+                
                 timerTitleView
-                Spacer()
+                    .offset(y: -(.screenWidth * 0.80))
+              
+//                Spacer()
             }
             
             // MARK: 타이머 부분
@@ -65,6 +68,7 @@ struct TimerView: View {
                     wiseSayingView
                 }
             }
+            .offset(y: .screenWidth * 0.08 )
         }
         .onAppear {
             startTodo()
@@ -149,9 +153,15 @@ struct TimerView: View {
         print("isRunTimer:\(isRunTimer)")
         backgroundNumber = 0
         
+        do {
+            try userStore.addPizzaSlice(slice: 1)
+        } catch {
+            Log.error("❌피자 조각 추가 실패❌")
+        }
+        
         print("done: spendTime:\(spendTime) targetTime:\(todo.targetTime)")
         if spendTime < todo.targetTime {
-//            todoStore.deleteNotification(todo: todo, notificationManager: notificationManager)
+            todoStore.deleteNotificaton(todo: todo, noti: notificationManager)
             print("노티 삭제~")
         }
         
@@ -248,9 +258,9 @@ extension TimerView {
                         .lineLimit(1)
                         .padding(.horizontal, 10)
                     
-                    Text("🍕가 구워지고 있어요")
-                        .font(.pizzaBody)
-                        .foregroundColor(.secondary)
+//                    Text("🍕가 구워지고 있어요")
+//                        .font(.pizzaBody)
+//                        .foregroundColor(.secondary)
                 }
             }
         }
@@ -339,11 +349,14 @@ extension TimerView {
     var timerButtonView: some View {
         HStack {
             // 완료 버튼
+            
             Button {
                 print("완료시 spendTime:\(timerVM.spendTime)")
                 isComplete = true
                 updateDone(spendTime: timerVM.spendTime)
+            
                 isShowingReportSheet = true
+
             } label: {
                 Text("완료")
                     .font(.pizzaHeadline)

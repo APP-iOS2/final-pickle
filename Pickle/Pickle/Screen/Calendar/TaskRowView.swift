@@ -19,7 +19,7 @@ struct TaskRowView: View {
         case .done:
             return .pickle
         case .giveUp:
-            return .red
+            return .gray
         default:
             return .pickle
         }

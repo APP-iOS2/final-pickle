@@ -145,7 +145,7 @@ struct RegisterView: View {
     
     private func deleteAction() {
         todoStore.delete(todo: willUpdateTodo)
-        notificationManager.removeSpecificNotification(id: [ willUpdateTodo.id ])
+        todoStore.deleteNotificaton(todo: willUpdateTodo, noti: notificationManager)
     }
     
     private func modifyAction() {

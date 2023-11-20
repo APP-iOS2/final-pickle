@@ -13,7 +13,7 @@ class CalendarViewModel: ObservableObject {
     @Published var currentWeek: [Date] = []
     
     // MARK: - Current Month
-    @Published var currentMonth: [Date.MonthDate] = []
+    // @Published var currentMonth: [Date.MonthDate] = []
     
     // MARK: - Current Day
     @Published var currentDay: Date = Date()

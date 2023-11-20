@@ -15,47 +15,35 @@ struct CalendarView: View {
     @EnvironmentObject var navigationStore: NavigationStore
     @Environment(\.scrollEnable) var scrollEnable: Binding<ScrollEnableKey>
     
-    @StateObject var calendarModel: CalendarViewModel = CalendarViewModel()
+    @StateObject private var calendarModel: CalendarViewModel = CalendarViewModel()
     
     @State private var filteredTasks: [Todo]?
     @State private var filteredTodayMission: [TimeMission]?
-    @State private var createWeek: Bool = false
     @State private var weekToMonth: Bool = false
     @State private var offset: CGSize = CGSize()
-    
     @State private var todayPieceOfPizza: Int = 0
     @State private var pizzaSummarySheet: Bool = false
     @State private var todayCompletedTasks: Int = 0
     @State private var wakeUpMission: Int = 0
     @State private var walkMission: Int = 0
     
-    var underlineBool: Bool {
-        
-        todayPieceOfPizza != 0 ? false : true
-    }
-    
     var body: some View {
-        VStack(alignment: .leading) {
-            headerView()
-                .padding(.top, 15)
-                .padding(.bottom, 8)
+        
+        GeometryReader { geometry in
             
-            currentPizzaSummaryView()
-                .padding(.horizontal)
-            
-            ScrollViewReader { proxy in
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 35) {
-                        EmptyView()
-                            .id(ScrollAnchor.calendar)
-                        taskView(tasks: filteredTasks ?? [])
-                    }.padding([.vertical, .leading], 15)
+            VStack(alignment: .leading) {
+                headerView()
+                currentPizzaSummaryView()
+                
+                ScrollView(.vertical) {
+                    
+                    taskView(tasks: filteredTasks ?? [])
+                    
                 }
-                .onChange(of: scrollEnable.calendar.wrappedValue) { value in
-                    if value { withAnimation { proxy.scrollTo(ScrollAnchor.calendar) } }
-                }
+                .scrollIndicators(.hidden)
+                .frame(width: geometry.size.width)
+                
             }
-            .scrollIndicators(.hidden)
         }
         .task {
             await todoStore.fetch()
@@ -82,7 +70,7 @@ struct CalendarView: View {
             pizzaSheetView()
                 .padding()
             Spacer()
-                .presentationDetents([.height(300), .large])
+                .presentationDetents([.height(300)])
         }
     }
     
@@ -92,7 +80,7 @@ struct CalendarView: View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 
-                Text(calendarModel.currentDay.format("YYYY년 MM월 d일"))
+                Text(calendarModel.currentDay.format("YYYY년 M월 d일"))
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
@@ -154,37 +142,45 @@ struct CalendarView: View {
                     .buttonStyle(.borderedProminent)
                     .buttonBorderShape(.roundedRectangle(radius: 50))
                 }
-                if weekToMonth {
-                    
-                    monthlyView()
-                    
-                } else {
-                    
-                    weekView(calendarModel.currentWeek)
-                        .padding(.bottom, 5)
-                }
+                weekHeaderView()
+                
+                if weekToMonth { monthlyView() }
+                else { weekView(calendarModel.currentWeek)
+                    .padding(.bottom, 5)}
             }
             .hLeading()
         }
         .padding(.horizontal)
+        .padding(.top, 15)
+    }
+    
+    func weekHeaderView() -> some View {
+        
+        HStack {
+            let days: [String] = ["일", "월", "화", "수", "목", "금", "토"]
+            ForEach(days, id: \.self) { day in
+                Text(day)
+                    .frame(maxWidth: .infinity)
+                    .font(.callout)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
+                
+            }
+        }
+        
     }
     
     // MARK: - Week View
     @ViewBuilder
     func weekView(_ week: [Date]) -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 8) {
             ForEach(week, id: \.self) { day in
                 VStack(spacing: 8) {
-                    Text(day.format("E"))
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
                     
                     Text(day.format("d"))
                         .font(.callout)
                         .fontWeight(.semibold)
                         .foregroundStyle(isSameDate(day, date2: calendarModel.currentDay) ? .white : .gray)
-                        .underline(underlineBool, color: .orange)
                         .frame(width: 30, height: 30)
                         .background {
                             if isSameDate(day, date2: calendarModel.currentDay) {
@@ -198,7 +194,7 @@ struct CalendarView: View {
                                     .fill(Color.mainRed)
                                     .frame(width: 5, height: 5)
                                     .vSpacing(.bottom)
-                                    .offset(y: -60)
+                                    .offset(y: -63)
                             }
                         }
                         .overlay(RoundedRectangle(cornerRadius: 20.0)
@@ -249,31 +245,18 @@ struct CalendarView: View {
     
     // MARK: - Montly View
     func monthlyView() -> some View {
-        let days: [String] = ["일", "월", "화", "수", "목", "금", "토", ]
-        let dates = calendarModel.extractMonth()
-        return VStack {
-            
-            HStack {
-                ForEach(days, id: \.self) { day in
-                    Text(day)
-                        .frame(maxWidth: .infinity)
-                        .font(.callout)
-                        .fontWeight(.medium)
-                        .foregroundColor(.primary)
-                    
-                }
-            }
-            
+        
+        VStack {
+            let dates = calendarModel.extractMonth()
             HStack {
                 let colums = Array(repeating: GridItem(.flexible()), count: 7)
-                LazyVGrid(columns: colums, spacing: 15) {
+                LazyVGrid(columns: colums, spacing: 10) {
                     
                     ForEach(dates, id: \.self) { day in
                         
                         if day.day != -1 {
                             Text("\(day.day)")
                                 .foregroundStyle(isSameDate(day.date, date2: calendarModel.currentDay) ? .white : .gray)
-                                .underline(isSameDate(day.date, date2: calendarModel.currentDay) && underlineBool, color: .orange)
                                 .font(.callout)
                                 .frame(width: 30, height: 30)
                                 .fontWeight(.semibold)
@@ -290,12 +273,11 @@ struct CalendarView: View {
                                             .fill(Color.mainRed)
                                             .frame(width: 5, height: 5)
                                             .vSpacing(.bottom)
-                                            .offset(y: -35)
+                                            .offset(y: -33)
                                     }
                                     
                                 }
-                                .onTapGesture {                                    // MARK: - Updating Current Date
-                                    
+                                .onTapGesture {
                                     calendarModel.currentDay = day.date
                                 }
                             
@@ -354,25 +336,23 @@ struct CalendarView: View {
             .padding([.horizontal, .vertical])
             .overlay(RoundedRectangle(cornerRadius: 20.0)
                 .stroke(Color.secondary, lineWidth: 1))
+            .onTapGesture {
+                pizzaSummarySheet.toggle()
+                print("\(pizzaSummarySheet)")
+            }
+            
         }
-        .onTapGesture {
-            pizzaSummarySheet.toggle()
-            print("\(pizzaSummarySheet)")
-        }
+        .padding(.horizontal)
+        .padding(.bottom, 5)
     }
     
     func pizzaSheetView() -> some View {
         ScrollView {
             VStack(alignment: .center, spacing: 25) {
-
                 
-//                Text("오늘 구운 피자 🍕")
-//                    .font(.nanumBd)
                 HStack {
-//                    Spacer()
-                    Text("\(calendarModel.currentDay.format("MM월 d일"))" + " 피자 🍕")
+                    Text("\(calendarModel.currentDay.format("M월 d일"))" + " 피자 🍕")
                         .font(.nanumBd)
-//                        .font(.pizzaBoldButtonTitle)
                 }
                 
                 Divider()
@@ -396,7 +376,7 @@ struct CalendarView: View {
                     Text("✅")
                     Text("오늘 할일 완료")
                     Spacer()
-                    Text("x" + "\(todayCompletedTasks)")
+                    Text("x" + " \(todayCompletedTasks)")
                 }
                 .font(.nanumRg)
                 
@@ -405,6 +385,7 @@ struct CalendarView: View {
                     Text("Total Pizza")
                     Spacer()
                     Text("\(todayPieceOfPizza)" + " 조각")
+                        .foregroundStyle(Color.pickle)
                 }
                 .font(.nanumBd)
                 Divider()

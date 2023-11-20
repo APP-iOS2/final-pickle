@@ -26,6 +26,7 @@ struct UpdateTodoView: View {
             RegisterView(willUpdateTodo: $selection.seleted,
                          successDelete: $successDelete,
                          isModify: true)
+
             .toolbar { toolBarView }
             .onPreferenceChange(SuccessUpdateKey.self) { selection.isShowing = $0 }
         }

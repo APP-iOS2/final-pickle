@@ -10,25 +10,23 @@ import SwiftUI
 struct TaskRowView: View {
     
     @State private var isShowingReportSheet: Bool = false
+    @AppStorage("is24HourClock") private var is24HourClock: Bool = true
+    @AppStorage("timeFormat") private var timeFormat: String = "HH:mm"
     
     var task: Todo
-    
-    @AppStorage("is24HourClock") var is24HourClock: Bool = true
-    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
-    
     var indicatorColor: Color {
-        return task.startTime.isSameHour && task.status == .ready ? .pickle : .primary
-        //        {
-        //            return .green
-        //        }
-        //        return task.creationDate.isSameHour ? .blue : (task.creationDate.isPastHour ? .red : .black)
+        switch task.status {
+        case .done:
+            return .pickle
+        case .giveUp:
+            return .red
+        default:
+            return .pickle
+        }
     }
     
     var taskSymbol: Image {
-        
         switch task.status {
-        case .ready:
-            return Image(systemName: "circle.dotted")
         case .done:
             return Image(systemName: "checkmark.circle.fill")
         case .giveUp:
@@ -41,58 +39,54 @@ struct TaskRowView: View {
     var body: some View {
         
         if task.status == .done || task.status == .giveUp {
-            Button(action: {
+            
+            Button {
                 isShowingReportSheet = true
-            }, label: {
+            } label: {
                 taskRowView
-            })
+            }
             .foregroundColor(.primary)
-        } else {
-            taskRowView
-        }
-        
+            
+        } else { taskRowView }
     }
+    
     @ViewBuilder
     private var taskContent: some View {
-        Text(task.content)
-            .font(.pizzaStoreSmall)
-            .foregroundStyle(.primary)
-            .fontWeight(.regular)
-        
+            Text(task.content)
+                .font(.callout)
+                .fontWeight(.light)
     }
     
     @ViewBuilder
     private var taskRowView: some View {
-        HStack(alignment: .center, spacing: 5) {
+        HStack(alignment: .center) {
             taskSymbol
-                .foregroundStyle(Color.pickle)
-                .frame(width: 15, height: 15)
-                .padding(4)
-            //                    .background(.white)
-            //    .background(.white, in: .circle)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                taskContent
-                //.strikethrough(task.status == .giveUp, pattern: .solid, color: .black)
-            }
-            
-            //                if task.startTime.isSameHour {
-            //                    Text("이제 할일")
-            //                        .font(.pizzaCaption)
-            //                        .fontWeight(.semibold)
-            //                        .foregroundStyle(indicatorColor)
-            //                }
-            
-            Label(task.startTime.format(timeFormat), systemImage: "clock")
                 .font(.caption)
-                .foregroundColor(indicatorColor)
+                .foregroundStyle(indicatorColor)
+            
+            taskContent
+                    
+            HStack {
+                if task.status == .ready && task.startTime.isSameHour {
+                    Image(systemName: "clock.badge")
+                        .foregroundColor(.pickle)
+                }
+                Text(task.startTime.format(timeFormat))
+            }
+                .font(.caption)
                 .padding(.horizontal)
                 .hSpacing(.trailing)
+                .frame(maxWidth: .infinity)
+  
         }
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
+        .padding(.bottom, 5)
+        .padding(.leading, 18)
+        .padding(.trailing, 5)
+        
         .sheet(isPresented: $isShowingReportSheet) {
             TimerReportView(isShowingReportSheet: $isShowingReportSheet,
                             isShowingTimerView: .constant(false),

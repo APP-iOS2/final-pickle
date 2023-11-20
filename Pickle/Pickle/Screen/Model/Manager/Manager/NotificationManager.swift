@@ -97,7 +97,7 @@ final class NotificationManager: NSObject,
                                                 content: content,
                                                 trigger: trigger)
             
-            print("노티피케이션MANAGer 안의 등록시 \(localNotification.identifier)")
+            print("✅노티피케이션MANAGer 안의 등록시 \(localNotification.identifier)")
             notificationCenter.add(request)
             
         // 몇 초 후 알림
@@ -120,7 +120,10 @@ final class NotificationManager: NSObject,
     }
         
     func removeSpecificNotification(id: [String]) {
+     
         notificationCenter.removeDeliveredNotifications(withIdentifiers: id)
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: id)
+        print("❌노티피케이션MANAGer 삭제 \(id)")
     }
     
     // 설정 앱으로 이동

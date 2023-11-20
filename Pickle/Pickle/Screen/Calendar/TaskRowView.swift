@@ -52,38 +52,42 @@ struct TaskRowView: View {
     
     @ViewBuilder
     private var taskContent: some View {
+        VStack(alignment: .leading) {
             Text(task.content)
-                .font(.callout)
-                .fontWeight(.light)
+                .font( .callout)
+                .lineLimit(1)
+                .multilineTextAlignment(.leading)
+        }
+        Spacer()
     }
     
     @ViewBuilder
     private var taskRowView: some View {
-        HStack(alignment: .center) {
+        HStack {
             taskSymbol
-                .font(.caption)
                 .foregroundStyle(indicatorColor)
             
             taskContent
-                    
             HStack {
                 if task.status == .ready && task.startTime.isSameHour {
                     Image(systemName: "clock.badge")
                         .foregroundColor(.pickle)
+                        .font(.caption)
+                        
                 }
                 Text(task.startTime.format(timeFormat))
+                    .font(.footnote)
+                    .fontWeight(.light)
+                    
             }
-                .font(.caption)
-                .padding(.horizontal)
-                .hSpacing(.trailing)
-                .frame(maxWidth: .infinity)
-  
+            .padding(.horizontal)
         }
+        .font(.callout)
         .onAppear {
             timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
         }
         .hSpacing(.leading)
-        .padding(.bottom, 5)
+        .padding(.bottom, 10)
         .padding(.leading, 18)
         .padding(.trailing, 5)
         

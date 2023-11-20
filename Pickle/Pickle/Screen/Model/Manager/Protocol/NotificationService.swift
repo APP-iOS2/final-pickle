@@ -9,6 +9,6 @@ import Foundation
 
 protocol NotificationService: AnyObject {
     var mediator: Mediator { get }
-    func post(info: Todo) async
-    func receive(info: Todo) async
+    func post(notification type: NotiType) async
+    func receive(notification type: NotiType) async
 }

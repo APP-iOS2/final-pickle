@@ -11,6 +11,5 @@ protocol Mediator: AnyObject {
     static var shared: Mediator { get set }
     var manager: NotificationService? { get set }
     var navigation: NotificationService? { get set }
-    func notify(todo: Todo) async
+    func notify(notification type: NotiType) async
 }
-

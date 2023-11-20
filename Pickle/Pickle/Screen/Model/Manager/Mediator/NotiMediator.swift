@@ -20,7 +20,7 @@ final class NotiMediator: Mediator {
         self.navigation = navigation
     }
     
-    func notify(todo: Todo) async {
-        await navigation?.receive(info: todo)
+    func notify(notification type: NotiType) async {
+        await navigation?.receive(notification: type)
     }
 }

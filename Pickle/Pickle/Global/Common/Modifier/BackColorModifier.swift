@@ -13,7 +13,7 @@ struct BackColorModifier: ViewModifier {
     private var filteredColor: Color {
         switch scheme {
         case .dark:
-            return .secondary
+            return .darkGray
         case .light:
             return .lightGray
         @unknown default:

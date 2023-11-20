@@ -13,6 +13,11 @@ extension Color {
         return Color(hex: 0xFAFAFA)
     }
     
+    // 진한 회색
+    static var darkGray: Color {
+        return Color(hex: 0x1C1C1E)
+    }
+    
     // 디폴트 회색
     static var defaultGray: Color {
         return Color(hex: 0xCCCCCC)

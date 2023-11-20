@@ -25,11 +25,16 @@ final class NavigationStore: ObservableObject, NotificationService {
         self.mediator.navigation = self
     }
     
-    func receive(info: Todo) async {
-        pushHomeView(home: .isShowingTimerView(info))
+    func receive(notification type: NotiType) async {
+        if case let .todo(info) = type {
+            pushHomeView(home: .isShowingTimerView(info))
+        }
+        if case .health = type {
+            pushHomeView(home: .pushMission)
+        }
     }
     
-    func post(info: Todo) async {
+    func post(notification type: NotiType) async {
         fatalError("do not call this method")
     }
 

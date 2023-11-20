@@ -24,7 +24,6 @@ final class NotificationManager: NSObject,
     // MARK: SetNotiView DatePicker 연결, 알림 테스트용..삭제 예정
     @Published var notiTime: Date = Date() {
         didSet {
-            // Set Notification with the Time - 3
             removeAllNotifications()
             addNotification(with: notiTime)
         }
@@ -39,25 +38,23 @@ final class NotificationManager: NSObject,
     
     let mediator: Mediator
     
-    func post(info: Todo) async {
-        await mediator.notify(todo: info)
+    func post(notification type: NotiType) async {
+        await mediator.notify(notification: type)
     }
     
-    func receive(info: Todo) async {
+    func receive(notification type: NotiType) async {
         fatalError("do not call this method")
     }
     
     // 푸시 알림 권한 요청
     func requestNotiAuthorization() async throws {
         try await notificationCenter.requestAuthorization(options: [.sound, .alert])
-        
         await getCurrentSetting()
     }
     
     // 현재 알림 설정 확인
     func getCurrentSetting() async {
         let currentSetting = await notificationCenter.notificationSettings()
-        
         isGranted = (currentSetting.authorizationStatus == .authorized)
     }
     
@@ -83,35 +80,9 @@ final class NotificationManager: NSObject,
         content.sound = UNNotificationSound.default
         content.userInfo = localNotification.userInfo
         
-        let repeats = localNotification.repeats
+        let request = content.makeRequest(localNotification: localNotification)
         
-        switch localNotification.type {
-        // 특정 날짜 및 시간에 알림 예약
-        case .calendar:
-            guard let dateComponents = localNotification.dateComponents else { return }
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents,
-                                                        repeats: repeats)
-            
-            let request = UNNotificationRequest(identifier: localNotification.identifier,
-                                                content: content,
-                                                trigger: trigger)
-            
-            print("✅노티피케이션MANAGer 안의 등록시 \(localNotification.identifier)")
-            notificationCenter.add(request)
-            
-        // 몇 초 후 알림
-        case .time:
-            guard let timeInterval = localNotification.timeInterval else { return }
-            
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval,
-                                                            repeats: repeats)
-            
-            let request = UNNotificationRequest(identifier: localNotification.identifier,
-                                                content: content,
-                                                trigger: trigger)
-            notificationCenter.add(request)
-        }
+        notificationCenter.add(request)
     }
 
     func removeAllNotifications() {
@@ -120,10 +91,9 @@ final class NotificationManager: NSObject,
     }
         
     func removeSpecificNotification(id: [String]) {
-     
         notificationCenter.removeDeliveredNotifications(withIdentifiers: id)
         notificationCenter.removePendingNotificationRequests(withIdentifiers: id)
-        print("❌노티피케이션MANAGer 삭제 \(id)")
+        Log.debug("❌노티피케이션MANAGer 삭제 \(id)")
     }
     
     // 설정 앱으로 이동
@@ -138,50 +108,67 @@ final class NotificationManager: NSObject,
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
-    // 앱이 실행중일때L 알림이 도착하면 채택하여 구현한 메서드 호출, 사용자에게 배너와 소리로 알림 표시
+    
+    // 앱이 실행중일때 알림이 도착하면 채택하여 구현한 메서드 호출, 사용자에게 배너와 소리로 알림 표시
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
-        
-        Log.debug("willPresent notification: \(notification.request.content.userInfo)")
         return [.banner, .sound]
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, 
                                 didReceive response: UNNotificationResponse) async {
-        Log.debug("didReceive notification: \(response.notification.request.content.userInfo)")
         let userInfo = response.notification.request.content.userInfo
-        let info = userInfo.mapToStringKey()
-        let todo = Todo.init(dic: info)
-        await post(info: todo)
+        await notificationRouting(userInfo: userInfo)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, 
                                 openSettingsFor notification: UNNotification?) {
-        Log.debug("notification OpenSettingsFor: \(notification?.request.content.userInfo)")
+        let userInfo = notification?.request.content.userInfo
     }
     
+    private func notificationRouting(userInfo: [AnyHashable: Any]) async {
+        let info = userInfo.mapToStringKey()
+        if let statusString = info[LocalNotification.notiType] as? String {
+            let notificationType = NotiType.getValue(value: statusString)
+            switch notificationType {
+            case .calendar, .health, .time, .wakeUp:
+                await post(notification: notificationType)
+            case .todo:
+                let todo = Todo.init(dic: info)
+                await post(notification: .todo(todo))
+            }
+        }
+    }
 }
 
-//  nonisolated func userNotificationCenter(
-//      _ center: UNUserNotificationCenter,
-//      didReceive response: UNNotificationResponse,
-//      withCompletionHandler completionHandler: @escaping () -> Void) {
-//
-//      Log.debug("response : \(response.notification.request.content.userInfo)")
-//
-//  }
-
-//    @Published var isGranted: Bool = UserDefaults.standard.bool(forKey: "hasUserAgreedNoti") {
-//        didSet {
-//            if isGranted {
-//                // On Action - 1
-//                UserDefaults.standard.set(true, forKey: "hasUserAgreedNoti")
-//                requestNotiAuthorization()
-//            } else {
-//                // Off Action - 2
-//                UserDefaults.standard.set(false, forKey: "hasUserAgreedNoti")
-//                requestNotiAuthorization()
-//            }
-//        }
-//    }
+extension UNMutableNotificationContent {
+    
+    func makeRequest(localNotification: LocalNotification) -> UNNotificationRequest {
+        let trigger = makeTrigger(localNotification: localNotification)
+        return makeNotificationRequest(identifier: localNotification.identifier, trigger: trigger)
+    }
+    
+    func makeTrigger(localNotification: LocalNotification) -> UNNotificationTrigger {
+        switch localNotification.type {
+            // 특정 날짜 및 시간에 알림 예약
+        case .calendar, .health, .wakeUp, .todo:
+            guard let dateComponents = localNotification.dateComponents else { assert(false) }
+            return UNCalendarNotificationTrigger(dateMatching: dateComponents,
+                                                 repeats: localNotification.repeats)
+            // 몇 초 후 알림
+        case .time:
+            guard let timeInterval = localNotification.timeInterval else { assert(false) }
+            return UNTimeIntervalNotificationTrigger(timeInterval: timeInterval,
+                                                     repeats: localNotification.repeats)
+        }
+    }
+    
+    func makeNotificationRequest(identifier: String, trigger: UNNotificationTrigger) -> UNNotificationRequest {
+        let request = UNNotificationRequest(identifier: identifier,
+                                            content: self,
+                                            trigger: trigger)
+        Log.debug("✅노티피케이션MANAGer 안의 등록시 \(identifier)")
+        return request
+    }
+}
     

@@ -22,7 +22,7 @@ struct BackgroundModifier: ViewModifier {
         case .light:
             return .white
         case .dark:
-            return .gray
+            return .darkGray
         @unknown default:
             return .secondary
         }
@@ -36,7 +36,7 @@ struct BackgroundModifier: ViewModifier {
 enum Theme {
     static func colorMode(_ scheme: ColorScheme) -> Color {
         let lightColor = Color.white
-        let darckColor = Color.gray
+        let darckColor = Color.darkGray
         
         switch scheme {
         case .light: return lightColor
@@ -46,7 +46,7 @@ enum Theme {
     }
     
     static func colorMode2(_ scheme: ColorScheme) -> Color {
-        let lightColor = Color.gray
+        let lightColor = Color.darkGray
         let darckColor = Color.white
         
         switch scheme {

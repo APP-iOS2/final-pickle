@@ -103,7 +103,7 @@ struct SettingNotiicationView: View {
                     }
                 }
             } label: {
-                Text("알림 허용하기")
+                Text("확인")
                     .primaryButtonModifier(frame: 300)
             }
         }

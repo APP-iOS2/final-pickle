@@ -14,6 +14,8 @@ struct TodoCellView: View {
     
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var navigationStore: NavigationStore
+    @EnvironmentObject var todoStore: TodoStore
+    @EnvironmentObject var notificationManager: NotificationManager
     
     var todo: Todo
     
@@ -38,6 +40,8 @@ struct TodoCellView: View {
                 
                 Button {
                     navigationStore.pushHomeView(home: .isShowingTimerView(todo))
+                    todoStore.deleteNotificaton(todo: todo, noti: notificationManager)
+                    
                 } label: {
                     ZStack {
                         Rectangle()

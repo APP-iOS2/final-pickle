@@ -15,7 +15,8 @@ struct SettingNotiicationView: View {
     @Binding var isShowingOnboarding: Bool
     
     var body: some View {
-        VStack {
+        VStack(spacing: 30) {
+            Spacer()
             VStack(spacing: 4) {
                 Text("🍕")
                     .font(.system(size: 50))
@@ -24,12 +25,10 @@ struct SettingNotiicationView: View {
                 Group {
                     Text("피자를 놓치지 않도록")
                     Text("현실도 피자").bold() + Text("에서 알림을 보내드려요.")
-                    Text("원활한 서비스 이용을 위해 ") + Text("알림을 허용").bold() + Text("해주세요!")
+                  
                 }
                 .font(.nanumRg)
             }
-            
-            Spacer()
             
             VStack(alignment: .trailing) {
                 VStack(spacing: .zero) {
@@ -74,7 +73,8 @@ struct SettingNotiicationView: View {
                 
                 Text("👆")
                     .font(.system(size: 40))
-                    .offset(x: -50)
+                    .offset(x: -45)
+      
             }
             
             // MARK: 알림 테스트용 DatePicker, 추후 삭제
@@ -83,6 +83,7 @@ struct SettingNotiicationView: View {
             //                .padding()
             //            Divider()
             
+        Text("원활한 서비스 이용을 위해 ") + Text("알림을 허용").bold() + Text("해주세요!")
             Spacer()
             
             Button {

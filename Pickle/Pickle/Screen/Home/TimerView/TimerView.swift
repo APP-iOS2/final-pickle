@@ -113,8 +113,8 @@ struct TimerView: View {
         print("afterUpdate StartTime:\(todo.startTime)")
         self.realStartTime = Date()
         
-        backgroundNumber = 0
-        timerVM.activeNumber = 0
+        backgroundNumber = 1
+        timerVM.activeNumber = 1
         isRunTimer = true
         print("isRunTimer:\(isRunTimer)")
     }
@@ -204,8 +204,8 @@ struct TimerView: View {
         self.settingTime = todo.targetTime
         timerVM.timeRemaining = settingTime
         timerVM.spendTime = 0
-        timerVM.activeNumber = 0
-        backgroundNumber = 0
+//        timerVM.activeNumber = 1
+//        backgroundNumber = 1
     }
     
     func turnMode() {

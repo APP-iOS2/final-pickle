@@ -49,11 +49,14 @@ struct HomeView: View {
     
     var body: some View {
         content
-            .onAppear {
-                if isRunTimer {
-                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
-                }
-            }
+//            .onAppear {
+//                print("todoId:\(todoId)")
+//                print("isRundTimer: \(isRunTimer)")
+//                if isRunTimer {
+//                    print("todoId:\(todoId)")
+//                    ongoingTodo = todoStore.getSeletedTodo(id: todoId)
+//                }
+//            }
             .task {
                 await todoStore.fetch()  // MARK: Persistent 저장소에서 Todo 데이터 가져오기
             }
@@ -146,10 +149,10 @@ struct HomeView: View {
     }
     
     private func stopTodo() {
-        let todo = Todo(id: ongoingTodo.id,
-                        content: ongoingTodo.content,
-                        startTime: ongoingTodo.startTime,
-                        targetTime: ongoingTodo.targetTime,
+        let todo = Todo(id: timerVM.todo.id,
+                        content: timerVM.todo.content,
+                        startTime: timerVM.todo.startTime,
+                        targetTime: timerVM.todo.targetTime,
                         spendTime: 0,
                         status: .giveUp)
         todoStore.update(todo: todo)

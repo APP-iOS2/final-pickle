@@ -24,7 +24,7 @@ final class TodoStore: ObservableObject {
     @Injected(UserRepoKey.self) var userRepository: UserRepositoryProtocol
     
     func getSeletedTodo(id: String) -> Todo {
-        if let todo = self.todos.filter({ $0.id == id }).first {
+        if let todo = self.todos.filter({ $0.id == id }).last {
             return todo
         } else {
             assert(false, "getSeleted Todo Failed")

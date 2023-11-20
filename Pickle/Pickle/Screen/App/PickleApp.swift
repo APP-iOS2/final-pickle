@@ -121,6 +121,7 @@ struct PickleApp: App {
     
     @AppStorage("backgroundNumber") var backgroundNumber: Int = 0
     @AppStorage("isRunTimer") var isRunTimer: Bool = false
+    @AppStorage("todoId") var todoId: String = ""
 
     var body: some Scene {
         WindowGroup {
@@ -180,6 +181,10 @@ struct PickleApp: App {
             if isRunTimer {
                 
                 if timerVM.activeNumber != backgroundNumber {
+                    
+                    timerVM.todo = todoStore.getSeletedTodo(id: todoId)
+                    print("todoID:\(todoId)")
+                    print("getTodo:\(timerVM.todo)")
                     timerVM.showOngoingAlert = true
                     print("timerVM.showOngoingAlert: \(timerVM.showOngoingAlert)")
                     print("여기들어왓니..")

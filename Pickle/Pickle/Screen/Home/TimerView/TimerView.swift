@@ -21,7 +21,7 @@ struct TimerView: View {
     
     @State private var realStartTime: Date = Date() // 실제 시작 시간
     @State private var settingTime: TimeInterval = 0 // 원형 타이머 설정용 시간
-    @State private var completeLimit: TimeInterval = 10 // 5분 이후
+    @State private var completeLimit: TimeInterval = 5 * 60 // 5분 이후
     
     @State private var isDisabled: Bool = true // 5분기준 완료 용도
     @State private var isGiveupSign: Bool = false // alert 포기 vs 완료 구분용

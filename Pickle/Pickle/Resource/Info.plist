@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.ddudios.realpizza.refresh_badge</string>

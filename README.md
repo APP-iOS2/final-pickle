@@ -197,3 +197,6 @@
 | [@KaiKimiOS](https://github.com/KaiKimiOS) | [@stomHwan](https://github.com/hyeonghwan) | [@YeoSungeun](https://github.com/YeoSungeun) | [@ddudios](https://github.com/ddudios) | [@ahshotchoo](https://github.com/karmanx) |
 
 <br/>
+
+## License
+“현실도 피자" is available under the MIT license. See the [LICENSE](https://github.com/APP-iOS2/final-pickle/blob/main/LICENSE) file for more info.

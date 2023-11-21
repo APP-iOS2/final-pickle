@@ -335,7 +335,9 @@ extension HomeView {
             pizzaName
                 .padding(.bottom, 10)
             
+            #if DEBUG
             tempButton
+            #endif
             
             Text("\(viewModel.currentPositionPizza.pizzaTaskSlice)")
                 .font(.chab)

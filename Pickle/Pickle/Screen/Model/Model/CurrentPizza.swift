@@ -26,7 +26,6 @@ struct CurrentPizza: Identifiable {
         self.createdAt = createdAt
     }
     
-    // TODO: 변경 필요 - current Pizza로 변경함에 따라 변경 필요
     var goalTotal: Double {
         8 // 피자 완성 카운트
     }
@@ -70,11 +69,11 @@ extension CurrentPizza: Equatable {
     
     /// 피자 한개의 잠금해제 메소드
     /// - Parameter pizza: 잠금 해제할 피자
-    mutating func unlockPizza(pizza: Pizza) {
-        // TODO: 변경 필요 Pizza Unlock 로직
-        var pizza = pizza
-        pizza.lockToggle()
-        self.pizza = pizza
-    }
+//    mutating func unlockPizza(pizza: Pizza) {
+//        // TODO: 변경 필요 Pizza Unlock 로직
+//        var pizza = pizza
+//        pizza.lockToggle()
+//        self.pizza = pizza
+//    }
 }
 

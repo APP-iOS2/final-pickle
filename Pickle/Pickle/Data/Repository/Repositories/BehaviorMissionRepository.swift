@@ -26,11 +26,12 @@ final class BehaviorMissionRepository: BaseRepository<BehaviorMissionObject>, Be
             let results = behaviorMissionObject.map { BehaviorMission.mapFromPersistenceObject($0) }
             return results
         } catch {
-            assert(false)
+            Log.error("error \(error)")
         }
+        return []
     }
     
-    func create(item: BehaviorMission ,_ completion: @escaping (BehaviorMissionObject) -> Void) {
+    func create(item: BehaviorMission,_ completion: @escaping (BehaviorMissionObject) -> Void) {
         let object = item.mapToPersistenceObject()
         do {
             try super.create(BehaviorMissionObject.self, item: object ,completion: completion)

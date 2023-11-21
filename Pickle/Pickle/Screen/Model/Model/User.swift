@@ -64,7 +64,8 @@ extension User: Equatable {
     /// 피자 한개의 잠금해제 메소드
     /// - Parameter pizza: 잠금 해제할 피자
     mutating func unlockPizza(pizza: Pizza) throws {
-        let willUnlockPizza = getPizza(using: pizza.id)
+        if !pizza.lock { return }
+        let willUnlockPizza = getCurrentPizza(using: pizza.id)
     
         guard var willUnlockPizza else { return }
         
@@ -97,13 +98,18 @@ extension User: Equatable {
     }
     
     // pizzaID 를 통해서 User의 현재 currentPizza 반환
-    func getPizza(using pizzaID: String) -> CurrentPizza? {
+    func getCurrentPizza(using pizzaID: String) -> CurrentPizza? {
         return self.currentPizzas.filter {
             if $0.pizza?.id == pizzaID {
                 return true
             }
             return false
         }.first
+    }
+    
+    func getCurrentPizza(match name: PizzaUnlockCondition) -> CurrentPizza? {
+        currentPizzas
+            .filter { $0.pizza!.image == name.rawValue }.first
     }
 
     // MARK: 안쓰는 메서드 확인후 삭제바람
@@ -126,7 +132,7 @@ extension User {
      -> 마르게리타 32 (512) */
     // 카운트? , 슬라이스 로?
     
-    enum UnlockError: Error {
+    enum UnlockError: Error, Equatable {
         // assosicatedType Int -> 부족한 조각 갯수
         case notMeet(Int)
         case nameMismatch

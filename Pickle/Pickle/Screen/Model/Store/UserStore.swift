@@ -38,8 +38,8 @@ final class UserStore: ObservableObject {
     func trigger(action: Action) {
         switch action {
         case .select(let pizza):
-            Log.debug("pizza")
-            self.selectCurrentPizza(pizza: pizza)
+            let isNotLock = isNotLockPizza(pizzaID: pizza.id)
+            if isNotLock { self.selectCurrentPizza(pizza: pizza) }
         default:
             break
         }
@@ -49,7 +49,7 @@ final class UserStore: ObservableObject {
     func fetchUser() throws {
         do {
             self.user = try userRepository.fetchUser()
-            let current = user.getPizza(using: user.pizzaID)
+            let current = user.getCurrentPizza(using: user.pizzaID)
             if let current {
                 self.currentPizza = current
             }
@@ -103,8 +103,8 @@ final class UserStore: ObservableObject {
         self.updateUser(user: user)
     }
     
-    func addPizzaSlice(slice count: Int) throws {
-        self.currentPizza.addPizzaSliceValidation()
+    func addPizzaSlice(slice count: Int = 1) throws {
+        self.currentPizza.addPizzaSliceValidation(count: count)
         let user = self.user.update(current: self.currentPizza)
         self.updateUser(user: user)
     }
@@ -139,6 +139,14 @@ final class UserStore: ObservableObject {
         } catch {
             Log.error("\(error)")
         }
+    }
+    
+    private func isNotLockPizza(pizzaID: String) -> Bool {
+        if let currentPizza = user.getCurrentPizza(using: pizzaID),
+           let lock = currentPizza.pizza?.lock {
+            return !lock
+        }
+        return false
     }
     
     @MainActor

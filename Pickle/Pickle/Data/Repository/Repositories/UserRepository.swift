@@ -21,7 +21,6 @@ protocol UserRepositoryProtocol: Dependency, AnyObject {
     func updateUser(model: User) throws
     func updatePizza(model: User, specific data: Date) throws
     func deleteAll() throws
-    
     /// User Notification Change Observe function
     /// - Parameters:
     ///   - id: specific ID
@@ -29,7 +28,7 @@ protocol UserRepositoryProtocol: Dependency, AnyObject {
     /// - Returns: NotificationToken
     func observeUser(id: String,
                      keyPaths: [PartialKeyPath<UserObject>],
-                     _ completion: @escaping ObjectCompletion<UserObject>) -> RNotificationToken
+                     _ completion: @escaping ObjectCompletion<UserObject>) throws ->  RNotificationToken
     
     func update(seleted user: User) -> Future<User, Error>
 }
@@ -137,7 +136,7 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
     
     func observeUser(id: String, 
                      keyPaths: [PartialKeyPath<UserObject>],
-                     _ completion: @escaping ObjectCompletion<UserObject>) -> RNotificationToken {
+                     _ completion: @escaping ObjectCompletion<UserObject>) throws -> RNotificationToken {
         do {
             return try self.dbStore.notificationToken(UserObject.self,
                                                       id: id,
@@ -146,6 +145,7 @@ final class UserRepository: BaseRepository<UserObject>, UserRepositoryProtocol {
         } catch {
             Log.error("error occur notification token")
             assert(false, "failed get observed User Token ")
+            throw error
         }
     }
 }

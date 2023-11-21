@@ -88,7 +88,7 @@ final class HomeViewModel: ObservableObject {
             }
         }
         
-        let pizza = user.getPizza(using: positionID)
+        let pizza = user.getCurrentPizza(using: positionID)
         if let pizza {
             currentPositionPizza = pizza
         }

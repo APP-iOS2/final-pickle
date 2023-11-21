@@ -7,11 +7,8 @@
 
 import Foundation
 
-
 enum PreviewsContainer {
-    
     static func setUpDependency() {
-        let _ = print("registera12345123View")
         DependencyContainer.register(DBStoreKey.self, RealmStore.previews)
         DependencyContainer.register(TodoRepoKey.self, TodoRepository())
         DependencyContainer.register(BehaviorRepoKey.self, BehaviorMissionRepository())

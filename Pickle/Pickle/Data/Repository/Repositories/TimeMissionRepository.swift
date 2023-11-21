@@ -49,6 +49,7 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
         } catch {
             assert(false)
         }
+        return []
     }
     
     func fetch(sorted: Sorted) async -> [TimeMission] {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import BackgroundTasks
 
 class TestAppDelegate: NSObject, UIApplicationDelegate {
     
@@ -16,31 +15,17 @@ class TestAppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-
 struct PickleAppTest: App {
-    @UIApplicationDelegateAdaptor(TestAppDelegate.self) var appDelegate
-    @Environment(\.scenePhase) var scenePhase
-    @State private var debugDelete: Bool = true
-    
-    // Launch Screen Delay
-    init() {
-        Thread.sleep(forTimeInterval: 2)
-        
-    }
-    
     var body: some Scene {
         WindowGroup {
-            if debugDelete {
-                let _ = UserDefaults.standard.set(false, forKey: "__UIConstraintBasedLayoutLogUnsatisfiable")
-
-                
-                let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
-
+            if ProcessInfo.processInfo.isRunningTests {
+                VStack {
+                    Text("isTest")
+                    Text("isTest")
+                    Text("isTest")
+                    Text("isTest")
+                }
             }
-            Text("TestApplication")
         }
     }
 }
-
-
-

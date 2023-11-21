@@ -14,11 +14,10 @@ protocol TodoRepositoryProtocol: Dependency {
     func saveTodo(todo: Todo) -> TodoObject
     func deleteTodo(model: Todo)
     func deleteAll()
-    func updateTodo(todo: Todo) -> TodoObject
+    func updateTodo(todo: Todo) throws -> TodoObject
     
     func fetcthFuture<T: Storable>(model: T.Type) -> Future<[T], Error>
 }
-
 
 final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
     
@@ -49,8 +48,9 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
             return object
         } catch {
             Log.error("error \(error)")
-            assert(false)
+             assert(false)
         }
+        return .init()
     }
     
     func deleteTodo(model: Todo) {
@@ -71,7 +71,7 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         }
     }
     
-    func updateTodo(todo: Todo) -> TodoObject {
+    func updateTodo(todo: Todo) throws -> TodoObject {
         let object = todo.mapToPersistenceObject()
         do {
             try super.update(object: object)
@@ -79,6 +79,7 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
         } catch {
             Log.error("error: \(error)")
             assert(false)
+            throw error
         }
     }
     

@@ -145,19 +145,19 @@ extension UNMutableNotificationContent {
     
     func makeRequest(localNotification: LocalNotification) -> UNNotificationRequest {
         let trigger = makeTrigger(localNotification: localNotification)
-        return makeNotificationRequest(identifier: localNotification.identifier, trigger: trigger)
+        return makeNotificationRequest(identifier: localNotification.identifier, trigger: trigger!)
     }
     
-    func makeTrigger(localNotification: LocalNotification) -> UNNotificationTrigger {
+    func makeTrigger(localNotification: LocalNotification) -> UNNotificationTrigger? {
         switch localNotification.type {
             // 특정 날짜 및 시간에 알림 예약
         case .calendar, .health, .wakeUp, .todo:
-            guard let dateComponents = localNotification.dateComponents else { assert(false) }
+            guard let dateComponents = localNotification.dateComponents else { return nil }
             return UNCalendarNotificationTrigger(dateMatching: dateComponents,
                                                  repeats: localNotification.repeats)
             // 몇 초 후 알림
         case .time:
-            guard let timeInterval = localNotification.timeInterval else { assert(false) }
+            guard let timeInterval = localNotification.timeInterval else { return nil }
             return UNTimeIntervalNotificationTrigger(timeInterval: timeInterval,
                                                      repeats: localNotification.repeats)
         }

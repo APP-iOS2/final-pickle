@@ -29,6 +29,7 @@ final class TodoStore: ObservableObject {
         } else {
             assert(false, "getSeleted Todo Failed")
         }
+        return Todo.sample
     }
     
     @discardableResult
@@ -59,8 +60,12 @@ final class TodoStore: ObservableObject {
     
     @discardableResult
     func update(todo: Todo) -> Todo {
-        let object = repository.updateTodo(todo: todo)
-        return Todo.mapFromPersistenceObject(object)
+        do {
+            let object = try repository.updateTodo(todo: todo)
+            return Todo.mapFromPersistenceObject(object)
+        } catch {
+            return .sample
+        }
     }
     
     func fixNotification(todo: Todo, noti: NotificationManager) {

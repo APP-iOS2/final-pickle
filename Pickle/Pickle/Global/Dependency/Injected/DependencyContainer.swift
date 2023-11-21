@@ -30,7 +30,7 @@ struct DependencyContainer {
     }
     
     static func resolve<Dependency>(_ resolveType: DependencyType = .automatic,
-                                    _ type: Any.Type?) -> Dependency {
+                                    _ type: Any.Type?) -> Dependency? {
         let serviceName = type.map { String(describing: $0) } ?? String(describing: Dependency.self)
         
         switch resolveType {
@@ -58,5 +58,6 @@ struct DependencyContainer {
             }
             assert(false, "fattalError singleton Occur")
         }
+        return nil
     }
 }

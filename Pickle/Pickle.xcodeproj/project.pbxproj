@@ -399,7 +399,7 @@
 		967575BE2B0AB9A0004957AD /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuccessUpdateKey-PreferenceKey.swift"; sourceTree = "<group>"; };
 		9675765B2B0CDCA4004957AD /* Pickle-release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pickle-release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9675765C2B0CDCA4004957AD /* Pickle-release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pickle-release.plist"; path = "/Users/baghyeonghwan/final/final-pickle/Pickle/Pickle-release.plist"; sourceTree = "<absolute>"; };
+		9675765C2B0CDCA4004957AD /* Pickle-release-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pickle-release-info.plist"; path = "/Users/baghyeonghwan/final/final-pickle/Pickle/Pickle-release-info.plist"; sourceTree = "<absolute>"; };
 		968EB22C2AEE63110025BEF8 /* NavigationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStore.swift; sourceTree = "<group>"; };
 		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
@@ -1028,7 +1028,7 @@
 			isa = PBXGroup;
 			children = (
 				B0B5E6BB2ADA5A360096F677 /* Info.plist */,
-				9675765C2B0CDCA4004957AD /* Pickle-release.plist */,
+				9675765C2B0CDCA4004957AD /* Pickle-release-info.plist */,
 				B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */,
 				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
 				96CF08DF2AD9096B00648B59 /* font */,

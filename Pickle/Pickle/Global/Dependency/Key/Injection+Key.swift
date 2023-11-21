@@ -15,7 +15,7 @@ protocol InjectionKey {
 
 extension InjectionKey {
     static var currentValue: Value {
-        return DependencyContainer.resolve(type, Self.self)
+        return DependencyContainer.resolve(type, Self.self)!
     }
 }
 

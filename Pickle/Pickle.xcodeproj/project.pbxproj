@@ -99,6 +99,144 @@
 		966CD9F32B0A6D09003AE885 /* TimeUnitPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966CD9F22B0A6D09003AE885 /* TimeUnitPickerView.swift */; };
 		967575BF2B0AB9A0004957AD /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967575BE2B0AB9A0004957AD /* Const.swift */; };
 		967575C12B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */; };
+		967575CC2B0CDCA4004957AD /* BehaviorMission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1B2B0251F10011B973 /* BehaviorMission.swift */; };
+		967575CD2B0CDCA4004957AD /* PizzaItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619E9382B05921E0028348C /* PizzaItemView.swift */; };
+		967575CE2B0CDCA4004957AD /* RewardAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C74AE72ACFC7A100A14A8B /* RewardAlert.swift */; };
+		967575CF2B0CDCA4004957AD /* CompleteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB776B2AE679DA0022491A /* CompleteAlert.swift */; };
+		967575D02B0CDCA4004957AD /* PizzaAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9BEA2ADBAF7E0015ABBE /* PizzaAlert.swift */; };
+		967575D12B0CDCA4004957AD /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD822AF6533900AE4963 /* EntryPoint.swift */; };
+		967575D22B0CDCA4004957AD /* Pizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267E2AC2BB3800877122 /* Pizza.swift */; };
+		967575D32B0CDCA4004957AD /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C418D2ACE3FCA009A0093 /* TodoRepository.swift */; };
+		967575D42B0CDCA4004957AD /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488742AFD21EB00B87A37 /* TabItem.swift */; };
+		967575D52B0CDCA4004957AD /* Pizza-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F612ADF9EFC0072F21E /* Pizza-extension.swift */; };
+		967575D62B0CDCA4004957AD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41992ACE7AF9009A0093 /* Log.swift */; };
+		967575D72B0CDCA4004957AD /* MappableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */; };
+		967575D82B0CDCA4004957AD /* MissionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF932AC33EAF00835FD8 /* MissionObject.swift */; };
+		967575D92B0CDCA4004957AD /* View-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110842AFA7E15008A80DE /* View-extension.swift */; };
+		967575DA2B0CDCA4004957AD /* SettingView-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D0A132AFCE85F00BA8FA2 /* SettingView-extension.swift */; };
+		967575DB2B0CDCA4004957AD /* HomeView-Modifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110862AFA7E42008A80DE /* HomeView-Modifier.swift */; };
+		967575DC2B0CDCA4004957AD /* RealmMigrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF8E2AC3319D00835FD8 /* RealmMigrator.swift */; };
+		967575DD2B0CDCA4004957AD /* BaseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41832ACDA42B009A0093 /* BaseRepository.swift */; };
+		967575DE2B0CDCA4004957AD /* MissionStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158D92AC1647D003B00E6 /* MissionStyleView.swift */; };
+		967575DF2B0CDCA4004957AD /* MySceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CB77652AE57FB70022491A /* MySceneDelegate.swift */; };
+		967575E02B0CDCA4004957AD /* TimeMission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C192B0251EA0011B973 /* TimeMission.swift */; };
+		967575E12B0CDCA4004957AD /* SettingNotiicationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E7118A2AD48DE9002B8069 /* SettingNotiicationView.swift */; };
+		967575E22B0CDCA4004957AD /* Object+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41912ACE41E1009A0093 /* Object+Extensions.swift */; };
+		967575E32B0CDCA4004957AD /* NavigationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968EB22C2AEE63110025BEF8 /* NavigationStore.swift */; };
+		967575E42B0CDCA4004957AD /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D58E2AC1476000AFE225 /* TimerView.swift */; };
+		967575E52B0CDCA4004957AD /* Realm+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD8E2AF7979C00AE4963 /* Realm+Async.swift */; };
+		967575E62B0CDCA4004957AD /* DotCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CF08ED2AD933A400648B59 /* DotCircleView.swift */; };
+		967575E72B0CDCA4004957AD /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F642ADF9F380072F21E /* Status.swift */; };
+		967575E82B0CDCA4004957AD /* UserObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AE2AD527B4001B2960 /* UserObject.swift */; };
+		967575E92B0CDCA4004957AD /* TimeMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5D2ADF9EEF0072F21E /* TimeMission-extension.swift */; };
+		967575EA2B0CDCA4004957AD /* ClearBackgroundViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107F2AF907EE008A80DE /* ClearBackgroundViewModifier.swift */; };
+		967575EB2B0CDCA4004957AD /* HomeView-Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488762AFD221200B87A37 /* HomeView-Routing.swift */; };
+		967575EC2B0CDCA4004957AD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5922AC1478C00AFE225 /* CalendarView.swift */; };
+		967575ED2B0CDCA4004957AD /* ScrollEnableKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619E93B2B0594210028348C /* ScrollEnableKey.swift */; };
+		967575EE2B0CDCA4004957AD /* BehaviorMission-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F662ADFA0960072F21E /* BehaviorMission-extension.swift */; };
+		967575EF2B0CDCA4004957AD /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A32AC14C6A00AFE225 /* CGFloat.swift */; };
+		967575F02B0CDCA4004957AD /* PizzaSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7908DC02AE01BFC004C5221 /* PizzaSummaryView.swift */; };
+		967575F12B0CDCA4004957AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267C2AC2B50D00877122 /* User.swift */; };
+		967575F22B0CDCA4004957AD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5892AC1473C00AFE225 /* HomeView.swift */; };
+		967575F32B0CDCA4004957AD /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
+		967575F42B0CDCA4004957AD /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */; };
+		967575F52B0CDCA4004957AD /* PizzaPagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */; };
+		967575F62B0CDCA4004957AD /* PreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661108A2AFA84CA008A80DE /* PreferenceKey.swift */; };
+		967575F72B0CDCA4004957AD /* Realm+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107B2AF800AD008A80DE /* Realm+Combine.swift */; };
+		967575F82B0CDCA4004957AD /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B031D2B07B4CE009B6293 /* HomeViewModel.swift */; };
+		967575F92B0CDCA4004957AD /* Register-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966CD9F02B0A6BA2003AE885 /* Register-extension.swift */; };
+		967575FA2B0CDCA4004957AD /* NotiMediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8362AFD50F900410881 /* NotiMediator.swift */; };
+		967575FB2B0CDCA4004957AD /* CurrentPizza-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1D2B029AF20011B973 /* CurrentPizza-extension.swift */; };
+		967575FC2B0CDCA4004957AD /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296972AC17120009A9815 /* TextFieldModifier.swift */; };
+		967575FD2B0CDCA4004957AD /* ScrollAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488722AFD21D800B87A37 /* ScrollAnchor.swift */; };
+		967575FE2B0CDCA4004957AD /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267A2AC2ADFB00877122 /* Mission.swift */; };
+		967575FF2B0CDCA4004957AD /* HealthKitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B063F5CD2ADD02DB008EF304 /* HealthKitStore.swift */; };
+		967576002B0CDCA4004957AD /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729A2482AC3FEB2008FF7C5 /* TaskRowView.swift */; };
+		967576012B0CDCA4004957AD /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
+		967576022B0CDCA4004957AD /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A52AC14C7500AFE225 /* Color.swift */; };
+		967576032B0CDCA4004957AD /* PrimaryButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2113158F2AE1602500FA6492 /* PrimaryButtonModifier.swift */; };
+		967576042B0CDCA4004957AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D57A2AC1459C00AFE225 /* ContentView.swift */; };
+		967576052B0CDCA4004957AD /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341AE2AC1684400744EB7 /* CalendarViewModel.swift */; };
+		967576062B0CDCA4004957AD /* PickleTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD7E2AF64A5B00AE4963 /* PickleTestApp.swift */; };
+		967576072B0CDCA4004957AD /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
+		967576082B0CDCA4004957AD /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A72AC14C7A00AFE225 /* Font.swift */; };
+		967576092B0CDCA4004957AD /* TimerReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052FB32ACD48A3005B3263 /* TimerReportView.swift */; };
+		9675760A2B0CDCA4004957AD /* UpdateTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D58C2AC1475800AFE225 /* UpdateTodoView.swift */; };
+		9675760B2B0CDCA4004957AD /* Mediator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8312AFD509200410881 /* Mediator.swift */; };
+		9675760C2B0CDCA4004957AD /* UserStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B02AD52919001B2960 /* UserStore.swift */; };
+		9675760D2B0CDCA4004957AD /* SuccessUpdateKey-PreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */; };
+		9675760E2B0CDCA4004957AD /* PizzaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77A29A72AE6955200BB8838 /* PizzaCollectionView.swift */; };
+		9675760F2B0CDCA4004957AD /* PizzaSelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */; };
+		967576102B0CDCA4004957AD /* NavigationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966110882AFA7EA2008A80DE /* NavigationModifier.swift */; };
+		967576112B0CDCA4004957AD /* Repository+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */; };
+		967576122B0CDCA4004957AD /* MissionSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0C158DB2AC1759D003B00E6 /* MissionSettingView.swift */; };
+		967576132B0CDCA4004957AD /* GiveupAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08EF5402AE265C900349A58 /* GiveupAlert.swift */; };
+		967576142B0CDCA4004957AD /* TodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419C2ACE8276009A0093 /* TodoStore.swift */; };
+		967576152B0CDCA4004957AD /* RealmStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C418B2ACE3969009A0093 /* RealmStore.swift */; };
+		967576162B0CDCA4004957AD /* FaildAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AA2AD4DD0A001B2960 /* FaildAlert.swift */; };
+		967576172B0CDCA4004957AD /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41852ACE390A009A0093 /* URL.swift */; };
+		967576182B0CDCA4004957AD /* CustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C64FE22ADC2C450042204A /* CustomSheetView.swift */; };
+		967576192B0CDCA4004957AD /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4AC2AD5277E001B2960 /* UserRepository.swift */; };
+		9675761A2B0CDCA4004957AD /* CalendarView-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964D0A112AFCE81E00BA8FA2 /* CalendarView-extension.swift */; };
+		9675761B2B0CDCA4004957AD /* DBStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41892ACE3945009A0093 /* DBStore.swift */; };
+		9675761C2B0CDCA4004957AD /* DifferentTypeAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966CD9EE2B0A6B59003AE885 /* DifferentTypeAlerts.swift */; };
+		9675761D2B0CDCA4004957AD /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5942AC1479700AFE225 /* SettingView.swift */; };
+		9675761E2B0CDCA4004957AD /* PickleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5782AC1459C00AFE225 /* PickleApp.swift */; };
+		9675761F2B0CDCA4004957AD /* TodoObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963AFF912AC33A1800835FD8 /* TodoObject.swift */; };
+		967576202B0CDCA4004957AD /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C82ADED0CA0070EF92 /* Collection.swift */; };
+		967576212B0CDCA4004957AD /* DatePickerUIkit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AA2AE51CA200BC0CCD /* DatePickerUIkit.swift */; };
+		967576222B0CDCA4004957AD /* Midiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4AB2AD17829003BC207 /* Midiator.swift */; };
+		967576232B0CDCA4004957AD /* CornerButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C417E2ACD41CD009A0093 /* CornerButtonModifier.swift */; };
+		967576242B0CDCA4004957AD /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9637AB9A2B07846100D64F46 /* UINavigationController.swift */; };
+		967576252B0CDCA4004957AD /* CurrentPizza.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C172B0251D10011B973 /* CurrentPizza.swift */; };
+		967576262B0CDCA4004957AD /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8382AFD511200410881 /* NotificationService.swift */; };
+		967576272B0CDCA4004957AD /* ProcessInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962FFD802AF64F8B00AE4963 /* ProcessInfo.swift */; };
+		967576282B0CDCA4004957AD /* Publisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96EB8C1F2B04C92E0011B973 /* Publisher.swift */; };
+		967576292B0CDCA4004957AD /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072B9472AE0460E001C3DAF /* TimerViewModel.swift */; };
+		9675762A2B0CDCA4004957AD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C341B42AC2CA7400744EB7 /* Date+Extensions.swift */; };
+		9675762B2B0CDCA4004957AD /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 967575BE2B0AB9A0004957AD /* Const.swift */; };
+		9675762C2B0CDCA4004957AD /* BackColorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961296952AC16FBE009A9815 /* BackColorModifier.swift */; };
+		9675762D2B0CDCA4004957AD /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA26762AC2A10800877122 /* Todo.swift */; };
+		9675762E2B0CDCA4004957AD /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF82F2AFD3A7B00410881 /* Dictionary.swift */; };
+		9675762F2B0CDCA4004957AD /* Injection+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A92AD176B6003BC207 /* Injection+Key.swift */; };
+		967576302B0CDCA4004957AD /* CurrentPizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B7AE6C2B023DFC001A3987 /* CurrentPizzaObject.swift */; };
+		967576312B0CDCA4004957AD /* PizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C22ADE63A40070EF92 /* PizzaObject.swift */; };
+		967576322B0CDCA4004957AD /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
+		967576332B0CDCA4004957AD /* TimeMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41952ACE4396009A0093 /* TimeMissionRepository.swift */; };
+		967576342B0CDCA4004957AD /* PreviewsContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966950EB2AE11C6500676081 /* PreviewsContainer.swift */; };
+		967576352B0CDCA4004957AD /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 961488782AFD24D400B87A37 /* Task.swift */; };
+		967576362B0CDCA4004957AD /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E7118E2AD53862002B8069 /* LocalNotification.swift */; };
+		967576372B0CDCA4004957AD /* BehaviorMissionObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41932ACE4236009A0093 /* BehaviorMissionObject.swift */; };
+		967576382B0CDCA4004957AD /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEE2AD2AE5219E00BC0CCD /* PickerView.swift */; };
+		967576392B0CDCA4004957AD /* PersistentedError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B52AD53866001B2960 /* PersistentedError.swift */; };
+		9675763A2B0CDCA4004957AD /* MissionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A62ACFE384003BC207 /* MissionStore.swift */; };
+		9675763B2B0CDCA4004957AD /* PizzaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C42ADE66B50070EF92 /* PizzaRepository.swift */; };
+		9675763C2B0CDCA4004957AD /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5A92AC14EA500AFE225 /* View.swift */; };
+		9675763D2B0CDCA4004957AD /* TodoCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */; };
+		9675763E2B0CDCA4004957AD /* MissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5902AC1476700AFE225 /* MissionView.swift */; };
+		9675763F2B0CDCA4004957AD /* Todo-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5B2ADF9EE60072F21E /* Todo-extension.swift */; };
+		967576402B0CDCA4004957AD /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E711882AD48A01002B8069 /* NotificationManager.swift */; };
+		967576412B0CDCA4004957AD /* PizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C62ADEC6560070EF92 /* PizzaStore.swift */; };
+		967576422B0CDCA4004957AD /* Injected+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */; };
+		967576432B0CDCA4004957AD /* PizzaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CD68752AD31FC2006DAB62 /* PizzaView.swift */; };
+		967576442B0CDCA4004957AD /* DependencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* DependencyType.swift */; };
+		967576452B0CDCA4004957AD /* TimeUnitPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966CD9F22B0A6D09003AE885 /* TimeUnitPickerView.swift */; };
+		967576462B0CDCA4004957AD /* MissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4A82AD403BB001B2960 /* MissionType.swift */; };
+		967576472B0CDCA4004957AD /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
+		967576482B0CDCA4004957AD /* User-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F5F2ADF9EF50072F21E /* User-extension.swift */; };
+		967576492B0CDCA4004957AD /* RealmError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4B32AD5384B001B2960 /* RealmError.swift */; };
+		9675764B2B0CDCA4004957AD /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 967575C92B0CDCA4004957AD /* RealmSwift */; settings = {ATTRIBUTES = (Required, ); }; };
+		9675764C2B0CDCA4004957AD /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 967575C72B0CDCA4004957AD /* Realm */; };
+		9675764E2B0CDCA4004957AD /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 2137D5872AC1460F00AFE225 /* .swiftlint.yml */; };
+		9675764F2B0CDCA4004957AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57F2AC1459D00AFE225 /* Preview Assets.xcassets */; };
+		967576502B0CDCA4004957AD /* NanumSquareNeoOTF-Eb.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E02AD9098300648B59 /* NanumSquareNeoOTF-Eb.otf */; };
+		967576512B0CDCA4004957AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2160F9762AE2B98900FC9469 /* LaunchScreen.storyboard */; };
+		967576522B0CDCA4004957AD /* NanumSquareNeoOTF-Lt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E32AD9098400648B59 /* NanumSquareNeoOTF-Lt.otf */; };
+		967576532B0CDCA4004957AD /* NanumSquareNeoOTF-Hv.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E22AD9098400648B59 /* NanumSquareNeoOTF-Hv.otf */; };
+		967576542B0CDCA4004957AD /* Chab.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E42AD9098400648B59 /* Chab.otf */; };
+		967576552B0CDCA4004957AD /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
+		967576562B0CDCA4004957AD /* NanumSquareNeoOTF-Bd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */; };
+		967576572B0CDCA4004957AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /* Assets.xcassets */; };
 		968EB22D2AEE63110025BEF8 /* NavigationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968EB22C2AEE63110025BEF8 /* NavigationStore.swift */; };
 		96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
@@ -118,7 +256,7 @@
 		96AAF8392AFD511200410881 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96AAF8382AFD511200410881 /* NotificationService.swift */; };
 		96B7AE6D2B023DFC001A3987 /* CurrentPizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B7AE6C2B023DFC001A3987 /* CurrentPizzaObject.swift */; };
 		96BF92912AC27EAC00277131 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92902AC27EAC00277131 /* Realm */; };
-		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; };
+		96BF92932AC27EAC00277131 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 96BF92922AC27EAC00277131 /* RealmSwift */; settings = {ATTRIBUTES = (Required, ); }; };
 		96C64FE32ADC2C450042204A /* CustomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C64FE22ADC2C450042204A /* CustomSheetView.swift */; };
 		96C716DB2AC1614F00B4B8E0 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C716DA2AC1614F00B4B8E0 /* RegisterView.swift */; };
 		96CE29C32ADE63A40070EF92 /* PizzaObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C22ADE63A40070EF92 /* PizzaObject.swift */; };
@@ -260,6 +398,8 @@
 		966CD9F22B0A6D09003AE885 /* TimeUnitPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUnitPickerView.swift; sourceTree = "<group>"; };
 		967575BE2B0AB9A0004957AD /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuccessUpdateKey-PreferenceKey.swift"; sourceTree = "<group>"; };
+		9675765B2B0CDCA4004957AD /* Pickle-release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pickle-release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9675765C2B0CDCA4004957AD /* Pickle-release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pickle-release.plist"; path = "/Users/baghyeonghwan/final/final-pickle/Pickle/Pickle-release.plist"; sourceTree = "<absolute>"; };
 		968EB22C2AEE63110025BEF8 /* NavigationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStore.swift; sourceTree = "<group>"; };
 		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
@@ -333,6 +473,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9675764A2B0CDCA4004957AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9675764B2B0CDCA4004957AD /* RealmSwift in Frameworks */,
+				9675764C2B0CDCA4004957AD /* Realm in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -352,6 +501,7 @@
 			children = (
 				2137D5752AC1459C00AFE225 /* Pickle.app */,
 				965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */,
+				9675765B2B0CDCA4004957AD /* Pickle-release.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -878,6 +1028,7 @@
 			isa = PBXGroup;
 			children = (
 				B0B5E6BB2ADA5A360096F677 /* Info.plist */,
+				9675765C2B0CDCA4004957AD /* Pickle-release.plist */,
 				B0B5E6BC2ADA5B820096F677 /* Pickle.entitlements */,
 				2137D57C2AC1459D00AFE225 /* Assets.xcassets */,
 				96CF08DF2AD9096B00648B59 /* font */,
@@ -998,6 +1149,28 @@
 			productReference = 965C9B9F2ADAB2380015ABBE /* PickleTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		967575C62B0CDCA4004957AD /* Pickle-release */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 967576582B0CDCA4004957AD /* Build configuration list for PBXNativeTarget "Pickle-release" */;
+			buildPhases = (
+				967575CA2B0CDCA4004957AD /* SwiftLint Script */,
+				967575CB2B0CDCA4004957AD /* Sources */,
+				9675764A2B0CDCA4004957AD /* Frameworks */,
+				9675764D2B0CDCA4004957AD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pickle-release";
+			packageProductDependencies = (
+				967575C72B0CDCA4004957AD /* Realm */,
+				967575C92B0CDCA4004957AD /* RealmSwift */,
+			);
+			productName = Pickle;
+			productReference = 9675765B2B0CDCA4004957AD /* Pickle-release.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1034,6 +1207,7 @@
 			projectRoot = "";
 			targets = (
 				2137D5742AC1459C00AFE225 /* Pickle */,
+				967575C62B0CDCA4004957AD /* Pickle-release */,
 				965C9B9E2ADAB2380015ABBE /* PickleTests */,
 			);
 		};
@@ -1064,10 +1238,46 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9675764D2B0CDCA4004957AD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9675764E2B0CDCA4004957AD /* .swiftlint.yml in Resources */,
+				9675764F2B0CDCA4004957AD /* Preview Assets.xcassets in Resources */,
+				967576502B0CDCA4004957AD /* NanumSquareNeoOTF-Eb.otf in Resources */,
+				967576512B0CDCA4004957AD /* LaunchScreen.storyboard in Resources */,
+				967576522B0CDCA4004957AD /* NanumSquareNeoOTF-Lt.otf in Resources */,
+				967576532B0CDCA4004957AD /* NanumSquareNeoOTF-Hv.otf in Resources */,
+				967576542B0CDCA4004957AD /* Chab.otf in Resources */,
+				967576552B0CDCA4004957AD /* NanumSquareNeoOTF-Rg.otf in Resources */,
+				967576562B0CDCA4004957AD /* NanumSquareNeoOTF-Bd.otf in Resources */,
+				967576572B0CDCA4004957AD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
 		2137D5862AC145C500AFE225 /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		967575CA2B0CDCA4004957AD /* SwiftLint Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -1237,6 +1447,139 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		967575CB2B0CDCA4004957AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				967575CC2B0CDCA4004957AD /* BehaviorMission.swift in Sources */,
+				967575CD2B0CDCA4004957AD /* PizzaItemView.swift in Sources */,
+				967575CE2B0CDCA4004957AD /* RewardAlert.swift in Sources */,
+				967575CF2B0CDCA4004957AD /* CompleteAlert.swift in Sources */,
+				967575D02B0CDCA4004957AD /* PizzaAlert.swift in Sources */,
+				967575D12B0CDCA4004957AD /* EntryPoint.swift in Sources */,
+				967575D22B0CDCA4004957AD /* Pizza.swift in Sources */,
+				967575D32B0CDCA4004957AD /* TodoRepository.swift in Sources */,
+				967575D42B0CDCA4004957AD /* TabItem.swift in Sources */,
+				967575D52B0CDCA4004957AD /* Pizza-extension.swift in Sources */,
+				967575D62B0CDCA4004957AD /* Log.swift in Sources */,
+				967575D72B0CDCA4004957AD /* MappableProtocol.swift in Sources */,
+				967575D82B0CDCA4004957AD /* MissionObject.swift in Sources */,
+				967575D92B0CDCA4004957AD /* View-extension.swift in Sources */,
+				967575DA2B0CDCA4004957AD /* SettingView-extension.swift in Sources */,
+				967575DB2B0CDCA4004957AD /* HomeView-Modifier.swift in Sources */,
+				967575DC2B0CDCA4004957AD /* RealmMigrator.swift in Sources */,
+				967575DD2B0CDCA4004957AD /* BaseRepository.swift in Sources */,
+				967575DE2B0CDCA4004957AD /* MissionStyleView.swift in Sources */,
+				967575DF2B0CDCA4004957AD /* MySceneDelegate.swift in Sources */,
+				967575E02B0CDCA4004957AD /* TimeMission.swift in Sources */,
+				967575E12B0CDCA4004957AD /* SettingNotiicationView.swift in Sources */,
+				967575E22B0CDCA4004957AD /* Object+Extensions.swift in Sources */,
+				967575E32B0CDCA4004957AD /* NavigationStore.swift in Sources */,
+				967575E42B0CDCA4004957AD /* TimerView.swift in Sources */,
+				967575E52B0CDCA4004957AD /* Realm+Async.swift in Sources */,
+				967575E62B0CDCA4004957AD /* DotCircleView.swift in Sources */,
+				967575E72B0CDCA4004957AD /* Status.swift in Sources */,
+				967575E82B0CDCA4004957AD /* UserObject.swift in Sources */,
+				967575E92B0CDCA4004957AD /* TimeMission-extension.swift in Sources */,
+				967575EA2B0CDCA4004957AD /* ClearBackgroundViewModifier.swift in Sources */,
+				967575EB2B0CDCA4004957AD /* HomeView-Routing.swift in Sources */,
+				967575EC2B0CDCA4004957AD /* CalendarView.swift in Sources */,
+				967575ED2B0CDCA4004957AD /* ScrollEnableKey.swift in Sources */,
+				967575EE2B0CDCA4004957AD /* BehaviorMission-extension.swift in Sources */,
+				967575EF2B0CDCA4004957AD /* CGFloat.swift in Sources */,
+				967575F02B0CDCA4004957AD /* PizzaSummaryView.swift in Sources */,
+				967575F12B0CDCA4004957AD /* User.swift in Sources */,
+				967575F22B0CDCA4004957AD /* HomeView.swift in Sources */,
+				967575F32B0CDCA4004957AD /* NavigationBar.swift in Sources */,
+				967575F42B0CDCA4004957AD /* DependencyContainer.swift in Sources */,
+				967575F52B0CDCA4004957AD /* PizzaPagingView.swift in Sources */,
+				967575F62B0CDCA4004957AD /* PreferenceKey.swift in Sources */,
+				967575F72B0CDCA4004957AD /* Realm+Combine.swift in Sources */,
+				967575F82B0CDCA4004957AD /* HomeViewModel.swift in Sources */,
+				967575F92B0CDCA4004957AD /* Register-extension.swift in Sources */,
+				967575FA2B0CDCA4004957AD /* NotiMediator.swift in Sources */,
+				967575FB2B0CDCA4004957AD /* CurrentPizza-extension.swift in Sources */,
+				967575FC2B0CDCA4004957AD /* TextFieldModifier.swift in Sources */,
+				967575FD2B0CDCA4004957AD /* ScrollAnchor.swift in Sources */,
+				967575FE2B0CDCA4004957AD /* Mission.swift in Sources */,
+				967575FF2B0CDCA4004957AD /* HealthKitStore.swift in Sources */,
+				967576002B0CDCA4004957AD /* TaskRowView.swift in Sources */,
+				967576012B0CDCA4004957AD /* BackgroundModifier.swift in Sources */,
+				967576022B0CDCA4004957AD /* Color.swift in Sources */,
+				967576032B0CDCA4004957AD /* PrimaryButtonModifier.swift in Sources */,
+				967576042B0CDCA4004957AD /* ContentView.swift in Sources */,
+				967576052B0CDCA4004957AD /* CalendarViewModel.swift in Sources */,
+				967576062B0CDCA4004957AD /* PickleTestApp.swift in Sources */,
+				967576072B0CDCA4004957AD /* BehaviorMissionRepository.swift in Sources */,
+				967576082B0CDCA4004957AD /* Font.swift in Sources */,
+				967576092B0CDCA4004957AD /* TimerReportView.swift in Sources */,
+				9675760A2B0CDCA4004957AD /* UpdateTodoView.swift in Sources */,
+				9675760B2B0CDCA4004957AD /* Mediator.swift in Sources */,
+				9675760C2B0CDCA4004957AD /* UserStore.swift in Sources */,
+				9675760D2B0CDCA4004957AD /* SuccessUpdateKey-PreferenceKey.swift in Sources */,
+				9675760E2B0CDCA4004957AD /* PizzaCollectionView.swift in Sources */,
+				9675760F2B0CDCA4004957AD /* PizzaSelectedView.swift in Sources */,
+				967576102B0CDCA4004957AD /* NavigationModifier.swift in Sources */,
+				967576112B0CDCA4004957AD /* Repository+Extension.swift in Sources */,
+				967576122B0CDCA4004957AD /* MissionSettingView.swift in Sources */,
+				967576132B0CDCA4004957AD /* GiveupAlert.swift in Sources */,
+				967576142B0CDCA4004957AD /* TodoStore.swift in Sources */,
+				967576152B0CDCA4004957AD /* RealmStore.swift in Sources */,
+				967576162B0CDCA4004957AD /* FaildAlert.swift in Sources */,
+				967576172B0CDCA4004957AD /* URL.swift in Sources */,
+				967576182B0CDCA4004957AD /* CustomSheetView.swift in Sources */,
+				967576192B0CDCA4004957AD /* UserRepository.swift in Sources */,
+				9675761A2B0CDCA4004957AD /* CalendarView-extension.swift in Sources */,
+				9675761B2B0CDCA4004957AD /* DBStore.swift in Sources */,
+				9675761C2B0CDCA4004957AD /* DifferentTypeAlerts.swift in Sources */,
+				9675761D2B0CDCA4004957AD /* SettingView.swift in Sources */,
+				9675761E2B0CDCA4004957AD /* PickleApp.swift in Sources */,
+				9675761F2B0CDCA4004957AD /* TodoObject.swift in Sources */,
+				967576202B0CDCA4004957AD /* Collection.swift in Sources */,
+				967576212B0CDCA4004957AD /* DatePickerUIkit.swift in Sources */,
+				967576222B0CDCA4004957AD /* Midiator.swift in Sources */,
+				967576232B0CDCA4004957AD /* CornerButtonModifier.swift in Sources */,
+				967576242B0CDCA4004957AD /* UINavigationController.swift in Sources */,
+				967576252B0CDCA4004957AD /* CurrentPizza.swift in Sources */,
+				967576262B0CDCA4004957AD /* NotificationService.swift in Sources */,
+				967576272B0CDCA4004957AD /* ProcessInfo.swift in Sources */,
+				967576282B0CDCA4004957AD /* Publisher.swift in Sources */,
+				967576292B0CDCA4004957AD /* TimerViewModel.swift in Sources */,
+				9675762A2B0CDCA4004957AD /* Date+Extensions.swift in Sources */,
+				9675762B2B0CDCA4004957AD /* Const.swift in Sources */,
+				9675762C2B0CDCA4004957AD /* BackColorModifier.swift in Sources */,
+				9675762D2B0CDCA4004957AD /* Todo.swift in Sources */,
+				9675762E2B0CDCA4004957AD /* Dictionary.swift in Sources */,
+				9675762F2B0CDCA4004957AD /* Injection+Key.swift in Sources */,
+				967576302B0CDCA4004957AD /* CurrentPizzaObject.swift in Sources */,
+				967576312B0CDCA4004957AD /* PizzaObject.swift in Sources */,
+				967576322B0CDCA4004957AD /* RegisterView.swift in Sources */,
+				967576332B0CDCA4004957AD /* TimeMissionRepository.swift in Sources */,
+				967576342B0CDCA4004957AD /* PreviewsContainer.swift in Sources */,
+				967576352B0CDCA4004957AD /* Task.swift in Sources */,
+				967576362B0CDCA4004957AD /* LocalNotification.swift in Sources */,
+				967576372B0CDCA4004957AD /* BehaviorMissionObject.swift in Sources */,
+				967576382B0CDCA4004957AD /* PickerView.swift in Sources */,
+				967576392B0CDCA4004957AD /* PersistentedError.swift in Sources */,
+				9675763A2B0CDCA4004957AD /* MissionStore.swift in Sources */,
+				9675763B2B0CDCA4004957AD /* PizzaRepository.swift in Sources */,
+				9675763C2B0CDCA4004957AD /* View.swift in Sources */,
+				9675763D2B0CDCA4004957AD /* TodoCellView.swift in Sources */,
+				9675763E2B0CDCA4004957AD /* MissionView.swift in Sources */,
+				9675763F2B0CDCA4004957AD /* Todo-extension.swift in Sources */,
+				967576402B0CDCA4004957AD /* NotificationManager.swift in Sources */,
+				967576412B0CDCA4004957AD /* PizzaStore.swift in Sources */,
+				967576422B0CDCA4004957AD /* Injected+Wrapper.swift in Sources */,
+				967576432B0CDCA4004957AD /* PizzaView.swift in Sources */,
+				967576442B0CDCA4004957AD /* DependencyType.swift in Sources */,
+				967576452B0CDCA4004957AD /* TimeUnitPickerView.swift in Sources */,
+				967576462B0CDCA4004957AD /* MissionType.swift in Sources */,
+				967576472B0CDCA4004957AD /* KeyPathEditable.swift in Sources */,
+				967576482B0CDCA4004957AD /* User-extension.swift in Sources */,
+				967576492B0CDCA4004957AD /* RealmError.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1358,6 +1701,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1394,7 +1738,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1438,7 +1782,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1499,6 +1843,95 @@
 			};
 			name = Release;
 		};
+		967576592B0CDCA4004957AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pickle/Resource/Pickle.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Resource/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Pickle-release-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "현실도 피자";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		9675765A2B0CDCA4004957AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Pickle/Resource/Pickle.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Pickle/Resource/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Pickle-release-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "현실도 피자";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "real-do-pizza-app-Debug";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1529,9 +1962,26 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		967576582B0CDCA4004957AD /* Build configuration list for PBXNativeTarget "Pickle-release" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				967576592B0CDCA4004957AD /* Debug */,
+				9675765A2B0CDCA4004957AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		967575C82B0CDCA4004957AD /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		96BF928F2AC27EAC00277131 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
@@ -1543,6 +1993,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		967575C72B0CDCA4004957AD /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 967575C82B0CDCA4004957AD /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		967575C92B0CDCA4004957AD /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 967575C82B0CDCA4004957AD /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		96BF92902AC27EAC00277131 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 96BF928F2AC27EAC00277131 /* XCRemoteSwiftPackageReference "realm-swift" */;

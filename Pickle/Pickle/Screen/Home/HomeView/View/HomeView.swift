@@ -335,7 +335,7 @@ extension HomeView {
             pizzaName
                 .padding(.bottom, 10)
             
-//            tempButton
+            tempButton
             
             Text("\(viewModel.currentPositionPizza.pizzaTaskSlice)")
                 .font(.chab)
@@ -403,6 +403,7 @@ extension HomeView {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
+#if DEBUG 
             let _ = PreviewsContainer.setUpDependency()
             let todo = TodoStore()
             let pizza = PizzaStore()
@@ -421,6 +422,9 @@ struct HomeView_Previews: PreviewProvider {
                 .environmentObject(NavigationStore(mediator: NotiMediator()))
                 .environmentObject(NotificationManager(mediator: NotiMediator()))
                 .environment(\.scrollEnable, .constant(.init()))
+#else
+            Text("value")
+#endif
         }
     }
 }

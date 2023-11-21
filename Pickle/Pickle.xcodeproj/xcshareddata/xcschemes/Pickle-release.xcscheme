@@ -14,36 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2137D5742AC1459C00AFE225"
-               BuildableName = "Pickle.app"
-               BlueprintName = "Pickle"
+               BlueprintIdentifier = "967575C62B0CDCA4004957AD"
+               BuildableName = "Pickle-release.app"
+               BlueprintName = "Pickle-release"
                ReferencedContainer = "container:Pickle.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "965C9B9E2ADAB2380015ABBE"
-               BuildableName = "PickleTests.xctest"
-               BlueprintName = "PickleTests"
-               ReferencedContainer = "container:Pickle.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -56,9 +43,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2137D5742AC1459C00AFE225"
-            BuildableName = "Pickle.app"
-            BlueprintName = "Pickle"
+            BlueprintIdentifier = "967575C62B0CDCA4004957AD"
+            BuildableName = "Pickle-release.app"
+            BlueprintName = "Pickle-release"
             ReferencedContainer = "container:Pickle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -73,9 +60,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2137D5742AC1459C00AFE225"
-            BuildableName = "Pickle.app"
-            BlueprintName = "Pickle"
+            BlueprintIdentifier = "967575C62B0CDCA4004957AD"
+            BuildableName = "Pickle-release.app"
+            BlueprintName = "Pickle-release"
             ReferencedContainer = "container:Pickle.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -84,7 +71,7 @@
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

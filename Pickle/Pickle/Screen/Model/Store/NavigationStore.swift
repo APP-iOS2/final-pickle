@@ -143,6 +143,7 @@ final class NavigationStore: ObservableObject, NotificationService {
 
 // MARK: Test Function
 extension NavigationStore {
+#if DEBUG
     func navigationTest() {
         Task {
             try await Task.sleep(seconds: 1)
@@ -159,6 +160,7 @@ extension NavigationStore {
                                  second: self.dismiss(home: .isPizzaSeleted(false)))
         }
     }
+    #endif
     
     #if DEBUG
     func testNavigation(first action: @autoclosure @escaping () -> Void,

@@ -44,19 +44,18 @@ struct MissionView: View {
                     .foregroundStyle(.secondary)
                     .lineSpacing(5)
                     .padding(.top, 1)
+                
                 Spacer()
             }
         }
         .onAppear {
+            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
+            
             healthKitStore.requestAuthorization { success in
                 if success { healthKitStore.fetchStepCount() }
             }
             
-            timeFormat = is24HourClock ? "HH:mm" : "a h:mm"
-            
-            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-            timeMissions = _timeMissions
-            behaviorMissions = _behaviorMissions
+            missionFetch()
             
             if let firstTimeMission = timeMissions.first, firstTimeMission.date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
                 missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
@@ -75,15 +74,11 @@ struct MissionView: View {
                 }
             }
         }
-        //        .refreshable {
-        //            healthKitStore.fetchStepCount()
-        //            let (_timeMissions, _behaviorMissions) = missionStore.fetch()
-        //            timeMissions = _timeMissions
-        //            behaviorMissions = _behaviorMissions
-        //        }
+//        .refreshable {
+//            healthKitStore.fetchStepCount()
+//            missionFetch()
+//        }
         .onDisappear {
-            healthKitStore.fetchStepCount()
-            
             if let firstTimeMission = timeMissions.first {
                 missionStore.update(mission: .time(TimeMission(id: firstTimeMission.id,
                                                                title: firstTimeMission.title,
@@ -120,6 +115,12 @@ struct MissionView: View {
               primaryButtonTitle: "확인",
               secondaryButtonTitle: "",
               primaryAction: { showSuccessAlert.toggle() })
+    }
+    
+    func missionFetch() {
+        let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+        timeMissions = _timeMissions
+        behaviorMissions = _behaviorMissions
     }
 }
 

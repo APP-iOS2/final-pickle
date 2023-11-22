@@ -48,6 +48,7 @@ final class TimeMissionRepository: BaseRepository<TimeMissionObject>, TimeReposi
             return results
         } catch {
             assert(false)
+            Log.error(error.localizedDescription)
         }
         return []
     }

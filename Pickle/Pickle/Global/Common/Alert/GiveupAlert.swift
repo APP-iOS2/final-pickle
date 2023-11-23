@@ -16,7 +16,8 @@ extension View {
         primaryAction: @escaping (Double) -> Void,
         primaryparameter: TimeInterval,
         secondaryButton: String,
-        secondaryAction: @escaping () -> Void
+        secondaryAction: @escaping () -> Void,
+        externalTapAction: (() -> Void)? = nil
     ) -> some View {
         return modifier(
             GiveupAlertModifier(isPresented: isPresented,
@@ -26,13 +27,15 @@ extension View {
                                 primaryAction: primaryAction, 
                                 primaryparameter: primaryparameter,
                                 secondaryButton: secondaryButton,
-                                secondaryAction: secondaryAction)
+                                secondaryAction: secondaryAction, 
+                                externalAction: externalTapAction)
         )
     }
 }
 
 struct GiveupAlertModifier: ViewModifier {
     
+    @Environment(\.dismiss) var dissmiss
     @Binding var isPresented: Bool
     
     let title: String
@@ -42,6 +45,7 @@ struct GiveupAlertModifier: ViewModifier {
     let primaryparameter: TimeInterval
     let secondaryButton: String
     let secondaryAction: () -> Void
+    let externalAction: (() -> Void)?
     
     func body(content: Content) -> some View {
         ZStack {
@@ -53,8 +57,12 @@ struct GiveupAlertModifier: ViewModifier {
                         .ignoresSafeArea()
                         .onTapGesture {
                             self.isPresented = false // 외부 영역 터치 시 내려감
+                            if let externalAction {
+                                externalAction()
+                            } else {
+                                dissmiss()
+                            }
                         }
-                    
                     GiveupAlert(isPresented: $isPresented,
                                 title: title,
                                 contents: contents,
@@ -157,5 +165,6 @@ struct GiveupAlert: View {
                                       primaryAction: { _ in }, 
                                       primaryparameter: 20,
                                       secondaryButton: "돌아가기",
-                                      secondaryAction: { }))
+                                      secondaryAction: { }, 
+                                      externalAction: { }))
 }

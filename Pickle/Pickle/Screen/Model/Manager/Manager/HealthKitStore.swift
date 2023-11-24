@@ -10,6 +10,7 @@ import HealthKit
 
 class HealthKitStore: ObservableObject {
 
+
     var stepCount: Int? = nil
     private let healthStore: HKHealthStore? = HKHealthStore()
 

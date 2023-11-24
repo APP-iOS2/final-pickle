@@ -87,138 +87,139 @@ struct PizzaTextModifier: ViewModifier {
                     .scaleEffect(1.6))
     }
 }
-
-struct TimeMissionStyleView: View {
-    @EnvironmentObject var missionStore: MissionStore
-    @EnvironmentObject var userStore: UserStore
-    @Binding var timeMission: TimeMission
-    
-    @AppStorage("is24HourClock") var is24HourClock: Bool = true
-    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
-    
-    @State private var isTimeMissionSettingModalPresented = false
-    @Binding var showsAlert: Bool
-    @Binding var showSuccessAlert: Bool
-    
-    var buttonSwitch: Bool {
-        switch timeMission.status {
-        case .ready, .done, .fail:
-            return true
-        case .complete:
-            return false
-        default:
-            return false
-        }
-    }
-    
-    var body: some View {
-        HStack(alignment: .bottom) {
-            VStack(alignment: .leading) {
-                Text(timeMission.title)
-                    .font(.nanumEbTitle)
-                    .foregroundColor(.primary)
-                    .padding(.bottom, 1)
-                
-                Button(action: {
-                    isTimeMissionSettingModalPresented.toggle()
-                }, label: {
-                    HStack {
-                        Text("\(timeMission.changeWakeupTime.format(timeFormat))")
-                            .font(.pizzaTitle2)
-                        
-                        Image(systemName: "chevron.up.chevron.down")
-                    }
-                    .foregroundColor(.secondary)
-                })
-                .sheet(isPresented: $isTimeMissionSettingModalPresented) {
-                    TimeMissionSettingView(timeMission: $timeMission,
-                                           title: timeMission.title,
-                                           isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented, showSuccessAlert: $showSuccessAlert)
-                    .presentationDetents([.fraction(0.4)])
-                }
-            }
-            
-            Spacer(minLength: 10)
-            
-            MissionButton(status: $timeMission.status, action: {
-                timeMission.status = .done
-                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                               title: timeMission.title,
-                                                               status: .done,
-                                                               date: timeMission.date,
-                                                               wakeupTime: timeMission.wakeupTime,
-                                                               changeWakeupTime: timeMission.changeWakeupTime)))
-                withAnimation {
-                    do {
-                        try userStore.addPizzaSlice(slice: 1)
-                        
-                    } catch {
-                        Log.error("❌피자 조각 추가 실패❌")
-                    }
-                }
-                showsAlert = true
-            })
-            .disabled(buttonSwitch)
-        }
-        .onAppear {
-            missionComplete()
-        }
-        .refreshable {
-            missionComplete()
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 20)
-        .background(.clear)
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .cornerRadius(20.0)
-        .overlay(RoundedRectangle(cornerRadius: 20.0)
-            .stroke(Color(.lightGray), lineWidth: 1))
-        .padding(.horizontal)
-        .padding(.top, 15)
-    }
-    
-    func missionComplete() {
-        // 현재 시간과 목표 기상시간 비교 .ready .complete .done .fail
-        if Date() >= timeMission.wakeupTime.adding(minutes: -10)
-            && Date() <= timeMission.wakeupTime.adding(minutes: 10) {
-            if timeMission.status != .done {
-                timeMission.status = .complete
-                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                               title: timeMission.title,
-                                                               status: .complete,
-                                                               date: timeMission.date,
-                                                               wakeupTime: timeMission.wakeupTime,
-                                                               changeWakeupTime: timeMission.changeWakeupTime)))
-            }
-        } else if Date() < timeMission.wakeupTime.adding(minutes: -10) {
-            timeMission.status = .ready
-            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                           title: timeMission.title,
-                                                           status: .ready,
-                                                           date: timeMission.date,
-                                                           wakeupTime: timeMission.wakeupTime,
-                                                           changeWakeupTime: timeMission.changeWakeupTime)))
-        } else {
-            timeMission.status = .fail
-            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
-                                                            title: timeMission.title,
-                                                            status: .fail,
-                                                            date: timeMission.date,
-                                                            wakeupTime: timeMission.wakeupTime,
-                                                            changeWakeupTime: timeMission.changeWakeupTime)))
-        }
-    }
-}
+// 기상미션 주석처리
+//struct TimeMissionStyleView: View {
+//    @EnvironmentObject var missionStore: MissionStore
+//    @EnvironmentObject var userStore: UserStore
+//    @Binding var timeMission: TimeMission
+//    
+//    @AppStorage("is24HourClock") var is24HourClock: Bool = true
+//    @AppStorage("timeFormat") var timeFormat: String = "HH:mm"
+//    
+//    @State private var isTimeMissionSettingModalPresented = false
+//    @Binding var showsAlert: Bool
+//    @Binding var showSuccessAlert: Bool
+//    
+//    var buttonSwitch: Bool {
+//        switch timeMission.status {
+//        case .ready, .done, .fail:
+//            return true
+//        case .complete:
+//            return false
+//        default:
+//            return false
+//        }
+//    }
+//    
+//    var body: some View {
+//        HStack(alignment: .bottom) {
+//            VStack(alignment: .leading) {
+//                Text(timeMission.title)
+//                    .font(.nanumEbTitle)
+//                    .foregroundColor(.primary)
+//                    .padding(.bottom, 1)
+//                
+//                Button(action: {
+//                    isTimeMissionSettingModalPresented.toggle()
+//                }, label: {
+//                    HStack {
+//                        Text("\(timeMission.changeWakeupTime.format(timeFormat))")
+//                            .font(.pizzaTitle2)
+//                        
+//                        Image(systemName: "chevron.up.chevron.down")
+//                    }
+//                    .foregroundColor(.secondary)
+//                })
+//                .sheet(isPresented: $isTimeMissionSettingModalPresented) {
+//                    TimeMissionSettingView(timeMission: $timeMission,
+//                                           title: timeMission.title,
+//                                           isTimeMissionSettingModalPresented: $isTimeMissionSettingModalPresented, showSuccessAlert: $showSuccessAlert)
+//                    .presentationDetents([.fraction(0.4)])
+//                }
+//            }
+//            
+//            Spacer(minLength: 10)
+//            
+//            MissionButton(status: $timeMission.status, action: {
+//                timeMission.status = .done
+//                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+//                                                               title: timeMission.title,
+//                                                               status: .done,
+//                                                               date: timeMission.date,
+//                                                               wakeupTime: timeMission.wakeupTime,
+//                                                               changeWakeupTime: timeMission.changeWakeupTime)))
+//                withAnimation {
+//                    do {
+//                        try userStore.addPizzaSlice(slice: 1)
+//                        
+//                    } catch {
+//                        Log.error("❌피자 조각 추가 실패❌")
+//                    }
+//                }
+//                showsAlert = true
+//            })
+//            .disabled(buttonSwitch)
+//        }
+//        .onAppear {
+//            missionComplete()
+//        }
+//        .refreshable {
+//            missionComplete()
+//        }
+//        .padding(.horizontal, 20)
+//        .padding(.vertical, 20)
+//        .background(.clear)
+//        .frame(minWidth: 0, maxWidth: .infinity)
+//        .cornerRadius(20.0)
+//        .overlay(RoundedRectangle(cornerRadius: 20.0)
+//            .stroke(Color(.lightGray), lineWidth: 1))
+//        .padding(.horizontal)
+//        .padding(.top, 15)
+//    }
+//    
+//    func missionComplete() {
+//        // 현재 시간과 목표 기상시간 비교 .ready .complete .done .fail
+//        if Date() >= timeMission.wakeupTime.adding(minutes: -10)
+//            && Date() <= timeMission.wakeupTime.adding(minutes: 10) {
+//            if timeMission.status != .done {
+//                timeMission.status = .complete
+//                missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+//                                                               title: timeMission.title,
+//                                                               status: .complete,
+//                                                               date: timeMission.date,
+//                                                               wakeupTime: timeMission.wakeupTime,
+//                                                               changeWakeupTime: timeMission.changeWakeupTime)))
+//            }
+//        } else if Date() < timeMission.wakeupTime.adding(minutes: -10) {
+//            timeMission.status = .ready
+//            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+//                                                           title: timeMission.title,
+//                                                           status: .ready,
+//                                                           date: timeMission.date,
+//                                                           wakeupTime: timeMission.wakeupTime,
+//                                                           changeWakeupTime: timeMission.changeWakeupTime)))
+//        } else {
+//            timeMission.status = .fail
+//            missionStore.update(mission: .time(TimeMission(id: timeMission.id,
+//                                                            title: timeMission.title,
+//                                                            status: .fail,
+//                                                            date: timeMission.date,
+//                                                            wakeupTime: timeMission.wakeupTime,
+//                                                            changeWakeupTime: timeMission.changeWakeupTime)))
+//        }
+//    }
+//}
 
 struct BehaviorMissionStyleView: View {
     @EnvironmentObject var missionStore: MissionStore
     @EnvironmentObject var userStore: UserStore
-    @Binding var behaviorMission: BehaviorMission
-    
     @State private var isBehaviorMissionSettingModalPresented = false
-    @Binding var showsAlert: Bool
     
+    @Binding var behaviorMission: BehaviorMission
+    @Binding var showsAlert: Bool
     var healthKitStore: HealthKitStore
+    
+    
     var buttonSwitch1: Bool {
         switch behaviorMission.status {
         case .ready, .done:
@@ -285,14 +286,18 @@ struct BehaviorMissionStyleView: View {
                         .padding(.vertical, 3)
                     
                     MissionButton(status: $behaviorMission.status) {
+                        
                         behaviorMission.status = .done
                         
-                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
-                                                                               title: behaviorMission.title,
-                                                                               status: .done,
-                                                                               status1: behaviorMission.status1,
-                                                                               status2: behaviorMission.status2,
-                                                                               date: behaviorMission.date)))
+                        missionStore.update(mission: 
+                                .behavior(
+                                    BehaviorMission(id: behaviorMission.id,
+                                                    title: behaviorMission.title,
+                                                    status: .done,
+                                                    status1: behaviorMission.status1,
+                                                    status2: behaviorMission.status2)
+                                )
+                        )
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)
@@ -304,6 +309,7 @@ struct BehaviorMissionStyleView: View {
                     }
                     .disabled(buttonSwitch1)
                 }
+                
                 
                 VStack(alignment: .center) {
                     Text("🍕")
@@ -318,12 +324,15 @@ struct BehaviorMissionStyleView: View {
                     MissionButton(status: $behaviorMission.status1) {
                         behaviorMission.status1 = .done
                         
-                        missionStore.update(mission: .behavior(BehaviorMission(id: behaviorMission.id,
-                                                                               title: behaviorMission.title,
-                                                                               status: behaviorMission.status,
-                                                                               status1: .done,
-                                                                               status2: behaviorMission.status2,
-                                                                               date: behaviorMission.date)))
+                        missionStore.update(mission: 
+                                .behavior(
+                                    BehaviorMission(id: behaviorMission.id,
+                                                    title: behaviorMission.title,
+                                                    status: behaviorMission.status,
+                                                    status1: .done,
+                                                    status2: behaviorMission.status2)
+                                )
+                        )
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)
@@ -352,8 +361,7 @@ struct BehaviorMissionStyleView: View {
                                                                                title: behaviorMission.title,
                                                                                status: behaviorMission.status,
                                                                                status1: behaviorMission.status1,
-                                                                               status2: .done,
-                                                                               date: behaviorMission.date)))
+                                                                               status2: .done)))
                         withAnimation {
                             do {
                                 try userStore.addPizzaSlice(slice: 1)
@@ -370,9 +378,9 @@ struct BehaviorMissionStyleView: View {
         .onAppear {
             healthKitStore.fetchStepCount({ self.missionComplete() })
         }
-        .refreshable {
-            healthKitStore.fetchStepCount { self.missionComplete() }
-        }
+//        .refreshable {
+//            healthKitStore.fetchStepCount { self.missionComplete() }
+//        }
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
         .background(.clear)
@@ -393,8 +401,7 @@ struct BehaviorMissionStyleView: View {
                                                                            title: behaviorMission.title,
                                                                            status: .complete,
                                                                            status1: behaviorMission.status1,
-                                                                           status2: behaviorMission.status2,
-                                                                           date: behaviorMission.date)))
+                                                                           status2: behaviorMission.status2)))
                 }
             }
             if behaviorMission.status1 != .done {
@@ -404,8 +411,7 @@ struct BehaviorMissionStyleView: View {
                                                                            title: behaviorMission.title,
                                                                            status: behaviorMission.status,
                                                                            status1: .complete,
-                                                                           status2: behaviorMission.status2,
-                                                                           date: behaviorMission.date)))
+                                                                           status2: behaviorMission.status2)))
                 }
             }
             if behaviorMission.status2 != .done {
@@ -415,8 +421,7 @@ struct BehaviorMissionStyleView: View {
                                                                            title: behaviorMission.title,
                                                                            status: behaviorMission.status,
                                                                            status1: behaviorMission.status1,
-                                                                           status2: .complete,
-                                                                           date: behaviorMission.date)))
+                                                                           status2: .complete)))
                 }
             }
         }
@@ -426,9 +431,9 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false), showSuccessAlert: .constant(false))
-            .environmentObject(MissionStore())
-            .environmentObject(UserStore())
+//        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false), showSuccessAlert: .constant(false))
+//            .environmentObject(MissionStore())
+//            .environmentObject(UserStore())
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "",
                                                                             title: "",
                                                                             status: .ready,

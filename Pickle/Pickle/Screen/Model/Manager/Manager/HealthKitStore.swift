@@ -11,7 +11,7 @@ import HealthKit
 class HealthKitStore: ObservableObject {
 
 
-    var stepCount: Int? = nil
+    @Published var stepCount: Int? = nil
     private let healthStore: HKHealthStore? = HKHealthStore()
 
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
@@ -27,6 +27,7 @@ class HealthKitStore: ObservableObject {
 
     func fetchStepCount(_ completion: @escaping () -> Void = {}) {
         guard let healthStore = healthStore else {
+            Log.warning("fetchStepCount 초기 실행 실패")
             completion()
             return
         }
@@ -37,6 +38,7 @@ class HealthKitStore: ObservableObject {
 
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             completion()
+            Log.error("걸음수 QuantityType 가져오기 실패")
             return
         }
 
@@ -50,7 +52,19 @@ class HealthKitStore: ObservableObject {
                     completion()
                 }
             } else if let error = error {
+                // 그냥 self.stepCount = 0 으로 넣어주면
+                //Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
+                // 위의 에러가 발생함 -> DispatchQue.main.async를 사용해서 넣어주면서 해결
+                DispatchQueue.main.async {
+                    self.stepCount = 0
+                }
                 Log.error("걸음 수 가져오기 실패: \(error.localizedDescription)")
+            } else {
+                DispatchQueue.main.async {
+                    
+                    self.stepCount = 0
+                }
+                Log.warning("fetchStepCount 에서 예상치 못한 error 발생 ")
             }
         }
         healthStore.execute(query)

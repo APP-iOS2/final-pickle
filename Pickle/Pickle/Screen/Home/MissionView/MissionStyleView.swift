@@ -215,6 +215,10 @@ struct BehaviorMissionStyleView: View {
     @EnvironmentObject var userStore: UserStore
     @State private var isBehaviorMissionSettingModalPresented = false
     
+    private var stepCount: Int {
+        guard let tempCount = healthKitStore.stepCount else {return 0}
+        return tempCount
+    }
     @Binding var behaviorMission: BehaviorMission
     @Binding var showsAlert: Bool
     var healthKitStore: HealthKitStore
@@ -262,7 +266,8 @@ struct BehaviorMissionStyleView: View {
             }
             
             HStack {
-                if let stepCount = healthKitStore.stepCount {
+                if let tempCount = healthKitStore.stepCount {
+                    
                     Text("현재 \(stepCount) 걸음")
                         .font(.pizzaBody)
                         .foregroundColor(.textGray)
@@ -271,7 +276,9 @@ struct BehaviorMissionStyleView: View {
                         .font(.pizzaBody)
                         .foregroundColor(.textGray)
                 }
+                
                 Spacer()
+                
             }
             
             HStack(spacing: (.screenWidth - 252) / 8) {
@@ -375,12 +382,11 @@ struct BehaviorMissionStyleView: View {
                 }
             }
         }
-        .onAppear {
-            healthKitStore.fetchStepCount({ self.missionComplete() })
+        
+        .onChange(of: healthKitStore.stepCount) { _ in
+            self.missionComplete()
         }
-//        .refreshable {
-//            healthKitStore.fetchStepCount { self.missionComplete() }
-//        }
+        
         .padding(.horizontal, 20)
         .padding(.vertical, 20)
         .background(.clear)
@@ -431,9 +437,9 @@ struct BehaviorMissionStyleView: View {
 
 struct MissionStyle_Previews: PreviewProvider {
     static var previews: some View {
-//        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false), showSuccessAlert: .constant(false))
-//            .environmentObject(MissionStore())
-//            .environmentObject(UserStore())
+        //        TimeMissionStyleView(timeMission: .constant(TimeMission(id: "")), showsAlert: .constant(false), showSuccessAlert: .constant(false))
+        //            .environmentObject(MissionStore())
+        //            .environmentObject(UserStore())
         BehaviorMissionStyleView(behaviorMission: .constant(BehaviorMission(id: "",
                                                                             title: "",
                                                                             status: .ready,

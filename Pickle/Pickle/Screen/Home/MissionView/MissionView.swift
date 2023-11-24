@@ -52,10 +52,8 @@ struct MissionView: View {
             healthKitStore.requestAuthorization { success in
                 if success { healthKitStore.fetchStepCount() }
             }
-            print("맨처음 \(behaviorMissions)")
-        
+            healthKitStore.fetchStepCount()
             missionFetch()
-            print("fetch 다음 \(behaviorMissions)")
             
             // 기상미션 주석처리
             //            if let firstTimeMission = timeMissions.first, firstTimeMission.date.format("yyyy-MM-dd") != Date().format("yyyy-MM-dd") {
@@ -66,24 +64,25 @@ struct MissionView: View {
             //                                                               wakeupTime: firstTimeMission.changeWakeupTime,
             //                                                               changeWakeupTime: firstTimeMission.changeWakeupTime)))
             //            }
-//            if let firstBehaviorMission = behaviorMissions.first {
-//                missionStore.update(mission:
-//                        .behavior(
-//                            BehaviorMission(id: firstBehaviorMission.id,
-//                                            title: firstBehaviorMission.title,
-//                                            status: .ready,
-//                                            status1: .ready,
-//                                            status2: .ready,
-//                                            date: Date())
-//                        )
-//                )
-//            }
+            //            if let firstBehaviorMission = behaviorMissions.first {
+            //                missionStore.update(mission:
+            //                        .behavior(
+            //                            BehaviorMission(id: firstBehaviorMission.id,
+            //                                            title: firstBehaviorMission.title,
+            //                                            status: .ready,
+            //                                            status1: .ready,
+            //                                            status2: .ready,
+            //                                            date: Date())
+            //                        )
+            //                )
+            //            }
             
         }
+
         .refreshable {
-                    healthKitStore.fetchStepCount()
-                    missionFetch()
-                }
+            healthKitStore.fetchStepCount()
+            missionFetch()
+        }
         .onDisappear {
             //기상미션 주석처리
             //            if let firstTimeMission = timeMissions.first {
@@ -94,18 +93,18 @@ struct MissionView: View {
             //                                                               wakeupTime: firstTimeMission.wakeupTime,
             //                                                               changeWakeupTime: firstTimeMission.changeWakeupTime)))
             //            }
-//            if let firstBehaviorMission = behaviorMissions.first {
-//                missionStore.update(mission:
-//                        .behavior(
-//                            BehaviorMission(id: firstBehaviorMission.id,
-//                                            title: firstBehaviorMission.title,
-//                                            status: firstBehaviorMission.status,
-//                                            status1: firstBehaviorMission.status1,
-//                                            status2: firstBehaviorMission.status2,
-//                                            date: firstBehaviorMission.date)
-//                        )
-//                )
-//            }
+            //            if let firstBehaviorMission = behaviorMissions.first {
+            //                missionStore.update(mission:
+            //                        .behavior(
+            //                            BehaviorMission(id: firstBehaviorMission.id,
+            //                                            title: firstBehaviorMission.title,
+            //                                            status: firstBehaviorMission.status,
+            //                                            status1: firstBehaviorMission.status1,
+            //                                            status2: firstBehaviorMission.status2,
+            //                                            date: firstBehaviorMission.date)
+            //                        )
+            //                )
+            //            }
         }
         .navigationTitle("미션")
         .navigationBarTitleDisplayMode(.inline)
@@ -116,23 +115,23 @@ struct MissionView: View {
             primaryButtonTitle: "확인",
             primaryAction: {}
         )
-// 기상미션 주석처리
-//        .successAlert(content: alertContent)
+        // 기상미션 주석처리
+        //        .successAlert(content: alertContent)
     }
     
-// 기상미션 주석처리
-//    var alertContent: AlertContent {
-//        .init(isPresented: $showSuccessAlert,
-//              title: "수정 성공",
-//              alertContent: "기상 시간이 변경되었습니다",
-//              primaryButtonTitle: "확인",
-//              secondaryButtonTitle: "",
-//              primaryAction: { showSuccessAlert.toggle() })
-//    }
+    // 기상미션 주석처리
+    //    var alertContent: AlertContent {
+    //        .init(isPresented: $showSuccessAlert,
+    //              title: "수정 성공",
+    //              alertContent: "기상 시간이 변경되었습니다",
+    //              primaryButtonTitle: "확인",
+    //              secondaryButtonTitle: "",
+    //              primaryAction: { showSuccessAlert.toggle() })
+    //    }
     
     func missionFetch() {
         missionStore.missionSetting()
-//        let (_timeMissions, _behaviorMissions) = missionStore.fetch()
+        //        let (_timeMissions, _behaviorMissions) = missionStore.fetch()
         // 기상미션 주석처리
         // timeMissions = _timeMissions
         let temp = missionStore.behaviorMissions.filter { $0.date.isToday}

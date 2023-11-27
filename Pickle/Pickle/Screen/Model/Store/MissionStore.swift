@@ -105,6 +105,7 @@ final class MissionStore: ObservableObject {
             }
         } catch {
             assert(false)
+            Log.error("MissonStore: func observe - catch error")
         }
     }
     

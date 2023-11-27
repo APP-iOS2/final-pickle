@@ -28,6 +28,7 @@ final class TodoStore: ObservableObject {
             return todo
         } else {
             assert(false, "getSeleted Todo Failed")
+            Log.error("getSeleted Todo Failed")
         }
         return Todo.sample
     }

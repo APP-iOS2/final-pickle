@@ -16,7 +16,7 @@ struct BehaviorMission: Mission, Identifiable {
     var date: Date  // 투두 생성 날짜,시간
     
     init(id: String = UUID().uuidString,
-         title: String = "",
+         title: String = "걷기 미션",
          status: MissionStatus = .ready,
          status1: MissionStatus = .ready,
          status2: MissionStatus = .ready,
@@ -28,5 +28,8 @@ struct BehaviorMission: Mission, Identifiable {
         self.status2 = status2
         self.date = date
     }
+    
+    
+    
 }
 extension BehaviorMission: Equatable { }

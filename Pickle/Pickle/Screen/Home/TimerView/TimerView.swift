@@ -91,7 +91,8 @@ struct TimerView: View {
                          primaryAction: updateGiveup,
                          primaryparameter: timerVM.spendTime,
                          secondaryButton: "돌아가기",
-                         secondaryAction: giveupSecondary)
+                         secondaryAction: giveupSecondary,
+                         externalTapAction: giveupSecondary)
     }
     
     func giveupSecondary() {
@@ -237,6 +238,7 @@ struct TimerView: View {
             }
         }
     }
+
 }
 
 extension TimerView {

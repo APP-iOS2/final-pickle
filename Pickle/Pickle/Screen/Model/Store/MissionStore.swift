@@ -21,6 +21,8 @@ final class MissionStore: ObservableObject {
     @Injected(BehaviorRepoKey.self) var behaviorMissionRepository: any BehaviorRepositoryProtocol
     
     init() {
+        self.missionSetting()
+        //self.fetch()
     }
     
     func fetch() -> ([TimeMission], [BehaviorMission]) {
@@ -40,6 +42,7 @@ final class MissionStore: ObservableObject {
         case .behavior(let behaviorMission):
             behaviorMissionRepository.save(model: behaviorMission)
         }
+        self.fetch()
     }
     
     func delete(mission: MissionType) {
@@ -120,14 +123,30 @@ final class MissionStore: ObservableObject {
     
     func missionSetting() {
         let (t, b) = self.fetch()
-        if !t.isEmpty && !b.isEmpty { return }
-        if t.isEmpty {
-            let time = TimeMission(title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
-            self.add(mission: .time(time))
-        }
-        if b.isEmpty {
-            let behavior = BehaviorMission(title: "걷기 미션", status: .ready, status1: .ready, status2: .ready, date: Date())
+       //        if t.isEmpty {
+//            let time = TimeMission(title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
+//            self.add(mission: .time(time))
+//        }
+        var hasTodaysData = false
+        
+        if behaviorMissions.isEmpty {
+            let behavior = BehaviorMission()
             self.add(mission: .behavior(behavior))
         }
+            
+        for i in behaviorMissions {
+            if i.date.isToday {
+                hasTodaysData = true
+                break
+            }
+        }
+        
+        
+        if hasTodaysData == false {
+            let behavior = BehaviorMission()
+            self.add(mission: .behavior(behavior))
+        }
+
+
     }
 }

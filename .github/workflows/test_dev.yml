@@ -22,4 +22,4 @@ jobs:
     # shell 이용해서 하나의 command 수행
     - name: Start xcode build 🛠
       run: |
-        xcodebuild clean test -project Pickle/Pickle.xcodeproj -scheme Pickle -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=16.0'
+        xcodebuild clean test -project Pickle/Pickle.xcodeproj -scheme Pickle -destination 'platform=iOS Simulator,name=iPhone 14 Pro,OS=16.0'

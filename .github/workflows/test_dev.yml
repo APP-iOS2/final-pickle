@@ -1,0 +1,25 @@
+# workflow 의 이름
+name: Run Test
+
+on:
+  # develop 브랜치에 push 나 pull request 이벤트가 일어났을때 해당 workflow 를 trigger
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+# workflow의 실행은 하나 이상의 job으로 구성 됨
+jobs:
+  # 이 workflow 는 "build" 라는 single job 으로 구성
+  build:
+    # job이 실행될 환경 - 최신 mac os
+    runs-on: macos-latest
+
+    # Step은 job의 일부로 실행될 일련의 task들을 나타냄
+    steps:
+    # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
+    - uses: actions/checkout@v2
+    # shell 이용해서 하나의 command 수행
+    - name: Start xcode build 🛠
+      run: |
+        xcodebuild clean test -project Pickle/Pickle.xcodeproj -scheme Pickle -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=16.0'

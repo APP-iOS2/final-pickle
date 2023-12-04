@@ -1,0 +1,91 @@
+name: Release TestFlight WorkFlow
+
+on:
+  pull_request:
+    branches: [ "release/*" ]
+
+jobs:
+  deploy:
+    name: build & test & TestFilght Upload 
+    runs-on: macos-13
+
+    env:
+      # app archive 및 export 에 쓰일 환경 변수 설정
+     XC_WORKSPACE: ${{ 'Pickle/Pickle.xcodeproj' }}
+     XC_SCHEME: ${{ 'Pickle-release' }}
+     XC_ARCHIVE: ${{ 'Pickle-release.xcarchive' }}
+      
+     # certificate 
+     ENCRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/certificate.p12.gpg' }}
+     DECRYPTED_CERT_FILE_PATH: ${{ '.github/secrets/certificate.p12' }}
+     CERT_ENCRYPTION_KEY: ${{ secrets.CERT_ENCRYPTION_PASSWORD }} # gpg로 파일 암호화할 때 사용한 암호
+      
+     # provisioning
+     ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/release_realDoPizza.mobileprovision.gpg' }}
+     DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/secrets/release_realDoPizza.mobileprovision' }}
+     PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYTION_PASSWORD }} # gpg로 파일 암호화할 때 사용한 암호
+      
+      # certification export key
+     CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PASSWORD }}
+      
+     KEYCHAIN: ${{ 'test.keychain' }}
+     
+    # Step은 job의 일부로 실행될 일련의 task들을 나타냄
+    steps:
+      # 단계별 task 를 나타낼 이름
+      - name: Xcode Version Select
+        # shell 이용해서 하나의 command 수행
+        uses: maxim-lobanov/setup-xcode@v1
+        with: 
+          xcode-version: '15.0.1'
+          
+      - name: Select latest Xcode
+        run: "sudo xcode-select -s /Applications/Xcode.app"
+        
+      - name: Checkout project
+        # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
+        uses: actions/checkout@v2
+      - name: Configure Keychain 
+        # 키체인 초기화 - 임시 키체인 생성
+        run: |
+          security create-keychain -p "" "$KEYCHAIN"
+          security list-keychains -s "$KEYCHAIN"
+          security default-keychain -s "$KEYCHAIN"
+          security unlock-keychain -p "" "$KEYCHAIN"
+          security set-keychain-settings
+      - name : Configure Code Signing
+        run: |
+          # certificate 복호화
+          gpg -d -o "$DECRYPTED_CERT_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERT_ENCRYPTION_KEY" "$ENCRYPTED_CERT_FILE_PATH"
+          # provisioning 복호화
+          gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISIONING_ENCRYPTION_KEY" "$ENCRYPTED_PROVISION_FILE_PATH"
+          
+          # security를 사용하여 인증서와 개인 키를 새로 만든 키 체인으로 가져옴
+          security import "$DECRYPTED_CERT_FILE_PATH" -k "$KEYCHAIN" -P "$CERT_EXPORT_KEY" -A
+          security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+          
+          # Xcode에서 찾을 수 있는 프로비저닝 프로필 설치하기 위해 우선 프로비저닝 디렉토리를 생성
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          # 디버깅 용 echo 명령어
+          echo `ls .github/secrets/*.mobileprovision`
+            # 모든 프로비저닝 프로파일을 rename 하고 위에서 만든 디렉토리로 복사하는 과정
+            for PROVISION in `ls .github/secrets/*.mobileprovision`
+            do
+              UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+            cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+          done
+      - name: Archive app
+        # 빌드 및 아카이브
+        run: |
+          xcodebuild clean archive -workspace $XC_WORKSPACE -scheme $XC_SCHEME -configuration release -archivePath $XC_ARCHIVE
+      - name: Export app
+        # export 를 통해 ipa 파일 만듦
+        run: |
+          xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
+      - name: Upload app to TestFlight
+        uses: apple-actions/upload-testflight-build@v1
+        with:
+          app-path: 'Pickle-release.ipa'
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_API_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}

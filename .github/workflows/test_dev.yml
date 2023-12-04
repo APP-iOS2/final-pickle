@@ -2,9 +2,7 @@
 name: Run Test
 
 on:
-  # develop 브랜치에 push 나 pull request 이벤트가 일어났을때 해당 workflow 를 trigger
-  push:
-    branches: [ dev ]
+  # dev 브랜치에 pull request 이벤트가 일어났을때 해당 workflow 를 trigger
   pull_request:
     branches: [ dev ]
 

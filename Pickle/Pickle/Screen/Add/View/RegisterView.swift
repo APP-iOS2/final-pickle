@@ -144,6 +144,7 @@ struct RegisterView: View {
     }
     
     private func deleteAction() {
+        Log.debug("deleteAction")
         todoStore.delete(todo: willUpdateTodo)
         todoStore.deleteNotificaton(todo: willUpdateTodo, noti: notificationManager)
     }

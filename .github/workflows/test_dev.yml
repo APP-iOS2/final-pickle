@@ -13,12 +13,16 @@ jobs:
   # 이 workflow 는 "build" 라는 single job 으로 구성
   build:
     # job이 실행될 환경 - 최신 mac os
-    runs-on: macos-latest
+    runs-on: macos-13
 
     # Step은 job의 일부로 실행될 일련의 task들을 나타냄
     steps:
     # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
     - uses: actions/checkout@v2
+    # xcode 15.0-beta 선택
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.0-beta'
     # shell 이용해서 하나의 command 수행
     - name: Start xcode build 🛠
       run: |

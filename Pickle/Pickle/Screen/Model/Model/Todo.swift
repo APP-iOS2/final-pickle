@@ -71,7 +71,7 @@ extension Todo: Codable { }
 
 extension Todo {
     static var sample: Todo {
-        .init(id: "",
+        .init(id: UUID().uuidString,
               content: "Sample",
               startTime: Date(),
               targetTime: 0,

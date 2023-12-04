@@ -85,7 +85,7 @@ final class TodoRepository: BaseRepository<TodoObject>, TodoRepositoryProtocol {
     
     func fetcthFuture<T: Storable>(model: T.Type) -> Future<[T], Error> {
         Future<[T], Error> { promise in
-            DispatchQueue(label: "Custom Queue").async {
+            DispatchQueue.main.async {
                 do {
                     let value = try super.dbStore.fetch(model, predicate: nil, sorted: nil)
                     promise(.success(value))

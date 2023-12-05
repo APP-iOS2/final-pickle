@@ -26,9 +26,14 @@ jobs:
      ENCRYPTED_PROVISION_FILE_PATH: ${{ '.github/workflows/secrets/release_realDoPizza.mobileprovision.gpg' }}
      DECRYPTED_PROVISION_FILE_PATH: ${{ '.github/workflows/secrets/release_realDoPizza.mobileprovision' }}
      PROVISIONING_ENCRYPTION_KEY: ${{ secrets.PROVISION_ENCRYTION_PASSWORD }} # gpg로 파일 암호화할 때 사용한 암호
+
+     # AppStore privateKey Path
+     ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/workflows/secrets/AuthKey_2YZNHX4282.p8.gpg' }}
+     DECRYPTED_APPSTORE_PRIVATE_KEY_PATH: ${{ '.github/workflows/secrets/AuthKey_2YZNHX4282.p8' }}
       
-      # certification export key
+     # certification export key
      CERT_EXPORT_KEY: ${{ secrets.CERT_EXPORT_PASSWORD }}
+     CERT_PASSWORD_KEY: ${{ secrets.APPSTORE_KEY_PASSWORD }}
       
      KEYCHAIN: ${{ 'test.keychain' }}
      
@@ -85,21 +90,16 @@ jobs:
         run: |
           xcodebuild -exportArchive -archivePath $XC_ARCHIVE -exportOptionsPlist ExportOptions.plist -exportPath . -allowProvisioningUpdates
       
-      # CD part
       - name: Install private API key P8
-        env:
-          PRIVATE_API_KEY_BASE64: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
-          API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
         run: | 
+          gpg -d -o "$DECRYPTED_APPSTORE_PRIVATE_KEY_PATH" --pinentry-mode=loopback --passphrase "$CERT_PASSWORD_KEY" "$ENCRYPTED_APPSTORE_PRIVATE_KEY_PATH"
           mkdir -p ~/private_keys
-          echo -n "$PRIVATE_API_KEY_BASE64" | base64 --decode --output ~/private_keys/AuthKey_$API_KEY.p8
-
-      - name: Upload app to TestFlight
+          cp $DECRYPTED_APPSTORE_PRIVATE_KEY_PATH ~/private_keys
+      - name: Upload app to AppStore
         env:
           API_KEY: ${{ secrets.APPSTORE_API_KEY_ID }}
           API_ISSUER : ${{ secrets.APPSTORE_ISSUER_ID  }}
         run: xcrun altool --output-format xml --upload-app -f Pickle-release.ipa -t ios --apiKey $API_KEY --apiIssuer $API_ISSUER
-      
       # - name: Upload app to TestFlight
       #   uses: apple-actions/upload-testflight-build@v1
       #   with:

@@ -5,6 +5,9 @@ on:
   # dev 브랜치에 pull request 이벤트가 일어났을때 해당 workflow 를 trigger
   pull_request:
     branches: [ dev ]
+  push:
+    branches: [ dev ]
+
 
 # workflow의 실행은 하나 이상의 job으로 구성 됨
 jobs:
@@ -23,7 +26,8 @@ jobs:
         xcode-version: '15.0.1'
     # shell 이용해서 하나의 command 수행
     - name: Start xcode build 🛠
-      run: |
+      if: github.event_name == 'pull_request'
+      run: | 
         xcodebuild clean test -project Pickle/Pickle.xcodeproj -scheme Pickle -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1'
     # slack 에 알림 보내기
     - name: action-slack

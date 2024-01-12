@@ -66,14 +66,6 @@ struct ContentView: View {
         }
         .task { /*await pizzaSetting()*/ } // 피자 첫 실행시 로컬에 저장
         .onAppear {
-            
-            #if DEBUG
-            print("안녕하세요 Debug 입니다.")
-            #elseif RELEASE
-            print("안녕하세요 Release 입니다.")
-            #else
-            print("안녕하세요 else 입니다.")
-            #endif
             initUserSetting()        // initUserSetting
         }
         .fullScreenCover(isPresented: $isOnboardingViewActive) {

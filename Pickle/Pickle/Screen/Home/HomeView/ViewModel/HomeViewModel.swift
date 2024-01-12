@@ -9,7 +9,7 @@ import SwiftUI
 
 final class HomeViewModel: ObservableObject {
     typealias PizzaSelection = PizzaSelectedView.Selection
-    typealias PositionID = HomeView.ScrollPizzaID
+    typealias PositionID = PizzaPagingView.ScrollPizzaID
     
     /*피자 가로 스크롤 뷰 x offset*/
     @Published var offset: CGFloat = 0

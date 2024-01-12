@@ -91,48 +91,6 @@ final class NavigationStore: ObservableObject, NotificationService {
         )
     }
     
-//    private func homeTabScrollAction(_ proxy: ScrollViewProxy, _ key: Binding<ScrollEnableKey>) {
-//        if self.homeNav.isEmpty {
-//            stopScrollAnimaionAndEnable(scroll: key.root) {
-//                withAnimation(.linear(duration: 0.4)) {
-//                    proxy.scrollTo(ScrollAnchor.home)
-//                }
-//            }
-//        } else {
-//            withAnimation {
-//                self.homeNav = []
-//            }
-//        }
-//    }
-    
-//    private func settingTabScrollAction(_ proxy: ScrollViewProxy, _ key: Binding<ScrollEnableKey>) {
-//        if self.settingNav.isEmpty {
-//            stopScrollAnimaionAndEnable(scroll: key.root) {
-//                withAnimation(.linear(duration: 0.4)) {
-//                    proxy.scrollTo(ScrollAnchor.setting)
-//                }
-//            }
-//        } else {
-//            withAnimation {
-//                self.settingNav = []
-//            }
-//        }
-//    }
-    
-//    private func calendarTabScrollAction(_ proxy: ScrollViewProxy, _ key: Binding<ScrollEnableKey>) {
-//        if self.calendarNav.isEmpty {
-//            stopScrollAnimaionAndEnable(scroll: key.calendar) {
-////                withAnimation(.linear(duration: 0.4)) {
-////                    proxy.scrollTo(ScrollAnchor.calendar)
-////                }
-//            }
-//        } else {
-//            withAnimation {
-//                self.calendarNav = []
-//            }
-//        }
-//    }
-    
     private func stopScrollAnimaionAndEnable(scroll: Binding<Bool>) {
         scroll.wrappedValue.toggle()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.04) {

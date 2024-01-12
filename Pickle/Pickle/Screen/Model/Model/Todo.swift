@@ -29,6 +29,10 @@ struct Todo: Identifiable {
         self.status = status
     }
     
+    init(todo: Todo) {
+        self.init(id: todo.id, content: todo.content, startTime: todo.startTime, targetTime: todo.targetTime, spendTime: todo.spendTime, status: todo.status)
+    }
+    
     init(dic: [String: Any]) {
         self.id = dic["id"] as? String ?? ""
         self.content = dic["content"] as? String ?? ""
@@ -62,10 +66,6 @@ extension Todo: Hashable {
         let dict = Dictionary(uniqueKeysWithValues: value.compactMap { $0 })
         return dict
     }
-
-    // TODO: 정리
-//    2023-11-10 01:55:23.518940+0900 Pickle[2665:550517] *** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** -[NSXPCEncoder _checkObject:]: This coder only encodes objects that adopt NSSecureCoding (object is of class '__SwiftValue').'
-//    *** First throw call stack:
 }
 extension Todo: Codable { }
 
@@ -77,6 +77,15 @@ extension Todo {
               targetTime: 0,
               spendTime: 10,
               status: .ready)
+    }
+    
+    static var onGoing: Todo {
+        Todo(id: "",
+             content: "",
+             startTime: Date(),
+             targetTime: 0,
+             spendTime: 0,
+             status: .ongoing)
     }
 }
 

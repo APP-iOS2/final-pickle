@@ -55,9 +55,7 @@ class HealthKitStore: ObservableObject {
                 // 그냥 self.stepCount = 0 으로 넣어주면
                 //Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
                 // 위의 에러가 발생함 -> DispatchQue.main.async를 사용해서 넣어주면서 해결
-                DispatchQueue.main.async {
-                    self.stepCount = 0
-                }
+                DispatchQueue.main.async { self.stepCount = 0 }
                 Log.error("걸음 수 가져오기 실패: \(error.localizedDescription)")
             } else {
                 DispatchQueue.main.async {

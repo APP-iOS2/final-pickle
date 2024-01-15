@@ -45,8 +45,8 @@
 		960C41962ACE4396009A0093 /* TimeMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41952ACE4396009A0093 /* TimeMissionRepository.swift */; };
 		960C419A2ACE7AF9009A0093 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41992ACE7AF9009A0093 /* Log.swift */; };
 		960C419D2ACE8276009A0093 /* TodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419C2ACE8276009A0093 /* TodoStore.swift */; };
-		960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */; };
-		960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* DependencyType.swift */; };
+		960C41A02ACEF0DA009A0093 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* Container.swift */; };
+		960C41A22ACEF0FA009A0093 /* InstanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* InstanceType.swift */; };
 		960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */; };
 		960C41A62ACEF4F1009A0093 /* Repository+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */; };
 		960C41A82ACEFD6C009A0093 /* MappableProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */; };
@@ -139,7 +139,7 @@
 		967575F12B0CDCA4004957AD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FA267C2AC2B50D00877122 /* User.swift */; };
 		967575F22B0CDCA4004957AD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5892AC1473C00AFE225 /* HomeView.swift */; };
 		967575F32B0CDCA4004957AD /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2137D5AC2AC14F1100AFE225 /* NavigationBar.swift */; };
-		967575F42B0CDCA4004957AD /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */; };
+		967575F42B0CDCA4004957AD /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C419F2ACEF0DA009A0093 /* Container.swift */; };
 		967575F52B0CDCA4004957AD /* PizzaPagingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */; };
 		967575F62B0CDCA4004957AD /* PreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661108A2AFA84CA008A80DE /* PreferenceKey.swift */; };
 		967575F72B0CDCA4004957AD /* Realm+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9661107B2AF800AD008A80DE /* Realm+Combine.swift */; };
@@ -219,7 +219,7 @@
 		967576412B0CDCA4004957AD /* PizzaStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CE29C62ADEC6560070EF92 /* PizzaStore.swift */; };
 		967576422B0CDCA4004957AD /* Injected+Wrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */; };
 		967576432B0CDCA4004957AD /* PizzaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CD68752AD31FC2006DAB62 /* PizzaView.swift */; };
-		967576442B0CDCA4004957AD /* DependencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* DependencyType.swift */; };
+		967576442B0CDCA4004957AD /* InstanceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960C41A12ACEF0FA009A0093 /* InstanceType.swift */; };
 		967576452B0CDCA4004957AD /* TimeUnitPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 966CD9F22B0A6D09003AE885 /* TimeUnitPickerView.swift */; };
 		967576462B0CDCA4004957AD /* MissionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1E4A82AD403BB001B2960 /* MissionType.swift */; };
 		967576472B0CDCA4004957AD /* KeyPathEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96635F692ADFA4A70072F21E /* KeyPathEditable.swift */; };
@@ -348,8 +348,8 @@
 		960C41952ACE4396009A0093 /* TimeMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeMissionRepository.swift; sourceTree = "<group>"; };
 		960C41992ACE7AF9009A0093 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		960C419C2ACE8276009A0093 /* TodoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoStore.swift; sourceTree = "<group>"; };
-		960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
-		960C41A12ACEF0FA009A0093 /* DependencyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyType.swift; sourceTree = "<group>"; };
+		960C419F2ACEF0DA009A0093 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
+		960C41A12ACEF0FA009A0093 /* InstanceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceType.swift; sourceTree = "<group>"; };
 		960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Injected+Wrapper.swift"; sourceTree = "<group>"; };
 		960C41A52ACEF4F1009A0093 /* Repository+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Repository+Extension.swift"; sourceTree = "<group>"; };
 		960C41A72ACEFD6C009A0093 /* MappableProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappableProtocol.swift; sourceTree = "<group>"; };
@@ -744,8 +744,8 @@
 			isa = PBXGroup;
 			children = (
 				960C41A32ACEF253009A0093 /* Injected+Wrapper.swift */,
-				960C41A12ACEF0FA009A0093 /* DependencyType.swift */,
-				960C419F2ACEF0DA009A0093 /* DependencyContainer.swift */,
+				960C41A12ACEF0FA009A0093 /* InstanceType.swift */,
+				960C419F2ACEF0DA009A0093 /* Container.swift */,
 			);
 			path = Injected;
 			sourceTree = "<group>";
@@ -1384,7 +1384,7 @@
 				21FA267D2AC2B50D00877122 /* User.swift in Sources */,
 				2137D58A2AC1473C00AFE225 /* HomeView.swift in Sources */,
 				2137D5AD2AC14F1100AFE225 /* NavigationBar.swift in Sources */,
-				960C41A02ACEF0DA009A0093 /* DependencyContainer.swift in Sources */,
+				960C41A02ACEF0DA009A0093 /* Container.swift in Sources */,
 				966B03202B07DEE7009B6293 /* PizzaPagingView.swift in Sources */,
 				9661108B2AFA84CA008A80DE /* PreferenceKey.swift in Sources */,
 				9661107C2AF800AD008A80DE /* Realm+Combine.swift in Sources */,
@@ -1467,7 +1467,7 @@
 				96CE29C72ADEC6560070EF92 /* PizzaStore.swift in Sources */,
 				960C41A42ACEF253009A0093 /* Injected+Wrapper.swift in Sources */,
 				21CD68762AD31FC2006DAB62 /* PizzaView.swift in Sources */,
-				960C41A22ACEF0FA009A0093 /* DependencyType.swift in Sources */,
+				960C41A22ACEF0FA009A0093 /* InstanceType.swift in Sources */,
 				966CD9F32B0A6D09003AE885 /* TimeUnitPickerView.swift in Sources */,
 				96A1E4A92AD403BB001B2960 /* MissionType.swift in Sources */,
 				96635F6A2ADFA4A70072F21E /* KeyPathEditable.swift in Sources */,
@@ -1535,7 +1535,7 @@
 				967575F12B0CDCA4004957AD /* User.swift in Sources */,
 				967575F22B0CDCA4004957AD /* HomeView.swift in Sources */,
 				967575F32B0CDCA4004957AD /* NavigationBar.swift in Sources */,
-				967575F42B0CDCA4004957AD /* DependencyContainer.swift in Sources */,
+				967575F42B0CDCA4004957AD /* Container.swift in Sources */,
 				967575F52B0CDCA4004957AD /* PizzaPagingView.swift in Sources */,
 				967575F62B0CDCA4004957AD /* PreferenceKey.swift in Sources */,
 				967575F72B0CDCA4004957AD /* Realm+Combine.swift in Sources */,
@@ -1615,7 +1615,7 @@
 				967576412B0CDCA4004957AD /* PizzaStore.swift in Sources */,
 				967576422B0CDCA4004957AD /* Injected+Wrapper.swift in Sources */,
 				967576432B0CDCA4004957AD /* PizzaView.swift in Sources */,
-				967576442B0CDCA4004957AD /* DependencyType.swift in Sources */,
+				967576442B0CDCA4004957AD /* InstanceType.swift in Sources */,
 				967576452B0CDCA4004957AD /* TimeUnitPickerView.swift in Sources */,
 				967576462B0CDCA4004957AD /* MissionType.swift in Sources */,
 				967576472B0CDCA4004957AD /* KeyPathEditable.swift in Sources */,

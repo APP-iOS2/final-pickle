@@ -10,7 +10,7 @@ import XCTest
 
 struct TestStoreKey: InjectionKey {
     typealias Value = TestStore
-    static var type: DependencyType = .automatic
+    static var type: InstanceType = .automatic
 }
 
 struct TestStore: DBStore {

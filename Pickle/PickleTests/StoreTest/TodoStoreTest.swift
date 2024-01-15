@@ -26,7 +26,7 @@ final class TodoStoreTest: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         sut.deleteAll(todo: .sample)
-        DependencyContainer.removeCache()
+        Container.removeCache()
         subscriptions.removeAll()
         sut = nil
     }
@@ -219,8 +219,8 @@ extension Todo {
 
 extension TodoStoreTest {
     static func setUpTodoDependency() {
-        DependencyContainer.register(DBStoreKey.self, RealmStore(type: .inmemory))
-        DependencyContainer.register(TodoRepoKey.self, TodoRepository())
-        DependencyContainer.register(UserRepoKey.self, UserRepository())
+        Container.register(DBStoreKey.self, RealmStore(type: .inmemory))
+        Container.register(TodoRepoKey.self, TodoRepository())
+        Container.register(UserRepoKey.self, UserRepository())
     }
 }

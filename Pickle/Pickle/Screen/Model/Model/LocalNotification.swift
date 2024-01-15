@@ -56,9 +56,23 @@ struct LocalNotification {
     var repeats: Bool
     var userInfo: [String: Any] = [:]
     var type: NotiType
-    
+}
+
+
+extension LocalNotification {
     static let notiType: String = "notificationType"
     static let status: String = "status"
+    static let currentDate = Date()
+    static let _title: String = "현실도 피자"
+    
+    static var timer: Self {
+        LocalNotification(identifier: UUID().uuidString,
+                          title: "현실도 피자",
+                          body: "목표시간이 완료됐어요!",
+                          timeInterval: 1,
+                          repeats: false,
+                          type: .time)
+    }
     
     static func makeLocalNotification(_ item: Todo,
                                       notification type: NotiType,
@@ -92,6 +106,4 @@ struct LocalNotification {
                      userInfo: info,
                      type: type)
     }
-    static let currentDate = Date()
-    static let _title: String = "현실도 피자"
 }

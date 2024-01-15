@@ -52,6 +52,16 @@ final class NotificationManager: NSObject,
         await getCurrentSetting()
     }
     
+    func timerViewPushSetting(_ localNotification: LocalNotification) {
+        if self.isGranted {
+            self.scheduleNotification( localNotification: localNotification )
+        } else {
+            self.isAlertOccurred = true
+        }
+    }
+    
+    
+    
     // 현재 알림 설정 확인
     func getCurrentSetting() async {
         let currentSetting = await notificationCenter.notificationSettings()
@@ -123,7 +133,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, 
                                 openSettingsFor notification: UNNotification?) {
-        let userInfo = notification?.request.content.userInfo
+        // let userInfo = notification?.request.content.userInfo
     }
     
     private func notificationRouting(userInfo: [AnyHashable: Any]) async {

@@ -99,15 +99,7 @@ struct TimerReportView: View {
                 
             }
             
-                Button(action: {
-//                    if todo.status == .done {
-//                        do {
-//                            try userStore.addPizzaSlice(slice: 1)
-//                        } catch {
-//                            Log.error("❌피자 조각 추가 실패❌")
-//                        }
-//                    }
-                    
+                Button(action: {                    
                     timerVM.timerVMreset()
                     dismiss()
                     isShowingTimerView.toggle()

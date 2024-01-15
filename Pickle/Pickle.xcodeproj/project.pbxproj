@@ -237,6 +237,8 @@
 		967576552B0CDCA4004957AD /* NanumSquareNeoOTF-Rg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E52AD9098400648B59 /* NanumSquareNeoOTF-Rg.otf */; };
 		967576562B0CDCA4004957AD /* NanumSquareNeoOTF-Bd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 96CF08E12AD9098400648B59 /* NanumSquareNeoOTF-Bd.otf */; };
 		967576572B0CDCA4004957AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2137D57C2AC1459D00AFE225 /* Assets.xcassets */; };
+		9688ADDB2B516D3B000F2B3A /* TodoEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688ADDA2B516D3B000F2B3A /* TodoEmptyView.swift */; };
+		9688ADDD2B5170E6000F2B3A /* PizzaSliceDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9688ADDC2B5170E6000F2B3A /* PizzaSliceDescriptionView.swift */; };
 		968EB22D2AEE63110025BEF8 /* NavigationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968EB22C2AEE63110025BEF8 /* NavigationStore.swift */; };
 		96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96943B252ADFFDED0026D54F /* BackgroundModifier.swift */; };
 		96A1D4A32ACFD97A003BC207 /* BehaviorMissionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */; };
@@ -400,6 +402,8 @@
 		967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuccessUpdateKey-PreferenceKey.swift"; sourceTree = "<group>"; };
 		9675765B2B0CDCA4004957AD /* Pickle-release.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pickle-release.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9675765C2B0CDCA4004957AD /* Pickle-release-info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Pickle-release-info.plist"; path = "/Users/baghyeonghwan/final/final-pickle/Pickle/Pickle-release-info.plist"; sourceTree = "<absolute>"; };
+		9688ADDA2B516D3B000F2B3A /* TodoEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEmptyView.swift; sourceTree = "<group>"; };
+		9688ADDC2B5170E6000F2B3A /* PizzaSliceDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PizzaSliceDescriptionView.swift; sourceTree = "<group>"; };
 		968EB22C2AEE63110025BEF8 /* NavigationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStore.swift; sourceTree = "<group>"; };
 		96943B252ADFFDED0026D54F /* BackgroundModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundModifier.swift; sourceTree = "<group>"; };
 		96A1D4A22ACFD97A003BC207 /* BehaviorMissionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviorMissionRepository.swift; sourceTree = "<group>"; };
@@ -844,10 +848,6 @@
 			isa = PBXGroup;
 			children = (
 				96C64FE22ADC2C450042204A /* CustomSheetView.swift */,
-				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
-				9619E9382B05921E0028348C /* PizzaItemView.swift */,
-				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
-				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
 				96CF08ED2AD933A400648B59 /* DotCircleView.swift */,
 			);
 			path = Component;
@@ -857,7 +857,8 @@
 			isa = PBXGroup;
 			children = (
 				2137D5892AC1473C00AFE225 /* HomeView.swift */,
-				966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */,
+				9688ADDF2B517541000F2B3A /* Todo */,
+				9688ADDE2B51753A000F2B3A /* Pizza */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -930,6 +931,27 @@
 				967575C02B0AB9AF004957AD /* SuccessUpdateKey-PreferenceKey.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		9688ADDE2B51753A000F2B3A /* Pizza */ = {
+			isa = PBXGroup;
+			children = (
+				966B031F2B07DEE7009B6293 /* PizzaPagingView.swift */,
+				9688ADDC2B5170E6000F2B3A /* PizzaSliceDescriptionView.swift */,
+				965C9B992ADA866E0015ABBE /* PizzaSelectedView.swift */,
+				9619E9382B05921E0028348C /* PizzaItemView.swift */,
+				21CD68752AD31FC2006DAB62 /* PizzaView.swift */,
+			);
+			path = Pizza;
+			sourceTree = "<group>";
+		};
+		9688ADDF2B517541000F2B3A /* Todo */ = {
+			isa = PBXGroup;
+			children = (
+				9688ADDA2B516D3B000F2B3A /* TodoEmptyView.swift */,
+				2137D5AF2AC176DB00AFE225 /* TodoCellView.swift */,
+			);
+			path = Todo;
 			sourceTree = "<group>";
 		};
 		96A1D4A82AD176AD003BC207 /* Key */ = {
@@ -1337,6 +1359,7 @@
 				961488772AFD221200B87A37 /* HomeView-Routing.swift in Sources */,
 				2137D5932AC1478C00AFE225 /* CalendarView.swift in Sources */,
 				9619E93C2B0594210028348C /* ScrollEnableKey.swift in Sources */,
+				9688ADDD2B5170E6000F2B3A /* PizzaSliceDescriptionView.swift in Sources */,
 				96635F672ADFA0960072F21E /* BehaviorMission-extension.swift in Sources */,
 				2137D5A42AC14C6A00AFE225 /* CGFloat.swift in Sources */,
 				B7908DC12AE01BFC004C5221 /* PizzaSummaryView.swift in Sources */,
@@ -1354,6 +1377,7 @@
 				961296982AC17120009A9815 /* TextFieldModifier.swift in Sources */,
 				961488732AFD21D800B87A37 /* ScrollAnchor.swift in Sources */,
 				21FA267B2AC2ADFB00877122 /* Mission.swift in Sources */,
+				9688ADDB2B516D3B000F2B3A /* TodoEmptyView.swift in Sources */,
 				B063F5CE2ADD02DB008EF304 /* HealthKitStore.swift in Sources */,
 				B729A2492AC3FEB2008FF7C5 /* TaskRowView.swift in Sources */,
 				96943B262ADFFDED0026D54F /* BackgroundModifier.swift in Sources */,

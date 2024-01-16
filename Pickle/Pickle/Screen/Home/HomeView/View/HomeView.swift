@@ -11,7 +11,6 @@ struct HomeView: View {
     typealias PizzaSelection = PizzaSelectedView.Selection
     typealias TodoSelection = UpdateTodoView.Selection
     typealias TimerSelection = TodoCellView.Selection
-    typealias PizzaImage = String
     
     init() {
         navigationAppearenceSetting()

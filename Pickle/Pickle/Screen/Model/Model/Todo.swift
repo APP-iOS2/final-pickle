@@ -30,7 +30,12 @@ struct Todo: Identifiable {
     }
     
     init(todo: Todo) {
-        self.init(id: todo.id, content: todo.content, startTime: todo.startTime, targetTime: todo.targetTime, spendTime: todo.spendTime, status: todo.status)
+        self.init(id: todo.id, 
+                  content: todo.content,
+                  startTime: todo.startTime,
+                  targetTime: todo.targetTime,
+                  spendTime: todo.spendTime,
+                  status: todo.status)
     }
     
     init(dic: [String: Any]) {
@@ -67,6 +72,7 @@ extension Todo: Hashable {
         return dict
     }
 }
+
 extension Todo: Codable { }
 
 extension Todo {

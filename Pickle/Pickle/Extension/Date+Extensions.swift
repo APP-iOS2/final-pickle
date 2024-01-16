@@ -64,4 +64,27 @@ extension Date {
             return month
         }
     }
+    
+    static func convertSecondsToTime(timeInSecond: TimeInterval) -> String {
+        let hours: Int = Int(timeInSecond / 3600)
+        let minutes: Int = Int(timeInSecond - Double(hours) * 3600) / 60
+        let seconds: Int = Int(timeInSecond.truncatingRemainder(dividingBy: 60))
+        
+        if timeInSecond >= 3600 {
+            return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+        } else {
+            return String(format: "%02i:%02i", minutes, seconds)
+        }
+    }
+    
+    static func convertTargetTimeToString(timeInSecond: TimeInterval) -> String {
+        let hours: Int = Int(timeInSecond / 3600)
+        let minutes: Int = Int(timeInSecond - Double(hours) * 3600) / 60
+        
+        if timeInSecond >= 3600 {
+            return String(format: "%i시간 %i분", hours, minutes)
+        } else {
+            return String(format: "%i분", minutes)
+        }
+    }
 }

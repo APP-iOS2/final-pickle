@@ -200,3 +200,6 @@
 
 ## License
 “현실도 피자" is available under the MIT license. See the [LICENSE](https://github.com/APP-iOS2/final-pickle/blob/main/LICENSE) file for more info.
+
+
+<img src="https://file.notion.so/f/f/102bfca8-b81d-4043-b5b1-94e4f72ac532/1367e67b-9d87-4105-89e4-1182a96682ad/%E1%84%8E%E1%85%AC%E1%84%8B%E1%85%AE%E1%84%89%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC.pdf?id=169e984d-173a-402d-9cfb-968efdfa6126&table=block&spaceId=102bfca8-b81d-4043-b5b1-94e4f72ac532&expirationTimestamp=1706162400000&signature=_r9luWPFZXvBKzW1WjKOMfpMc-1sbY1voDHvHL9DAhY&downloadName=%E1%84%8E%E1%85%AC%E1%84%8B%E1%85%AE%E1%84%89%E1%85%AE%E1%84%89%E1%85%A1%E1%86%BC.pdf" width="100%" height="100%"/>

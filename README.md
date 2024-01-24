@@ -202,4 +202,4 @@
 “현실도 피자" is available under the MIT license. See the [LICENSE](https://github.com/APP-iOS2/final-pickle/blob/main/LICENSE) file for more info.
 
 
-<img src="https://github.com/APP-iOS2/final-pickle/files/14033211/default.pdf" width="100%" height="100%"/>
+[최우수상.pdf](https://github.com/APP-iOS2/final-pickle/files/14033230/default.pdf)

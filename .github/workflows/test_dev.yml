@@ -17,11 +17,11 @@ jobs:
   # 이 workflow 는 "build" 라는 single job 으로 구성
   build:
     # job이 실행될 환경 - 최신 mac os
-    runs-on: macos-latest
+    runs-on: macos-15
 
     strategy:
       matrix:
-        xcode: ["15.3.0"]
+        xcode: ["16.4"]
     # Step은 job의 일부로 실행될 일련의 task들을 나타냄
     steps:
     # uses 키워드를 통해 Github Actions에서 기본으로 제공하는 액션을 사용 가능. 아래 액션은 repository 에 체크아웃하는 것
@@ -47,14 +47,19 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-iOS_derived_data-
           
+    - name: Select Simulator
+      run: |
+        SIMULATOR_ID=$(xcrun simctl list devices available -j | ruby -rjson -e 'devices = JSON.parse(STDIN.read)["devices"].values.flatten; device = devices.find { |d| d["name"] == "iPhone 15" } || devices.find { |d| d["name"] == "iPhone 16" } || devices.find { |d| d["name"].start_with?("iPhone") }; abort "No iPhone simulator found" unless device; puts device["udid"]')
+        echo "SIMULATOR_ID=$SIMULATOR_ID" >> "$GITHUB_ENV"
+          
     # shell 이용해서 하나의 command 수행
     - name: Start Test 🛠
       if: github.event_name == 'pull_request'
       run: | 
         xcodebuild test \
         -workspace ${{env.PROJECT}}.xcworkspace \
-        -scheme Pickle \
-        -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.0.1'
+        -scheme PickleTests \
+        -destination "platform=iOS Simulator,id=${{ env.SIMULATOR_ID }}"
         
     # slack 에 알림 보내기
     - name: action-slack

@@ -11,7 +11,9 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>com.ddudios.realpizza</key>
-		<string>release_realDoPizza</string>
+		<string>Real-do-pizza-Release-1.1.0</string>
+		<key>com.ddudios.realpizza.TaskLiveActivity</key>
+		<string>LiveActivity_provisioning_1_1_0</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>EE1FE487DEF373321D7B41176F206A0ACF6705DA</string>

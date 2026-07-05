@@ -30,10 +30,11 @@ final class PizzaLiveActivity: ObservableObject {
             )
             
             let state
-            = TaskLiveActivityAttributes.ContentState(
-                taskMode: .decreasing,
-                taskTime: closedRange
-            )
+                = TaskLiveActivityAttributes.ContentState(
+                    taskMode: .decreasing,
+                    taskTime: closedRange,
+                    pausedTime: nil
+                )
             do {
                 _activity =
                 try Activity<TaskLiveActivityAttributes>.request(
@@ -48,6 +49,22 @@ final class PizzaLiveActivity: ObservableObject {
     }
     
     func updateActivity(range: ClosedRange<Date>) {
+        updateActivity(mode: .increasing, range: range, pausedTime: nil)
+    }
+    
+    func pauseActivity(pausedTime: TimeInterval, isDecreasing: Bool) {
+        let now = Date()
+        let range = now...Date(timeInterval: max(pausedTime, 1), since: now)
+        updateActivity(mode: .paused, range: range, pausedTime: pausedTime)
+    }
+    
+    func resumeActivity(range: ClosedRange<Date>, isDecreasing: Bool) {
+        updateActivity(mode: isDecreasing ? .decreasing : .increasing, range: range, pausedTime: nil)
+    }
+    
+    private func updateActivity(mode: TaskMode,
+                                range: ClosedRange<Date>,
+                                pausedTime: TimeInterval?) {
         if #available(iOS 17.0, *) {
             Task {
                 guard let id = _activity?.id else {
@@ -60,8 +77,9 @@ final class PizzaLiveActivity: ObservableObject {
                 
                 let state
                 = TaskLiveActivityAttributes.ContentState(
-                    taskMode: .increasing,
-                    taskTime: range
+                    taskMode: mode,
+                    taskTime: range,
+                    pausedTime: pausedTime
                 )
                 
                 await activity.update(using: state)
@@ -76,7 +94,8 @@ final class PizzaLiveActivity: ObservableObject {
         let finalContent
         = TaskLiveActivityAttributes.ContentState(
             taskMode: .end,
-            taskTime: Date()...Date()
+            taskTime: Date()...Date(),
+            pausedTime: nil
         )
         let dismissalPolicy: ActivityUIDismissalPolicy = .immediate
         await _activity?.end(

@@ -53,6 +53,10 @@ struct CircleTimerView: View {
     }
     
     private func handleTimerEvent() {
+        if timerViewModel.isTimerPaused {
+            return
+        }
+        
         if 타이머_실행전 {
             timerViewModel.timeRemaining -= 1
             return

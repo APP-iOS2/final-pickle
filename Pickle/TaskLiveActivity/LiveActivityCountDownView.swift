@@ -78,6 +78,18 @@ struct ModeTimerText: View {
                 }
             }
             
+        } else if state.taskMode == .paused {
+            HStack(spacing: 8) {
+                Text("일시정지")
+                    .foregroundColor(.secondary)
+                    .font(font)
+                
+                Text(Date.convertSecondsToTime(timeInSecond: state.pausedTime ?? 0))
+                    .foregroundColor(.pickle)
+                    .font(font)
+                    .minimumScaleFactor(0.5)
+            }
+            
         }
     }
 }

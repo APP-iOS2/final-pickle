@@ -71,7 +71,7 @@ public struct LiveActivityCircleView: View {
                             .foregroundColor(.white)
                         
                         // 목표시간 명시
-                        Text("\(Date.convertMinutesBetween(startDate: workoutDateRange.lowerBound, endDate: workoutDateRange.upperBound)) 분")
+                        Text(mode == .paused ? "일시정지" : "\(Date.convertMinutesBetween(startDate: workoutDateRange.lowerBound, endDate: workoutDateRange.upperBound)) 분")
                             .font(.liveActivityTargetTime)
                             .foregroundColor(.secondary)
                             .offset(y: -10)

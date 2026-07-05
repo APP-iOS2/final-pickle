@@ -15,6 +15,7 @@ final class TimerViewModel: ObservableObject {
     @Published var spendTime: TimeInterval = 0
     @Published var isDecresing: Bool = true // 목표시간 줄어드는거 관련 변수
     @Published var isPuase: Bool = false
+    @Published var isTimerPaused: Bool = false
     @Published var backgroundTimeStemp: Date = Date()
     @Published var fromBackground: Bool = false
     
@@ -75,6 +76,7 @@ final class TimerViewModel: ObservableObject {
         self.timeExtra = 0
         self.spendTime = 0
         self.isDecresing = true
+        self.isTimerPaused = false
         self.todo = Todo(id: "",
                          content: "",
                          startTime: Date(),

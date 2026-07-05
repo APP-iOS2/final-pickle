@@ -21,6 +21,7 @@ struct TimerView: View {
         var isComplete: Bool = false
         var isDisabled: Bool = true
         var isGiveupSign: Bool = false
+        var isPaused: Bool = false
         var realStartTime: Date = Date()
         var settingTime: TimeInterval = 0
         var isShowingReportSheet: Bool = false
@@ -109,6 +110,8 @@ struct TimerView: View {
             state.isComplete = true
             updateDone(spendTime: timerViewModel.spendTime)
             state.isShowingReportSheet = true
+        } else if case .pauseResume = type {
+            togglePause()
         } else if case .giveUp = type {
             state.isComplete = true
             state.isGiveupSign = true
@@ -116,6 +119,37 @@ struct TimerView: View {
         }
         if #available(iOS 17.0, *) {
             Task { await pizzaTaskActivity.stopTimerActivity() }
+        }
+    }
+    
+    private func togglePause() {
+        state.isPaused.toggle()
+        timerViewModel.isTimerPaused = state.isPaused
+        
+        if state.isPaused {
+            pizzaTaskActivity.pauseActivity(
+                pausedTime: liveActivityPausedTime,
+                isDecreasing: timerViewModel.isDecresing
+            )
+        } else {
+            pizzaTaskActivity.resumeActivity(
+                range: liveActivityResumeRange,
+                isDecreasing: timerViewModel.isDecresing
+            )
+        }
+    }
+    
+    private var liveActivityPausedTime: TimeInterval {
+        timerViewModel.isDecresing ? timerViewModel.timeRemaining : timerViewModel.timeExtra
+    }
+    
+    private var liveActivityResumeRange: ClosedRange<Date> {
+        let now = Date()
+        if timerViewModel.isDecresing {
+            return now...Date(timeInterval: timerViewModel.timeRemaining, since: now)
+        } else {
+            let start = Date(timeInterval: -timerViewModel.timeExtra, since: now)
+            return start...Date(timeInterval: 60 * 180, since: now)
         }
     }
     
@@ -128,6 +162,7 @@ struct TimerView: View {
         
         todoStore.update(todo: todo)
         timerViewModel.updateTodo(spendTime: spendTime, status: .done)
+        timerViewModel.isTimerPaused = false
         isRunTimer = false
         backgroundNumber = 0
         
@@ -151,6 +186,7 @@ struct TimerView: View {
         
         todoStore.update(todo: todo)
         timerViewModel.updateTodo(spendTime: spendTime, status: .giveUp)
+        timerViewModel.isTimerPaused = false
         isRunTimer = false
         backgroundNumber = 0
         
@@ -171,7 +207,9 @@ struct TimerView: View {
     
     private func startTodo() {
         state.settingTime = 3
+        state.isPaused = false
         timerViewModel.timeRemaining = state.settingTime
+        timerViewModel.isTimerPaused = false
         timerViewModel.makeRandomSaying()
         timerViewModel.fetchTodo(todo: receiveTodo)
         todoId = receiveTodo.id

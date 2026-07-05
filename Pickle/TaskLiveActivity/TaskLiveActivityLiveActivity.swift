@@ -25,6 +25,7 @@ public struct PizzaTaskLiveActivityAttributes: ActivityAttributes {
 public enum TaskMode: Codable {
     case increasing
     case decreasing
+    case paused
     case end
 }
 
@@ -36,6 +37,7 @@ public struct TaskLiveActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var taskMode: TaskMode
         var taskTime: ClosedRange<Date>
+        var pausedTime: TimeInterval?
     }
 }
 
@@ -137,14 +139,16 @@ extension TaskLiveActivityAttributes.ContentState {
     fileprivate static var decreasing: TaskLiveActivityAttributes.ContentState {
         TaskLiveActivityAttributes.ContentState(
             taskMode: .decreasing,
-            taskTime: Date.now...Date(timeInterval: 60 * 180, since: Date.now)
+            taskTime: Date.now...Date(timeInterval: 60 * 180, since: Date.now),
+            pausedTime: nil
         )
     }
      
      fileprivate static var increasing: TaskLiveActivityAttributes.ContentState {
          TaskLiveActivityAttributes.ContentState(
             taskMode: .increasing,
-            taskTime: Date.now...Date(timeInterval: 60 * 180, since: Date.now)
+            taskTime: Date.now...Date(timeInterval: 60 * 180, since: Date.now),
+            pausedTime: nil
          )
      }
 }

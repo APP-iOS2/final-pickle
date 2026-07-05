@@ -46,7 +46,7 @@ extension User: Equatable {
     
     mutating func update(current pizza: CurrentPizza) -> Self {
         let list = self.currentPizzas.map { return $0.id == pizza.id ? pizza : $0 }
-        return try! self.update(path: \.currentPizzas, to: list)
+        return self.update(path: \.currentPizzas, to: list)
     }
     
     /// 피자 조각을 추가하고 , 8조각 이상일시 슬라이스를 0으로 만들고 피자카운트를 (1 = defaut) 증가 시키는 메서드

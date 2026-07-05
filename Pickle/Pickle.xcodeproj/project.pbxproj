@@ -2075,7 +2075,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Pickle/Resource/Info.plist;
+				INFOPLIST_FILE = Pickle/Resource/plist/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "현실도 피자";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
@@ -2122,7 +2122,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Pickle/Resource/Info.plist;
+				INFOPLIST_FILE = Pickle/Resource/plist/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "현실도 피자";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "현실도 피자에서 걸음수 측정을 위해 건강 데이터를 읽을 수 있는 접근 권한이 필요합니다.";
@@ -2300,7 +2300,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 2JZ8QNS5D4;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -2316,7 +2316,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza.TaskLiveActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2336,7 +2336,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 2JZ8QNS5D4;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -2353,7 +2353,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ddudios.realpizza.TaskLiveActivity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -11,7 +11,7 @@ import UserNotifications
 @MainActor
 final class NotificationManager: NSObject,
                                  ObservableObject,
-                                 NotificationService {
+                                 @preconcurrency NotificationService {
     
     private let notificationCenter = UNUserNotificationCenter.current()
     
@@ -115,7 +115,7 @@ final class NotificationManager: NSObject,
     }
 }
 
-extension NotificationManager: UNUserNotificationCenterDelegate {
+extension NotificationManager: @preconcurrency UNUserNotificationCenterDelegate {
     
     // 앱이 실행중일때 알림이 도착하면 채택하여 구현한 메서드 호출, 사용자에게 배너와 소리로 알림 표시
     func userNotificationCenter(_ center: UNUserNotificationCenter,

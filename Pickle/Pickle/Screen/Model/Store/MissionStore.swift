@@ -122,7 +122,7 @@ final class MissionStore: ObservableObject {
     }
     
     func missionSetting() {
-        self.fetch()
+        _ = self.fetch()
         //        if t.isEmpty {
         //            let time = TimeMission(title: "기상 미션", status: .ready, date: Date(), wakeupTime: Date())
         //            self.add(mission: .time(time))

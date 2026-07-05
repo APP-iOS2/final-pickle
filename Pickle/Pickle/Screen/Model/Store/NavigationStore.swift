@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-final class NavigationStore: ObservableObject, NotificationService {
+final class NavigationStore: ObservableObject, @preconcurrency NotificationService {
     
     let mediator: Mediator
     

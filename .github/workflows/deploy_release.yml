@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-15
     strategy:
       matrix:
-        xcode: ["16.4"]
+        xcode: ["26.3"]
 
     env:
       # app archive 및 export 에 쓰일 환경 변수 설정
